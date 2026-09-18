@@ -2505,7 +2505,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                   <!-- ─── SUBSYSTEM CARD 1: CURRICULUM MANAGEMENT ─── -->
-                  <div class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm">
+                  <div onclick="selectProgram('BSCpE', 'curriculum-home')" 
+                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
                       <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase tracking-wider border border-[#002855]">
@@ -2539,7 +2540,7 @@
                     </div>
 
                     <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5">
+                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
                       <button type="button" onclick="selectProgram('BSCpE', 'flowchart')" 
                         class="w-full py-2.5 px-4 bg-[#002855] hover:bg-[#003875] text-[#E5A823] text-xs font-black uppercase tracking-wider transition border border-[#001733] shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                         <span>⚡</span>
@@ -2555,7 +2556,8 @@
                   </div>
 
                   <!-- ─── SUBSYSTEM CARD 2: SYLLABUS MANAGEMENT (SMS) ─── -->
-                  <div class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm">
+                  <div onclick="navigateView('syllabus')" 
+                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-emerald-700 hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
                       <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 bg-emerald-800 text-white font-mono font-bold text-[10px] uppercase tracking-wider border border-emerald-900">
@@ -2589,7 +2591,7 @@
                     </div>
 
                     <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5">
+                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
                       <button type="button" onclick="navigateView('syllabus')" 
                         class="w-full py-2.5 px-4 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-black uppercase tracking-wider transition border border-emerald-950 shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                         <span>📑</span>
@@ -2605,7 +2607,8 @@
                   </div>
 
                   <!-- ─── SUBSYSTEM CARD 3: COURSE MANAGEMENT (CMS) ─── -->
-                  <div class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm">
+                  <div onclick="navigateView('course')" 
+                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#E5A823] hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
                       <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 bg-[#E5A823] text-slate-950 font-mono font-black text-[10px] uppercase tracking-wider border border-amber-500">
@@ -2639,7 +2642,7 @@
                     </div>
 
                     <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5">
+                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
                       <button type="button" onclick="navigateView('catalog')" 
                         class="w-full py-2.5 px-4 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider transition border border-amber-600 shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                         <span>📚</span>
@@ -2855,6 +2858,211 @@
 
               </div>
             </div>
+          </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW: CURRICULUM MANAGEMENT DEDICATED HOMEPAGE -->
+        <!-- ========================================================================= -->
+        <section id="view-curriculum-home" class="hidden space-y-6">
+          <!-- Institutional Panoramic Banner -->
+          <div class="bg-[#002855] text-white p-6 rounded-none border border-[#001733] shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4 relative overflow-hidden">
+            <div class="relative z-10 space-y-1.5 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-[#E5A823]/20 border border-[#E5A823]/40 text-[#E5A823] text-[10px] font-mono font-bold uppercase tracking-widest">
+                <span>⚡ Academic Architecture Suite</span>
+                <span>&bull;</span>
+                <span id="curricHomeProgramTag">BSCpE AY 2026–2030</span>
+              </div>
+              <h2 id="curricHomeHeading" class="text-2xl font-black tracking-tight uppercase flex items-center gap-2">
+                <span>Curriculum Management</span>
+                <span class="text-[#E5A823]">Homepage</span>
+              </h2>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Central command console for degree blueprints, prerequisite acyclic graph (DAG) topology, term-by-term curriculum prospectus, and institutional accreditation compliance dossiers.
+              </p>
+            </div>
+            <div class="relative z-10 flex flex-wrap items-center gap-2 shrink-0">
+              <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="px-3.5 py-2 bg-[#10151E] hover:bg-slate-800 border border-slate-600 text-slate-200 hover:text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                <span>&larr;</span>
+                <span>PD Workbench</span>
+              </button>
+              <button type="button" onclick="selectProgram('BSCpE', 'flowchart')" class="px-4 py-2 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider transition border border-amber-600 shadow-xs flex items-center gap-1.5 cursor-pointer">
+                <span>⚡</span>
+                <span>Open Flowchart &rarr;</span>
+              </button>
+            </div>
+            <!-- Decorative Vector Background -->
+            <svg class="absolute right-0 top-0 h-full w-96 object-cover pointer-events-none opacity-20" viewBox="0 0 400 150" fill="none">
+              <polygon points="100,0 400,0 400,150 20,150" fill="#E5A823" />
+              <circle cx="280" cy="75" r="45" stroke="#ffffff" stroke-width="2" />
+            </svg>
+          </div>
+
+          <!-- Academic Metrics Overview Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white dark:bg-[#131923] p-4 border border-slate-300 dark:border-slate-700 shadow-xs space-y-1">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Academic Units</div>
+              <div class="text-2xl font-black text-slate-900 dark:text-white font-mono">167.0</div>
+              <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">100% CMO 92 Compliant</div>
+            </div>
+            <div class="bg-white dark:bg-[#131923] p-4 border border-slate-300 dark:border-slate-700 shadow-xs space-y-1">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Active Trimesters</div>
+              <div class="text-2xl font-black text-[#002855] dark:text-blue-300 font-mono">12 Terms</div>
+              <div class="text-[10px] text-slate-500 font-medium">4 Academic Years (3 terms/yr)</div>
+            </div>
+            <div class="bg-white dark:bg-[#131923] p-4 border border-slate-300 dark:border-slate-700 shadow-xs space-y-1">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Registered Courses</div>
+              <div class="text-2xl font-black text-amber-600 font-mono">74 Courses</div>
+              <div class="text-[10px] text-slate-500 font-medium">Lecture, Laboratory & Practicum</div>
+            </div>
+            <div class="bg-white dark:bg-[#131923] p-4 border border-slate-300 dark:border-slate-700 shadow-xs space-y-1">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Cycle Integrity State</div>
+              <div class="text-2xl font-black text-emerald-600 font-mono flex items-center gap-1.5">
+                <span>0 Cycles</span>
+                <span class="text-xs">✓</span>
+              </div>
+              <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Kahn Algorithm Verified</div>
+            </div>
+          </div>
+
+          <!-- Primary Workbench Pillars Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Pillar 1: Flowchart DAG Blueprint -->
+            <div onclick="selectProgram('BSCpE', 'flowchart')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-[#002855] hover:shadow-md transition cursor-pointer group">
+              <div class="space-y-3">
+                <div class="w-11 h-11 bg-[#002855] text-[#E5A823] flex items-center justify-center text-xl shadow-xs border border-[#E5A823]/40">
+                  ⚡
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-[#002855] dark:text-blue-200 group-hover:text-blue-700 transition uppercase tracking-tight">
+                    Prerequisite DAG Flowchart
+                  </h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                    Interactive canvas showcasing directed prerequisite dependency buslines, recursive lineage upstream/downstream highlighting, and node inspections.
+                  </p>
+                </div>
+              </div>
+              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-[#002855] dark:text-[#E5A823]">
+                <span>Open Canvas Studio</span>
+                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </div>
+            </div>
+
+            <!-- Pillar 2: Integrated Master Spreadsheet -->
+            <div onclick="selectProgram('BSCpE', 'spreadsheet')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-emerald-700 hover:shadow-md transition cursor-pointer group">
+              <div class="space-y-3">
+                <div class="w-11 h-11 bg-emerald-800 text-white flex items-center justify-center text-xl shadow-xs border border-emerald-950">
+                  📊
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-emerald-900 dark:text-emerald-300 group-hover:text-emerald-700 transition uppercase tracking-tight">
+                    Integrated Master Spreadsheet
+                  </h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                    Full spreadsheet grid with live formula bar (`fx`), term-by-term credit unit summation, category classification, and batch data editing.
+                  </p>
+                </div>
+              </div>
+              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-800 dark:text-emerald-400">
+                <span>Open Spreadsheet Grid</span>
+                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </div>
+            </div>
+
+            <!-- Pillar 3: Official Documents (7 Sheets) -->
+            <div onclick="selectProgram('BSCpE', 'registrar', 1)" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-amber-600 hover:shadow-md transition cursor-pointer group">
+              <div class="space-y-3">
+                <div class="w-11 h-11 bg-amber-600 text-white flex items-center justify-center text-xl shadow-xs border border-amber-700">
+                  📄
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-amber-900 dark:text-amber-300 group-hover:text-amber-700 transition uppercase tracking-tight">
+                    Official Documents (Sheets 1–7)
+                  </h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                    Official Flowchart, Curriculum Prospectus, Course Catalog, Program of Study, OBE Matrix, Comparative Summary, and Summary of Units.
+                  </p>
+                </div>
+              </div>
+              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-amber-700 dark:text-amber-400">
+                <span>Browse 7 Official Sheets</span>
+                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </div>
+            </div>
+
+            <!-- Pillar 4: Course Catalog Directory -->
+            <div onclick="navigateView('catalog')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-sky-600 hover:shadow-md transition cursor-pointer group">
+              <div class="space-y-3">
+                <div class="w-11 h-11 bg-sky-700 text-white flex items-center justify-center text-xl shadow-xs border border-sky-900">
+                  📖
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-sky-900 dark:text-sky-300 group-hover:text-sky-700 transition uppercase tracking-tight">
+                    Course Catalog Directory
+                  </h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                    Filterable registry of all 74 degree courses with lecture hours, lab credits, requisites, descriptions, and syllabus links.
+                  </p>
+                </div>
+              </div>
+              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-sky-700 dark:text-sky-400">
+                <span>View Course Registry</span>
+                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </div>
+            </div>
+
+            <!-- Pillar 5: OBE Competency Matrix -->
+            <div onclick="navigateView('obe')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-purple-600 hover:shadow-md transition cursor-pointer group">
+              <div class="space-y-3">
+                <div class="w-11 h-11 bg-purple-800 text-white flex items-center justify-center text-xl shadow-xs border border-purple-950">
+                  🎯
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-purple-900 dark:text-purple-300 group-hover:text-purple-700 transition uppercase tracking-tight">
+                    OBE Alignment Matrix
+                  </h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                    ABET / PTC Student Outcomes mapping matrix (SO a through m) tracking Introductory (I), Enabling (E), and Demonstrative (D) competencies.
+                  </p>
+                </div>
+              </div>
+              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-purple-800 dark:text-purple-400">
+                <span>Inspect Competency Mapping</span>
+                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </div>
+            </div>
+
+            <!-- Pillar 6: CHED CMO 92 & Governance Audit -->
+            <div onclick="navigateView('compliance')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-rose-600 hover:shadow-md transition cursor-pointer group">
+              <div class="space-y-3">
+                <div class="w-11 h-11 bg-rose-800 text-white flex items-center justify-center text-xl shadow-xs border border-rose-950">
+                  ⚖️
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-rose-900 dark:text-rose-300 group-hover:text-rose-700 transition uppercase tracking-tight">
+                    CHED CMO 92 &amp; Governance
+                  </h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                    Statutory compliance validator against Commission on Higher Education guidelines, cluster delegations, and SHA-256 revision audit trail.
+                  </p>
+                </div>
+              </div>
+              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-rose-800 dark:text-rose-400">
+                <span>Check Compliance Status</span>
+                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Quick Return to Program Director Workbench -->
+          <div class="flex items-center justify-between p-4 bg-slate-100 dark:bg-[#181D26] border border-slate-300 dark:border-slate-700 text-xs">
+            <span class="text-slate-600 dark:text-slate-400 font-medium">Asia Pacific College &bull; Academic Management System &bull; Curriculum Architecture</span>
+            <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="font-bold text-[#002855] dark:text-[#E5A823] hover:underline flex items-center gap-1 cursor-pointer">
+              <span>&larr;</span>
+              <span>Back to Program Director Workbench</span>
+            </button>
           </div>
         </section>
 

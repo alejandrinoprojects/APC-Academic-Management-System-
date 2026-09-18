@@ -2100,7 +2100,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                   <!-- ─── SUBSYSTEM CARD 1: CURRICULUM MANAGEMENT ─── -->
-                  <div class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm">
+                  <div onclick="selectProgram('BSCpE', 'curriculum-home')" 
+                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
                       <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase tracking-wider border border-[#002855]">
@@ -2134,7 +2135,7 @@
                     </div>
 
                     <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5">
+                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
                       <button type="button" onclick="selectProgram('BSCpE', 'flowchart')" 
                         class="w-full py-2.5 px-4 bg-[#002855] hover:bg-[#003875] text-[#E5A823] text-xs font-black uppercase tracking-wider transition border border-[#001733] shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                         <span>⚡</span>
@@ -2150,7 +2151,8 @@
                   </div>
 
                   <!-- ─── SUBSYSTEM CARD 2: SYLLABUS MANAGEMENT (SMS) ─── -->
-                  <div class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm">
+                  <div onclick="navigateView('syllabus')" 
+                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-emerald-700 hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
                       <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 bg-emerald-800 text-white font-mono font-bold text-[10px] uppercase tracking-wider border border-emerald-900">
@@ -2184,7 +2186,7 @@
                     </div>
 
                     <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5">
+                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
                       <button type="button" onclick="navigateView('syllabus')" 
                         class="w-full py-2.5 px-4 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-black uppercase tracking-wider transition border border-emerald-950 shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                         <span>📑</span>
@@ -2200,7 +2202,8 @@
                   </div>
 
                   <!-- ─── SUBSYSTEM CARD 3: COURSE MANAGEMENT (CMS) ─── -->
-                  <div class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm">
+                  <div onclick="navigateView('course')" 
+                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#E5A823] hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
                       <div class="flex items-center justify-between">
                         <span class="px-2.5 py-0.5 bg-[#E5A823] text-slate-950 font-mono font-black text-[10px] uppercase tracking-wider border border-amber-500">
@@ -2234,7 +2237,7 @@
                     </div>
 
                     <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5">
+                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
                       <button type="button" onclick="navigateView('catalog')" 
                         class="w-full py-2.5 px-4 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider transition border border-amber-600 shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                         <span>📚</span>

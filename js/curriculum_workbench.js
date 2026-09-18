@@ -612,6 +612,9 @@
       if (viewType === 'workbench' || viewType === 'homePdProgramView') {
         const progBtn = document.querySelector(`#node-prog-${progId} > button`);
         if (progBtn) progBtn.classList.add('bg-slate-800', 'text-white', 'border-l-2', 'border-[#E5A823]');
+      } else if (viewType === 'curriculum-home') {
+        const curBtn = document.querySelector(`#node-${progId}-curriculums > button`);
+        if (curBtn) curBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
       } else if (!viewType || viewType === 'flowchart') {
         const fcBtn = document.getElementById(`nav-${progId}-flowchart`);
         if (fcBtn) fcBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
@@ -1019,7 +1022,13 @@
         if (flowTitle) flowTitle.innerText = `${progInfo.name} (${progCode})`;
 
         let pText = '';
-        if (targetView === 'flowchart' || !targetView) {
+        if (targetView === 'curriculum-home') {
+          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Management`;
+          const cHeading = document.getElementById('curricHomeHeading');
+          const cProgTag = document.getElementById('curricHomeProgramTag');
+          if (cHeading) cHeading.innerHTML = `<span>${progCode} Curriculum Management</span> <span class="text-[#E5A823]">Homepage</span>`;
+          if (cProgTag) cProgTag.innerText = `${progCode} AY 2026–2030`;
+        } else if (targetView === 'flowchart' || !targetView) {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Flowchart`;
         } else if (targetView === 'spreadsheet') {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Integrated Spreadsheet`;
@@ -1840,7 +1849,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // Hide all application views
-      const allViews = ['home', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
+      const allViews = ['home', 'curriculum-home', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
       
       allViews.forEach(v => {
         const el = document.getElementById('view-' + v);
@@ -1898,6 +1907,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const topPill = document.getElementById('topBarPathPill');
       if (topPill) {
         if (viewId === 'home') topPill.innerText = 'Schools';
+        else if (viewId === 'curriculum-home') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Management';
         else if (viewId === 'flowchart') topPill.innerText = 'Schools > SoE > BSCpE > Flowchart';
         else if (viewId === 'spreadsheet') topPill.innerText = 'Schools > SoE > BSCpE > Spreadsheet';
         else if (viewId === 'catalog') topPill.innerText = 'Schools > SoE > BSCpE > Catalog';
