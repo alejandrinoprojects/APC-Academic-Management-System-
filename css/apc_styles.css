@@ -1,0 +1,1394 @@
+/* =========================================================================
+       SHARP RECTANGLES ARCHITECTURAL DESIGN SYSTEM (Strict 90° Square Corners)
+       ========================================================================= */
+    *, *::before, *::after,
+    .rounded, .rounded-xs, .rounded-sm, .rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl, .rounded-3xl,
+    .course-card, .diagram-node, .year-banner, .term-header, .tier-banner,
+    .badge, .card, .btn, .modal, .toast, .dropdown, .nav-btn, .tab-btn, button, input, select, textarea {
+      border-radius: 0px !important;
+    }
+
+    /* Exceptions for specific circular UI elements from APC institutional identity */
+    .apc-circle-badge, .apc-circle-badge *, .apc-sparkle-btn, .school-dot {
+      border-radius: 9999px !important;
+    }
+    .login-card-rounded {
+      border-radius: 14px !important;
+    }
+    .login-btn-rounded {
+      border-radius: 6px !important;
+    }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 0px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Flowchart Node Interactive Animations */
+    .course-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .course-card.active-selected {
+      outline: 3px solid #f59e0b;
+      transform: scale(1.04);
+      z-index: 30 !important;
+      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.25);
+    }
+    .course-card.feeder-highlight {
+      outline: 3px solid #2563eb;
+      background-color: #eff6ff !important;
+      color: #1e3a8a !important;
+      transform: scale(1.02);
+      z-index: 25 !important;
+      box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
+    }
+    .course-card.dependent-highlight {
+      outline: 3px solid #16a34a;
+      background-color: #f0fdf4 !important;
+      color: #14532d !important;
+      transform: scale(1.02);
+      z-index: 25 !important;
+      box-shadow: 0 8px 16px -4px rgba(22, 163, 74, 0.3);
+    }
+    .course-card.dimmed {
+      opacity: 0.22 !important;
+      filter: grayscale(80%);
+    }
+
+    /* Animated SVG Arrow Lines */
+    .dag-arrow {
+      transition: stroke 0.2s, stroke-width 0.2s, opacity 0.2s;
+    }
+    .dag-arrow.feeder-arrow {
+      stroke: #2563eb !important;
+      stroke-width: 3.5px !important;
+      opacity: 1 !important;
+      stroke-dasharray: 8 4;
+      animation: dashAnim 0.8s linear infinite;
+    }
+    .dag-arrow.dependent-arrow {
+      stroke: #16a34a !important;
+      stroke-width: 3.5px !important;
+      opacity: 1 !important;
+      stroke-dasharray: 8 4;
+      animation: dashAnim 0.8s linear infinite;
+    }
+    .dag-arrow.cycle-arrow {
+      stroke: #dc2626 !important;
+      stroke-width: 4px !important;
+      opacity: 1 !important;
+      stroke-dasharray: 6 3;
+      animation: dashAnim 0.5s linear infinite;
+    }
+    .dag-arrow.dimmed-arrow {
+      opacity: 0.05 !important;
+    }
+
+    @keyframes dashAnim {
+      from { stroke-dashoffset: 24; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Flowchart Grid Layout Modes - Generous Spacing for Boxes & Travel Channels */
+    /* Compact Mode: Clean baseline layout with generous breathing room */
+    .flowchart-wrapper.compact-mode .flow-cell {
+      width: 210px;
+      min-width: 210px;
+      height: 104px;
+      padding: 12px 14px;
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .flowchart-wrapper.compact-mode .course-card {
+      width: 182px;
+      height: 80px;
+      margin: 0 auto;
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Spread / Spacious Arrow Mode: GENEROUS travel channels (68px horizontal, 48px vertical) */
+    .flowchart-wrapper.arrows-spread .flow-cell {
+      width: 276px;
+      min-width: 276px;
+      height: 140px;
+      padding: 24px 34px;
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .flowchart-wrapper.arrows-spread .course-card {
+      width: 208px;
+      height: 92px;
+      margin: 0 auto;
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Card Connection Ports (Port-to-Port Arrow Docking) */
+    .port-dot {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      background: #94a3b8;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 35;
+    }
+    .port-left { left: -4px; }
+    .port-right { right: -4px; }
+
+    .arrows-spread .port-dot {
+      opacity: 0.75;
+    }
+    .feeder-highlight .port-right {
+      opacity: 1 !important;
+      background: #2563eb !important;
+      box-shadow: 0 0 8px #2563eb;
+    }
+    .active-selected .port-left {
+      opacity: 1 !important;
+      background: #2563eb !important;
+      box-shadow: 0 0 8px #2563eb;
+    }
+    .active-selected .port-right {
+      opacity: 1 !important;
+      background: #16a34a !important;
+      box-shadow: 0 0 8px #16a34a;
+    }
+    .dependent-highlight .port-left {
+      opacity: 1 !important;
+      background: #16a34a !important;
+      box-shadow: 0 0 8px #16a34a;
+    }
+  
+    /* ========================================================================= */
+    /* OFFICIAL REGISTRAR DOCUMENT PRINT STYLES (Replicating Official 2026 PDF)  */
+    /* ========================================================================= */
+    @media print {
+      @page {
+        margin: 8mm;
+      }
+      html, body {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        background: white !important;
+        color: black !important;
+        font-family: Arial, sans-serif !important;
+      }
+      header, nav, #flowchartDetailDrawer, #cycleModal, #batchModal, #toastNotification, .no-print, aside, #sidebar, #ramsFooter, footer {
+        display: none !important;
+      }
+      .flex-1.flex.overflow-hidden, main, #view-registrar {
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        display: block !important;
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+      }
+      #view-flowchart, #view-catalog, #view-obe, #view-dashboard, #view-compliance, #view-delegation, #view-audit {
+        display: none !important;
+      }
+      #view-registrar > div {
+        max-width: 100% !important;
+        width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      /* STRICTLY NON-ROUNDED TABLES & FRAMES IN PRINT (0 BORDER RADIUS) */
+      table, thead, tbody, tfoot, tr, th, td, .reg-doc-page, .print-page-wrapper, div, section {
+        border-radius: 0 !important;
+      }
+      .print-page-wrapper, .reg-doc-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+      }
+      /* Sheet 1 Flowchart is 1 single landscape page */
+      #regDocView_1 {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        max-height: 98vh !important;
+      }
+      /* Multi-page sheets paginate cleanly */
+      #regDocView_2, #regDocView_3, #regDocView_4, #regDocView_5, #regDocView_6, #regDocView_7 {
+        page-break-after: auto !important;
+        break-after: auto !important;
+        page-break-inside: auto !important;
+        break-inside: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+      tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      table {
+        border-collapse: collapse !important;
+      }
+      .reg-doc-page.hidden {
+        display: none !important;
+      }
+    }
+  
+    .flow-card-node {
+      cursor: pointer;
+    }
+    .flow-card-node:hover rect {
+      stroke: #2563eb !important;
+      stroke-width: 1.1px !important;
+    }
+
+    /* Active RAMS Navigation Button - High-Contrast File Explorer Styling */
+    .nav-btn.active-rams-btn {
+      background-color: #E5A823 !important;
+      color: #002855 !important;
+      font-weight: 800 !important;
+      border-radius: 0px !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25) !important;
+    }
+    .nav-btn.active-rams-btn span,
+    .nav-btn.active-rams-btn div span,
+    .nav-btn.active-rams-btn .truncate {
+      color: #002855 !important;
+      font-weight: 800 !important;
+    }
+    .nav-btn.active-rams-btn .badge,
+    .nav-btn.active-rams-btn .reg-doc-badge,
+    .nav-btn.active-rams-btn > span:last-child {
+      background-color: #002855 !important;
+      color: #E5A823 !important;
+      border-color: #002855 !important;
+      font-weight: 700 !important;
+    }
+
+    /* ========================================================================= */
+    /* FULL-SYSTEM LIGHT MODE & DARK MODE ARCHITECTURAL THEMES                  */
+    /* ========================================================================= */
+
+    /* Root & General Surface Overrides */
+    html.dark, body.dark {
+      background-color: #0a0e17 !important;
+      color: #f1f5f9 !important;
+    }
+
+    /* Top Bar Header */
+    .dark header {
+      background-color: #111722 !important;
+      color: #f1f5f9 !important;
+      border-bottom-color: #1e2638 !important;
+    }
+
+    /* Top Bar Breadcrumb Navigation Pill */
+    .dark #topBarPathPill {
+      background-color: #18202d !important;
+      border-color: #2a374b !important;
+      color: #e2e8f0 !important;
+    }
+    .dark #topBarPathPill button {
+      color: #94a3b8 !important;
+    }
+    .dark #topBarPathPill button:hover {
+      color: #ffffff !important;
+      background-color: #243247 !important;
+    }
+    .dark #topBarPathPill span.text-amber-600 {
+      color: #fbbf24 !important;
+    }
+
+    /* Top Bar Search Input & Command Palette */
+    .dark #topNavSearchInput {
+      background-color: #18202d !important;
+      border-color: #2a374b !important;
+      color: #f8fafc !important;
+    }
+    .dark #topNavSearchInput::placeholder {
+      color: #64748b !important;
+    }
+    .dark #topNavQuickNavDropdown {
+      background-color: #111722 !important;
+      border-color: #e5a823 !important;
+      color: #f1f5f9 !important;
+      box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.7) !important;
+    }
+    .dark #topNavQuickNavDropdown > div {
+      border-color: #1e2638 !important;
+    }
+    .dark #topNavQuickNavDropdown .hover\:bg-amber-50:hover {
+      background-color: #1e293b !important;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle-btn {
+      transition: all 0.2s ease-in-out;
+    }
+    .theme-toggle-btn:hover {
+      transform: translateY(-1px);
+    }
+    .theme-active-dark {
+      border-color: #e5a823 !important;
+      box-shadow: 0 0 8px rgba(229, 168, 35, 0.25) !important;
+    }
+
+    /* Main Container Viewport */
+    .dark main {
+      background-color: #0a0e17 !important;
+    }
+
+    /* ========================================================================= */
+    /* LEFT NAVIGATION SIDEBAR: LIGHT MODE vs DARK MODE                         */
+    /* ========================================================================= */
+
+    /* Light Mode Sidebar (Crisp Institutional White & Slate) */
+    html:not(.dark) aside#sidebar {
+      background-color: #ffffff !important;
+      color: #1e293b !important;
+      border-right-color: #e2e8f0 !important;
+      box-shadow: 2px 0 10px -2px rgba(0, 0, 0, 0.04) !important;
+    }
+    html:not(.dark) aside#sidebar > div:first-child > div:first-child {
+      background-color: #f8fafc !important;
+      border-bottom-color: #e2e8f0 !important;
+    }
+    html:not(.dark) aside#sidebar #sidebarApcSeal {
+      background-color: #ffffff !important;
+      border-color: #e5a823 !important;
+    }
+    html:not(.dark) aside#sidebar .font-black.text-xs.text-white {
+      color: #002855 !important;
+    }
+    html:not(.dark) aside#sidebar #node-schools-root > button {
+      background-color: #fffbeb !important;
+      border-left-color: #e5a823 !important;
+      color: #92400e !important;
+    }
+    html:not(.dark) aside#sidebar #node-schools-root > button:hover {
+      background-color: #fef3c7 !important;
+    }
+    html:not(.dark) aside#sidebar #node-schools-root span.text-amber-200 {
+      color: #78350f !important;
+    }
+    html:not(.dark) aside#sidebar #node-schools-root span.bg-amber-400\/20 {
+      background-color: #fde68a !important;
+      color: #92400e !important;
+      border-color: #f59e0b !important;
+    }
+    html:not(.dark) aside#sidebar button {
+      color: #334155 !important;
+    }
+    html:not(.dark) aside#sidebar button:hover {
+      background-color: #f1f5f9 !important;
+      color: #002855 !important;
+    }
+    html:not(.dark) aside#sidebar .text-slate-100,
+    html:not(.dark) aside#sidebar .text-slate-200,
+    html:not(.dark) aside#sidebar .text-slate-300 {
+      color: #1e293b !important;
+    }
+    html:not(.dark) aside#sidebar .text-slate-400,
+    html:not(.dark) aside#sidebar .text-slate-500 {
+      color: #64748b !important;
+    }
+    html:not(.dark) aside#sidebar .border-slate-700,
+    html:not(.dark) aside#sidebar .border-slate-700\/60 {
+      border-color: #e2e8f0 !important;
+    }
+    html:not(.dark) aside#sidebar .bg-slate-800\/40,
+    html:not(.dark) aside#sidebar .bg-slate-800\/60 {
+      background-color: #f1f5f9 !important;
+    }
+    html:not(.dark) aside#sidebar > div:last-child {
+      background-color: #f8fafc !important;
+      border-top-color: #e2e8f0 !important;
+    }
+    html:not(.dark) aside#sidebar #sidebarUserName {
+      color: #0f172a !important;
+    }
+    html:not(.dark) aside#sidebar #sidebarUserEmail {
+      color: #2563eb !important;
+    }
+    html:not(.dark) aside#sidebar > div:last-child button {
+      background-color: #ffffff !important;
+      border-color: #e5a823 !important;
+    }
+
+    /* Dark Mode Sidebar (Deep Obsidian & Gold) */
+    html.dark aside#sidebar {
+      background-color: #111722 !important;
+      color: #cbd5e1 !important;
+      border-right-color: #1e2638 !important;
+    }
+    html.dark aside#sidebar > div:first-child > div:first-child {
+      background-color: #0a0e17 !important;
+      border-bottom-color: #1e2638 !important;
+    }
+    html.dark aside#sidebar > div:last-child {
+      background-color: #0a0e17 !important;
+      border-top-color: #1e2638 !important;
+    }
+
+    /* ========================================================================= */
+    /* HERO BANNER & SCHOOL CARD TOP BANNERS: LIGHT MODE vs DARK MODE            */
+    /* ========================================================================= */
+
+    /* Hero Banner: Light Mode */
+    html:not(.dark) #heroBannerContainer {
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 50%, #e2e8f0 100%) !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03) !important;
+    }
+    html:not(.dark) #heroBannerContainer svg rect[fill="#08101E"] {
+      fill: #f1f5f9 !important;
+    }
+    html:not(.dark) #heroBannerContainer svg polygon {
+      fill-opacity: 0.12 !important;
+    }
+    html:not(.dark) #heroBannerContainer svg polygon:nth-of-type(1) { fill: #002855 !important; }
+    html:not(.dark) #heroBannerContainer svg polygon:nth-of-type(2) { fill: #00A4EF !important; }
+    html:not(.dark) #heroBannerContainer svg polygon:nth-of-type(3) { fill: #E5A823 !important; }
+    html:not(.dark) #heroBannerContainer svg polygon:nth-of-type(4) { fill: #002855 !important; }
+    html:not(.dark) #heroBannerContainer svg polygon:nth-of-type(5) { fill: #38BDF8 !important; }
+    html:not(.dark) #heroBannerContainer svg line {
+      stroke-opacity: 0.35 !important;
+    }
+    html:not(.dark) #heroBannerContainer .absolute.inset-0.bg-gradient-to-t {
+      background: linear-gradient(to top, rgba(241, 245, 249, 0.85), transparent, rgba(241, 245, 249, 0.4)) !important;
+    }
+    html:not(.dark) #heroBannerContainer .border.border-white\/60,
+    html:not(.dark) #heroBannerContainer [class*="border-white"] {
+      border-color: #cbd5e1 !important;
+      background-color: rgba(255, 255, 255, 0.85) !important;
+      box-shadow: 0 4px 20px -2px rgba(0, 40, 85, 0.08) !important;
+      backdrop-filter: blur(8px) !important;
+    }
+    html:not(.dark) #heroBannerContainer h1 {
+      color: #002855 !important;
+      text-decoration-color: #E5A823 !important;
+    }
+    html:not(.dark) #heroBannerContainer button {
+      color: #002855 !important;
+    }
+    html:not(.dark) #heroBannerContainer button:hover {
+      color: #d97706 !important;
+    }
+
+    /* School Card Top Banners in Light Mode */
+    html:not(.dark) .school-card .h-28 svg polygon {
+      display: none !important;
+    }
+    html:not(.dark) .school-card .h-28 span.text-white {
+      color: #1e293b !important;
+      filter: none !important;
+      text-shadow: none !important;
+    }
+    html:not(.dark) .school-card .h-28 span:last-child {
+      filter: none !important;
+      text-shadow: none !important;
+    }
+
+    /* 1. SOE - Engineering (Orange) */
+    html:not(.dark) #schoolCard_0 .h-28,
+    html:not(.dark) [data-school="soe"] .h-28 {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%) !important;
+      border-bottom: 1px solid #fed7aa !important;
+    }
+    html:not(.dark) #schoolCard_0 .h-28 span:last-child,
+    html:not(.dark) [data-school="soe"] .h-28 span:last-child {
+      color: #c2410c !important;
+    }
+
+    /* 2. SOCIT - Computing & IT (Blue) */
+    html:not(.dark) #schoolCard_1 .h-28,
+    html:not(.dark) [data-school="socit"] .h-28 {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%) !important;
+      border-bottom: 1px solid #bae6fd !important;
+    }
+    html:not(.dark) #schoolCard_1 .h-28 span:last-child,
+    html:not(.dark) [data-school="socit"] .h-28 span:last-child {
+      color: #0369a1 !important;
+    }
+
+    /* 3. SOMA - Multimedia Arts (Red) */
+    html:not(.dark) #schoolCard_2 .h-28,
+    html:not(.dark) [data-school="soma"] .h-28 {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 50%, #fecaca 100%) !important;
+      border-bottom: 1px solid #fecaca !important;
+    }
+    html:not(.dark) #schoolCard_2 .h-28 span:last-child,
+    html:not(.dark) [data-school="soma"] .h-28 span:last-child {
+      color: #b91c1c !important;
+    }
+
+    /* 4. SOM - Management (Gold/Amber) */
+    html:not(.dark) #schoolCard_3 .h-28,
+    html:not(.dark) [data-school="som"] .h-28 {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%) !important;
+      border-bottom: 1px solid #fde68a !important;
+    }
+    html:not(.dark) #schoolCard_3 .h-28 span:last-child,
+    html:not(.dark) [data-school="som"] .h-28 span:last-child {
+      color: #b45309 !important;
+    }
+
+    /* 5. SOA - Architecture (Purple) */
+    html:not(.dark) #schoolCard_4 .h-28,
+    html:not(.dark) [data-school="soa"] .h-28 {
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%) !important;
+      border-bottom: 1px solid #e9d5ff !important;
+    }
+    html:not(.dark) #schoolCard_4 .h-28 span:last-child,
+    html:not(.dark) [data-school="soa"] .h-28 span:last-child {
+      color: #7e22ce !important;
+    }
+
+    /* ========================================================================= */
+    /* ALL CARDS: LIGHT MODE vs DARK MODE                                       */
+    /* ========================================================================= */
+
+    /* Light Mode Academic School Cards */
+    html:not(.dark) .school-card {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      color: #1e293b !important;
+      box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04) !important;
+    }
+    html:not(.dark) .school-card:hover {
+      border-color: #e5a823 !important;
+      box-shadow: 0 20px 30px -6px rgba(0, 0, 0, 0.12), 0 8px 12px -4px rgba(0, 0, 0, 0.06) !important;
+    }
+    html:not(.dark) .school-card .p-4 {
+      color: #1e293b !important;
+    }
+    html:not(.dark) .school-card label {
+      color: #475569 !important;
+    }
+    html:not(.dark) .school-card .bg-\[\#10151E\] {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) .school-card a.text-slate-300 {
+      color: #1e293b !important;
+    }
+    html:not(.dark) .school-card a.text-slate-300:hover {
+      color: #d97706 !important;
+    }
+    html:not(.dark) .school-card span.underline {
+      text-decoration-color: #cbd5e1 !important;
+    }
+    html:not(.dark) .school-card button {
+      background-color: #f1f5f9 !important;
+      color: #475569 !important;
+      border-color: #e2e8f0 !important;
+    }
+    html:not(.dark) .school-card button:hover {
+      background-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+
+    /* Light Mode "+ Add Academic School" Card */
+    html:not(.dark) .school-card.border-dashed {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) .school-card.border-dashed:hover {
+      background-color: #f8fafc !important;
+      border-color: #e5a823 !important;
+    }
+    html:not(.dark) .school-card.border-dashed .w-14 {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #475569 !important;
+    }
+    html:not(.dark) .school-card.border-dashed:hover .w-14 {
+      border-color: #e5a823 !important;
+      background-color: #fef3c7 !important;
+      color: #d97706 !important;
+    }
+    html:not(.dark) .school-card.border-dashed h3 {
+      color: #0f172a !important;
+    }
+    html:not(.dark) .school-card.border-dashed:hover h3 {
+      color: #0f172a !important;
+    }
+    html:not(.dark) .school-card.border-dashed p {
+      color: #475569 !important;
+    }
+
+    /* Light Mode Degree Program Cards (EXD Tier 3) */
+    html:not(.dark) .program-card {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.06) !important;
+    }
+    html:not(.dark) .program-card:hover {
+      border-color: #e5a823 !important;
+      box-shadow: 0 16px 24px -6px rgba(0, 0, 0, 0.12) !important;
+    }
+    html:not(.dark) .program-card .h-28 {
+      background-color: #f8fafc !important;
+    }
+    html:not(.dark) .program-card .h-28 .text-white {
+      color: #0f172a !important;
+    }
+    html:not(.dark) .program-card .bg-\[\#10151E\] {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) .program-card .text-slate-200 {
+      color: #0f172a !important;
+    }
+    html:not(.dark) .program-card .text-slate-300 {
+      color: #334155 !important;
+    }
+    html:not(.dark) .program-card .text-slate-400 {
+      color: #64748b !important;
+    }
+    html:not(.dark) .program-card .text-white {
+      color: #0f172a !important;
+    }
+    html:not(.dark) .program-card .bg-emerald-950\/60 {
+      background-color: #ecfdf5 !important;
+      color: #047857 !important;
+      border-color: #a7f3d0 !important;
+    }
+    html:not(.dark) .program-card button.bg-\[\#10151E\] {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #334155 !important;
+    }
+    html:not(.dark) .program-card button.bg-\[\#10151E\]:hover {
+      background-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) .program-card .hover\:bg-slate-800\/60:hover {
+      background-color: #f1f5f9 !important;
+    }
+
+    /* EXD Header Boxes */
+    html:not(.dark) #exdLeftEmblemBox {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    }
+    .dark #exdLeftEmblemBox {
+      background-color: #131b28 !important;
+      border-color: #222f42 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    }
+    html:not(.dark) #exdRightBannerBox {
+      background: linear-gradient(135deg, #002855 0%, #001f3f 50%, #001428 100%) !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 4px 12px -2px rgba(0, 40, 85, 0.15) !important;
+    }
+    .dark #exdRightBannerBox {
+      background: #0f1b29 !important;
+      border-color: #222f42 !important;
+    }
+    html:not(.dark) #exdRightBannerBox button {
+      background-color: #ffffff !important;
+      color: #002855 !important;
+      border-color: #e5a823 !important;
+    }
+    html:not(.dark) #exdRightBannerBox button:hover {
+      background-color: #fffbeb !important;
+      color: #92400e !important;
+    }
+
+    /* Light Mode Active Sidebar Highlight */
+    html:not(.dark) aside#sidebar .bg-slate-800,
+    html:not(.dark) aside#sidebar button.bg-slate-800,
+    html:not(.dark) aside#sidebar .active-sidebar-node {
+      background-color: #f1f5f9 !important;
+      color: #002855 !important;
+    }
+    html:not(.dark) aside#sidebar .active-sidebar-node {
+      border-left: 4px solid #e5a823 !important;
+      font-weight: 700 !important;
+    }
+    html:not(.dark) aside#sidebar .hover\:bg-slate-800\/60:hover {
+      background-color: #f1f5f9 !important;
+      color: #002855 !important;
+    }
+
+    /* Light Mode Stat / Metric / KPI Cards */
+    html:not(.dark) .stat-card,
+    html:not(.dark) .kpi-metric-box,
+    html:not(.dark) .metric-card {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    /* Dark Mode Cards */
+    .dark .school-card {
+      background-color: #131b28 !important;
+      border-color: #222f42 !important;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+    }
+    .dark .school-card:hover {
+      border-color: #e5a823 !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7) !important;
+    }
+    .dark .school-card .p-4 {
+      color: #f1f5f9 !important;
+    }
+    .dark .school-card label {
+      color: #94a3b8 !important;
+    }
+    .dark .school-card .bg-\[\#10151E\] {
+      background-color: #0e141f !important;
+      border-color: #222f42 !important;
+      color: #f8fafc !important;
+    }
+    .dark .school-card a.text-slate-300 {
+      color: #cbd5e1 !important;
+    }
+    .dark .school-card a.text-slate-300:hover {
+      color: #e5a823 !important;
+    }
+    .dark .school-card span.underline {
+      text-decoration-color: #475569 !important;
+    }
+
+    .dark .program-card {
+      background-color: #131b28 !important;
+      border-color: #222f42 !important;
+      color: #f8fafc !important;
+    }
+    .dark .program-card:hover {
+      border-color: #e5a823 !important;
+    }
+    .dark .program-card .h-28 {
+      background-color: #0e141f !important;
+    }
+    .dark .program-card .bg-\[\#10151E\] {
+      background-color: #0e141f !important;
+      border-color: #222f42 !important;
+    }
+
+    /* Cards & Containers in Dark Mode */
+    .dark .bg-white:not(.bg-white-keep) {
+      background-color: #131b28 !important;
+      color: #f1f5f9 !important;
+      border-color: #222f42 !important;
+    }
+    .dark .bg-slate-50 {
+      background-color: #0e141f !important;
+    }
+    .dark .bg-slate-100 {
+      background-color: #111824 !important;
+    }
+    .dark .border-slate-200,
+    .dark .border-slate-300 {
+      border-color: #222f42 !important;
+    }
+    .dark .text-slate-900,
+    .dark .text-slate-800 {
+      color: #f8fafc !important;
+    }
+    .dark .text-slate-700 {
+      color: #e2e8f0 !important;
+    }
+    .dark .text-slate-600,
+    .dark .text-slate-500 {
+      color: #94a3b8 !important;
+    }
+    .dark .text-slate-400 {
+      color: #64748b !important;
+    }
+
+    /* Flowchart DAG Canvas in Dark Mode */
+    .dark #diagramCanvasContainer {
+      background-color: #080c13 !important;
+      background-image: radial-gradient(#243247 1.2px, transparent 1.2px) !important;
+    }
+    .dark .diagram-node.course-card {
+      background-color: #131b28 !important;
+      border-color: #222f42 !important;
+      color: #f8fafc !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4) !important;
+    }
+    .dark .diagram-node .text-blue-950 {
+      color: #93c5fd !important;
+    }
+    .dark .diagram-node .text-slate-800 {
+      color: #f1f5f9 !important;
+    }
+    .dark .diagram-node .bg-slate-100 {
+      background-color: #0e141f !important;
+      border-color: #222f42 !important;
+      color: #cbd5e1 !important;
+    }
+    .dark .diagram-node.active-selected {
+      outline: 3px solid #e5a823 !important;
+      background-color: #1c2738 !important;
+    }
+    .dark .diagram-node.feeder-highlight {
+      outline: 3px solid #3b82f6 !important;
+      background-color: #172554 !important;
+      color: #bfdbfe !important;
+    }
+    .dark .diagram-node.dependent-highlight {
+      outline: 3px solid #22c55e !important;
+      background-color: #14532d !important;
+      color: #bbf7d0 !important;
+    }
+
+    /* Canvas Controls & Floating HUD */
+    .dark #diagramZoomHud {
+      background-color: #111722/95 !important;
+      border-color: #222f42 !important;
+      color: #f1f5f9 !important;
+    }
+
+    /* Master Integrated Spreadsheet in Dark Mode */
+    .dark #view-spreadsheet {
+      background-color: #0a0e17 !important;
+    }
+    .dark #view-spreadsheet table {
+      background-color: #111722 !important;
+      border-color: #222f42 !important;
+    }
+    .dark #view-spreadsheet th {
+      background-color: #151f2e !important;
+      color: #f8fafc !important;
+      border-color: #222f42 !important;
+    }
+    .dark #view-spreadsheet td {
+      background-color: #111722 !important;
+      color: #e2e8f0 !important;
+      border-color: #1c2636 !important;
+    }
+    .dark #view-spreadsheet tr:hover td {
+      background-color: #182333 !important;
+    }
+    .dark #view-spreadsheet input,
+    .dark #view-spreadsheet select {
+      background-color: #0e141f !important;
+      color: #f8fafc !important;
+      border-color: #222f42 !important;
+    }
+
+    /* Course Catalog & Directory in Dark Mode */
+    .dark #view-catalog .course-row,
+    .dark #view-catalog .catalog-card {
+      background-color: #131b28 !important;
+      border-color: #222f42 !important;
+      color: #f8fafc !important;
+    }
+    .dark #view-catalog input {
+      background-color: #18202d !important;
+      border-color: #2a374b !important;
+      color: #f8fafc !important;
+    }
+
+    /* OBE Matrix in Dark Mode */
+    .dark #view-obe table {
+      background-color: #111722 !important;
+      border-color: #222f42 !important;
+    }
+    .dark #view-obe th {
+      background-color: #151f2e !important;
+      border-color: #222f42 !important;
+      color: #f8fafc !important;
+    }
+    .dark #view-obe td {
+      background-color: #111722 !important;
+      border-color: #1c2636 !important;
+      color: #e2e8f0 !important;
+    }
+
+    /* Analytics Dashboard in Dark Mode */
+    .dark #view-dashboard .kpi-metric-box {
+      background-color: #131b28 !important;
+      border-color: #222f42 !important;
+      color: #f8fafc !important;
+    }
+
+    /* Drawers in Dark Mode */
+    .dark #flowchartDetailDrawer,
+    .dark #personalAiAgentDrawer {
+      background-color: #111722 !important;
+      border-color: #e5a823 !important;
+      color: #f8fafc !important;
+      box-shadow: -8px 0 25px rgba(0, 0, 0, 0.7) !important;
+    }
+
+    /* Modals in Light Mode */
+    html:not(.dark) #modalAddSchool > div,
+    html:not(.dark) #modalEditSchool > div,
+    html:not(.dark) #courseEditModal > div,
+    html:not(.dark) #batchModal > div,
+    html:not(.dark) #cycleModal > div,
+    html:not(.dark) #categoryManagerModal > div,
+    html:not(.dark) #aiImportModal > div,
+    html:not(.dark) #pillarModal > div,
+    html:not(.dark) #loginModal > div {
+      background-color: #ffffff !important;
+      border-color: #e5a823 !important;
+      color: #0f172a !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    }
+    html:not(.dark) #modalAddSchool .bg-\[\#10151E\],
+    html:not(.dark) #modalEditSchool .bg-\[\#10151E\],
+    html:not(.dark) #courseEditModal .bg-\[\#10151E\],
+    html:not(.dark) #batchModal .bg-\[\#10151E\],
+    html:not(.dark) #cycleModal .bg-\[\#10151E\],
+    html:not(.dark) #categoryManagerModal .bg-\[\#10151E\],
+    html:not(.dark) #aiImportModal .bg-\[\#10151E\],
+    html:not(.dark) #pillarModal .bg-\[\#10151E\],
+    html:not(.dark) #loginModal .bg-\[\#10151E\] {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) #modalAddSchool input,
+    html:not(.dark) #modalEditSchool input,
+    html:not(.dark) #courseEditModal input,
+    html:not(.dark) #courseEditModal select,
+    html:not(.dark) #batchModal input,
+    html:not(.dark) #cycleModal input,
+    html:not(.dark) #categoryManagerModal input,
+    html:not(.dark) #aiImportModal input,
+    html:not(.dark) #aiImportModal textarea {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) #modalAddSchool label,
+    html:not(.dark) #modalEditSchool label,
+    html:not(.dark) #courseEditModal label,
+    html:not(.dark) #batchModal label,
+    html:not(.dark) #cycleModal label,
+    html:not(.dark) #categoryManagerModal label,
+    html:not(.dark) #aiImportModal label {
+      color: #475569 !important;
+    }
+    html:not(.dark) #modalAddSchool button.bg-slate-800,
+    html:not(.dark) #modalEditSchool button.bg-slate-800 {
+      background-color: #f1f5f9 !important;
+      color: #475569 !important;
+      border: 1px solid #cbd5e1 !important;
+    }
+    html:not(.dark) #modalAddSchool button.bg-slate-800:hover,
+    html:not(.dark) #modalEditSchool button.bg-slate-800:hover {
+      background-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) #modalAddSchool h3,
+    html:not(.dark) #modalEditSchool h3,
+    html:not(.dark) #courseEditModal h3,
+    html:not(.dark) #batchModal h3,
+    html:not(.dark) #cycleModal h3,
+    html:not(.dark) #categoryManagerModal h3,
+    html:not(.dark) #aiImportModal h3,
+    html:not(.dark) #pillarModal h3,
+    html:not(.dark) #loginModal h3 {
+      color: #0f172a !important;
+    }
+    html:not(.dark) #modalAddSchool button,
+    html:not(.dark) #modalEditSchool button {
+      color: #475569 !important;
+    }
+
+    /* Modals in Dark Mode */
+    .dark #modalAddSchool > div,
+    .dark #modalEditSchool > div,
+    .dark #courseEditModal > div,
+    .dark #batchModal > div,
+    .dark #cycleModal > div,
+    .dark #categoryManagerModal > div,
+    .dark #aiImportModal > div,
+    .dark #pillarModal > div,
+    .dark #loginModal > div {
+      background-color: #111722 !important;
+      border-color: #e5a823 !important;
+      color: #f8fafc !important;
+    }
+
+    /* Dark Mode Scrollbars */
+    .dark ::-webkit-scrollbar-track { background: #0c1119; }
+    .dark ::-webkit-scrollbar-thumb { background: #222f42; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #354763; }
+
+    /* ========================================================================= */
+    /* TOP BAR PATH SEARCH & BREADCRUMB NAVIGATION CONTAINER                     */
+    /* ========================================================================= */
+    html:not(.dark) .border-2.border-\[\#181D26\],
+    html:not(.dark) div.border-2.border-\[\#181D26\] {
+      border-color: #cbd5e1 !important;
+      background-color: #ffffff !important;
+    }
+    html:not(.dark) div.bg-\[\#181D26\].h-full.flex.items-center {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) #topNavBackBtn,
+    html:not(.dark) #topNavNextBtn {
+      color: #002855 !important;
+    }
+    html:not(.dark) #topNavBackBtn:hover:enabled,
+    html:not(.dark) #topNavNextBtn:hover:enabled {
+      background-color: #e2e8f0 !important;
+      color: #b45309 !important;
+    }
+    html:not(.dark) #topNavBackBtn:disabled,
+    html:not(.dark) #topNavNextBtn:disabled {
+      color: #94a3b8 !important;
+      opacity: 0.35 !important;
+    }
+    html:not(.dark) div.bg-\[\#181D26\].h-full.flex.items-center > div.w-px {
+      background-color: #cbd5e1 !important;
+    }
+    html:not(.dark) #topNavSearchInput {
+      color: #0f172a !important;
+    }
+    html:not(.dark) #topNavSearchInput::placeholder {
+      color: #64748b !important;
+    }
+
+    /* Dark Mode Top Bar Path */
+    .dark .border-2.border-\[\#181D26\],
+    .dark div.border-2.border-\[\#181D26\] {
+      border-color: #334155 !important;
+      background-color: #0f172a !important;
+    }
+    .dark div.bg-\[\#181D26\].h-full.flex.items-center {
+      background-color: #1e293b !important;
+      border-color: #334155 !important;
+    }
+    .dark #topNavBackBtn,
+    .dark #topNavNextBtn {
+      color: #fbbf24 !important;
+    }
+    .dark #topNavBackBtn:hover:enabled,
+    .dark #topNavNextBtn:hover:enabled {
+      background-color: #334155 !important;
+      color: #fde047 !important;
+    }
+    .dark #topNavSearchInput {
+      color: #f8fafc !important;
+    }
+    .dark #topNavSearchInput::placeholder {
+      color: #64748b !important;
+    }
+    .dark .border-r.border-slate-200 {
+      border-color: #334155 !important;
+    }
+    .dark .bg-slate-200 {
+      background-color: #334155 !important;
+    }
+
+    /* ========================================================================= */
+    /* TIER 3 EXD SCHOOL OVERVIEW BANNER                                         */
+    /* ========================================================================= */
+    html:not(.dark) #exdRightBannerBox {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%) !important;
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) #exdRightBannerBox svg polygon:not([fill*="#FF6B00"]):not([fill*="#E5A823"]) {
+      fill: #e2e8f0 !important;
+      fill-opacity: 0.35 !important;
+    }
+    html:not(.dark) #exdRightBannerBox svg line {
+      stroke: #cbd5e1 !important;
+      stroke-opacity: 0.8 !important;
+    }
+    html:not(.dark) #exdRightBannerBox .bg-black\/40 {
+      background-color: #fef3c7 !important;
+      border-color: #fcd34d !important;
+      color: #92400e !important;
+    }
+    html:not(.dark) #exdRightBannerBox h2 span:first-child {
+      color: #002855 !important;
+    }
+    html:not(.dark) #exdRightBannerBox p {
+      color: #475569 !important;
+    }
+    html:not(.dark) #exdRightBannerBox button {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #002855 !important;
+    }
+    html:not(.dark) #exdRightBannerBox button:hover {
+      background-color: #f1f5f9 !important;
+      border-color: #E5A823 !important;
+      color: #002855 !important;
+    }
+    html:not(.dark) #exdRightBannerBox .bg-black\/60 {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #002855 !important;
+    }
+
+    /* ========================================================================= */
+    /* DEGREE PROGRAM CARDS (EXD & ADMIN GRIDS)                                  */
+    /* ========================================================================= */
+    html:not(.dark) .program-card {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    }
+    html:not(.dark) .program-card:hover {
+      border-color: #E5A823 !important;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04) !important;
+    }
+    html:not(.dark) .program-card .h-28 {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+    }
+    html:not(.dark) .program-card .h-28 svg polygon {
+      display: none !important; /* Eliminate muddy dark grey triangles in light mode */
+    }
+    html:not(.dark) .program-card .h-28 svg rect {
+      fill: #e2e8f0 !important;
+      stroke: #0284c7 !important;
+    }
+    html:not(.dark) .program-card .h-28 svg line {
+      stroke-opacity: 0.3 !important;
+    }
+    html:not(.dark) .program-card .h-28 span.drop-shadow-md {
+      filter: none !important; /* Clear dirty shadow blur */
+    }
+    html:not(.dark) .program-card .h-28 span.text-white {
+      color: #0f172a !important;
+      font-weight: 800 !important;
+    }
+    html:not(.dark) .program-card .h-28 span.text-\[\#FF6B00\],
+    html:not(.dark) .program-card .h-28 span.text-\[\#E5A823\] {
+      color: #c2410c !important;
+      font-weight: 900 !important;
+    }
+    html:not(.dark) .program-card .text-slate-200 {
+      color: #334155 !important;
+    }
+    html:not(.dark) .program-card .bg-\[\#10151E\] {
+      background-color: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) .program-card .bg-\[\#10151E\] div {
+      color: #334155 !important;
+    }
+    html:not(.dark) .program-card .bg-\[\#10151E\] div:hover {
+      background-color: #f1f5f9 !important;
+      color: #002855 !important;
+    }
+    html:not(.dark) .program-card .bg-emerald-950\/60 {
+      background-color: #ecfdf5 !important;
+      border-color: #6ee7b7 !important;
+      color: #065f46 !important;
+    }
+    html:not(.dark) .program-card button.bg-\[\#10151E\] {
+      background-color: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #002855 !important;
+    }
+    html:not(.dark) .program-card button.bg-\[\#10151E\]:hover {
+      background-color: #e2e8f0 !important;
+      color: #002855 !important;
+    }
+    html:not(.dark) .program-card label.text-slate-400 {
+      color: #475569 !important;
+    }
+    html:not(.dark) .program-card .text-amber-400.font-mono {
+      color: #b45309 !important;
+    }
+
+    /* ========================================================================= */
+    /* PROGRAM DIRECTOR (PD) 3 SUBSYSTEM CARDS                                   */
+    /* ========================================================================= */
+    .pd-subsystem-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pd-subsystem-card:hover {
+      transform: translateY(-2px);
+    }
+    html:not(.dark) .pd-subsystem-card {
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    html:not(.dark) .pd-subsystem-card:hover {
+      border-color: #E5A823;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    }
+    .dark .pd-subsystem-card {
+      background-color: #131923;
+      border: 1px solid #334155;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+    .dark .pd-subsystem-card:hover {
+      border-color: #E5A823;
+      box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.4);
+    }
+
+    /* PD Subsystem Metric Boxes */
+    html:not(.dark) .pd-subsystem-metric {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+    }
+    .dark .pd-subsystem-metric {
+      background-color: #0e141d;
+      border: 1px solid #1e293b;
+      color: #f1f5f9;
+    }
+
+    /* Subsystem Card Header Variants */
+    html:not(.dark) .pd-subsystem-header-1 {
+      background: linear-gradient(135deg, rgba(0, 40, 85, 0.05) 0%, #f8fafc 100%);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    html:not(.dark) .pd-subsystem-header-2 {
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, #f8fafc 100%);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    html:not(.dark) .pd-subsystem-header-3 {
+      background: linear-gradient(135deg, rgba(229, 168, 35, 0.08) 0%, #f8fafc 100%);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .dark .pd-subsystem-header-1 {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.12) 0%, #151c28 100%);
+      border-bottom: 1px solid #334155;
+    }
+    .dark .pd-subsystem-header-2 {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, #151c28 100%);
+      border-bottom: 1px solid #334155;
+    }
+    .dark .pd-subsystem-header-3 {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, #151c28 100%);
+      border-bottom: 1px solid #334155;
+    }
+
+    /* PD Right Banner Box in Light and Dark Mode */
+    html:not(.dark) #pdRightBannerBox {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%) !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) #pdRightBannerBox h2 span:first-child {
+      color: #002855 !important;
+    }
+    html:not(.dark) #pdRightBannerBox p {
+      color: #475569 !important;
+    }
+    html:not(.dark) #pdRightBannerBox .bg-black\/40 {
+      background-color: #fef3c7 !important;
+      border-color: #fcd34d !important;
+      color: #92400e !important;
+    }
+    html:not(.dark) #pdRightBannerBox .border-white\/15,
+    html:not(.dark) #pdRightBannerBox .border-white\/20 {
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) #pdRightBannerBox .bg-white\/10 {
+      background-color: #f1f5f9 !important;
+      color: #002855 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) #pdRightBannerBox .text-blue-200 {
+      color: #475569 !important;
+    }
+    html:not(.dark) #pdRightBannerBox .text-amber-300 {
+      color: #b45309 !important;
+    }
+    html:not(.dark) #pdRightBannerBox button.bg-white\/10 {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #002855 !important;
+    }
+    html:not(.dark) #pdRightBannerBox button.bg-white\/10:hover {
+      background-color: #f1f5f9 !important;
+      border-color: #E5A823 !important;
+    }
+    .dark #pdRightBannerBox {
+      background: #0f1b29 !important;
+      border-color: #334155 !important;
+      color: #ffffff !important;
+    }
+
+    /* Dark Mode PD Elements */
+    .dark #homePdProgramView > div:first-child > div:first-child {
+      background-color: #131923 !important;
+      border-color: #334155 !important;
+    }
+    .dark #homePdProgramView > div:first-child > div:first-child h4 {
+      color: #f8fafc !important;
+    }
+    .dark #homePdProgramView > div:first-child > div:first-child p {
+      color: #93c5fd !important;
+    }
+    .dark #homePdProgramView > div:first-child > div:first-child .border-slate-200 {
+      border-color: #334155 !important;
+    }
+    .dark #homePdProgramView > div:first-child > div:first-child span.text-slate-800 {
+      color: #e2e8f0 !important;
+    }
+    .dark #homePdProgramView .bg-white.border.border-slate-300 {
+      background-color: #131923 !important;
+      border-color: #334155 !important;
+    }
+    .dark #homePdProgramView .bg-white.border.border-slate-300 h4 {
+      color: #f8fafc !important;
+    }
+    .dark #homePdProgramView .bg-slate-50.border.border-slate-200 {
+      background-color: #0e141d !important;
+      border-color: #1e293b !important;
+    }
+    .dark #homePdProgramView .bg-slate-50.border.border-slate-200 span.text-slate-900 {
+      color: #f1f5f9 !important;
+    }
+    .dark #homePdProgramView .bg-slate-50.border.border-slate-200 button.bg-white {
+      background-color: #1e293b !important;
+      border-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+    .dark .pd-subsystem-card h4 {
+      color: #f8fafc !important;
+    }
+    .dark .pd-subsystem-card p {
+      color: #94a3b8 !important;
+    }
+    .dark .pd-subsystem-card .border-slate-200 {
+      border-color: #334155 !important;
+    }
+    .dark .pd-subsystem-card button.bg-white {
+      background-color: #1e293b !important;
+      border-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+    .dark .pd-subsystem-card button.bg-white:hover {
+      background-color: #334155 !important;
+      color: #ffffff !important;
+    }
+    .dark .pd-subsystem-card button.bg-slate-100 {
+      background-color: #1e293b !important;
+      border-color: #334155 !important;
+      color: #cbd5e1 !important;
+    }
+    .dark .pd-subsystem-card button.bg-slate-100:hover {
+      background-color: #334155 !important;
+      color: #ffffff !important;
+    }
+

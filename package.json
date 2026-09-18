@@ -1,0 +1,29 @@
+{
+  "name": "apc-rams-academic-architecture-suite",
+  "version": "2.0.0",
+  "description": "APC RAMS Centralized Curriculum Management & Academic Architecture Suite",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "dev": "python -m http.server 8080",
+    "watch:layers": "python scripts/watch_html_layers.py",
+    "sync:layers": "python scripts/sync_layers_to_site.py",
+    "sync:dry-run": "python scripts/sync_layers_to_site.py --dry-run",
+    "validate:html": "python scripts/validate_html.py"
+  },
+  "keywords": [
+    "apc",
+    "rams",
+    "curriculum-management",
+    "academic-architecture",
+    "obe",
+    "ched-cmo-92"
+  ],
+  "author": "Asia Pacific College",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tailwindcss": "^3.4.17"
+  }
+}
