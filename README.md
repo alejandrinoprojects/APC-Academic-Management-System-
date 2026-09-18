@@ -61,3 +61,29 @@ In WebStorm, look at the top-right toolbar next to the green **Play (▶)** butt
 - **Corners**: Strict 90-degree corners throughout (`rounded-none` / `border-radius: 0px`).
 - **Colors**: APC Blue (`#0B2545`), Navy (`#13315C`), Gold (`#D4AF37` / `#fbbf24`), Emerald (`#047857`).
 - **Infinite Grid**: Spreadsheet features infinite downward scroll and active coordinate tracking (`fx`).
+
+---
+
+## ⚡ Agent Execution Rules
+
+You are operating in a large codebase under strict token and time constraints. Adhere to these execution rules:
+
+1. TARGETED RETRIEVAL ONLY:
+   - Do NOT scan directories, list broad file trees, or read unprompted files.
+   - Use exact symbol search or grep when locating code.
+   - Read only the specific functions or lines required to complete the task; never ingest whole files if checking a single definition.
+
+2. MINIMAL VERBOSE OUTPUT:
+   - Do not output lengthy explanations, conversational filler, or boilerplate intros/outros.
+   - Output only the concrete changes, diffs, or necessary command steps.
+
+if my prompts are vague, ask me questions
+
+3. COMMAND & TEST CONSTRAINTS:
+   - Always run commands with minimal verbosity flags (e.g., `--silent`, `--quiet`, `--bail`, `--tb=short`).
+   - If tests fail, inspect only the failed trace, not the entire test suite log.
+
+4. SCOPE DISCIPLINE:
+   - Solve solely the explicitly assigned issue.
+   - Do not refactor adjacent code, reformat untouched files, or add speculative comments unless directed.
+
