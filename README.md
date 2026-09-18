@@ -1,6 +1,6 @@
-# Asia Pacific College · RAMS Academic Architecture Suite
+# Asia Pacific College · Academic Management System
 
-Official institution-wide Outcomes-Based Education (OBE) and CHED CMO No. 92, s. 2017 Academic Curriculum Management Platform.
+
 
 ---
 
