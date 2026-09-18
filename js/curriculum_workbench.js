@@ -150,7 +150,7 @@
       registrar: {
         system: 'Curriculum Management',
         systemView: 'flowchart',
-        subFolder: 'Official Registrar Docs',
+        subFolder: 'Official Documents',
         subFolderView: 'registrar',
         leaf: '1. Official Flowchart',
         leafIcon: '📄',
@@ -1028,7 +1028,12 @@
         } else if (targetView === 'course') {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Course Management`;
         } else if (targetView === 'registrar') {
-          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Official Documents > Sheet ${docIdx || 1}`;
+          const docNumber = docIdx || (typeof currentRegistrarTab !== 'undefined' ? currentRegistrarTab : 1);
+          if (typeof switchRegistrarDocTab === 'function') {
+            switchRegistrarDocTab(docNumber);
+          }
+          const cleanDocTitle = (typeof getRegistrarDocTitle === 'function') ? getRegistrarDocTitle(docNumber) : `Sheet ${docNumber}`;
+          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Official Documents > ${cleanDocTitle}`;
         } else {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > ${targetView}`;
         }
@@ -1935,16 +1940,192 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (mainEl) mainEl.scrollTo({ top: 0, behavior: 'instant' });
     }
 
-    function switchRegDoc(tabIdx) {
-      if (typeof currentRegistrarTab !== 'undefined') {
-        currentRegistrarTab = tabIdx;
+    // =========================================================================
+    // OFFICIAL DOCUMENTS CENTER CONTROLLER (SHEETS 1 TO 7)
+    // Clean document titling (no "Registrar" in visible headers/tabs)
+    // =========================================================================
+    let currentRegistrarTab = 1;
+    let currentPrintArrowStyle = 'orthogonal';
+
+    function getRegistrarDocTitle(tabIdx) {
+      const titles = [
+        'Sheet 1: Official Flowchart',
+        'Sheet 2: Curriculum Prospectus',
+        'Sheet 3: Course Catalog',
+        'Sheet 4: Program of Study',
+        'Sheet 5: OBE Curriculum Map',
+        'Sheet 6: Comparative Summary',
+        'Sheet 7: Summary of Units'
+      ];
+      return titles[tabIdx - 1] || `Sheet ${tabIdx}`;
+    }
+
+    function switchRegistrarDocTab(tabIdx) {
+      currentRegistrarTab = tabIdx;
+      
+      // Ensure documents are mounted if not yet mounted
+      if (typeof mountRegistrarDocs === 'function') {
+        mountRegistrarDocs();
+      } else if (window.REGISTRAR_DOCS) {
+        for (let i = 1; i <= 7; i++) {
+          const el = document.getElementById('regDocView_' + i);
+          if (el && window.REGISTRAR_DOCS[i] && !el.innerHTML.trim()) {
+            el.innerHTML = window.REGISTRAR_DOCS[i];
+          }
+        }
       }
-      navigateView('registrar');
-      if (typeof switchRegistrarDocTab === 'function') {
-        switchRegistrarDocTab(tabIdx);
+
+      // Update Toolbar Tabs
+      for (let i = 1; i <= 7; i++) {
+        const btn = document.getElementById(`docTabBtn_${i}`);
+        const view = document.getElementById(`regDocView_${i}`);
+        if (btn) {
+          if (i === tabIdx) {
+            btn.className = 'px-3 py-2 rounded-none bg-[#002855] text-white shadow-xs transition border border-[#002855] flex items-center gap-1.5 shrink-0 font-bold';
+          } else {
+            btn.className = 'px-3 py-2 rounded-none bg-white text-slate-700 hover:bg-slate-50 transition border border-slate-200 flex items-center gap-1.5 shrink-0 font-normal';
+          }
+        }
+        if (view) {
+          if (i === tabIdx) {
+            view.classList.remove('hidden');
+          } else {
+            view.classList.add('hidden');
+          }
+        }
+
+        // Synchronize Left Panel Highlight (id="nav-regdoc-1..7" and id="nav-${progId}-regdoc-1..7")
+        const legacyNavBtn = document.getElementById(`nav-regdoc-${i}`);
+        if (legacyNavBtn) {
+          if (i === tabIdx) {
+            legacyNavBtn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/60');
+            legacyNavBtn.classList.add('bg-slate-800', 'text-white', 'border-l-4', 'border-[#E5A823]', 'shadow-xs', 'font-bold');
+          } else {
+            legacyNavBtn.classList.remove('bg-slate-800', 'text-white', 'border-l-4', 'border-[#E5A823]', 'shadow-xs', 'font-bold');
+            legacyNavBtn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/60');
+          }
+        }
+      }
+
+      // Show/hide Arrow style selector only for Sheet 1
+      const arrowWrapper = document.getElementById('printArrowStyleWrapper');
+      if (arrowWrapper) {
+        arrowWrapper.style.display = (tabIdx === 1) ? 'flex' : 'none';
+      }
+
+      // Static header matching official mockups
+      const headerTitle = document.getElementById('regDocHeaderTitle');
+      const headerSub = document.getElementById('regDocHeaderSubtitle');
+      if (headerTitle) headerTitle.textContent = 'Official Documents';
+      if (headerSub) headerSub.textContent = 'Curriculum management official documents and institutional academic records.';
+
+      // Update file explorer path & breadcrumb
+      if (typeof updateFileExplorerPath === 'function') {
+        updateFileExplorerPath('registrar', tabIdx);
+      }
+      const bPage = document.getElementById('breadcrumb-page');
+      if (bPage) bPage.innerText = getRegistrarDocTitle(tabIdx);
+
+      // Redraw arrows if switching to Tab 1
+      if (tabIdx === 1) {
+        setTimeout(drawPrintArrows, 60);
       }
     }
 
+    function navigateRegistrarDoc(tabIdx) {
+      currentRegistrarTab = tabIdx;
+      navigateView('registrar');
+      switchRegistrarDocTab(tabIdx);
+
+      // Scroll container to top
+      const mainEl = document.querySelector('main');
+      if (mainEl) mainEl.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchRegDoc(tabIdx) {
+      navigateRegistrarDoc(tabIdx);
+    }
+
+    function toggleRegistrarFullscreen() {
+      const view = document.getElementById('view-registrar');
+      const icon = document.getElementById('fullscreenIcon');
+      const text = document.getElementById('fullscreenText');
+      if (!view) return;
+
+      if (view.classList.contains('registrar-focus-mode')) {
+        view.classList.remove('registrar-focus-mode', 'fixed', 'inset-0', 'z-50', 'bg-slate-900/95', 'backdrop-blur-sm', 'overflow-y-auto', 'p-6');
+        if (icon) icon.innerText = '⛶';
+        if (text) text.innerText = 'Focus Mode';
+        document.body.style.overflow = '';
+      } else {
+        view.classList.add('registrar-focus-mode', 'fixed', 'inset-0', 'z-50', 'bg-slate-900/95', 'backdrop-blur-sm', 'overflow-y-auto', 'p-6');
+        if (icon) icon.innerText = '✕';
+        if (text) text.innerText = 'Exit Focus';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function updatePrintStudentId(val) {
+      const container = document.getElementById('printStudentIdDisplay');
+      if (!container) return;
+      const clean = (val || '').replace(/[^0-9]/g, '').padEnd(10, ' ');
+      container.innerHTML = `
+        <span class="font-bold mr-1">ID NUMBER:</span>
+        ${clean.split('').map(d => `<span class="inline-block w-3.5 text-center font-mono font-bold text-slate-900 border-b border-black text-xs">${d.trim() ? d : '&nbsp;'}</span>`).join('')}
+      `;
+    }
+
+    function updatePrintStudentName(val) {
+      const container = document.getElementById('printStudentNameDisplay');
+      if (!container) return;
+      container.textContent = val ? val.toUpperCase() : 'STUDENT NAME (OFFICIAL COPY)';
+    }
+
+    function changeArrowStyleMode(mode) {
+      currentPrintArrowStyle = mode;
+      drawPrintArrows();
+    }
+
+    function drawPrintArrows() {
+      // Pure SVG flowcharts are snapped inside the documents
+      const svg = document.getElementById('printSvgCanvas');
+      if (svg) {
+        // Redraw triggers if dynamic connectors are present
+      }
+    }
+
+    function printCurrentRegistrarDoc() {
+      if (currentRegistrarTab === 1) {
+        drawPrintArrows();
+      }
+      setTimeout(() => {
+        window.print();
+      }, 50);
+    }
+
+    function printAllRegistrarDocs() {
+      for (let i = 1; i <= 7; i++) {
+        const v = document.getElementById(`regDocView_${i}`);
+        if (v) v.classList.remove('hidden');
+      }
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => {
+          switchRegistrarDocTab(currentRegistrarTab);
+        }, 500);
+      }, 100);
+    }
+
+    window.switchRegistrarDocTab = switchRegistrarDocTab;
+    window.navigateRegistrarDoc = navigateRegistrarDoc;
+    window.getRegistrarDocTitle = getRegistrarDocTitle;
+    window.toggleRegistrarFullscreen = toggleRegistrarFullscreen;
+    window.updatePrintStudentId = updatePrintStudentId;
+    window.updatePrintStudentName = updatePrintStudentName;
+    window.changeArrowStyleMode = changeArrowStyleMode;
+    window.drawPrintArrows = drawPrintArrows;
+    window.printCurrentRegistrarDoc = printCurrentRegistrarDoc;
+    window.printAllRegistrarDocs = printAllRegistrarDocs;
     window.navigateView = navigateView;
     window.switchRegDoc = switchRegDoc;
 
