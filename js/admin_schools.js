@@ -1531,23 +1531,9 @@
         }
 
         html += `
-            <!-- Add Program Action -->
-            <button type="button" onclick="openAddProgramModal('${schoolId}')" class="w-full flex items-center space-x-1.5 px-2 py-1 text-[11px] text-amber-400/80 hover:text-amber-300 hover:bg-slate-800/40 transition cursor-pointer text-left">
-              <span class="font-bold text-xs">+</span>
-              <span class="italic">Add Program to ${school.name}...</span>
-            </button>
           </div>
         </div>`;
       });
-
-      // Add Academic School button at bottom
-      html += `
-        <div class="pt-1.5 pb-1">
-          <button type="button" onclick="openAddSchoolModal()" class="w-full flex items-center space-x-1.5 px-2 py-1 text-[11px] text-amber-400 hover:text-amber-200 hover:bg-amber-400/10 border border-dashed border-amber-400/30 transition cursor-pointer text-left">
-            <span class="font-bold text-xs">+</span>
-            <span class="font-semibold">Add Academic School...</span>
-          </button>
-        </div>`;
 
       schoolsCont.innerHTML = html;
 
