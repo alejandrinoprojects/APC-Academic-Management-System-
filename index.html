@@ -4313,40 +4313,72 @@
                   <!-- ─── CARD 1: CURRICULUM MANAGEMENT ─── -->
                   <div onclick="selectProgram('BSCpE', 'curriculum-home')" 
                     class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
-                    <div class="p-6 space-y-4">
-                      <div class="flex items-start gap-3.5">
-                        <div class="w-11 h-11 bg-[#002855] text-[#E5A823] border border-[#E5A823]/40 flex items-center justify-center text-xl shrink-0 shadow-xs">
+                    <div class="p-5 space-y-3.5">
+                      <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 bg-[#002855] text-[#E5A823] border border-[#E5A823]/40 flex items-center justify-center text-lg shrink-0 shadow-xs">
                           ⚡
                         </div>
-                        <div class="space-y-1">
+                        <div>
                           <h4 class="text-base font-black text-[#002855] dark:text-blue-200 group-hover:text-blue-700 transition-colors uppercase tracking-tight">
                             Curriculum Management
                           </h4>
-                          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Directed Acyclic Graph (DAG) flowchart engine, prerequisite lineage tracing, and Integrated Master Spreadsheet.
+                          <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                            Architect and maintain degree curriculum structures, configure course sequencing across terms, verify prerequisite integrity, and administer official program revisions.
                           </p>
                         </div>
                       </div>
 
-                      <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
-                          Configure academic curriculum sequences, verify prerequisite structures across terms, and maintain curriculum integrity.
-                        </p>
+                      <!-- Hyperlinks of the 7 Official Documents -->
+                      <div class="p-3 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 space-y-2" onclick="event.stopPropagation()">
+                        <div class="flex items-center justify-between">
+                          <span class="text-[10px] font-mono font-bold uppercase text-slate-500 dark:text-slate-400 tracking-wider">Official Documents (7 Sheets)</span>
+                          <span class="text-[9px] font-mono px-1 py-0.2 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">Registrar Suite</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1 text-[11px]">
+                          <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="px-2 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left truncate flex items-center gap-1.5 transition text-slate-700 dark:text-slate-300 font-medium cursor-pointer">
+                            <span class="text-sky-600 dark:text-sky-400 font-mono text-[10px] font-bold">1.</span>
+                            <span class="truncate">Official Flowchart</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="px-2 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left truncate flex items-center gap-1.5 transition text-slate-700 dark:text-slate-300 font-medium cursor-pointer">
+                            <span class="text-sky-600 dark:text-sky-400 font-mono text-[10px] font-bold">2.</span>
+                            <span class="truncate">Prospectus</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="px-2 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left truncate flex items-center gap-1.5 transition text-slate-700 dark:text-slate-300 font-medium cursor-pointer">
+                            <span class="text-sky-600 dark:text-sky-400 font-mono text-[10px] font-bold">3.</span>
+                            <span class="truncate">Course Catalog</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="px-2 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left truncate flex items-center gap-1.5 transition text-slate-700 dark:text-slate-300 font-medium cursor-pointer">
+                            <span class="text-sky-600 dark:text-sky-400 font-mono text-[10px] font-bold">4.</span>
+                            <span class="truncate">Program of Study</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="px-2 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left truncate flex items-center gap-1.5 transition text-slate-700 dark:text-slate-300 font-medium cursor-pointer">
+                            <span class="text-sky-600 dark:text-sky-400 font-mono text-[10px] font-bold">5.</span>
+                            <span class="truncate">OBE Map</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="px-2 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left truncate flex items-center gap-1.5 transition text-slate-700 dark:text-slate-300 font-medium cursor-pointer">
+                            <span class="text-sky-600 dark:text-sky-400 font-mono text-[10px] font-bold">6.</span>
+                            <span class="truncate">Comparative Summary</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="col-span-2 px-2 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left truncate flex items-center gap-1.5 transition text-slate-700 dark:text-slate-300 font-medium cursor-pointer">
+                            <span class="text-sky-600 dark:text-sky-400 font-mono text-[10px] font-bold">7.</span>
+                            <span class="truncate">Summary of Units</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
 
                     <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
+                    <div class="p-5 pt-0 space-y-2" onclick="event.stopPropagation()">
                       <button type="button" onclick="selectProgram('BSCpE', 'flowchart')" 
-                        class="w-full py-2.5 px-4 bg-[#002855] hover:bg-[#003875] text-[#E5A823] text-xs font-black uppercase tracking-wider transition border border-[#001733] shadow-xs flex items-center justify-center gap-2 cursor-pointer">
-                        <span>⚡</span>
-                        <span>Open Flowchart DAG Blueprint &rarr;</span>
+                        class="w-full py-2 px-3 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                        <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                        <span>Curriculum Flowchart</span>
                       </button>
                       
                       <button type="button" onclick="selectProgram('BSCpE', 'spreadsheet')"
-                        class="w-full py-2 px-3 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer">
-                        <span>📊</span>
-                        <span>Open Curriculum Spreadsheet Workbench</span>
+                        class="w-full py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                        <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Curriculum Spreadsheet</span>
                       </button>
                     </div>
                   </div>
