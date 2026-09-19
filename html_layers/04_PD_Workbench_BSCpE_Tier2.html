@@ -2018,7 +2018,6 @@
                   <div class="space-y-2">
                     <img src="../assets/apc_seal.png" class="w-14 h-14 object-contain mx-auto p-0.5 border border-[#E5A823]" alt="APC Seal">
                     <div class="space-y-0.5">
-                      <div class="text-[10px] font-black tracking-widest text-[#E5A823] uppercase font-mono">D-RBAC LEVEL 2</div>
                       <h4 class="text-xs font-black text-slate-900 uppercase tracking-tight">Program Director Directorate</h4>
                       <p id="pdHeaderDirectorName" class="text-[11px] font-bold text-[#002855]">Sergio R. Peruda Jr.</p>
                     </div>
@@ -2067,12 +2066,6 @@
 
                   <!-- Executive Subsystem Navigation Callout -->
                   <div class="relative z-10 pt-4 mt-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3 text-xs">
-                    <div class="flex items-center gap-2 font-mono text-[11px] text-amber-300">
-                      <span>⚡ ACTIVE SUBSYSTEMS:</span>
-                      <span class="px-2 py-0.5 bg-white/10 border border-white/20 text-white">1. Curriculum DAG</span>
-                      <span class="px-2 py-0.5 bg-white/10 border border-white/20 text-white">2. Syllabus SMS</span>
-                      <span class="px-2 py-0.5 bg-white/10 border border-white/20 text-white">3. Course CMS</span>
-                    </div>
                     <div class="text-[11px] text-blue-200">
                       Designating a task to faculty grants direct access to the <strong>Integrated Spreadsheet</strong>.
                     </div>
@@ -2081,38 +2074,15 @@
               </div>
 
               <!-- ========================================================================= -->
-              <!-- 2. THE 3 CORE SUBSYSTEM CARDS                                             -->
+              <!-- 2. SUBSYSTEM CARDS                                                         -->
               <!-- ========================================================================= -->
               <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="space-y-0.5">
-                    <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
-                      <span class="w-2 h-2 bg-[#E5A823]"></span>
-                      <span>Academic Subsystems Management Suite</span>
-                    </h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Select a subsystem below to configure blueprints, learning outcomes, or course catalogs.</p>
-                  </div>
-                  <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-mono text-[10px] font-bold uppercase">
-                    3 Core Subsystems Active
-                  </span>
-                </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                  <!-- ─── SUBSYSTEM CARD 1: CURRICULUM MANAGEMENT ─── -->
+                  <!-- ─── CARD 1: CURRICULUM MANAGEMENT ─── -->
                   <div onclick="selectProgram('BSCpE', 'curriculum-home')" 
                     class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
-                      <div class="flex items-center justify-between">
-                        <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase tracking-wider border border-[#002855]">
-                          SUBSYSTEM 01
-                        </span>
-                        <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                          <span class="w-2 h-2 bg-emerald-500 inline-block animate-pulse"></span>
-                          <span>ACTIVE BLUEPRINT</span>
-                        </span>
-                      </div>
-                      
                       <div class="flex items-start gap-3.5">
                         <div class="w-11 h-11 bg-[#002855] text-[#E5A823] border border-[#E5A823]/40 flex items-center justify-center text-xl shrink-0 shadow-xs">
                           ⚡
@@ -2150,169 +2120,34 @@
                     </div>
                   </div>
 
-                  <!-- ─── SUBSYSTEM CARD 2: SYLLABUS MANAGEMENT (SMS) ─── -->
-                  <div onclick="navigateView('syllabus')" 
-                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-emerald-700 hover:shadow-md transition-all cursor-pointer">
-                    <div class="p-6 space-y-4">
-                      <div class="flex items-center justify-between">
-                        <span class="px-2.5 py-0.5 bg-emerald-800 text-white font-mono font-bold text-[10px] uppercase tracking-wider border border-emerald-900">
-                          SUBSYSTEM 02
-                        </span>
-                        <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                          <span class="w-2 h-2 bg-emerald-500 inline-block animate-pulse"></span>
-                          <span>SMS WORKBENCH</span>
-                        </span>
-                      </div>
-                      
-                      <div class="flex items-start gap-3.5">
-                        <div class="w-11 h-11 bg-emerald-800 text-emerald-100 border border-emerald-600 flex items-center justify-center text-xl shrink-0 shadow-xs">
+                  <!-- ─── CARD 2: SYLLABUS MANAGEMENT ─── -->
+                  <div class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm opacity-70">
+                    <div class="p-6">
+                      <div class="flex items-center gap-3.5">
+                        <div class="w-11 h-11 bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-xl shrink-0 shadow-xs">
                           📑
                         </div>
-                        <div class="space-y-1">
-                          <h4 class="text-base font-black text-emerald-900 dark:text-emerald-300 group-hover:text-emerald-700 transition-colors uppercase tracking-tight">
-                            Syllabus Management
-                          </h4>
-                          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Course Learning Outcomes (CLOs), weekly instructional plans, assessment rubrics, and syllabus authoring.
-                          </p>
-                        </div>
+                        <h4 class="text-base font-black text-slate-700 dark:text-slate-300 uppercase tracking-tight">
+                          Syllabus Management
+                        </h4>
                       </div>
-
-                      <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
-                          Author, review, and align course syllabi with program educational objectives and Student Outcomes (SO a–m).
-                        </p>
-                      </div>
-                    </div>
-
-                    <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
-                      <button type="button" onclick="navigateView('syllabus')" 
-                        class="w-full py-2.5 px-4 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-black uppercase tracking-wider transition border border-emerald-950 shadow-xs flex items-center justify-center gap-2 cursor-pointer">
-                        <span>📑</span>
-                        <span>Open SMS Workbench &rarr;</span>
-                      </button>
-                      
-                      <button type="button" onclick="navigateView('obe')"
-                        class="w-full py-2 px-3 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer">
-                        <span>🗺️</span>
-                        <span>View OBE Alignment Matrix</span>
-                      </button>
                     </div>
                   </div>
 
-                  <!-- ─── SUBSYSTEM CARD 3: COURSE MANAGEMENT (CMS) ─── -->
-                  <div onclick="navigateView('course')" 
-                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#E5A823] hover:shadow-md transition-all cursor-pointer">
-                    <div class="p-6 space-y-4">
-                      <div class="flex items-center justify-between">
-                        <span class="px-2.5 py-0.5 bg-[#E5A823] text-slate-950 font-mono font-black text-[10px] uppercase tracking-wider border border-amber-500">
-                          SUBSYSTEM 03
-                        </span>
-                        <span class="text-xs font-mono font-bold text-sky-600 dark:text-sky-400 flex items-center gap-1.5">
-                          <span class="w-2 h-2 bg-sky-500 inline-block animate-pulse"></span>
-                          <span>MASTER REGISTRY</span>
-                        </span>
-                      </div>
-                      
-                      <div class="flex items-start gap-3.5">
-                        <div class="w-11 h-11 bg-amber-600 text-white border border-amber-700 flex items-center justify-center text-xl shrink-0 shadow-xs">
+                  <!-- ─── CARD 3: COURSE MANAGEMENT ─── -->
+                  <div class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm opacity-70">
+                    <div class="p-6">
+                      <div class="flex items-center gap-3.5">
+                        <div class="w-11 h-11 bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-xl shrink-0 shadow-xs">
                           📚
                         </div>
-                        <div class="space-y-1">
-                          <h4 class="text-base font-black text-amber-900 dark:text-amber-300 group-hover:text-amber-700 transition-colors uppercase tracking-tight">
-                            Course Management
-                          </h4>
-                          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Master catalog registry, course code definitions, lecture/laboratory credit specifications, and descriptions.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">
-                          Maintain authoritative course identifiers, descriptive titles, requisite conditions, and academic offerings.
-                        </p>
+                        <h4 class="text-base font-black text-slate-700 dark:text-slate-300 uppercase tracking-tight">
+                          Course Management
+                        </h4>
                       </div>
                     </div>
-
-                    <!-- Subsystem Action Suite -->
-                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
-                      <button type="button" onclick="navigateView('catalog')" 
-                        class="w-full py-2.5 px-4 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider transition border border-amber-600 shadow-xs flex items-center justify-center gap-2 cursor-pointer">
-                        <span>📚</span>
-                        <span>Open Course Catalog Directory &rarr;</span>
-                      </button>
-                      
-                      <button type="button" onclick="navigateView('course')"
-                        class="w-full py-2 px-3 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer">
-                        <span>🗂️</span>
-                        <span>Open Course CMS Workbench</span>
-                      </button>
-                    </div>
                   </div>
 
-                </div>
-              </div>
-
-              <!-- ========================================================================= -->
-              <!-- 3. FACULTY MEMBERS WORKING UNDER PROGRAM DIRECTOR                         -->
-              <!-- ========================================================================= -->
-              <div class="bg-white border border-slate-300 p-5 shadow-xs space-y-3">
-                <div class="flex flex-wrap items-center justify-between border-b border-slate-200 pb-3 gap-2">
-                  <div>
-                    <h4 class="font-black text-xs text-slate-900 uppercase tracking-wide flex items-center gap-2">
-                      <span class="text-base">👥</span>
-                      <span>Faculty Members Working Under Program Director</span>
-                    </h4>
-                    <p class="text-[11px] text-slate-500 mt-0.5">
-                      Faculty members assigned to specific subject clusters. As Program Director, <strong>designating a task to a faculty member grants them direct access to the Integrated Spreadsheet &mdash; that's it.</strong>
-                    </p>
-                  </div>
-                  <div class="flex flex-wrap gap-1.5">
-                    <button type="button" onclick="showToast('Add Faculty Member form initiated.')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[11px] border border-slate-300 transition cursor-pointer">
-                      + Add Faculty Member
-                    </button>
-                    <button type="button" onclick="showToast('Designate task dialog opened: Granting Integrated Spreadsheet access.')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-[11px] transition cursor-pointer">
-                      + Assign Task (Spreadsheet Access)
-                    </button>
-                  </div>
-                </div>
-
-                <div class="space-y-2 text-xs">
-                  <div class="bg-slate-50 border border-slate-200 p-3 flex flex-wrap items-center justify-between gap-3">
-                    <div class="space-y-1">
-                      <div class="flex items-center space-x-2">
-                        <span class="w-6 h-6 bg-slate-800 text-white font-bold text-[10px] flex items-center justify-center">FM</span>
-                        <span class="font-bold text-slate-900">Faculty Member &bull; Hardware &amp; Embedded Systems Cluster</span>
-                        <span class="px-2 py-0.2 bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase">Active Task</span>
-                      </div>
-                      <p class="text-[11px] text-slate-500 font-mono pl-8">faculty@apc.edu.ph &bull; Assigned Courses: CPEDES1, EMICROS, MCROLAB, EMBEDDS</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 font-mono text-[10px] font-bold">Designated Scope: Integrated Spreadsheet (CPEDES1)</span>
-                      <button type="button" onclick="selectProgram('BSCpE', 'spreadsheet')" class="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-[#002855] text-[11px] font-bold transition cursor-pointer shadow-xs">
-                        Open Sheet &rarr;
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="bg-slate-50 border border-slate-200 p-3 flex flex-wrap items-center justify-between gap-3">
-                    <div class="space-y-1">
-                      <div class="flex items-center space-x-2">
-                        <span class="w-6 h-6 bg-slate-800 text-white font-bold text-[10px] flex items-center justify-center">FM</span>
-                        <span class="font-bold text-slate-900">Faculty Member &bull; Computer Networks &amp; Security Cluster</span>
-                        <span class="px-2 py-0.2 bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase">Active Task</span>
-                      </div>
-                      <p class="text-[11px] text-slate-500 font-mono pl-8">faculty.net@apc.edu.ph &bull; Assigned Courses: DATCOMS, COMNETS, NETSLAB</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 font-mono text-[10px] font-bold">Designated Scope: Integrated Spreadsheet (COMNETS)</span>
-                      <button type="button" onclick="selectProgram('BSCpE', 'spreadsheet')" class="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-[#002855] text-[11px] font-bold transition cursor-pointer shadow-xs">
-                        Open Sheet &rarr;
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
 
