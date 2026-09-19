@@ -1,0 +1,10 @@
+.git
+.idea
+node_modules
+archive
+scripts
+*.py
+*.bat
+package.json
+package-lock.json
+README.md
