@@ -1841,6 +1841,81 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
     }
 
+    function toggleCurriculumManagementFolder(progCode) {
+      const progCodeToId = {
+        'BSCpE': 'cpe', 'BSCE': 'ce', 'BSECE': 'ece',
+        'BSCS': 'cs', 'BSIT': 'it',
+        'BMMA': 'mma', 'BSPsych': 'psych',
+        'BSBA': 'ba', 'BSA': 'acc',
+        'BSArch': 'arch'
+      };
+      const progId = progCodeToId[progCode] || (progCode ? progCode.toLowerCase() : 'cpe');
+      const curricCont = document.getElementById(progId + 'CurricCont');
+      const curricChev = document.getElementById(progId + 'CurricChev');
+
+      const isCurrentlyOpen = curricCont && !curricCont.classList.contains('hidden');
+
+      // Navigate to curriculum-home
+      selectProgram(progCode || 'BSCpE', 'curriculum-home');
+
+      // Enforce the accordion toggle
+      if (curricCont) {
+        if (isCurrentlyOpen) {
+          curricCont.classList.add('hidden');
+          if (curricChev) {
+            curricChev.classList.remove('rotate-90', 'rotate-180');
+          }
+        } else {
+          curricCont.classList.remove('hidden');
+          if (curricChev) {
+            curricChev.classList.add('rotate-90');
+            curricChev.classList.remove('rotate-180');
+          }
+        }
+      }
+    }
+    window.toggleCurriculumManagementFolder = toggleCurriculumManagementFolder;
+
+    window.openFlowchartForYear = function(year) {
+      selectProgram(currentSelectedProgram || 'BSCpE', 'flowchart');
+      if (typeof diagramScrollToYear === 'function') {
+        setTimeout(() => diagramScrollToYear(year), 90);
+      }
+    };
+
+    window.openSpreadsheetForYear = function(year) {
+      selectProgram(currentSelectedProgram || 'BSCpE', 'spreadsheet');
+      const yFilter = document.getElementById('sheetYearFilter');
+      if (yFilter) {
+        yFilter.value = String(year);
+        if (typeof sheetFilterChange === 'function') {
+          sheetFilterChange();
+        }
+      }
+    };
+
+    window.openCreateCurriculumModal = function() {
+      const modal = document.getElementById('createCurriculumModal');
+      if (modal) modal.classList.remove('hidden');
+    };
+
+    window.closeCreateCurriculumModal = function() {
+      const modal = document.getElementById('createCurriculumModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.submitCreateCurriculum = function(e) {
+      if (e) e.preventDefault();
+      const prog = document.getElementById('newCurricProgram')?.value || 'BSCpE';
+      const startYr = document.getElementById('newCurricStartYear')?.value || '2027';
+      const endYr = document.getElementById('newCurricEndYear')?.value || '2031';
+      closeCreateCurriculumModal();
+      if (typeof showToast === 'function') {
+        showToast(`Successfully initialized ${prog} Curriculum Revision ${startYr}–${endYr}!`);
+      }
+      selectProgram(prog, 'curriculum-home');
+    };
+
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('sidebar');
       const backdrop = document.getElementById('mobileSidebarBackdrop');

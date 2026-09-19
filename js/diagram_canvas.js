@@ -815,31 +815,60 @@
       { name: 'YEAR 4', subtitle: 'Capstone Design & Industry Internships', border: 'border-amber-300', bg: 'bg-amber-50/40', headerBg: 'bg-amber-100 text-amber-900 border border-amber-200' }
     ];
 
+    // 1. Table Grid: Year Group Banners (4 Academic Years)
     for (let y = 0; y < 4; y++) {
       const yStartX = startX + y * 3 * (cardW + colGap) - 16;
       const yWidth = 3 * (cardW + colGap) - colGap + 32;
       const yt = yearThemes[y];
 
       const yearBanner = document.createElement('div');
-      yearBanner.className = `absolute rounded-none border ${yt.border} ${yt.bg} p-3 pointer-events-none transition-all`;
+      yearBanner.id = `flowchartYearBanner-${y + 1}`;
+      yearBanner.className = `absolute rounded-none border-2 ${yt.border} ${yt.bg} p-3 pointer-events-none transition-all shadow-xs`;
       yearBanner.style.left = `${yStartX}px`;
-      yearBanner.style.top = '10px';
+      yearBanner.style.top = '8px';
       yearBanner.style.width = `${yWidth}px`;
 
       const yearCourses = courses.filter(c => c.year === (y + 1));
-      const maxRowInYear = yearCourses.reduce((m, c) => Math.max(m, c.row || 1), 1);
-      const bannerHeight = (startY - 10) + ((maxRowInYear - 1) * 106) + cardH + 20;
+      const maxRowInYear = Math.max(7, yearCourses.reduce((m, c) => Math.max(m, c.row || 1), 1));
+      const bannerHeight = (startY - 8) + ((maxRowInYear - 1) * 106) + cardH + 24;
       yearBanner.style.height = `${bannerHeight}px`;
       yearBanner.innerHTML = `
-        <div class="flex items-center justify-between px-2.5 py-1.5 rounded-none ${yt.headerBg} font-mono text-xs font-black tracking-wider shadow-xs">
-          <span>${yt.name}</span>
-          <span class="text-[11px] font-sans font-semibold opacity-90">${yt.subtitle}</span>
+        <div class="flex items-center justify-between px-3 py-1.5 rounded-none ${yt.headerBg} font-mono text-xs font-black tracking-wider shadow-xs border">
+          <div class="flex items-center gap-2">
+            <span class="px-1.5 py-0.5 bg-black/25 text-white font-black text-[11px]">${yt.name}</span>
+            <span class="text-[11px] font-sans font-bold opacity-95">${yt.subtitle}</span>
+          </div>
+          <span class="text-[10px] font-mono opacity-85 uppercase tracking-widest">AY ${2026 + y}–${2027 + y}</span>
         </div>
       `;
       backdrop.appendChild(yearBanner);
     }
 
-    // 2. Term Columns and Courses (12 Trimesters)
+    // 2. Table Row Guideline Indicators on Left (R1 - R8) and Horizontal Table Dividers
+    for (let r = 1; r <= 8; r++) {
+      const rowY = startY + (r - 1) * 106;
+      
+      // Row Number Badge on the Left
+      const rowGuide = document.createElement('div');
+      rowGuide.className = `absolute pointer-events-none flex items-center justify-center font-mono text-[10px] font-black text-slate-400 border border-slate-300 dark:border-slate-700 ${isDark ? 'bg-slate-900/90 text-slate-400' : 'bg-slate-100/90 text-slate-600'} shadow-2xs`;
+      rowGuide.style.left = `${startX - 36}px`;
+      rowGuide.style.top = `${rowY + 26}px`;
+      rowGuide.style.width = '28px';
+      rowGuide.style.height = '34px';
+      rowGuide.innerText = `R${r}`;
+      backdrop.appendChild(rowGuide);
+
+      // Horizontal Row Dividing Grid Line across table
+      const rowLine = document.createElement('div');
+      rowLine.className = `absolute pointer-events-none border-b ${isDark ? 'border-slate-800/60' : 'border-slate-200/80'}`;
+      rowLine.style.left = `${startX - 6}px`;
+      rowLine.style.top = `${rowY + cardH + 9}px`;
+      rowLine.style.width = `${12 * (cardW + colGap) - colGap + 12}px`;
+      rowLine.style.height = '1px';
+      backdrop.appendChild(rowLine);
+    }
+
+    // 3. Term Columns and Table Cell Slots (12 Trimesters)
     for (let col = 1; col <= 12; col++) {
       const colX = startX + (col - 1) * (cardW + colGap);
       const year = Math.ceil(col / 3);
@@ -848,11 +877,11 @@
       const termCourses = courses.filter(c => c.col === col || (c.year === year && c.term === term));
       const termUnits = termCourses.reduce((sum, c) => sum + (parseFloat(c.units) || 0), 0);
 
-      // Term Header
+      // Term Header Cell
       const termHeader = document.createElement('div');
       termHeader.className = isDark
-        ? 'absolute font-mono text-xs rounded-none bg-[#131b28] border border-slate-700 px-3 py-1.5 flex items-center justify-between text-slate-200 shadow-xs pointer-events-none'
-        : 'absolute font-mono text-xs rounded-none bg-white/95 border border-slate-300/90 px-3 py-1.5 flex items-center justify-between text-slate-800 shadow-xs pointer-events-none';
+        ? 'absolute font-mono text-xs rounded-none bg-[#131b28] border-2 border-slate-700 px-3 py-1.5 flex items-center justify-between text-slate-200 shadow-xs pointer-events-none'
+        : 'absolute font-mono text-xs rounded-none bg-white border-2 border-slate-300 px-3 py-1.5 flex items-center justify-between text-slate-800 shadow-xs pointer-events-none';
       termHeader.style.left = `${colX}px`;
       termHeader.style.top = '44px';
       termHeader.style.width = `${cardW}px`;
@@ -861,6 +890,18 @@
         <span class="px-1.5 py-0.5 rounded-none ${isDark ? 'bg-amber-950/70 border-amber-500/40 text-amber-300' : 'bg-amber-50 border-amber-300 text-amber-900'} border text-[11px] font-bold">${termUnits.toFixed(1)}u &bull; ${termCourses.length}C</span>
       `;
       backdrop.appendChild(termHeader);
+
+      // Render Table Grid Cell Slots
+      for (let r = 1; r <= 8; r++) {
+        const slotY = startY + (r - 1) * 106;
+        const slotBox = document.createElement('div');
+        slotBox.className = `absolute rounded-none pointer-events-none border ${isDark ? 'border-slate-800/40 bg-slate-900/10' : 'border-slate-200/50 bg-slate-50/25'}`;
+        slotBox.style.left = `${colX}px`;
+        slotBox.style.top = `${slotY}px`;
+        slotBox.style.width = `${cardW}px`;
+        slotBox.style.height = `${cardH}px`;
+        backdrop.appendChild(slotBox);
+      }
 
       // Render Course Cards
       termCourses.sort((a, b) => (a.row || 1) - (b.row || 1));
@@ -1178,24 +1219,24 @@
 
       if (e.type === 'co') {
         path.setAttribute('stroke', '#d97706');
-        path.setAttribute('stroke-width', '1.9');
+        path.setAttribute('stroke-width', '2.2');
         path.setAttribute('stroke-dasharray', '6,4');
         path.setAttribute('marker-end', 'url(#diag-arrow-coreq)');
       } else if (e.type === 'soft') {
-        path.setAttribute('stroke', '#8b5cf6');
-        path.setAttribute('stroke-width', '1.8');
-        path.setAttribute('stroke-dasharray', '2,3');
+        path.setAttribute('stroke', '#7c3aed');
+        path.setAttribute('stroke-width', '2.2');
+        path.setAttribute('stroke-dasharray', '3,3');
         path.setAttribute('marker-end', 'url(#diag-arrow-soft)');
       } else {
-        path.setAttribute('stroke', '#64748b');
-        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke', '#1e40af');
+        path.setAttribute('stroke-width', '2.2');
         path.setAttribute('stroke-dasharray', 'none');
         path.setAttribute('marker-end', 'url(#diag-arrow-default)');
       }
 
       path.setAttribute('stroke-linecap', 'round');
       path.setAttribute('stroke-linejoin', 'round');
-      path.style.opacity = showAllArrowsEnabled ? '0.65' : '0';
+      path.style.opacity = showAllArrowsEnabled ? '0.9' : '0';
 
       svgGroup.appendChild(path);
     }
@@ -1340,10 +1381,21 @@
 
     allArrows.forEach(arrow => {
       arrow.classList.remove('feeder-arrow', 'dependent-arrow', 'dimmed-arrow');
-      arrow.setAttribute('stroke', '#64748b');
-      arrow.setAttribute('stroke-width', '1.8');
-      arrow.setAttribute('marker-end', 'url(#diag-arrow-default)');
-      arrow.style.opacity = showAllArrowsEnabled ? '0.65' : '0';
+      const arrowType = arrow.getAttribute('data-type');
+      if (arrowType === 'co') {
+        arrow.setAttribute('stroke', '#d97706');
+        arrow.setAttribute('stroke-width', '2.2');
+        arrow.setAttribute('marker-end', 'url(#diag-arrow-coreq)');
+      } else if (arrowType === 'soft') {
+        arrow.setAttribute('stroke', '#7c3aed');
+        arrow.setAttribute('stroke-width', '2.2');
+        arrow.setAttribute('marker-end', 'url(#diag-arrow-soft)');
+      } else {
+        arrow.setAttribute('stroke', '#1e40af');
+        arrow.setAttribute('stroke-width', '2.2');
+        arrow.setAttribute('marker-end', 'url(#diag-arrow-default)');
+      }
+      arrow.style.opacity = showAllArrowsEnabled ? '0.9' : '0';
     });
   }
 
@@ -1449,6 +1501,25 @@
     }
   }
   window.applyDiagramCanvasTheme = applyDiagramCanvasTheme;
+
+  // Scroll smoothly to a specific academic year's table section
+  function diagramScrollToYear(yearNum) {
+    const wrapper = document.getElementById('vectorDiagramWrapper') || document.getElementById('diagramCanvasContainer');
+    const cardW = 224;
+    const colGap = 56;
+    const startX = 40;
+    const yearIdx = Math.max(1, Math.min(4, parseInt(yearNum, 10) || 1)) - 1;
+    const targetX = Math.max(0, startX + yearIdx * 3 * (cardW + colGap) - 24);
+    if (wrapper) {
+      wrapper.scrollTo({ left: targetX, behavior: 'smooth' });
+    }
+    const banner = document.getElementById(`flowchartYearBanner-${yearIdx + 1}`);
+    if (banner) {
+      banner.classList.add('ring-2', 'ring-[#E5A823]', 'ring-offset-2');
+      setTimeout(() => banner.classList.remove('ring-2', 'ring-[#E5A823]', 'ring-offset-2'), 2500);
+    }
+  }
+  window.diagramScrollToYear = diagramScrollToYear;
 
   // Auto-initialize when DOM is loaded or script runs
   function initDiagram() {

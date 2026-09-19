@@ -191,7 +191,7 @@
                       
                       <!-- Curriculums Management -->
                       <div id="node-cpe-curriculums">
-                        <button type="button" onclick="selectProgram('BSCpE', 'curriculum-home'); toggleFolderAccordion('cpeCurricCont', 'cpeCurricChev')"
+                        <button type="button" onclick="toggleCurriculumManagementFolder('BSCpE')"
                           class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
                           <span class="flex items-center space-x-2 truncate">
                             <svg id="cpeCurricChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,7 +200,7 @@
                             <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                               <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
                             </svg>
-                            <span class="truncate text-[11px]">Curriculum Management</span>
+                            <span class="truncate text-[11px] font-medium">Curriculum Management</span>
                           </span>
                         </button>
 
@@ -507,7 +507,7 @@
                       
                       <!-- Curriculums Management -->
                       <div id="node-ce-curriculums">
-                        <button type="button" onclick="toggleFolderAccordion('ceCurricCont', 'ceCurricChev')"
+                        <button type="button" onclick="toggleCurriculumManagementFolder('BSCE')"
                           class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
                           <span class="flex items-center space-x-2 truncate">
                             <svg id="ceCurricChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -4606,138 +4606,288 @@
             </div>
           </div>
 
-          <!-- Primary Workbench Pillars Grid -->
+          <!-- Primary Curriculum Management Cards Grid (4 Active Years, Past Curriculums, and Create New) -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <!-- Pillar 1: Flowchart DAG Blueprint -->
-            <div onclick="selectProgram('BSCpE', 'flowchart')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-[#002855] hover:shadow-md transition cursor-pointer group">
+            <!-- Card 1: 1st Year (AY 2026–2027) -->
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-[#002855] hover:shadow-md transition">
               <div class="space-y-3">
-                <div class="w-11 h-11 bg-[#002855] text-[#E5A823] flex items-center justify-center text-xl shadow-xs border border-[#E5A823]/40">
-                  ⚡
+                <div class="flex items-center justify-between">
+                  <div class="w-10 h-10 bg-[#002855] text-[#E5A823] flex items-center justify-center font-bold text-sm border border-[#E5A823]/40 shadow-xs">
+                    Y1
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 border border-blue-200 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-800">
+                    AY 2026–2027
+                  </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-[#002855] dark:text-blue-200 group-hover:text-blue-700 transition uppercase tracking-tight">
-                    Prerequisite DAG Flowchart
+                  <h3 class="text-base font-black text-[#002855] dark:text-blue-200 uppercase tracking-tight">
+                    1st Year Curriculum
                   </h3>
-                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                    Interactive canvas showcasing directed prerequisite dependency buslines, recursive lineage upstream/downstream highlighting, and node inspections.
+                  <p class="text-xs text-slate-500 font-semibold">General Engineering &amp; Foundation</p>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
+                    Trimesters 1–3 foundational mathematics, physics, and programming foundations.
                   </p>
                 </div>
-              </div>
-              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-[#002855] dark:text-[#E5A823]">
-                <span>Open Canvas Studio</span>
-                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
-              </div>
-            </div>
-
-            <!-- Pillar 2: Integrated Master Spreadsheet -->
-            <div onclick="selectProgram('BSCpE', 'spreadsheet')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-emerald-700 hover:shadow-md transition cursor-pointer group">
-              <div class="space-y-3">
-                <div class="w-11 h-11 bg-emerald-800 text-white flex items-center justify-center text-xl shadow-xs border border-emerald-950">
-                  📊
-                </div>
-                <div>
-                  <h3 class="text-base font-black text-emerald-900 dark:text-emerald-300 group-hover:text-emerald-700 transition uppercase tracking-tight">
-                    Integrated Master Spreadsheet
-                  </h3>
-                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                    Full spreadsheet grid with live formula bar (`fx`), term-by-term credit unit summation, category classification, and batch data editing.
-                  </p>
+                <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800 text-center font-mono">
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Terms</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">1, 2, 3</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Units</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">43.0 u</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Courses</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">19 Subj</div>
+                  </div>
                 </div>
               </div>
-              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-800 dark:text-emerald-400">
-                <span>Open Spreadsheet Grid</span>
-                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
-              </div>
-            </div>
-
-            <!-- Pillar 3: Official Documents (7 Sheets) -->
-            <div onclick="selectProgram('BSCpE', 'registrar', 1)" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-amber-600 hover:shadow-md transition cursor-pointer group">
-              <div class="space-y-3">
-                <div class="w-11 h-11 bg-amber-600 text-white flex items-center justify-center text-xl shadow-xs border border-amber-700">
-                  📄
-                </div>
-                <div>
-                  <h3 class="text-base font-black text-amber-900 dark:text-amber-300 group-hover:text-amber-700 transition uppercase tracking-tight">
-                    Official Documents (Sheets 1–7)
-                  </h3>
-                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                    Official Flowchart, Curriculum Prospectus, Course Catalog, Program of Study, OBE Matrix, Comparative Summary, and Summary of Units.
-                  </p>
-                </div>
-              </div>
-              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-amber-700 dark:text-amber-400">
-                <span>Browse 7 Official Sheets</span>
-                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
-              </div>
-              <div class="pt-2 flex items-center justify-end">
-                <button type="button" onclick="event.stopPropagation(); exportRegistrarWorkbookXlsx()" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-bold uppercase transition flex items-center gap-1 shadow-xs" title="Download Official 7-Document Registrar Excel File">
-                  <span>📥</span>
-                  <span>Export as Excel (.xlsx)</span>
+              <div class="pt-4 flex flex-col gap-2">
+                <button type="button" onclick="openFlowchartForYear(1)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                  <span>Curriculum Flowchart</span>
+                </button>
+                <button type="button" onclick="openSpreadsheetForYear(1)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span>Curriculum Spreadsheet</span>
                 </button>
               </div>
             </div>
 
-            <!-- Pillar 4: Course Catalog Directory -->
-            <div onclick="navigateView('catalog')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-sky-600 hover:shadow-md transition cursor-pointer group">
+            <!-- Card 2: 2nd Year (AY 2027–2028) -->
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-[#002855] hover:shadow-md transition">
               <div class="space-y-3">
-                <div class="w-11 h-11 bg-sky-700 text-white flex items-center justify-center text-xl shadow-xs border border-sky-900">
-                  📖
+                <div class="flex items-center justify-between">
+                  <div class="w-10 h-10 bg-teal-800 text-white flex items-center justify-center font-bold text-sm border border-teal-600 shadow-xs">
+                    Y2
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-teal-50 text-teal-800 border border-teal-200 dark:bg-teal-950/70 dark:text-teal-300 dark:border-teal-800">
+                    AY 2027–2028
+                  </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-sky-900 dark:text-sky-300 group-hover:text-sky-700 transition uppercase tracking-tight">
-                    Course Catalog Directory
+                  <h3 class="text-base font-black text-teal-950 dark:text-teal-200 uppercase tracking-tight">
+                    2nd Year Curriculum
                   </h3>
-                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                    Filterable registry of all 74 degree courses with lecture hours, lab credits, requisites, descriptions, and syllabus links.
+                  <p class="text-xs text-slate-500 font-semibold">Intermediate Hardware &amp; Software Core</p>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
+                    Trimesters 4–6 logic circuits, data structures, operating systems, and discrete math.
                   </p>
                 </div>
+                <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800 text-center font-mono">
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Terms</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">4, 5, 6</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Units</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">45.0 u</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Courses</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">20 Subj</div>
+                  </div>
+                </div>
               </div>
-              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-sky-700 dark:text-sky-400">
-                <span>View Course Registry</span>
-                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              <div class="pt-4 flex flex-col gap-2">
+                <button type="button" onclick="openFlowchartForYear(2)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                  <span>Curriculum Flowchart</span>
+                </button>
+                <button type="button" onclick="openSpreadsheetForYear(2)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span>Curriculum Spreadsheet</span>
+                </button>
               </div>
             </div>
 
-            <!-- Pillar 5: OBE Competency Matrix -->
-            <div onclick="navigateView('obe')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-purple-600 hover:shadow-md transition cursor-pointer group">
+            <!-- Card 3: 3rd Year (AY 2028–2029) -->
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-[#002855] hover:shadow-md transition">
               <div class="space-y-3">
-                <div class="w-11 h-11 bg-purple-800 text-white flex items-center justify-center text-xl shadow-xs border border-purple-950">
-                  🎯
+                <div class="flex items-center justify-between">
+                  <div class="w-10 h-10 bg-indigo-900 text-white flex items-center justify-center font-bold text-sm border border-indigo-700 shadow-xs">
+                    Y3
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-indigo-50 text-indigo-800 border border-indigo-200 dark:bg-indigo-950/70 dark:text-indigo-300 dark:border-indigo-800">
+                    AY 2028–2029
+                  </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-purple-900 dark:text-purple-300 group-hover:text-purple-700 transition uppercase tracking-tight">
-                    OBE Alignment Matrix
+                  <h3 class="text-base font-black text-indigo-950 dark:text-indigo-200 uppercase tracking-tight">
+                    3rd Year Curriculum
                   </h3>
-                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                    ABET / PTC Student Outcomes mapping matrix (SO a through m) tracking Introductory (I), Enabling (E), and Demonstrative (D) competencies.
+                  <p class="text-xs text-slate-500 font-semibold">Systems Specialization &amp; Design</p>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
+                    Trimesters 7–9 embedded systems, computer architecture, networks, and design 1.
                   </p>
                 </div>
+                <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800 text-center font-mono">
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Terms</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">7, 8, 9</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Units</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">43.0 u</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Courses</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">21 Subj</div>
+                  </div>
+                </div>
               </div>
-              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-purple-800 dark:text-purple-400">
-                <span>Inspect Competency Mapping</span>
-                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              <div class="pt-4 flex flex-col gap-2">
+                <button type="button" onclick="openFlowchartForYear(3)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                  <span>Curriculum Flowchart</span>
+                </button>
+                <button type="button" onclick="openSpreadsheetForYear(3)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span>Curriculum Spreadsheet</span>
+                </button>
               </div>
             </div>
 
-            <!-- Pillar 6: CHED CMO 92 & Governance Audit -->
-            <div onclick="navigateView('compliance')" class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-sm hover:border-rose-600 hover:shadow-md transition cursor-pointer group">
+            <!-- Card 4: 4th Year (AY 2029–2030) -->
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-[#002855] hover:shadow-md transition">
               <div class="space-y-3">
-                <div class="w-11 h-11 bg-rose-800 text-white flex items-center justify-center text-xl shadow-xs border border-rose-950">
-                  ⚖️
+                <div class="flex items-center justify-between">
+                  <div class="w-10 h-10 bg-amber-600 text-white flex items-center justify-center font-bold text-sm border border-amber-700 shadow-xs">
+                    Y4
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800">
+                    AY 2029–2030
+                  </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-rose-900 dark:text-rose-300 group-hover:text-rose-700 transition uppercase tracking-tight">
-                    CHED CMO 92 &amp; Governance
+                  <h3 class="text-base font-black text-amber-950 dark:text-amber-200 uppercase tracking-tight">
+                    4th Year Curriculum
                   </h3>
-                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                    Statutory compliance validator against Commission on Higher Education guidelines, cluster delegations, and SHA-256 revision audit trail.
+                  <p class="text-xs text-slate-500 font-semibold">Capstone Design &amp; Practicum</p>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
+                    Trimesters 10–12 capstone defense, emerging technologies, and 2-term industry internship.
                   </p>
                 </div>
+                <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800 text-center font-mono">
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Terms</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">10, 11, 12</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Units</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">36.0 u</div>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-slate-400 font-sans uppercase">Courses</div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">14 Subj</div>
+                  </div>
+                </div>
               </div>
-              <div class="pt-5 mt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-rose-800 dark:text-rose-400">
-                <span>Check Compliance Status</span>
-                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              <div class="pt-4 flex flex-col gap-2">
+                <button type="button" onclick="openFlowchartForYear(4)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                  <span>Curriculum Flowchart</span>
+                </button>
+                <button type="button" onclick="openSpreadsheetForYear(4)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span>Curriculum Spreadsheet</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 5: Past Curriculums -->
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-slate-600 hover:shadow-md transition">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="w-10 h-10 bg-slate-700 text-white flex items-center justify-center text-xl shadow-xs border border-slate-800">
+                    🗄️
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-slate-100 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:text-slate-300">
+                    3 Revisions
+                  </span>
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-slate-900 dark:text-slate-100 uppercase tracking-tight">
+                    Past Curriculums
+                  </h3>
+                  <p class="text-xs text-slate-500 font-semibold">Historical Degree Revisions</p>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
+                    Access historical batches (2025–2029, 2024–2028, 2023–2027) with comparative audits and prospectus archive.
+                  </p>
+                </div>
+                <div class="space-y-1 py-1.5 text-xs font-mono">
+                  <div class="flex items-center justify-between text-slate-600 dark:text-slate-400 py-0.5 border-b border-slate-100 dark:border-slate-800">
+                    <span class="font-bold text-slate-800 dark:text-slate-200">2025–2029</span>
+                    <span>165.0 units • 72 courses</span>
+                  </div>
+                  <div class="flex items-center justify-between text-slate-600 dark:text-slate-400 py-0.5 border-b border-slate-100 dark:border-slate-800">
+                    <span class="font-bold text-slate-800 dark:text-slate-200">2024–2028</span>
+                    <span>168.0 units • 73 courses</span>
+                  </div>
+                  <div class="flex items-center justify-between text-slate-600 dark:text-slate-400 py-0.5">
+                    <span class="font-bold text-slate-800 dark:text-slate-200">2023–2027</span>
+                    <span>170.0 units • 75 courses</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-4 flex flex-col gap-2">
+                <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <span>📊</span>
+                  <span>Comparative Summary</span>
+                </button>
+                <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full px-3 py-2 bg-white hover:bg-slate-50 text-slate-700 dark:bg-slate-800/60 dark:hover:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-600 text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <span>📑</span>
+                  <span>Curriculum Prospectus Archive</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 6: Create New Curriculum -->
+            <div class="bg-gradient-to-br from-slate-50 to-amber-50/40 dark:from-[#131923] dark:to-amber-950/20 border-2 border-dashed border-[#E5A823]/80 p-5 flex flex-col justify-between shadow-xs hover:border-[#E5A823] hover:shadow-md transition">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="w-10 h-10 bg-[#E5A823] text-slate-950 flex items-center justify-center text-xl font-bold border border-amber-600 shadow-xs">
+                    ➕
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-[#E5A823]/20 text-amber-900 dark:text-amber-300 border border-[#E5A823]/50">
+                    Authoring Wizard
+                  </span>
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">
+                    Create New Curriculum
+                  </h3>
+                  <p class="text-xs text-amber-800 dark:text-amber-400 font-semibold">New Revision &amp; Cohort Ingestion</p>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
+                    Initialize next academic revision cycle, clone baseline 2026–2030, or batch-import CHED CMO curriculum spreadsheet.
+                  </p>
+                </div>
+                <div class="p-2.5 bg-white dark:bg-slate-900 border border-amber-300/60 dark:border-amber-700/50 space-y-1 text-xs">
+                  <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 text-[11px]">
+                    <span class="text-emerald-600">✓</span>
+                    <span>Direct Kahn Cycle Pre-check</span>
+                  </div>
+                  <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 text-[11px]">
+                    <span class="text-emerald-600">✓</span>
+                    <span>Automated Course Catalog Binding</span>
+                  </div>
+                  <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 text-[11px]">
+                    <span class="text-emerald-600">✓</span>
+                    <span>Instant 7-Sheet Registrar Generation</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-4 flex flex-col gap-2">
+                <button type="button" onclick="openCreateCurriculumModal()" class="w-full px-3 py-2 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] border border-[#E5A823]/60 text-xs font-black uppercase tracking-wider transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <span>✨</span>
+                  <span>Initialize New Revision</span>
+                </button>
+                <button type="button" onclick="openBatchModal()" class="w-full px-3 py-2 bg-white hover:bg-slate-50 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                  <span>📥</span>
+                  <span>Import Spreadsheet (.xlsx)</span>
+                </button>
               </div>
             </div>
 
@@ -4941,26 +5091,26 @@
                   <!-- SVG CONNECTOR ARROW LAYER (Manhattan 90-degree rounded orthogonal lines) -->
                   <svg id="diagramSvg" class="absolute inset-0 pointer-events-none overflow-visible z-10 w-full h-full">
                     <defs>
-                      <marker id="diag-arrow-default" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
-                        <path d="M 0 1.8 L 7.5 5 L 0 8.2 z" fill="#64748b"/>
+                      <marker id="diag-arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto">
+                        <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#1e40af"/>
                       </marker>
-                      <marker id="diag-arrow-coreq" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
-                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#d97706"/>
+                      <marker id="diag-arrow-coreq" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto">
+                        <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#d97706"/>
                       </marker>
-                      <marker id="diag-arrow-soft" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                        <path d="M 0 2 L 7 5 L 0 8 z" fill="#8b5cf6"/>
+                      <marker id="diag-arrow-soft" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto">
+                        <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#7c3aed"/>
                       </marker>
-                      <marker id="diag-arrow-feeder" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
-                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+                      <marker id="diag-arrow-feeder" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                        <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0284c7"/>
                       </marker>
-                      <marker id="diag-arrow-dependent" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
-                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#34d399"/>
+                      <marker id="diag-arrow-dependent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                        <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#059669"/>
                       </marker>
-                      <marker id="diag-arrow-cycle" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f43f5e"/>
+                      <marker id="diag-arrow-cycle" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                        <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#dc2626"/>
                       </marker>
-                      <marker id="diag-arrow-match" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
-                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#fbbf24"/>
+                      <marker id="diag-arrow-match" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                        <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#f59e0b"/>
                       </marker>
                       <filter id="feeder-glow" x="-20%" y="-20%" width="140%" height="140%">
                         <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#38bdf8" flood-opacity="0.8"/>
@@ -7003,6 +7153,86 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       <div class="bg-[#10151E] px-5 py-3 border-t border-slate-700/80 flex items-center justify-end">
         <button type="button" onclick="closePillarModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition cursor-pointer">Close</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- CREATE NEW CURRICULUM REVISION MODAL -->
+  <!-- ========================================================================= -->
+  <div id="createCurriculumModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+      <!-- Modal Header -->
+      <div class="bg-[#002855] text-white px-5 py-3.5 flex items-center justify-between border-b border-[#E5A823]/60">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-7 h-7 bg-[#E5A823] text-slate-950 font-black text-sm flex items-center justify-center rounded-none shadow-xs">✨</span>
+          <div>
+            <h3 class="font-black text-sm tracking-wider uppercase text-white">Initialize New Curriculum Revision</h3>
+            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Degree Cohort Ingestion</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeCreateCurriculumModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <!-- Modal Body -->
+      <form onsubmit="submitCreateCurriculum(event)" class="p-5 space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Target Degree Program</label>
+          <select id="newCurricProgram" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823]">
+            <option value="BSCpE" selected>BSCpE - Computer Engineering</option>
+            <option value="BSCE">BSCE - Civil Engineering</option>
+            <option value="BSECE">BSECE - Electronics Engineering</option>
+            <option value="BSCS">BSCS - Computer Science</option>
+            <option value="BSIT">BSIT - Information Technology</option>
+            <option value="BMMA">BMMA - Multimedia Arts</option>
+            <option value="BSPsych">BSPsych - Psychology</option>
+            <option value="BSBA">BSBA - Business Administration</option>
+            <option value="BSA">BSA - Accountancy</option>
+            <option value="BSArch">BSArch - Architecture</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Cohort (Start)</label>
+            <input type="number" id="newCurricStartYear" value="2027" min="2020" max="2035" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Cohort (End)</label>
+            <input type="number" id="newCurricEndYear" value="2031" min="2024" max="2040" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Baseline Template</label>
+          <div class="space-y-2">
+            <label class="flex items-start gap-2 p-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 cursor-pointer">
+              <input type="radio" name="curricTemplate" value="clone" checked class="mt-0.5" />
+              <div>
+                <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Clone Active Baseline (AY 2026–2030)</div>
+                <div class="text-[11px] text-slate-500">Duplicate courses, DAG prerequisite links, and catalog mappings from active curriculum.</div>
+              </div>
+            </label>
+            <label class="flex items-start gap-2 p-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 cursor-pointer">
+              <input type="radio" name="curricTemplate" value="ched" class="mt-0.5" />
+              <div>
+                <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Official CHED CMO 92 Baseline</div>
+                <div class="text-[11px] text-slate-500">Start with national standard minimum course requirement template.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700/60 text-amber-900 dark:text-amber-300 text-[11px] space-y-1">
+          <div class="font-bold">⚡ Automated Verification</div>
+          <div>All DAG flowcharts and registrar 7-sheet official documents will be auto-generated upon revision creation.</div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeCreateCurriculumModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Initialize Revision</button>
+        </div>
+      </form>
     </div>
   </div>
 
