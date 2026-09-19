@@ -1840,6 +1840,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         });
       }
     }
+    window.toggleFolderAccordion = toggleFolderAccordion;
+    window.currentSidebarYear = null;
+    window.setSidebarYear = function(year) {
+      window.currentSidebarYear = year;
+    };
 
     function toggleCurriculumManagementFolder(progCode) {
       const progCodeToId = {
