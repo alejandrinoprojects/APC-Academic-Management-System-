@@ -4820,7 +4820,7 @@
                 </h4>
               </div>
               <div>
-                <button type="button" onclick="showToast('Assign Task dialog opened.')" class="px-3 py-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs transition cursor-pointer shadow-xs">
+                <button type="button" onclick="openAssignTaskModal('Hardware & Embedded Systems', 'Faculty Member')" class="px-3 py-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs transition cursor-pointer shadow-xs">
                   + Assign Task
                 </button>
               </div>
@@ -4834,7 +4834,7 @@
                   <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">Faculty Member</div>
                 </div>
                 <div>
-                  <button type="button" onclick="showToast('Assign task to Faculty Member')" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
+                  <button type="button" onclick="openAssignTaskModal('Hardware & Embedded Systems', 'Hardware Cluster Lead')" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
                     Assign Task
                   </button>
                 </div>
@@ -4847,7 +4847,7 @@
                   <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">Faculty Member</div>
                 </div>
                 <div>
-                  <button type="button" onclick="showToast('Assign task to Faculty Member')" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
+                  <button type="button" onclick="openAssignTaskModal('Computer Networks & Security', 'Networks Cluster Lead')" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
                     Assign Task
                   </button>
                 </div>
@@ -4982,8 +4982,100 @@
               </div>
             </div>
 
-            <!-- CLEAN STRUCTURED FLOWCHART TABLE WITH ARROWS -->
-            <div id="flowchartTableContainer" class="w-full bg-white border border-slate-300 p-5 shadow-xs space-y-4">
+            <!-- FLOWCHART VIEW SWITCHER BAR -->
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
+              <div class="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700">
+                <button type="button" id="flowchartModeBtn-diagram" onclick="switchFlowchartViewMode('diagram')" class="px-3.5 py-1.5 text-xs font-bold bg-[#002855] text-[#E5A823] shadow-xs cursor-pointer transition flex items-center gap-1.5">
+                  <span>🗺️</span>
+                  <span>Visual Flowchart (Diagram)</span>
+                </button>
+                <button type="button" id="flowchartModeBtn-table" onclick="switchFlowchartViewMode('table')" class="px-3.5 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 cursor-pointer transition flex items-center gap-1.5">
+                  <span>📋</span>
+                  <span>Course Table View</span>
+                </button>
+              </div>
+
+              <!-- Jump to Academic Year quick buttons -->
+              <div class="flex items-center space-x-1 text-xs">
+                <span class="text-slate-500 font-bold uppercase text-[10px] mr-1">Jump to:</span>
+                <button type="button" onclick="diagramScrollToYear(1)" class="px-2 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs cursor-pointer shadow-2xs">Year 1</button>
+                <button type="button" onclick="diagramScrollToYear(2)" class="px-2 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs cursor-pointer shadow-2xs">Year 2</button>
+                <button type="button" onclick="diagramScrollToYear(3)" class="px-2 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs cursor-pointer shadow-2xs">Year 3</button>
+                <button type="button" onclick="diagramScrollToYear(4)" class="px-2 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs cursor-pointer shadow-2xs">Year 4</button>
+              </div>
+            </div>
+
+            <!-- 1. GRAPHICAL FLOWCHART DIAGRAM CANVAS -->
+            <div id="staticDiagramCard" class="w-full bg-white border border-slate-300 p-4 shadow-sm select-none">
+              <!-- VECTOR STATIC BLUEPRINT VIEW (Locked 1-page vector layout with 90° Manhattan arrows) -->
+              <div id="vectorDiagramWrapper" class="w-full overflow-x-auto overflow-y-visible border border-slate-200 bg-white p-2 text-center" style="min-height: 960px;">
+                <div id="diagramViewport" class="relative mx-auto bg-white text-left origin-top-left" style="width: 3380px; height: 960px;">
+                  
+                  <!-- SVG CONNECTOR ARROW LAYER (Manhattan 90-degree rounded orthogonal lines) -->
+                  <svg id="diagramSvg" class="absolute inset-0 pointer-events-none overflow-visible z-10 w-full h-full">
+                    <defs>
+                      <marker id="diag-arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto">
+                        <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#1e40af"/>
+                      </marker>
+                      <marker id="diag-arrow-coreq" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto">
+                        <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#d97706"/>
+                      </marker>
+                      <marker id="diag-arrow-soft" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8.5" markerHeight="8.5" orient="auto">
+                        <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#7c3aed"/>
+                      </marker>
+                      <marker id="diag-arrow-feeder" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                        <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#0284c7"/>
+                      </marker>
+                      <marker id="diag-arrow-dependent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                        <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#059669"/>
+                      </marker>
+                      <marker id="diag-arrow-cycle" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                        <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#dc2626"/>
+                      </marker>
+                      <marker id="diag-arrow-match" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                        <path d="M 0 1.2 L 9 5 L 0 8.8 z" fill="#f59e0b"/>
+                      </marker>
+                      <filter id="feeder-glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#38bdf8" flood-opacity="0.8"/>
+                      </filter>
+                      <filter id="dependent-glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#34d399" flood-opacity="0.8"/>
+                      </filter>
+                    </defs>
+
+                    <g id="diagramSvgPathsGroup"></g>
+                    <!-- Dynamic Magnetic Element Alignment Guides -->
+                    <g id="diagramSnapGuidesGroup"></g>
+                  </svg>
+
+                  <!-- SWIMLANE BACKDROPS (4 Academic Years & 12 Trimester Columns) -->
+                  <div id="diagramSwimlanesBackdrop" class="absolute inset-0 pointer-events-none z-0"></div>
+
+                  <!-- FIXED COURSE NODES CONTAINER (Courses locked in academic sequence) -->
+                  <div id="diagramNodesContainer" class="relative z-20"></div>
+
+                </div>
+
+                <!-- FLOATING INTERACTIVE CANVAS HUD (Pixel-Perfect Zoom & Snap Indicator) -->
+                <div id="diagramZoomHud" class="sticky bottom-4 float-right mr-4 z-40 flex items-center bg-[#0B2545]/95 backdrop-blur-md border border-[#E5A823]/60 text-white rounded-none p-1.5 shadow-2xl space-x-1.5 select-none pointer-events-auto">
+                  <button type="button" id="hudZoomOut" onclick="diagramZoomOut()" class="w-6 h-6 bg-slate-800/90 hover:bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold transition cursor-pointer" title="Zoom Out">−</button>
+                  <button type="button" id="hudZoomPercent" onclick="diagramResetZoom()" class="px-2 h-6 text-xs font-mono font-bold text-amber-300 hover:text-white transition cursor-pointer" title="Click to Reset 100%">85%</button>
+                  <button type="button" id="hudZoomIn" onclick="diagramZoomIn()" class="w-6 h-6 bg-slate-800/90 hover:bg-slate-700 text-slate-200 flex items-center justify-center text-xs font-bold transition cursor-pointer" title="Zoom In">+</button>
+                  <div class="h-4 w-px bg-slate-600 mx-1"></div>
+                  <button type="button" onclick="diagramFitView()" class="h-6 px-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs transition cursor-pointer" title="Fit Entire Diagram">⛶</button>
+                  <div class="h-4 w-px bg-slate-600 mx-1"></div>
+                  <div class="flex items-center gap-1 px-1.5 text-[11px] font-mono">
+                    <span>🧲</span>
+                    <span id="hudSnapStatus" class="text-cyan-400 font-semibold">Smart Snap</span>
+                  </div>
+                  <div class="h-4 w-px bg-slate-600 mx-1"></div>
+                  <button type="button" onclick="resetDiagramPositions()" class="h-6 px-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition cursor-pointer" title="Reset Course Positions">↺</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. ALTERNATIVE STRUCTURED COURSE TABLE VIEW -->
+            <div id="flowchartTableContainer" class="hidden w-full bg-white border border-slate-300 p-5 shadow-xs space-y-4">
 
               <!-- Filter & Controls Toolbar -->
               <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
@@ -5240,6 +5332,22 @@
                   <span>Import Spreadsheet</span>
                 </button>
                 <input type="file" id="sheetCsvFileInput" onchange="sheetImportCSV(event)" accept=".csv" class="hidden">
+              </div>
+
+              <!-- SPREADSHEET SUB-TABS (General Course Data, OBE Curriculum Matrix SO a–m, Full Master Grid) -->
+              <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <button type="button" id="sheetTabBtn-all" onclick="switchSpreadsheetTab('all')" class="sheet-tab-btn px-3.5 py-1.5 text-xs font-bold border-b-2 border-[#002855] text-[#002855] bg-blue-50/50 cursor-pointer flex items-center gap-1.5">
+                  <span>📊</span>
+                  <span>Full Master Sheet</span>
+                </button>
+                <button type="button" id="sheetTabBtn-obe" onclick="switchSpreadsheetTab('obe')" class="sheet-tab-btn px-3.5 py-1.5 text-xs font-bold border-b-2 border-transparent text-slate-600 hover:text-slate-900 cursor-pointer flex items-center gap-1.5">
+                  <span>🎯</span>
+                  <span>OBE Matrix (SO a–m with I/E/D)</span>
+                </button>
+                <button type="button" id="sheetTabBtn-master" onclick="switchSpreadsheetTab('master')" class="sheet-tab-btn px-3.5 py-1.5 text-xs font-bold border-b-2 border-transparent text-slate-600 hover:text-slate-900 cursor-pointer flex items-center gap-1.5">
+                  <span>📋</span>
+                  <span>General Course Data</span>
+                </button>
               </div>
 
               <!-- Full Width Divider Line -->
@@ -6641,6 +6749,85 @@
         </button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ASSIGN TASK & SPREADSHEET ACCESS DELEGATION                        -->
+  <!-- ========================================================================= -->
+  <div id="modalAssignTask" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+      <!-- Modal Header -->
+      <div class="bg-[#002855] px-5 py-3.5 flex items-center justify-between border-b border-[#E5A823]">
+        <div class="flex items-center space-x-2.5">
+          <span class="text-[#E5A823] font-bold text-base">👥</span>
+          <div>
+            <h3 class="font-black text-sm tracking-wider text-white uppercase">Assign Task &amp; Spreadsheet Access</h3>
+            <p class="text-[11px] text-slate-300">Authorize faculty editing access to the curriculum spreadsheet</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeAssignTaskModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <!-- Form Body -->
+      <form id="assignTaskForm" onsubmit="submitAssignTask(event)" class="p-6 space-y-4 text-xs">
+        <!-- Faculty Member Title -->
+        <div>
+          <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Faculty Member (Role / Title)</label>
+          <input type="text" id="assignTaskFacultyTitle" value="Faculty Member" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-semibold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+        </div>
+
+        <!-- Course Title / Cluster Scope -->
+        <div>
+          <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Assigned Course Title / Cluster Scope</label>
+          <input type="text" id="assignTaskCourseTitle" value="Hardware &amp; Embedded Systems" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+        </div>
+
+        <!-- Start Date and End Date of Access -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/40 p-3 border border-slate-200 dark:border-slate-700">
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Access Start Date</label>
+            <input type="date" id="assignTaskStartDate" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Access End Date</label>
+            <input type="date" id="assignTaskEndDate" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
+        </div>
+
+        <!-- Permission Level -->
+        <div>
+          <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Authorized Permission Level</label>
+          <select id="assignTaskPermission" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]">
+            <option value="spreadsheet_full">Full Spreadsheet Edit &amp; OBE Outcomes Authoring</option>
+            <option value="spreadsheet_scoped">Scoped Spreadsheet Course Row Editing</option>
+            <option value="syllabus_only">Syllabus &amp; ILO Authoring Only</option>
+            <option value="read_only">Read-Only Verification Access</option>
+          </select>
+        </div>
+
+        <!-- Informational Note -->
+        <div class="p-2.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-[11px] text-blue-900 dark:text-blue-200 flex items-start gap-2">
+          <span>ℹ️</span>
+          <span>Faculty will be delegated editing access to the Curriculum Spreadsheet for all courses within the assigned cluster throughout the authorized date window.</span>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-2">
+          <button type="button" onclick="closeAssignTaskModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer transition">
+            Cancel
+          </button>
+          <div class="flex items-center space-x-2">
+            <button type="submit" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-100 font-bold text-xs cursor-pointer transition">
+              Save Delegation
+            </button>
+            <button type="button" onclick="submitAssignTaskAndOpenSpreadsheet()" class="px-4 py-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-black text-xs uppercase tracking-wider border border-[#E5A823] cursor-pointer shadow-xs transition flex items-center gap-1.5">
+              <span>Grant &amp; Open Spreadsheet</span>
+              <span>&rarr;</span>
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 

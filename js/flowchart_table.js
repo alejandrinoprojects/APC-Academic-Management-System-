@@ -385,11 +385,6 @@
   window.handleFlowchartTableSearch = handleFlowchartTableSearch;
   window.clearFlowchartTableSearch = clearFlowchartTableSearch;
 
-  // Compatibility hook for existing calls
-  window.renderFlowchartDiagram = renderFlowchartTable;
-  window.renderFlowchartGrid = renderFlowchartTable;
-  window.drawAllArrows = function() {};
-
   // Initialize on load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
