@@ -191,7 +191,7 @@
                       
                       <!-- Curriculums Management -->
                       <div id="node-cpe-curriculums">
-                        <button type="button" onclick="toggleFolderAccordion('cpeCurricCont', 'cpeCurricChev')"
+                        <button type="button" onclick="selectProgram('BSCpE', 'curriculum-home'); toggleFolderAccordion('cpeCurricCont', 'cpeCurricChev')"
                           class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
                           <span class="flex items-center space-x-2 truncate">
                             <svg id="cpeCurricChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -4670,6 +4670,12 @@
                 <span>Browse 7 Official Sheets</span>
                 <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
               </div>
+              <div class="pt-2 flex items-center justify-end">
+                <button type="button" onclick="event.stopPropagation(); exportRegistrarWorkbookXlsx()" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-bold uppercase transition flex items-center gap-1 shadow-xs" title="Download Official 7-Document Registrar Excel File">
+                  <span>📥</span>
+                  <span>Export as Excel (.xlsx)</span>
+                </button>
+              </div>
             </div>
 
             <!-- Pillar 4: Course Catalog Directory -->
@@ -6013,6 +6019,13 @@
                   <span>📚</span>
                   <span>Print All 7 Sheets</span>
                 </button>
+                <!-- Export to Excel (.xlsx) Button -->
+                <button type="button" onclick="exportRegistrarWorkbookXlsx()" class="px-4 py-1.5 bg-[#047857] hover:bg-[#065f46] text-white text-xs font-black uppercase rounded-none shadow-xs transition flex items-center gap-2 border border-emerald-400/40 cursor-pointer" title="Download Official Registrar 7-Sheet Excel Workbook (.xlsx)">
+                  <svg class="w-4 h-4 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  <span>EXPORT AS EXCEL (.XLSX)</span>
+                </button>
               </div>
             </div>
 
@@ -6182,6 +6195,7 @@
   <!-- ========================================================================= -->
   <!-- JAVASCRIPT CONTROLLERS & GRAPH ENGINE -->
   <!-- ========================================================================= -->
+  <script src="js/registrar_excel_data.js"></script>
   <script src="js/registrar_docs.js"></script>
   <script src="js/curriculum_workbench.js"></script>
   <script src="js/diagram_canvas.js"></script>

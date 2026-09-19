@@ -2126,6 +2126,46 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }, 100);
     }
 
+    function exportRegistrarWorkbookXlsx() {
+      try {
+        if (!window.OFFICIAL_REGISTRAR_EXCEL_B64) {
+          if (typeof showToastNotification === 'function') {
+            showToastNotification('Error: Registrar Excel dataset not loaded.');
+          } else {
+            alert('Error: Registrar Excel dataset not loaded.');
+          }
+          return;
+        }
+
+        // Convert base64 data to Blob
+        const byteCharacters = atob(window.OFFICIAL_REGISTRAR_EXCEL_B64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { 
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+        });
+
+        const link = document.createElement('a');
+        const filename = 'Proposed BS CpE Curriculum 2026 Final Registrars Copy.xlsx';
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+
+        if (typeof showToastNotification === 'function') {
+          showToastNotification('Downloaded: ' + filename + ' (All 7 Official Sheets)');
+        }
+      } catch (err) {
+        console.error('[ExportRegistrarExcel] Failed to export excel file:', err);
+        alert('Failed to export Excel workbook: ' + err.message);
+      }
+    }
+
     window.switchRegistrarDocTab = switchRegistrarDocTab;
     window.navigateRegistrarDoc = navigateRegistrarDoc;
     window.getRegistrarDocTitle = getRegistrarDocTitle;
@@ -2136,6 +2176,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.drawPrintArrows = drawPrintArrows;
     window.printCurrentRegistrarDoc = printCurrentRegistrarDoc;
     window.printAllRegistrarDocs = printAllRegistrarDocs;
+    window.exportRegistrarWorkbookXlsx = exportRegistrarWorkbookXlsx;
     window.navigateView = navigateView;
     window.switchRegDoc = switchRegDoc;
 
