@@ -628,6 +628,40 @@
         subChevs.forEach(el => el.classList.remove('rotate-90', 'rotate-180'));
       }
 
+      // 5b. Expand/Collapse Syllabus & Course Partner Folders
+      const sylCont = document.getElementById(`${progId}SyllabusCont`) || document.getElementById('cpeSyllabusCont');
+      const sylChev = document.getElementById(`${progId}SyllabusChev`) || document.getElementById('cpeSyllabusChev');
+      const crsCont = document.getElementById(`${progId}CourseCont`) || document.getElementById('cpeCourseCont');
+      const crsChev = document.getElementById(`${progId}CourseChev`) || document.getElementById('cpeCourseChev');
+
+      if (viewType === 'syllabus') {
+        if (sylCont) sylCont.classList.remove('hidden');
+        if (sylChev) {
+          sylChev.classList.add('rotate-90');
+          sylChev.classList.remove('rotate-180');
+        }
+      } else {
+        if (sylCont) sylCont.classList.add('hidden');
+        if (sylChev) {
+          sylChev.classList.remove('rotate-90');
+          sylChev.classList.remove('rotate-180');
+        }
+      }
+
+      if (viewType === 'course') {
+        if (crsCont) crsCont.classList.remove('hidden');
+        if (crsChev) {
+          crsChev.classList.add('rotate-90');
+          crsChev.classList.remove('rotate-180');
+        }
+      } else {
+        if (crsCont) crsCont.classList.add('hidden');
+        if (crsChev) {
+          crsChev.classList.remove('rotate-90');
+          crsChev.classList.remove('rotate-180');
+        }
+      }
+
       // 6. Highlight active leaf node
       if (viewType === 'workbench' || viewType === 'homePdProgramView') {
         const progBtn = document.querySelector(`#node-prog-${progId} > button`);
@@ -1885,19 +1919,27 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.toggleCurriculumManagementFolder = toggleCurriculumManagementFolder;
 
     window.openFlowchartForYear = function(year) {
-      selectProgram(currentSelectedProgram || 'BSCpE', 'flowchart');
-      if (typeof diagramScrollToYear === 'function') {
-        setTimeout(() => diagramScrollToYear(year), 90);
+      if (typeof openFlowchartForYear === 'function') {
+        openFlowchartForYear(year);
+      } else {
+        selectProgram(currentSelectedProgram || 'BSCpE', 'flowchart');
+        if (typeof diagramScrollToYear === 'function') {
+          setTimeout(() => diagramScrollToYear(year), 150);
+        }
       }
     };
 
     window.openSpreadsheetForYear = function(year) {
-      selectProgram(currentSelectedProgram || 'BSCpE', 'spreadsheet');
-      const yFilter = document.getElementById('sheetYearFilter');
-      if (yFilter) {
-        yFilter.value = String(year);
-        if (typeof sheetFilterChange === 'function') {
-          sheetFilterChange();
+      if (typeof openSpreadsheetForYear === 'function') {
+        openSpreadsheetForYear(year);
+      } else {
+        selectProgram(currentSelectedProgram || 'BSCpE', 'spreadsheet');
+        const yFilter = document.getElementById('sheetYearFilter');
+        if (yFilter) {
+          yFilter.value = String(year);
+          if (typeof sheetFilterChange === 'function') {
+            sheetFilterChange();
+          }
         }
       }
     };
@@ -2574,7 +2616,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function openFlowchartForYear(yearNum) {
-      navigateView('flowchart');
+      selectProgram(currentSelectedProgram || 'BSCpE', 'flowchart');
       if (typeof switchFlowchartViewMode === 'function') {
         switchFlowchartViewMode('diagram');
       }
@@ -2585,11 +2627,16 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.openFlowchartForYear = openFlowchartForYear;
 
     function openSpreadsheetForYear(yearNum) {
-      openIntegratedSpreadsheet('all', 'dashboard');
+      selectProgram(currentSelectedProgram || 'BSCpE', 'spreadsheet');
+      if (typeof openIntegratedSpreadsheet === 'function') {
+        openIntegratedSpreadsheet('all', 'dashboard');
+      }
       const yearFilter = document.getElementById('sheetYearFilter');
       if (yearFilter) {
         yearFilter.value = String(yearNum);
-        sheetFilterChange();
+        if (typeof sheetFilterChange === 'function') {
+          sheetFilterChange();
+        }
       }
     }
     window.openSpreadsheetForYear = openSpreadsheetForYear;

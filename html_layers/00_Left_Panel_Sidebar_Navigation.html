@@ -433,23 +433,75 @@
                         </div>
                       </div>
 
-                      <!-- 2. Syllabus Management (Partner System Shortcut) -->
-                      <button type="button" id="nav-cpe-syllabus" onclick="selectProgram('BSCpE', 'syllabus')"
-                        class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                        <svg class="w-3.5 h-3.5 text-sky-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
-                        </svg>
-                        <span class="truncate text-[11px]">Syllabus Management</span>
-                      </button>
+                      <!-- 2. Syllabus Management (Partner System Folder - Group B) -->
+                      <div id="node-cpe-syllabus">
+                        <button type="button" id="nav-cpe-syllabus" onclick="toggleFolderAccordion('cpeSyllabusCont', 'cpeSyllabusChev'); selectProgram('BSCpE', 'syllabus')"
+                          class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                          <span class="flex items-center space-x-2 truncate">
+                            <svg id="cpeSyllabusChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                            </svg>
+                            <svg class="w-3.5 h-3.5 text-sky-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                            </svg>
+                            <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Syllabus Management</span>
+                          </span>
+                          <span class="text-[8px] font-mono px-1 py-0.2 bg-sky-400/10 text-sky-400 border border-sky-400/30 shrink-0">GROUP B</span>
+                        </button>
 
-                      <!-- 3. Course Management (Partner System Shortcut) -->
-                      <button type="button" id="nav-cpe-course" onclick="selectProgram('BSCpE', 'course')"
-                        class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                        <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
-                        </svg>
-                        <span class="truncate text-[11px]">Course Management</span>
-                      </button>
+                        <div id="cpeSyllabusCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                          <button type="button" onclick="selectProgram('BSCpE', 'syllabus')"
+                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px]">
+                            <span class="text-sky-400">📄</span>
+                            <span class="truncate">Syllabi Authoring Console</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'syllabus')"
+                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px]">
+                            <span class="text-sky-400">🎯</span>
+                            <span class="truncate">ILOs &amp; Assessment Maps</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'syllabus')"
+                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px]">
+                            <span class="text-sky-400">📅</span>
+                            <span class="truncate">Weekly Topic Outlines</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- 3. Course Management (Partner System Folder - Group C) -->
+                      <div id="node-cpe-course">
+                        <button type="button" id="nav-cpe-course" onclick="toggleFolderAccordion('cpeCourseCont', 'cpeCourseChev'); selectProgram('BSCpE', 'course')"
+                          class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                          <span class="flex items-center space-x-2 truncate">
+                            <svg id="cpeCourseChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                            </svg>
+                            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                            </svg>
+                            <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Course Management</span>
+                          </span>
+                          <span class="text-[8px] font-mono px-1 py-0.2 bg-emerald-400/10 text-emerald-400 border border-emerald-400/30 shrink-0">GROUP C</span>
+                        </button>
+
+                        <div id="cpeCourseCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                          <button type="button" onclick="selectProgram('BSCpE', 'course')"
+                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px]">
+                            <span class="text-emerald-400">📋</span>
+                            <span class="truncate">Course Offerings Directory</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'course')"
+                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px]">
+                            <span class="text-emerald-400">👥</span>
+                            <span class="truncate">Faculty Loading &amp; Workload</span>
+                          </button>
+                          <button type="button" onclick="selectProgram('BSCpE', 'course')"
+                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px]">
+                            <span class="text-emerald-400">🏢</span>
+                            <span class="truncate">Room &amp; Section Quotas</span>
+                          </button>
+                        </div>
+                      </div>
 
                     </div>
                   </div>
