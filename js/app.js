@@ -4963,6 +4963,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
         // Update Part Title Badge
         const viewTitles = {
+          'curriculum-home': 'Curriculum Management Hub',
           'flowchart': 'Dynamic Prereq Flowchart (DAG)',
           'catalog': 'Course Catalog (74 Courses)',
           'obe': 'OBE Curriculum Matrix (SOs a–m)',
@@ -4993,7 +4994,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // Hide all application views
-      const allViews = ['home', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
+      const allViews = ['home', 'curriculum-home', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
       
       allViews.forEach(v => {
         const el = document.getElementById('view-' + v);
@@ -5037,6 +5038,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (viewId === 'flowchart') {
         setTimeout(() => { 
           if (typeof drawAllArrows === 'function') drawAllArrows(); 
+          if (window.currentSidebarYear && typeof filterFlowchartYear === 'function') {
+            filterFlowchartYear(String(window.currentSidebarYear));
+          }
         }, 80);
       } else if (viewId === 'catalog') {
         if (typeof filterCoursesTable === 'function') filterCoursesTable();
@@ -6493,6 +6497,7 @@ function openAddExdModal() {
       // View Names Dictionary
       const viewNames = {
         'home': currentSelectedProgram ? `${currentSelectedProgram} Program Hub` : (currentSelectedSchool ? `${currentSelectedSchool} Overview` : 'Institutional Hub'),
+        'curriculum-home': 'Curriculum Management Hub',
         'flowchart': 'Dynamic Prereq Flowchart (DAG)',
         'catalog': 'Course Catalog (74 Courses)',
         'obe': 'OBE Curriculum Matrix',
@@ -6517,6 +6522,12 @@ function openAddExdModal() {
       if (bSec) bSec.innerText = currentSelectedProgram || currentSelectedSchool || 'Institution';
       if (bPage) bPage.innerText = viewNames[viewId] || viewId;
     }
+
+    // Year selection helper for sidebar navigation
+    window.currentSidebarYear = null;
+    window.setSidebarYear = function(year) {
+      window.currentSidebarYear = year;
+    };
 
     // 2. Flowchart Academic Year Filter Tabs
     window.filterFlowchartYear = function(targetYear) {
