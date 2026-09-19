@@ -598,7 +598,7 @@
       if (progChev) progChev.classList.add('rotate-90');
 
       // 5. Open Curriculums Management & Revision 2026-2030 ONLY for curriculum-specific views
-      const isCurriculumView = ['curriculum-home', 'flowchart', 'spreadsheet', 'registrar'].includes(viewType) || (!viewType);
+      const isCurriculumView = ['curriculum-home', 'flowchart', 'spreadsheet', 'registrar', 'obe', 'catalog', 'dashboard', 'compliance', 'delegation', 'audit'].includes(viewType) || (!viewType);
 
       const curricCont = document.getElementById(progId + 'CurricCont');
       const curricChev = document.getElementById(progId + 'CurricChev');
@@ -609,7 +609,7 @@
         if (curricCont) curricCont.classList.remove('hidden');
         if (curricChev) curricChev.classList.add('rotate-90');
 
-        if (viewType !== 'curriculum-home') {
+        if (['flowchart', 'spreadsheet', 'registrar'].includes(viewType)) {
           if (revCont) revCont.classList.remove('hidden');
           if (revChev) revChev.classList.add('rotate-90');
         }
@@ -654,6 +654,9 @@
       } else if (viewType === 'course') {
         const crsBtn = document.getElementById(`nav-${progId}-course`);
         if (crsBtn) crsBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+      } else if (['obe', 'catalog', 'dashboard', 'compliance', 'delegation', 'audit'].includes(viewType)) {
+        const toolBtn = document.getElementById(`nav-${progId}-${viewType}`);
+        if (toolBtn) toolBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
       }
     }
 
