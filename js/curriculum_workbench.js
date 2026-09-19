@@ -894,13 +894,13 @@
         ? PROGRAM_TO_SCHOOL_MAP[progCode] 
         : { schoolShort: 'SoE', schoolId: 'soe', schoolName: 'School of Engineering', name: progCode };
       const directorMap = {
-        'BSCpE': 'Sergio R. Peruda Jr.',
-        'BSCE': 'Engr. Ronald V. Santos',
-        'BSECE': 'Engr. Melissa C. David',
-        'BSCS': 'Dr. Maria Elena Cruz',
-        'BSIT': 'Prof. Aris P. Gomez'
+        'BSCpE': 'CpE Program Director',
+        'BSCE': 'CE Program Director',
+        'BSECE': 'ECE Program Director',
+        'BSCS': 'CS Program Director',
+        'BSIT': 'IT Program Director'
       };
-      const director = directorMap[progCode] || 'Program Director';
+      const director = directorMap[progCode] || `${progCode} Program Director`;
 
       const pill = document.getElementById('homeRolePill');
       const title = document.getElementById('homeSectionTitle');

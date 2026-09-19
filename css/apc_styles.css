@@ -1,4 +1,14 @@
 /* =========================================================================
+       GLOBAL FONT: SEGOE UI
+       ========================================================================= */
+    html, body, button, input, select, textarea, .font-sans {
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    }
+    code, kbd, samp, pre, .font-mono {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    }
+
+/* =========================================================================
        SHARP RECTANGLES ARCHITECTURAL DESIGN SYSTEM (Strict 90° Square Corners)
        ========================================================================= */
     *, *::before, *::after,

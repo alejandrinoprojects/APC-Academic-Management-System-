@@ -98,7 +98,7 @@
         badgeBg: 'from-[#FF6B00] to-[#E55A00]',
         bannerGrad: 'from-[#16120e] via-[#2a1a12] to-[#0f0b08]',
         bannerIcon: '⚙️',
-        director: 'Leonardo A. Samaniego Jr.',
+        director: 'SOE Executive Director',
         programs: [
           { code: 'BSCpE', name: 'Bachelor of Science in Computer Engineering' },
           { code: 'BSCE', name: 'Bachelor of Science in Civil Engineering' },
@@ -114,7 +114,7 @@
         badgeBg: 'from-[#00A4EF] to-[#0072C6]',
         bannerGrad: 'from-[#071324] via-[#0d2242] to-[#050d1a]',
         bannerIcon: '💻',
-        director: 'Rossana T. Adao',
+        director: 'SoCIT Executive Director',
         programs: [
           { code: 'BSCS', name: 'Bachelor of Science in Computer Science' },
           { code: 'BSIT', name: 'Bachelor of Science in Information Technology' }
@@ -129,7 +129,7 @@
         badgeBg: 'from-[#EF4444] to-[#B91C1C]',
         bannerGrad: 'from-[#1f0a0d] via-[#331117] to-[#140608]',
         bannerIcon: '🎨',
-        director: 'Gemma R. Reyes',
+        director: 'SoMA Executive Director',
         programs: [
           { code: 'BMMA', name: 'Bachelor of Multimedia Arts' },
           { code: 'BSPsych', name: 'Bachelor of Science in Psychology' }
@@ -144,7 +144,7 @@
         badgeBg: 'from-[#F59E0B] to-[#D97706]',
         bannerGrad: 'from-[#1c1809] via-[#2e260e] to-[#120f06]',
         bannerIcon: '📊',
-        director: 'Dr. Maria Victoria P. Flores',
+        director: 'SoM Executive Director',
         programs: [
           { code: 'BSBA', name: 'Bachelor of Science in Business Management' },
           { code: 'BSA', name: 'Bachelor of Science in Accountancy' }
@@ -159,7 +159,7 @@
         badgeBg: 'from-[#A855F7] to-[#7E22CE]',
         bannerGrad: 'from-[#150d22] via-[#241538] to-[#0d0816]',
         bannerIcon: '📐',
-        director: 'Ar. Philip S. Garcia',
+        director: 'SoA Executive Director',
         programs: [
           { code: 'BSArch', name: 'Bachelor of Science in Architecture' }
         ]
