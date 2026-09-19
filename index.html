@@ -4816,18 +4816,12 @@
               <div>
                 <h4 class="font-black text-xs text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2">
                   <span class="text-base">👥</span>
-                  <span>Faculty Members Working Under Program Director</span>
+                  <span>Faculty Members</span>
                 </h4>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                  Faculty members assigned to specific subject clusters. As Program Director, <strong>designating a task to a faculty member grants them direct access to the Integrated Spreadsheet &mdash; that's it.</strong>
-                </p>
               </div>
-              <div class="flex flex-wrap gap-1.5">
-                <button type="button" onclick="showToast('Add Faculty Member form initiated.')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-[11px] border border-slate-300 dark:border-slate-600 transition cursor-pointer">
-                  + Add Faculty Member
-                </button>
-                <button type="button" onclick="showToast('Designate task dialog opened: Granting Integrated Spreadsheet access.')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-[11px] transition cursor-pointer">
-                  + Assign Task (Spreadsheet Access)
+              <div>
+                <button type="button" onclick="showToast('Assign Task dialog opened.')" class="px-3 py-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs transition cursor-pointer shadow-xs">
+                  + Assign Task
                 </button>
               </div>
             </div>
@@ -4835,34 +4829,26 @@
             <div class="space-y-2 text-xs">
               <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-3 flex flex-wrap items-center justify-between gap-3">
                 <div class="space-y-1">
-                  <div class="flex items-center space-x-2">
-                    <span class="w-6 h-6 bg-slate-800 text-white font-bold text-[10px] flex items-center justify-center">FM</span>
-                    <span class="font-bold text-slate-900 dark:text-white">Faculty Member &bull; Hardware &amp; Embedded Systems Cluster</span>
-                    <span class="px-2 py-0.2 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold uppercase">Active Task</span>
-                  </div>
-                  <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono pl-8">faculty@apc.edu.ph &bull; Assigned Courses: CPEDES1, EMICROS, MCROLAB, EMBEDDS</p>
+                  <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Course Title</div>
+                  <div class="font-bold text-slate-900 dark:text-white text-sm">Hardware &amp; Embedded Systems</div>
+                  <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">Faculty: Engr. Juan Dela Cruz</div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 font-mono text-[10px] font-bold">Designated Scope: Integrated Spreadsheet (CPEDES1)</span>
-                  <button type="button" onclick="selectProgram('BSCpE', 'spreadsheet')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-[11px] font-bold transition cursor-pointer shadow-xs">
-                    Open Sheet &rarr;
+                <div>
+                  <button type="button" onclick="showToast('Assign task to Engr. Juan Dela Cruz')" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
+                    Assign Task
                   </button>
                 </div>
               </div>
 
               <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-3 flex flex-wrap items-center justify-between gap-3">
                 <div class="space-y-1">
-                  <div class="flex items-center space-x-2">
-                    <span class="w-6 h-6 bg-slate-800 text-white font-bold text-[10px] flex items-center justify-center">FM</span>
-                    <span class="font-bold text-slate-900 dark:text-white">Faculty Member &bull; Computer Networks &amp; Security Cluster</span>
-                    <span class="px-2 py-0.2 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold uppercase">Active Task</span>
-                  </div>
-                  <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono pl-8">faculty.net@apc.edu.ph &bull; Assigned Courses: DATCOMS, COMNETS, NETSLAB</p>
+                  <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Course Title</div>
+                  <div class="font-bold text-slate-900 dark:text-white text-sm">Computer Networks &amp; Security</div>
+                  <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">Faculty: Engr. Maria Santos</div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 font-mono text-[10px] font-bold">Designated Scope: Integrated Spreadsheet (COMNETS)</span>
-                  <button type="button" onclick="selectProgram('BSCpE', 'spreadsheet')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-[11px] font-bold transition cursor-pointer shadow-xs">
-                    Open Sheet &rarr;
+                <div>
+                  <button type="button" onclick="showToast('Assign task to Engr. Maria Santos')" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
+                    Assign Task
                   </button>
                 </div>
               </div>
