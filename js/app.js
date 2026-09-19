@@ -10,6 +10,525 @@ let currentSelectedCode = null;
     let showAllArrowsEnabled = true;
     let activePaletteMode = 'grouping';
 
+    // =========================================================================
+    // GRADUATE ATTRIBUTES (GA) DATA & CONTROLLERS (WP2)
+    // =========================================================================
+    window.APC_GRADUATE_ATTRIBUTES = [
+      { id: 'ga1', code: 'GA-1', title: 'Discipline Knowledge', desc: 'Possess a sound theoretical and practical foundation in engineering and sciences relevant to computer engineering.' },
+      { id: 'ga2', code: 'GA-2', title: 'Problem Analysis', desc: 'Identify, formulate, and solve complex engineering problems using principles of mathematics and engineering sciences.' },
+      { id: 'ga3', code: 'GA-3', title: 'Design / Development', desc: 'Design solutions for complex engineering problems that meet specified needs with appropriate consideration of societal and environmental factors.' },
+      { id: 'ga4', code: 'GA-4', title: 'Investigations', desc: 'Conduct investigations of complex engineering problems using research-based knowledge and methods.' },
+      { id: 'ga5', code: 'GA-5', title: 'Modern Tool Usage', desc: 'Apply appropriate techniques and modern engineering tools to solve complex computer engineering problems.' },
+      { id: 'ga6', code: 'GA-6', title: 'Engineer and Society', desc: 'Apply reasoning informed by contextual knowledge to assess societal, health, safety, legal, and cultural issues in computer engineering.' },
+      { id: 'ga7', code: 'GA-7', title: 'Environment & Sustainability', desc: 'Understand the impact of engineering solutions in societal and environmental contexts and demonstrate knowledge of sustainable development.' },
+      { id: 'ga8', code: 'GA-8', title: 'Ethics', desc: 'Apply ethical principles and commit to professional responsibilities and norms of engineering practice.' },
+      { id: 'ga9', code: 'GA-9', title: 'Individual & Team Work', desc: 'Function effectively as an individual, and as a member or leader in diverse teams.' },
+      { id: 'ga10', code: 'GA-10', title: 'Communication', desc: 'Communicate effectively on complex engineering activities with the engineering community and society.' },
+      { id: 'ga11', code: 'GA-11', title: 'Project Management', desc: 'Demonstrate knowledge and understanding of engineering management principles and apply these to manage projects in multidisciplinary environments.' },
+      { id: 'ga12', code: 'GA-12', title: 'Lifelong Learning', desc: 'Recognize the need for, and have the preparation and ability to engage in independent and life-long learning.' },
+    ];
+
+    function renderGaCards() {
+      const grid = document.getElementById('gaCardsGrid');
+      if (!grid || !window.APC_GRADUATE_ATTRIBUTES) return;
+      const borderStyles = [
+        'border-indigo-200 bg-indigo-50/50',
+        'border-emerald-200 bg-emerald-50/50',
+        'border-blue-200 bg-blue-50/50',
+        'border-purple-200 bg-purple-50/50',
+        'border-amber-200 bg-amber-50/50',
+        'border-rose-200 bg-rose-50/50'
+      ];
+      grid.innerHTML = window.APC_GRADUATE_ATTRIBUTES.map((ga, i) => `
+        <div class="p-3.5 rounded-none border ${borderStyles[i % borderStyles.length]} space-y-1.5 relative group hover:shadow-xs transition">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded-none bg-white font-mono font-black text-[11px] border border-slate-300 text-slate-800">${ga.code}</span>
+            <button type="button" onclick="openEditGaModal(${i})" class="opacity-0 group-hover:opacity-100 px-2 py-0.5 text-[10px] font-bold text-slate-600 hover:text-slate-950 border border-slate-300 bg-white transition cursor-pointer shadow-2xs">✏️ Edit</button>
+          </div>
+          <h5 class="font-black text-slate-900 text-xs">${ga.title}</h5>
+          <p class="text-slate-600 text-[11px] leading-relaxed">${ga.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function openEditGaModal(idx) {
+      const ga = window.APC_GRADUATE_ATTRIBUTES[idx];
+      if (!ga) return;
+      const idxInput = document.getElementById('editGaIndex');
+      const codeInput = document.getElementById('editGaCode');
+      const titleInput = document.getElementById('editGaTitle');
+      const descInput = document.getElementById('editGaDesc');
+      if (idxInput) idxInput.value = idx;
+      if (codeInput) codeInput.value = ga.code;
+      if (titleInput) titleInput.value = ga.title;
+      if (descInput) descInput.value = ga.desc;
+      const modal = document.getElementById('modalEditGa');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeEditGaModal() {
+      const modal = document.getElementById('modalEditGa');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveEditGa() {
+      const idxEl = document.getElementById('editGaIndex');
+      if (!idxEl) return;
+      const idx = parseInt(idxEl.value, 10);
+      if (isNaN(idx) || !window.APC_GRADUATE_ATTRIBUTES[idx]) return;
+
+      const code = (document.getElementById('editGaCode')?.value || '').trim();
+      const title = (document.getElementById('editGaTitle')?.value || '').trim();
+      const desc = (document.getElementById('editGaDesc')?.value || '').trim();
+
+      window.APC_GRADUATE_ATTRIBUTES[idx].code = code || window.APC_GRADUATE_ATTRIBUTES[idx].code;
+      window.APC_GRADUATE_ATTRIBUTES[idx].title = title || window.APC_GRADUATE_ATTRIBUTES[idx].title;
+      window.APC_GRADUATE_ATTRIBUTES[idx].desc = desc || window.APC_GRADUATE_ATTRIBUTES[idx].desc;
+
+      renderGaCards();
+      closeEditGaModal();
+      showToast(`Graduate Attribute ${window.APC_GRADUATE_ATTRIBUTES[idx].code} updated.`);
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('GA_UPDATE', window.APC_GRADUATE_ATTRIBUTES[idx].code, `Graduate Attribute updated to "${window.APC_GRADUATE_ATTRIBUTES[idx].title}"`);
+      }
+    }
+
+    function openEditVisionModal() {
+      const vText = document.getElementById('visionText')?.textContent || '';
+      const mText = document.getElementById('missionText')?.textContent || '';
+      const vIn = document.getElementById('editVisionInput');
+      const mIn = document.getElementById('editMissionInput');
+      if (vIn) vIn.value = vText.trim();
+      if (mIn) mIn.value = mText.trim();
+      const modal = document.getElementById('modalEditVision');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeEditVisionModal() {
+      const modal = document.getElementById('modalEditVision');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveEditVision() {
+      const vVal = (document.getElementById('editVisionInput')?.value || '').trim();
+      const mVal = (document.getElementById('editMissionInput')?.value || '').trim();
+      const vEl = document.getElementById('visionText');
+      const mEl = document.getElementById('missionText');
+      if (vEl && vVal) vEl.textContent = vVal;
+      if (mEl && mVal) mEl.textContent = mVal;
+      closeEditVisionModal();
+      showToast('Vision & Mission updated.');
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('VISION_UPDATE', 'Institutional Vision & Mission', 'Updated institutional vision and mission statements');
+      }
+    }
+
+    // =========================================================================
+    // APPEND-ONLY AUDIT LOG TRAIL & CONTROLLER (WP3)
+    // =========================================================================
+    window.AUDIT_LOG = [
+      { ts: '2026-09-10 14:12:01', role: 'Program Director', action: 'INGEST_FLOWCHART', entity: 'BSCpE 2026 Registrar', summary: 'Ingested 74 authentic courses & configured dynamic SVG arrows', hash: '9c4e...81fd' },
+      { ts: '2026-09-10 02:42:12', role: 'Program Director', action: 'VALIDATE_DAG', entity: 'DAG Engine', summary: 'Executed Kahn cycle check: 74/74 visited, 0 deadlocks', hash: '8f2a...9d1c' },
+    ];
+
+    function appendAuditLog(action, entity, summary) {
+      const role = (() => {
+        const sel = document.getElementById('roleSelector');
+        const map = { admin: 'System Administrator', exd: 'Executive Director', pd: 'Program Director', faculty: 'Faculty Member' };
+        return map[sel ? sel.value : 'pd'] || 'Program Director';
+      })();
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      const hash = Math.random().toString(36).slice(2, 6) + '...' + Math.random().toString(36).slice(2, 6);
+      window.AUDIT_LOG.unshift({ ts, role, action, entity, summary, hash });
+      renderAuditTable();
+    }
+
+    function renderAuditTable() {
+      const tbody = document.getElementById('auditTableBody');
+      if (!tbody) return;
+      const filterText = (document.getElementById('auditFilterText')?.value || '').toLowerCase();
+      const filterRole = document.getElementById('auditFilterRole')?.value || '';
+
+      const ACTION_COLORS = {
+        SHEET_SAVE: 'bg-blue-50 text-blue-700 border border-blue-200',
+        SO_UPDATE: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+        GA_UPDATE: 'bg-purple-50 text-purple-700 border border-purple-200',
+        VISION_UPDATE: 'bg-indigo-50 text-indigo-700 border border-indigo-200',
+        TASK_DELEGATE: 'bg-amber-50 text-amber-700 border border-amber-200',
+        DELEGATION_UPDATE: 'bg-teal-50 text-teal-700 border border-teal-200',
+        DELEGATION_REVOKE: 'bg-rose-50 text-rose-700 border border-rose-200',
+        INGEST_FLOWCHART: 'bg-blue-50 text-blue-700 border border-blue-200',
+        VALIDATE_DAG: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+        VERSION_CREATE: 'bg-indigo-50 text-indigo-700 border border-indigo-200',
+        VERSION_STATE_CHANGE: 'bg-cyan-50 text-cyan-700 border border-cyan-200',
+        COURSE_EDIT: 'bg-slate-100 text-slate-700 border border-slate-300',
+      };
+
+      let logs = window.AUDIT_LOG || [];
+      if (filterText) {
+        logs = logs.filter(l => (l.action || '').toLowerCase().includes(filterText) || (l.entity || '').toLowerCase().includes(filterText) || (l.summary || '').toLowerCase().includes(filterText));
+      }
+      if (filterRole) {
+        logs = logs.filter(l => l.role === filterRole);
+      }
+
+      const count = document.getElementById('auditCount');
+      if (count) count.textContent = `${logs.length} records`;
+
+      tbody.innerHTML = logs.map(l => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-2.5 px-3 font-mono text-slate-500 text-[11px] whitespace-nowrap">${l.ts}</td>
+          <td class="py-2.5 px-3"><span class="font-bold text-slate-900">${l.role}</span></td>
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-none ${ACTION_COLORS[l.action] || 'bg-slate-100 text-slate-700'} text-[11px] font-bold font-mono">${l.action}</span></td>
+          <td class="py-2.5 px-3 font-mono text-xs font-bold text-apc-navy">${l.entity}</td>
+          <td class="py-2.5 px-3 text-[11px] text-slate-700 leading-snug">${l.summary}</td>
+          <td class="py-2.5 px-3 font-mono text-[11px] text-slate-400">${l.hash}</td>
+          <td class="py-2.5 px-3 text-right whitespace-nowrap"><button type="button" onclick="verifyHashModal('${l.hash}')" class="text-blue-600 hover:underline font-bold text-[11px] cursor-pointer">Verify</button></td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">No audit trail records found matching criteria.</td></tr>';
+    }
+
+    // =========================================================================
+    // OBE I-E-D PROGRESSION VALIDATION SUITE (WP5)
+    // =========================================================================
+    function runIedValidation() {
+      const strip = document.getElementById('iedValidationStrip');
+      if (!strip) return;
+
+      const SO_LABELS = ['a','b','c','d','e','f','g','h','i','j','k','l','m'];
+      const alerts = [];
+
+      SO_LABELS.forEach((label, sIdx) => {
+        const covered = ALL_COURSES.some(c => c.sos && c.sos[sIdx] && c.sos[sIdx] !== '-');
+        if (!covered) {
+          alerts.push({ type: 'error', msg: `SO-${label.toUpperCase()}: Zero-coverage gap! No course currently maps to this Student Outcome.` });
+        }
+        const hasI = ALL_COURSES.some(c => c.sos && c.sos[sIdx] === 'I');
+        const hasD = ALL_COURSES.some(c => c.sos && c.sos[sIdx] === 'D');
+        if (hasD && !hasI) {
+          alerts.push({ type: 'warn', msg: `SO-${label.toUpperCase()}: Contains Demonstrative (D) courses without an Introductory (I) foundation.` });
+        }
+      });
+
+      const unmapped = ALL_COURSES.filter(c => !c.sos || c.sos.every(s => s === '-'));
+      if (unmapped.length > 0) {
+        alerts.push({ type: 'warn', msg: `${unmapped.length} course(s) have no SO mapping: ${unmapped.slice(0, 4).map(c => c.code).join(', ')}${unmapped.length > 4 ? '…' : ''}` });
+      }
+
+      if (alerts.length === 0) {
+        strip.innerHTML = `
+          <div class="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold rounded-none shadow-2xs">
+            <span class="text-base">✅</span>
+            <span>All 13 CHED Student Outcomes (SO a–m) have valid developmental I-E-D progression coverage. Zero curricular gaps detected.</span>
+          </div>`;
+        strip.classList.remove('hidden');
+        return;
+      }
+
+      strip.innerHTML = alerts.map(a => `
+        <div class="flex items-start gap-2 px-3.5 py-2 ${a.type === 'error' ? 'bg-rose-50 border border-rose-300 text-rose-900' : 'bg-amber-50 border border-amber-300 text-amber-900'} text-xs font-semibold rounded-none shadow-2xs">
+          <span class="text-sm shrink-0">${a.type === 'error' ? '🔴' : '⚠️'}</span>
+          <span class="leading-tight">${a.msg}</span>
+        </div>
+      `).join('');
+      strip.classList.remove('hidden');
+    }
+
+    function renderSoSummaryRow() {
+      const row = document.getElementById('soSummaryRow');
+      if (!row) return;
+      while (row.children.length > 2) row.removeChild(row.lastChild);
+      for (let s = 0; s < 13; s++) {
+        const count = ALL_COURSES.filter(c => c.sos && c.sos[s] && c.sos[s] !== '-').length;
+        const countI = ALL_COURSES.filter(c => c.sos && c.sos[s] === 'I').length;
+        const countE = ALL_COURSES.filter(c => c.sos && c.sos[s] === 'E').length;
+        const countD = ALL_COURSES.filter(c => c.sos && c.sos[s] === 'D').length;
+        const color = count === 0 ? 'text-rose-700 bg-rose-50' : (!countI || !countD) ? 'text-amber-800 bg-amber-50' : 'text-emerald-800 bg-emerald-50';
+        const td = document.createElement('td');
+        td.className = `py-2 px-1 text-center border-r border-slate-300 font-mono font-black text-[11px] ${color}`;
+        td.textContent = count;
+        td.title = `SO-${String.fromCharCode(97+s).toUpperCase()}: ${count} courses (I:${countI} • E:${countE} • D:${countD})`;
+        row.appendChild(td);
+      }
+    }
+
+    // =========================================================================
+    // FLOWCHART PREREQUISITE & POST-REQUISITE CHAIN HIGHLIGHTING (WP6)
+    // =========================================================================
+    window._currentChainHighlight = null;
+    window.highlightPrereqChain = function(selectedCode) {
+      const legend = document.getElementById('chainHighlightLegend');
+      if (window._currentChainHighlight === selectedCode) {
+        window._currentChainHighlight = null;
+        document.querySelectorAll('.diagram-node-card').forEach(n => {
+          n.classList.remove('ring-4', 'ring-amber-400', 'ring-blue-500', 'ring-rose-500', 'opacity-25');
+        });
+        if (legend) legend.classList.add('hidden');
+        if (typeof drawAllArrows === 'function') drawAllArrows();
+        return;
+      }
+      window._currentChainHighlight = selectedCode;
+
+      // BFS backward: ancestors (prerequisites)
+      const ancestors = new Set();
+      const qAncestors = [selectedCode];
+      while (qAncestors.length > 0) {
+        const cur = qAncestors.shift();
+        const course = ALL_COURSES.find(c => c.code === cur);
+        if (!course) continue;
+        (course.prereqs || []).forEach(p => {
+          const pCode = typeof p === 'string' ? p : (p && p.code);
+          if (pCode && !ancestors.has(pCode) && pCode !== selectedCode) {
+            ancestors.add(pCode);
+            qAncestors.push(pCode);
+          }
+        });
+      }
+
+      // BFS forward: descendants (post-requisites)
+      const descendants = new Set();
+      const qDescendants = [selectedCode];
+      while (qDescendants.length > 0) {
+        const cur = qDescendants.shift();
+        ALL_COURSES.forEach(c => {
+          if ((c.prereqs || []).some(p => (typeof p === 'string' ? p : (p && p.code)) === cur)) {
+            if (!descendants.has(c.code) && c.code !== selectedCode) {
+              descendants.add(c.code);
+              qDescendants.push(c.code);
+            }
+          }
+        });
+      }
+
+      // Apply styling to all diagram node cards
+      document.querySelectorAll('.diagram-node-card').forEach(n => {
+        const code = n.dataset.courseCode;
+        n.classList.remove('ring-4', 'ring-amber-400', 'ring-blue-500', 'ring-rose-500', 'opacity-25');
+        if (code === selectedCode) {
+          n.classList.add('ring-4', 'ring-amber-400');
+        } else if (ancestors.has(code)) {
+          n.classList.add('ring-4', 'ring-blue-500');
+        } else if (descendants.has(code)) {
+          n.classList.add('ring-4', 'ring-rose-500');
+        } else {
+          n.classList.add('opacity-25');
+        }
+      });
+
+      if (legend) legend.classList.remove('hidden');
+      showToast(`Prerequisite lineage for ${selectedCode}: ${ancestors.size} prerequisite(s), ${descendants.size} dependent(s).`);
+    };
+
+    // =========================================================================
+    // D-RBAC DELEGATION PROGRESS BOARD (WP7)
+    // =========================================================================
+    window.DELEGATION_REGISTRY = [
+      {
+        id: 'del-001',
+        cluster: 'Computer Networks & Security',
+        faculty: 'Networks Cluster Lead',
+        scope: ['DATCOMS', 'COMNETS', 'NETSLAB'],
+        startDate: '2026-09-01',
+        endDate: '2026-10-15',
+        status: 'active',
+        progress: 65,
+        submittedAt: null
+      },
+      {
+        id: 'del-002',
+        cluster: 'Hardware & Embedded Systems',
+        faculty: 'Hardware Cluster Lead',
+        scope: ['LOGCDES', 'EMICROS', 'EMBEDDS', 'COMAROR'],
+        startDate: '2026-09-05',
+        endDate: '2026-11-01',
+        status: 'pending',
+        progress: 0,
+        submittedAt: null
+      }
+    ];
+
+    let _currentDelegationFilter = 'all';
+
+    function filterDelegations(filter) {
+      _currentDelegationFilter = filter;
+      ['all', 'active', 'pending', 'completed', 'expired'].forEach(f => {
+        const btn = document.getElementById(`delTab${f.charAt(0).toUpperCase() + f.slice(1)}`);
+        if (btn) {
+          btn.className = (f === filter)
+            ? 'px-3 py-1 bg-apc-navy text-white rounded-none text-xs font-bold'
+            : 'px-3 py-1 bg-slate-100 text-slate-700 rounded-none hover:bg-slate-200 text-xs font-bold transition cursor-pointer';
+        }
+      });
+      renderDelegationCards();
+    }
+
+    function renderDelegationCards() {
+      const grid = document.getElementById('delegationCardsGrid');
+      if (!grid) return;
+      let items = window.DELEGATION_REGISTRY || [];
+      if (_currentDelegationFilter !== 'all') {
+        items = items.filter(d => d.status === _currentDelegationFilter);
+      }
+
+      const STATUS_STYLES = {
+        active: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+        pending: 'bg-blue-100 text-blue-800 border-blue-300',
+        completed: 'bg-slate-100 text-slate-700 border-slate-300',
+        expired: 'bg-rose-100 text-rose-800 border-rose-300',
+      };
+
+      grid.innerHTML = items.map(d => `
+        <div class="p-4 bg-white rounded-none border border-slate-200 shadow-xs space-y-3 hover:border-apc-navy/40 transition">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <p class="font-black text-slate-900 text-sm">${d.cluster}</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">Assigned Faculty: <span class="font-semibold text-slate-800">${d.faculty}</span></p>
+            </div>
+            <span class="px-2 py-0.5 rounded-none text-[10px] font-bold border ${STATUS_STYLES[d.status] || 'bg-slate-100 text-slate-600'} uppercase shrink-0">${d.status}</span>
+          </div>
+          <div class="text-[11px] text-slate-600 space-y-0.5 bg-slate-50 p-2 border border-slate-100">
+            <p>Subject Scope: <span class="font-mono font-bold text-apc-navy">${Array.isArray(d.scope) ? d.scope.join(', ') : d.cluster}</span></p>
+            <p>Authorized Window: <span class="font-semibold">${d.startDate}</span> &rarr; <span class="font-semibold">${d.endDate}</span></p>
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between text-[11px] text-slate-500">
+              <span class="font-bold">Review Completion</span>
+              <span class="font-bold font-mono text-slate-800">${d.progress}%</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-none h-2 overflow-hidden">
+              <div class="${d.status === 'completed' ? 'bg-emerald-500' : 'bg-apc-navy'} h-2 transition-all duration-300" style="width:${d.progress}%"></div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-xs">
+            <div class="flex gap-2">
+              ${d.status === 'active' ? `
+                <button type="button" onclick="simulateDelegationProgress('${d.id}')" class="px-2.5 py-1 text-[11px] font-bold bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 transition cursor-pointer">Update Progress</button>
+                <button type="button" onclick="revokeDelegation('${d.id}')" class="px-2.5 py-1 text-[11px] font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 transition cursor-pointer">Revoke</button>
+              ` : ''}
+              ${d.status === 'pending' ? `
+                <button type="button" onclick="activateDelegation('${d.id}')" class="px-2.5 py-1 text-[11px] font-bold bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 transition cursor-pointer">Activate Access</button>
+              ` : ''}
+              ${d.status === 'completed' ? `<span class="text-[11px] text-emerald-700 font-bold flex items-center gap-1">✓ Submitted ${d.submittedAt || ''}</span>` : ''}
+              ${d.status === 'expired' ? `<span class="text-[11px] text-rose-600 font-bold">Access Terminated</span>` : ''}
+            </div>
+            <button type="button" onclick="openIntegratedSpreadsheet('master', 'delegation')" class="text-blue-600 hover:underline font-bold text-[11px] cursor-pointer">Spreadsheet &rarr;</button>
+          </div>
+        </div>
+      `).join('') || '<div class="col-span-2 py-10 text-center text-slate-400 text-xs">No delegations match the selected status filter.</div>';
+    }
+
+    function simulateDelegationProgress(id) {
+      const d = window.DELEGATION_REGISTRY.find(x => x.id === id);
+      if (!d) return;
+      d.progress = Math.min(100, d.progress + 25);
+      if (d.progress >= 100) {
+        d.status = 'completed';
+        d.submittedAt = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      renderDelegationCards();
+      showToast(`Delegation progress for ${d.cluster} updated to ${d.progress}%.`);
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('DELEGATION_UPDATE', d.cluster, `Progress updated to ${d.progress}% by ${d.faculty}`);
+      }
+    }
+
+    function revokeDelegation(id) {
+      const d = window.DELEGATION_REGISTRY.find(x => x.id === id);
+      if (!d) return;
+      d.status = 'expired';
+      renderDelegationCards();
+      showToast(`Delegation access for ${d.cluster} has been revoked.`);
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('DELEGATION_REVOKE', d.cluster, `Editing access revoked by Program Director`);
+      }
+    }
+
+    function activateDelegation(id) {
+      const d = window.DELEGATION_REGISTRY.find(x => x.id === id);
+      if (!d) return;
+      d.status = 'active';
+      d.progress = Math.max(d.progress, 15);
+      renderDelegationCards();
+      showToast(`Delegation for ${d.cluster} is now active.`);
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('DELEGATION_UPDATE', d.cluster, `Access status activated for ${d.faculty}`);
+      }
+    }
+
+    // =========================================================================
+    // CURRICULUM VERSION STATE MACHINE (WP8)
+    // =========================================================================
+    window.VERSION_REGISTRY = [
+      { id: 'BSCpE-2026-REV3', label: 'BSCpE-2026-REV3', years: 'AY 2026–2030', units: 172, author: 'Program Director', state: 'review', lastEvent: 'Sep 10, 2026' },
+      { id: 'BSCpE-2021-BASE', label: 'BSCpE-2021-BASE', years: 'AY 2021–2025', units: 170, author: 'Former Program Director', state: 'approved', lastEvent: 'Aug 14, 2021' },
+    ];
+
+    const VERSION_STATES = {
+      draft: { label: 'DRAFT', class: 'bg-slate-100 text-slate-700 border-slate-300' },
+      review: { label: 'UNDER REVIEW', class: 'bg-amber-100 text-amber-900 border-amber-300' },
+      approved: { label: 'APPROVED BASELINE', class: 'bg-emerald-100 text-emerald-900 border-emerald-300' },
+      archived: { label: 'ARCHIVED', class: 'bg-slate-200 text-slate-600 border-slate-300' },
+    };
+
+    function changeVersionState(versionId, newState) {
+      const ver = window.VERSION_REGISTRY.find(v => v.id === versionId);
+      if (!ver) return;
+      ver.state = newState;
+      ver.lastEvent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      renderVersionTable();
+      showToast(`Version ${ver.label} state updated to: ${VERSION_STATES[newState]?.label || newState}`);
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('VERSION_STATE_CHANGE', ver.label, `State updated to ${VERSION_STATES[newState]?.label || newState}`);
+      }
+    }
+
+    function createNewVersionDraft() {
+      const year = new Date().getFullYear();
+      const newId = `BSCpE-${year}-DRAFT${window.VERSION_REGISTRY.length + 1}`;
+      window.VERSION_REGISTRY.unshift({
+        id: newId,
+        label: newId,
+        years: `AY ${year}–${year + 4}`,
+        units: 172,
+        author: 'Program Director',
+        state: 'draft',
+        lastEvent: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      });
+      renderVersionTable();
+      showToast(`New draft version ${newId} initialized from active baseline.`);
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('VERSION_CREATE', newId, 'New curriculum revision draft created from active baseline');
+      }
+    }
+
+    function renderVersionTable() {
+      const tbody = document.getElementById('versionTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = window.VERSION_REGISTRY.map(v => {
+        const s = VERSION_STATES[v.state] || VERSION_STATES.draft;
+        return `
+          <tr class="hover:bg-amber-50/40 transition">
+            <td class="py-3.5 px-4 font-mono font-bold ${v.state === 'draft' ? 'text-slate-500' : 'text-apc-navy'}">${v.label}</td>
+            <td class="py-3.5 px-4 text-slate-700">${v.years}</td>
+            <td class="py-3.5 px-4 font-bold text-slate-900">${v.units} Units</td>
+            <td class="py-3.5 px-4 text-slate-700">${v.author}</td>
+            <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-none ${s.class} text-[11px] font-bold border font-mono">${s.label}</span></td>
+            <td class="py-3.5 px-4 text-slate-500 text-[11px]">${v.lastEvent}</td>
+            <td class="py-3.5 px-4 text-right space-x-2 text-xs">
+              ${v.state === 'draft' ? `<button type="button" onclick="changeVersionState('${v.id}','review')" class="text-amber-700 hover:text-amber-900 font-bold cursor-pointer">Submit for Review</button>` : ''}
+              ${v.state === 'review' ? `<button type="button" onclick="changeVersionState('${v.id}','approved')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold rounded-none cursor-pointer transition">✓ Approve</button> <button type="button" onclick="changeVersionState('${v.id}','draft')" class="text-slate-500 hover:text-slate-800 text-[11px] cursor-pointer">Return</button>` : ''}
+              ${v.state === 'approved' ? `<button type="button" onclick="changeVersionState('${v.id}','archived')" class="text-slate-500 hover:text-slate-800 text-[11px] cursor-pointer">Archive</button> <button type="button" onclick="navigateView('flowchart')" class="text-blue-600 hover:text-blue-800 font-bold text-xs cursor-pointer">View Graph</button>` : ''}
+              ${v.state === 'archived' ? `<span class="text-slate-400 text-xs">Read Only</span>` : ''}
+            </td>
+          </tr>
+        `;
+      }).join('');
+      const countEl = document.getElementById('versionRegistryCountBadge');
+      if (countEl) countEl.textContent = `${window.VERSION_REGISTRY.length} Versions Registered`;
+    }
+
     // 1. Navigation Controller
     
     // =========================================================================
@@ -2488,7 +3007,12 @@ let currentSelectedCode = null;
         if (c.group.includes('Electives')) badgeColor = 'bg-rose-100 text-rose-800';
 
         const prereqPills = c.prereqs.length > 0 
-          ? c.prereqs.map(p => `<span class="px-1.5 py-0.5 rounded-none bg-blue-50 text-blue-700 border border-blue-200 font-mono text-[11px] font-bold mr-1">${p}</span>`).join('')
+          ? c.prereqs.map(p => `<span class="px-1.5 py-0.5 rounded-none bg-blue-50 text-blue-700 border border-blue-200 font-mono text-[11px] font-bold mr-1">${typeof p === 'object' ? p.code : p}</span>`).join('')
+          : '<span class="text-slate-400 text-[11px]">None</span>';
+
+        const coreqList = Array.isArray(c.coreqs) ? c.coreqs : [];
+        const coreqPills = coreqList.length > 0
+          ? coreqList.map(p => `<span class="px-1.5 py-0.5 rounded-none bg-amber-50 text-amber-800 border border-amber-300 font-mono text-[11px] font-bold mr-1">${p}</span>`).join('')
           : '<span class="text-slate-400 text-[11px]">None</span>';
 
         const tr = document.createElement('tr');
@@ -2502,7 +3026,9 @@ let currentSelectedCode = null;
           <td class="py-2.5 px-3 text-slate-600 text-[11px]">Yr ${c.year}, T${c.term}</td>
           <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-none text-[11px] font-bold ${badgeColor}">${c.group}</span></td>
           <td class="py-2.5 px-3">${prereqPills}</td>
-          <td class="py-2.5 px-3 text-right space-x-1.5 whitespace-now<button onclick="openCourseInspectorModal('${c.code}')" class="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-900 rounded-none font-bold text-xs inline-flex items-center gap-1 transition shadow-xs border border-blue-300/60 cursor-pointer" title="Inspect full course specification">
+          <td class="py-2.5 px-3">${coreqPills}</td>
+          <td class="py-2.5 px-3 text-right space-x-1.5 whitespace-nowrap">
+            <button onclick="openCourseInspectorModal('${c.code}')" class="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-900 rounded-none font-bold text-xs inline-flex items-center gap-1 transition shadow-xs border border-blue-300/60 cursor-pointer" title="Inspect full course specification">
               <span>🔍</span>
               <span>Inspect</span>
             </button>
@@ -2510,7 +3036,7 @@ let currentSelectedCode = null;
               <span>📊</span>
               <span>Sheet</span>
             </button>
-            <button onclick="openCourseEditModal('${c.code}')"" class="px-2 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-none font-bold text-xs inline-flex items-center gap-1 transition shadow-xs border border-amber-300/60" title="Edit course data">
+            <button onclick="openCourseEditModal('${c.code}')" class="px-2 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-none font-bold text-xs inline-flex items-center gap-1 transition shadow-xs border border-amber-300/60" title="Edit course data">
               <span>✏️</span>
               <span>Edit</span>
             </button>
@@ -2679,10 +3205,15 @@ let currentSelectedCode = null;
       const activeBtn = document.getElementById(`obe-tab-${tabId}`);
       activeBtn.classList.add('border-apc-gold', 'text-apc-navy');
       activeBtn.classList.remove('border-transparent', 'text-slate-500');
+
+      if (tabId === 'vision' && typeof renderGaCards === 'function') {
+        renderGaCards();
+      }
     }
 
     function renderObeMatrix() {
       const tbody = document.getElementById('matrixTableBody');
+      if (!tbody) return;
       tbody.innerHTML = '';
 
       ALL_COURSES.forEach((c, cIdx) => {
@@ -2712,6 +3243,9 @@ let currentSelectedCode = null;
         tr.innerHTML = cellsHtml;
         tbody.appendChild(tr);
       });
+
+      if (typeof runIedValidation === 'function') runIedValidation();
+      if (typeof renderSoSummaryRow === 'function') renderSoSummaryRow();
     }
 
     function cycleMatrixLevel(courseIdx, soIdx) {
@@ -2721,6 +3255,11 @@ let currentSelectedCode = null;
       ALL_COURSES[courseIdx].sos[soIdx] = levels[nextIdx];
       renderObeMatrix();
       showToast(`${ALL_COURSES[courseIdx].code} SO level updated to [${levels[nextIdx]}]`);
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('SO_UPDATE', ALL_COURSES[courseIdx].code, `SO-${String.fromCharCode(97 + soIdx).toUpperCase()} updated to [${levels[nextIdx]}]`);
+      }
+      if (typeof runIedValidation === 'function') runIedValidation();
+      if (typeof renderSoSummaryRow === 'function') renderSoSummaryRow();
     }
 
     function exportObeMatrixCSV() {
@@ -2780,6 +3319,13 @@ let currentSelectedCode = null;
       renderCoursesTable(ALL_COURSES);
       renderObeMatrix();
       
+      if (typeof renderAuditTable === 'function') renderAuditTable();
+      if (typeof renderVersionTable === 'function') renderVersionTable();
+      if (typeof renderGaCards === 'function') renderGaCards();
+      if (typeof renderDelegationCards === 'function') renderDelegationCards();
+      if (typeof runIedValidation === 'function') runIedValidation();
+      if (typeof renderSoSummaryRow === 'function') renderSoSummaryRow();
+
       // Start clean with no auto-login: user must explicitly log in via SSO or credentials
       if (typeof deselectSchool === 'function') deselectSchool();
       if (typeof deselectProgram === 'function') deselectProgram();
@@ -3078,6 +3624,7 @@ let currentSelectedCode = null;
     // =========================================================================
     let editingCourseCodeOriginal = null;
     let editModalPrereqs = [];
+    let editModalCoreqs = [];
     let editModalSos = ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
 
     // Backup baseline for revert
@@ -3116,13 +3663,18 @@ let currentSelectedCode = null;
       document.getElementById('editCourseDescTextarea').value = course ? (course.desc || '') : '';
 
       editModalPrereqs = course ? [...course.prereqs] : [];
+      editModalCoreqs = course && Array.isArray(course.coreqs) ? [...course.coreqs] : [];
       editModalSos = course && course.sos ? [...course.sos] : ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
 
       calculateEditUnits();
       renderPrereqsChips();
+      renderCoreqTags();
       populatePrereqSelectOptions();
       renderSoChips();
       validateEditModalDag();
+
+      const cycleWarn = document.getElementById('prereqCycleWarning');
+      if (cycleWarn) cycleWarn.classList.add('hidden');
 
       modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
@@ -3220,6 +3772,32 @@ let currentSelectedCode = null;
       const type = typeSel ? typeSel.value : 'hard';
       if (!val) return;
 
+      const currentCode = (document.getElementById('editCourseCodeInput')?.value || '').trim().toUpperCase();
+
+      // Self-reference check
+      if (val === currentCode) {
+        showToast('⚠️ Circular dependency detected: a course cannot be its own prerequisite.');
+        const cycleWarn = document.getElementById('prereqCycleWarning');
+        const cycleMsg = document.getElementById('prereqCycleMsg');
+        if (cycleWarn && cycleMsg) {
+          cycleMsg.innerText = 'Cannot add course as its own prerequisite.';
+          cycleWarn.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // Check reverse dependency (if val lists currentCode as prereq)
+      const target = ALL_COURSES.find(c => c.code === val);
+      if (target && (target.prereqs || []).some(p => (typeof p === 'string' ? p : p.code) === currentCode)) {
+        showToast(`⚠️ Potential circular dependency: ${val} already lists ${currentCode} as a prerequisite.`);
+        const cycleWarn = document.getElementById('prereqCycleWarning');
+        const cycleMsg = document.getElementById('prereqCycleMsg');
+        if (cycleWarn && cycleMsg) {
+          cycleMsg.innerText = `Potential loop: ${val} already depends on ${currentCode}.`;
+          cycleWarn.classList.remove('hidden');
+        }
+      }
+
       const existingIdx = editModalPrereqs.findIndex(p => (typeof p === 'string' ? p : p.code) === val);
       if (existingIdx === -1) {
         editModalPrereqs.push({ code: val, type: type });
@@ -3251,16 +3829,55 @@ let currentSelectedCode = null;
       });
     }
 
-    function addPrereqFromSelect() {
-      const sel = document.getElementById('editAddPrereqSelect');
-      const val = sel.value;
-      if (!val) return;
+    // Co-requisite tag handlers (WP1)
+    function renderCoreqTags() {
+      const container = document.getElementById('editModalCoreqTags');
+      if (!container) return;
+      if (!editModalCoreqs || editModalCoreqs.length === 0) {
+        container.innerHTML = '<span class="text-slate-400 text-xs italic">No co-requisites assigned</span>';
+        return;
+      }
+      container.innerHTML = editModalCoreqs.map((code, idx) => `
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-amber-50 text-amber-900 border border-amber-300 font-mono font-bold text-xs shadow-xs">
+          <span>${code}</span>
+          <span class="text-[10px] px-1 py-0.2 rounded-none bg-amber-200 text-amber-900 font-sans font-black">CO-REQ</span>
+          <button type="button" onclick="removeCoreqTag(${idx})" class="w-5 h-5 flex items-center justify-center text-amber-700 hover:text-rose-600 font-bold ml-1 text-base leading-none transition" title="Remove co-requisite">&times;</button>
+        </span>
+      `).join('');
+    }
 
-      if (!editModalPrereqs.includes(val)) {
-        editModalPrereqs.push(val);
-        renderPrereqsChips();
-        populatePrereqSelectOptions();
-        validateEditModalDag();
+    function addCoreqTag() {
+      const input = document.getElementById('coreqInput');
+      if (!input) return;
+      const val = input.value.trim().toUpperCase();
+      if (!val) return;
+      const currentCode = (document.getElementById('editCourseCodeInput')?.value || '').trim().toUpperCase();
+      if (val === currentCode) {
+        showToast('⚠️ A course cannot be its own co-requisite.');
+        input.value = '';
+        return;
+      }
+      if (!editModalCoreqs.includes(val)) {
+        editModalCoreqs.push(val);
+        renderCoreqTags();
+      }
+      input.value = '';
+    }
+
+    function removeCoreqTag(idx) {
+      editModalCoreqs.splice(idx, 1);
+      renderCoreqTags();
+    }
+
+    function clearAllCoreqs() {
+      editModalCoreqs = [];
+      renderCoreqTags();
+    }
+
+    function handleCoreqInputKey(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addCoreqTag();
       }
     }
 
@@ -3413,6 +4030,7 @@ let currentSelectedCode = null;
         lab,
         units,
         prereqs: [...editModalPrereqs],
+        coreqs: [...editModalCoreqs],
         sos: [...editModalSos],
         desc
       };
@@ -3448,6 +4066,10 @@ let currentSelectedCode = null;
       // If Detail Drawer is open on this course, refresh it
       if (document.getElementById('drawerCourseCode').innerText === code) {
         openDetailDrawer(code);
+      }
+
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('COURSE_EDIT', code, `Saved course record for ${code}: ${title}`);
       }
 
       closeCourseEditModal();
@@ -4420,6 +5042,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (typeof filterCoursesTable === 'function') filterCoursesTable();
       } else if (viewId === 'obe') {
         if (typeof renderObeMatrix === 'function') renderObeMatrix();
+        if (typeof runIedValidation === 'function') runIedValidation();
+        if (typeof renderSoSummaryRow === 'function') renderSoSummaryRow();
+      } else if (viewId === 'dashboard') {
+        if (typeof renderVersionTable === 'function') renderVersionTable();
+      } else if (viewId === 'delegation') {
+        if (typeof renderDelegationCards === 'function') renderDelegationCards();
+      } else if (viewId === 'audit') {
+        if (typeof renderAuditTable === 'function') renderAuditTable();
       } else if (viewId === 'registrar') {
         const tab = typeof currentRegistrarTab !== 'undefined' ? currentRegistrarTab : 1;
         if (typeof switchRegistrarDocTab === 'function') {

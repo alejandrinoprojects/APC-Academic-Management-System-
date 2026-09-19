@@ -2833,6 +2833,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         c.group = value;
       } else if (field === 'prereqs') {
         c.prereqs = value.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+      } else if (field === 'coreqs') {
+        c.coreqs = value.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
       } else if (field === 'desc') {
         c.desc = value.trim();
       }
@@ -2943,6 +2945,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (showGeneral) {
         html += `
           <th class="py-2 px-2 border-r border-slate-300 dark:border-slate-700 w-36">Prerequisites</th>
+          <th class="py-2 px-2 border-r border-slate-300 dark:border-slate-700 w-32">Co-requisites</th>
           <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 w-44">Curriculum Group</th>`;
       }
 
@@ -2964,6 +2967,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const displayRow = rowNum + 1;
         const bg = (rowNum % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/70 dark:bg-slate-900/60';
         const prereqStr = (c.prereqs || []).map(p => (typeof p === 'object' && p !== null && p.code) ? p.code : String(p)).join(', ');
+        const coreqStr = Array.isArray(c.coreqs) ? c.coreqs.join(', ') : '';
 
         html += `<tr class="${bg} hover:bg-amber-50/40 dark:hover:bg-slate-800 transition border-b border-slate-200 dark:border-slate-700/60">
           <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-500 border-r border-slate-200 dark:border-slate-700/60 text-[11px]">${displayRow}</td>
@@ -3002,6 +3006,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           html += `
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
               <input type="text" value="${prereqStr}" onfocus="selectExcelCell('H${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'prereqs', this.value)" placeholder="None" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+            </td>
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
+              <input type="text" value="${coreqStr}" onfocus="selectExcelCell('H2_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'coreqs', this.value)" placeholder="None" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
               <select onfocus="selectExcelCell('I${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'group', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
@@ -3217,6 +3224,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (typeof filterCoursesTable === 'function') filterCoursesTable();
       if (typeof renderObeMatrix === 'function') renderObeMatrix();
       if (typeof calculateCompliance === 'function') calculateCompliance();
+
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('SHEET_SAVE', 'BSCpE Master Spreadsheet', `Saved ${ALL_COURSES.length} course records from spreadsheet workbench`);
+      }
 
       renderSpreadsheetGrid();
       showToastNotification(`✓ All ${ALL_COURSES.length} courses successfully saved & synchronized across Flowchart, Catalog, and OBE Matrix!`);
@@ -3456,6 +3467,25 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const start = document.getElementById('assignTaskStartDate')?.value || '';
       const end = document.getElementById('assignTaskEndDate')?.value || '';
 
+      if (window.DELEGATION_REGISTRY) {
+        window.DELEGATION_REGISTRY.push({
+          id: 'del-' + Date.now(),
+          cluster: course,
+          faculty: faculty,
+          scope: [course],
+          startDate: start || new Date().toISOString().split('T')[0],
+          endDate: end || new Date(Date.now() + 30*86400000).toISOString().split('T')[0],
+          status: 'pending',
+          progress: 0,
+          submittedAt: null
+        });
+        if (typeof renderDelegationCards === 'function') renderDelegationCards();
+      }
+
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('TASK_DELEGATE', course, `Delegation granted to ${faculty} from ${start} to ${end}`);
+      }
+
       closeAssignTaskModal();
       showToastNotification(`Delegation active: ${faculty} authorized for ${course} from ${start} to ${end}.`);
     }
@@ -3465,6 +3495,25 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const course = document.getElementById('assignTaskCourseTitle')?.value || 'Cluster Courses';
       const start = document.getElementById('assignTaskStartDate')?.value || '';
       const end = document.getElementById('assignTaskEndDate')?.value || '';
+
+      if (window.DELEGATION_REGISTRY) {
+        window.DELEGATION_REGISTRY.push({
+          id: 'del-' + Date.now(),
+          cluster: course,
+          faculty: faculty,
+          scope: [course],
+          startDate: start || new Date().toISOString().split('T')[0],
+          endDate: end || new Date(Date.now() + 30*86400000).toISOString().split('T')[0],
+          status: 'active',
+          progress: 10,
+          submittedAt: null
+        });
+        if (typeof renderDelegationCards === 'function') renderDelegationCards();
+      }
+
+      if (typeof appendAuditLog === 'function') {
+        appendAuditLog('TASK_DELEGATE', course, `Delegation granted to ${faculty} (${start} to ${end}). Spreadsheet opened.`);
+      }
 
       closeAssignTaskModal();
       showToastNotification(`Delegation granted to ${faculty} (${start} to ${end}). Opening spreadsheet...`);

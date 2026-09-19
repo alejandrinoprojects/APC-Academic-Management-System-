@@ -949,7 +949,8 @@
   function createDiagramNodeElement(course, x, y, width, height) {
     const card = document.createElement('div');
     card.id = `node-${course.code}`;
-    card.className = `diagram-node course-card absolute rounded-none border border-slate-200 border-l-4 bg-white text-slate-900 p-2.5 flex flex-col justify-between select-none shadow-xs hover:shadow-md transition-shadow cursor-grab ${getGroupCardBorder(course.group)}`;
+    card.dataset.courseCode = course.code;
+    card.className = `diagram-node diagram-node-card course-card absolute rounded-none border border-slate-200 border-l-4 bg-white text-slate-900 p-2.5 flex flex-col justify-between select-none shadow-xs hover:shadow-md transition-shadow cursor-grab ${getGroupCardBorder(course.group)}`;
     card.style.left = `${x}px`;
     card.style.top = `${y}px`;
     card.style.width = `${width}px`;
@@ -999,7 +1000,11 @@
     card.addEventListener('click', (e) => {
       e.stopPropagation();
       if (nodeDragDistance < 5) {
-        handleCourseClick(course.code);
+        if (typeof window.highlightPrereqChain === 'function') {
+          window.highlightPrereqChain(course.code);
+        } else {
+          handleCourseClick(course.code);
+        }
       }
     });
 
