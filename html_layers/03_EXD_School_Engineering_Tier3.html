@@ -2550,69 +2550,6 @@
 
             <!-- ONE LOCKED STATIC IMAGE DIAGRAM CONTAINER -->
             <div id="staticDiagramCard" class="w-full bg-white border border-slate-300 p-4 shadow-sm select-none">
-              
-              <!-- Diagram Action & View Mode Bar -->
-              <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-3 border-b border-slate-200">
-                <div class="flex flex-wrap items-center gap-2.5">
-                  <div class="flex items-center space-x-1 border-r border-slate-200 pr-3">
-                    <span class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-black text-xs uppercase tracking-wider">Interactive Flowchart Blueprint</span>
-                  </div>
-
-                  <!-- Precision Zoom Controls -->
-                  <div class="flex items-center space-x-1 bg-slate-50 border border-slate-300 p-0.5 rounded-none shadow-xs">
-                    <button type="button" id="btnDiagramZoomOut" onclick="diagramZoomOut()" class="w-7 h-7 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center cursor-pointer transition" title="Zoom Out (− or Scroll Down)">−</button>
-                    <button type="button" id="diagramZoomPercent" onclick="diagramResetZoom()" class="px-2.5 h-7 bg-white hover:bg-amber-50 border border-slate-200 text-slate-900 font-mono font-bold text-xs flex items-center justify-center cursor-pointer transition" title="Click to Reset 100% Zoom">85%</button>
-                    <button type="button" id="btnDiagramZoomIn" onclick="diagramZoomIn()" class="w-7 h-7 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center cursor-pointer transition" title="Zoom In (+ or Scroll Up)">+</button>
-                    <button type="button" onclick="diagramFitView()" class="h-7 px-2.5 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 cursor-pointer transition" title="Fit Entire Curriculum to Screen"><span>⛶</span><span>Fit</span></button>
-                  </div>
-
-                  <!-- Magnetic Element & Grid Snapping Controls -->
-                  <div class="flex items-center space-x-1.5">
-                    <button type="button" id="btnToggleElemSnap" onclick="toggleElementSnap()" class="h-7 px-2.5 bg-cyan-50 text-cyan-900 border border-cyan-400 font-bold text-xs flex items-center gap-1.5 transition shadow-xs cursor-pointer" title="Toggle magnetic alignment to edges and centers of existing courses">
-                      <span>🧲</span>
-                      <span>Element Snap: ON</span>
-                    </button>
-                    <button type="button" id="btnToggleGridSnap" onclick="toggleDiagramGridSnap()" class="h-7 px-2.5 bg-amber-50 text-amber-900 border border-amber-400 font-bold text-xs flex items-center gap-1.5 transition shadow-xs cursor-pointer" title="Toggle 28px grid snapping">
-                      <span>⊞</span>
-                      <span>Grid: 28px</span>
-                    </button>
-                    <button type="button" onclick="resetDiagramPositions()" class="h-7 px-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-600 hover:text-slate-900 text-xs flex items-center gap-1 cursor-pointer shadow-xs transition" title="Reset dragged positions to original swimlanes">
-                      <span>↺</span>
-                    </button>
-                  </div>
-                </div>
-                <div class="flex flex-wrap items-center gap-2">
-                  <!-- Live Search -->
-                  <div class="relative">
-                    <input type="text" id="diagramSearchInput" oninput="handleDiagramSearch(this.value)" placeholder="Search course..." class="w-28 sm:w-40 pl-2.5 py-1 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-none focus:outline-none focus:ring-1 focus:ring-[#002855] text-slate-800 dark:text-slate-200 placeholder-slate-400">
-                    <button type="button" onclick="document.getElementById('diagramSearchInput').value=''; handleDiagramSearch('');" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold">&times;</button>
-                  </div>
-
-                  <!-- Direct Requisite Arrow Mode Selector -->
-                  <div class="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 px-2 py-0.5">
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">Arrows:</span>
-                    <select id="flowchartRequisiteMode" onchange="switchRequisiteMode(this.value)" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-none px-1.5 py-0.5 border border-slate-200 dark:border-slate-700 cursor-pointer focus:outline-none">
-                      <option value="direct" selected>Direct (Clean)</option>
-                      <option value="lineage">Lineage</option>
-                    </select>
-                  </div>
-
-                  <button type="button" onclick="openIntegratedSpreadsheet('master', 'flowchart')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1 border border-[#E5A823]/40 cursor-pointer" title="Open Integrated Spreadsheet">
-                    <span>📊</span>
-                    <span>Spreadsheet</span>
-                  </button>
-
-                  <button type="button" onclick="exportFlowchartAsPng()" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1 border border-slate-300 dark:border-slate-600 cursor-pointer" title="Export PNG">
-                    <span>🖼️</span>
-                    <span>PNG</span>
-                  </button>
-
-                  <button type="button" onclick="openCourseEditModal('')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1 cursor-pointer">
-                    <span>+</span>
-                    <span>Add Course</span>
-                  </button>
-                </div>
-              </div>
 
               <!-- 1. VECTOR STATIC BLUEPRINT VIEW (Locked 1-page vector layout with 90° Manhattan arrows) -->
               <div id="vectorDiagramWrapper" class="w-full overflow-x-auto overflow-y-visible border border-slate-200 bg-white p-2 text-center" style="min-height: 960px;">
