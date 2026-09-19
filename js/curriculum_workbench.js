@@ -672,9 +672,12 @@
       } else if (!viewType || viewType === 'flowchart') {
         const fcBtn = document.getElementById(`nav-${progId}-flowchart`);
         if (fcBtn) fcBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (viewType === 'spreadsheet') {
+      } else if (viewType === 'spreadsheet' || viewType === 'catalog') {
         const ssBtn = document.getElementById(`nav-${progId}-spreadsheet`);
         if (ssBtn) ssBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+      } else if (viewType === 'dashboard' || viewType === 'compliance') {
+        const dbBtn = document.getElementById(`nav-${progId}-dashboard`);
+        if (dbBtn) dbBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
       } else if (viewType === 'registrar') {
         const offDocsCont = document.getElementById(progId + 'OffDocsCont');
         const offDocsChev = document.getElementById(progId + 'OffDocsChev');
@@ -688,7 +691,7 @@
       } else if (viewType === 'course') {
         const crsBtn = document.getElementById(`nav-${progId}-course`);
         if (crsBtn) crsBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (['obe', 'catalog', 'dashboard', 'compliance', 'delegation', 'audit'].includes(viewType)) {
+      } else if (['obe', 'delegation', 'audit'].includes(viewType)) {
         const toolBtn = document.getElementById(`nav-${progId}-${viewType}`);
         if (toolBtn) toolBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
       }
@@ -914,8 +917,8 @@
     }
 
     function renderProgramOverview(progCode = 'BSCpE') {
-      navigateView('home');
       currentSelectedProgram = progCode;
+      navigateView('home');
 
       const adminView = document.getElementById('homeAdminInstitutionalView');
       const exdView = document.getElementById('homeExdProgramsView');
@@ -931,36 +934,37 @@
         ? PROGRAM_TO_SCHOOL_MAP[progCode] 
         : { schoolShort: 'SoE', schoolId: 'soe', schoolName: 'School of Engineering', name: progCode };
       const directorMap = {
-        'BSCpE': 'CpE Program Director',
-        'BSCE': 'CE Program Director',
-        'BSECE': 'ECE Program Director',
-        'BSCS': 'CS Program Director',
-        'BSIT': 'IT Program Director'
+        'BSCpE': 'Engr. Sergio R. Peruda Jr.',
+        'BSCE': 'Engr. John Doe',
+        'BSECE': 'Engr. Melissa C. David',
+        'BSCS': 'Dr. Alan Turing',
+        'BSIT': 'Prof. Tim Berners-Lee'
       };
       const director = directorMap[progCode] || `${progCode} Program Director`;
 
-      const pill = document.getElementById('homeRolePill');
-      const title = document.getElementById('homeSectionTitle');
-      const scope = document.getElementById('homeScopeText');
-      if (pill) pill.innerText = `PROGRAM DIRECTOR WORKBENCH (TIER 2 • ${progCode})`;
-      if (title) title.innerText = `${progInfo.name} (${progCode}) • Program Director`;
-      if (scope) scope.innerText = `${progInfo.schoolName || 'School of Engineering'} • ${progCode} Degree Program`;
-
       const pdDirName = document.getElementById('pdHeaderDirectorName');
       if (pdDirName) pdDirName.innerText = director;
+      const cDirName = document.getElementById('curricHomeDirectorName');
+      if (cDirName) cDirName.innerText = director;
 
       const pdSchoolName = document.getElementById('pdHeaderSchoolName');
       if (pdSchoolName) pdSchoolName.innerText = (progInfo.schoolName || 'SCHOOL OF ENGINEERING').toUpperCase();
+      const cSchoolName = document.getElementById('curricHomeSchoolName');
+      if (cSchoolName) cSchoolName.innerText = (progInfo.schoolName || 'SCHOOL OF ENGINEERING').toUpperCase();
 
       const pdProgTitle = document.getElementById('pdHeaderProgramTitle');
-      if (pdProgTitle) {
-        const pName = (progInfo.name || progCode).toUpperCase();
-        if (pName.includes('BACHELOR OF SCIENCE IN ')) {
-          pdProgTitle.innerHTML = `<span>BACHELOR OF SCIENCE IN</span> <span class="text-[#E5A823]">${pName.replace('BACHELOR OF SCIENCE IN ', '')}</span>`;
-        } else {
-          pdProgTitle.innerHTML = `<span class="text-[#E5A823]">${pName}</span>`;
-        }
-      }
+      const cProgTitle = document.getElementById('curricHomeProgramTitle');
+      const pName = (progInfo.name || progCode).toUpperCase();
+      const titleHtml = pName.includes('BACHELOR OF SCIENCE IN ')
+        ? `<span>BACHELOR OF SCIENCE IN</span> <span class="text-[#E5A823]">${pName.replace('BACHELOR OF SCIENCE IN ', '')}</span>`
+        : `<span class="text-[#E5A823]">${pName}</span>`;
+      if (pdProgTitle) pdProgTitle.innerHTML = titleHtml;
+      if (cProgTitle) cProgTitle.innerHTML = titleHtml;
+
+      const topPill = document.getElementById('topBarPathPill');
+      if (topPill) topPill.innerText = `Schools > ${progInfo.schoolShort} > ${progCode} > PD Workbench`;
+
+      syncSidebarToCurrentPath(progInfo.schoolId, progCode, 'workbench');
     }
 
     function renderFacultyOverview() {
@@ -1066,6 +1070,7 @@
           targetView: 'homePdProgramView',
           pathText: pText
         });
+        return;
       } else {
         inSelectProgram = true;
         try {
@@ -1087,8 +1092,10 @@
           if (cProgTag) cProgTag.innerText = `${progCode} AY 2026–2030`;
         } else if (targetView === 'flowchart' || !targetView) {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Flowchart`;
-        } else if (targetView === 'spreadsheet') {
-          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Integrated Spreadsheet`;
+        } else if (targetView === 'spreadsheet' || targetView === 'catalog') {
+          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Spreadsheet`;
+        } else if (targetView === 'dashboard' || targetView === 'compliance') {
+          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Dashboard`;
         } else if (targetView === 'syllabus') {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Syllabus Management`;
         } else if (targetView === 'course') {
@@ -1983,8 +1990,51 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     // ROBUST INSTITUTIONAL VIEW NAVIGATION CONTROLLER
     // =========================================================================
+    function switchDashboardTab(tabName) {
+      const tabChed = document.getElementById('dashTabChed');
+      const tabAnalytics = document.getElementById('dashTabAnalytics');
+      const contentChed = document.getElementById('dashContentChed');
+      const contentAnalytics = document.getElementById('dashContentAnalytics');
+
+      if (tabName === 'compliance' || tabName === 'ched') {
+        if (contentChed) contentChed.classList.remove('hidden');
+        if (contentAnalytics) contentAnalytics.classList.add('hidden');
+        if (tabChed) {
+          tabChed.classList.add('bg-[#002855]', 'text-[#E5A823]', 'border-[#E5A823]');
+          tabChed.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+        }
+        if (tabAnalytics) {
+          tabAnalytics.classList.remove('bg-[#002855]', 'text-[#E5A823]', 'border-[#E5A823]');
+          tabAnalytics.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+        }
+      } else {
+        if (contentChed) contentChed.classList.add('hidden');
+        if (contentAnalytics) contentAnalytics.classList.remove('hidden');
+        if (tabAnalytics) {
+          tabAnalytics.classList.add('bg-[#002855]', 'text-[#E5A823]', 'border-[#E5A823]');
+          tabAnalytics.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+        }
+        if (tabChed) {
+          tabChed.classList.remove('bg-[#002855]', 'text-[#E5A823]', 'border-[#E5A823]');
+          tabChed.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+        }
+      }
+    }
+    window.switchDashboardTab = switchDashboardTab;
+
     function navigateView(viewId) {
       if (!viewId) viewId = 'flowchart';
+
+      // Normalize merged views
+      if (viewId === 'catalog') {
+        viewId = 'spreadsheet';
+      } else if (viewId === 'compliance') {
+        viewId = 'dashboard';
+        setTimeout(() => switchDashboardTab('compliance'), 15);
+      } else if (viewId === 'homePdProgramView' || viewId === 'workbench') {
+        renderProgramOverview(currentSelectedProgram || 'BSCpE');
+        return;
+      }
 
       // Auto-close mobile sidebar if open on smaller screens
       if (typeof isMobileSidebarOpen !== 'undefined' && isMobileSidebarOpen && window.innerWidth < 768) {
@@ -2024,7 +2074,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       // Reveal target view
       const targetView = document.getElementById('view-' + viewId);
-      const targetNav = document.getElementById('nav-' + viewId);
+      const targetNav = document.getElementById('nav-' + viewId) || (viewId === 'spreadsheet' ? document.getElementById('nav-cpe-spreadsheet') : null) || (viewId === 'dashboard' ? document.getElementById('nav-cpe-dashboard') : null);
 
       if (targetView) {
         targetView.classList.remove('hidden');
@@ -2054,11 +2104,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (viewId === 'home') topPill.innerText = 'Schools';
         else if (viewId === 'curriculum-home') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Management';
         else if (viewId === 'flowchart') topPill.innerText = 'Schools > SoE > BSCpE > Flowchart';
-        else if (viewId === 'spreadsheet') topPill.innerText = 'Schools > SoE > BSCpE > Spreadsheet';
-        else if (viewId === 'catalog') topPill.innerText = 'Schools > SoE > BSCpE > Catalog';
+        else if (viewId === 'spreadsheet') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Spreadsheet';
+        else if (viewId === 'dashboard') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Dashboard';
         else if (viewId === 'obe') topPill.innerText = 'Schools > SoE > BSCpE > OBE Map';
-        else if (viewId === 'syllabus') topPill.innerText = 'Schools > SoE > BSCpE > Syllabi';
-        else if (viewId === 'course') topPill.innerText = 'Schools > SoE > BSCpE > Courses';
+        else if (viewId === 'syllabus') topPill.innerText = 'Schools > SoE > BSCpE > Syllabus Management';
+        else if (viewId === 'course') topPill.innerText = 'Schools > SoE > BSCpE > Course Management';
         else topPill.innerText = 'Schools > ' + viewId.toUpperCase();
       }
 
