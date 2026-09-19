@@ -1,0 +1,866 @@
+Development of a Centralized Curriculum Management and Mapping System with Role-Based Access Control and Audit Logging
+Development of Curriculum and Login System
+A Software Design Project Proposal Submitted to the School of Engineering 
+in Partial Fulfilment of the Requirements for the Degree
+Bachelor of Science in Computer Engineering
+Asia Pacific College
+By:
+Alejandrino, Dean R.
+Madrid, Daniel Joshua E.
+Muceros, Joshua Manuel C.
+Reyna, Matheus Vincenzo M.
+Tendero, Abigail Kristine D.
+Einstein D. Yong
+September 2026
+Approval Sheet
+The software design project entitled Development of a Centralized Curriculum Management and Mapping System with Role-Based Access Control and Audit Logging, proposed by:
+Alejandrino R. Dean
+Madrid E. Daniel Joshua
+Muceros C. Joshua Manuel
+Reyna M. Matheus Vincenzo
+Tendero D. Abigail Kristine 
+and submitted in partial fulfillment of the requirements of the Bachelor of Science in Computer Engineering degree, has been examined and recommended for acceptance and approval.
+____ Einstein D. Yong____
+Project Adviser
+As title defense panel members, we certify that the Software Design Project proposal has been examined and hereby recommend being accepted as fulfillment of the software design project proposal requirement for the Degree Bachelor of Science in Computer Engineering.
+Sergio R. Peruda, Jr.
+Committee Chair
+Barbra Ianne H. Embile
+Lead Panel
+____Einstein D. Yong____
+Panel Member 
+This design project proposal is hereby approved and accepted by the School of Engineering as partial fulfillment of the requirement for the degree of Bachelor of Science in Computer Engineering.
+Sergio R. Peruda, Jr.
+Program Director
+Computer Engineering
+School of Engineering
+Acknowledgement
+Table of Contents
+Technial Titlei
+Approval Sheetii
+Acknowledgementiii
+Table of Contentsiv
+List of Figuresvi
+List of Tablesvii
+List of Appendicesviii
+Chapter 19
+Project Background9
+1.1Background of the Project9
+1.2Problem Identification11
+1.3Statement of the Problem12
+1.4Project Objectives13
+1.5Scope of Work13
+1.6Assumptions16
+1.7Constraints17
+1.8Significance of the Project17
+1.9Definition of terms18
+Chapter 221
+Problem Analysis21
+2.1Stakeholder Analysis21
+2.2Current Business Process22
+2.3User Analysis23
+2.4User Journey Map25
+2.5Pain Point Analysis27
+2.6Gap Analysis28
+2.7Review of Related Literatures29
+2.8Requirement Analysis32
+References39
+Appendices42
+Appendix A. Minutes of The Meeting43
+Appendix B. Interview Documentation60
+Appendix C. Sample System61
+Appendix D. Sample Curriculum Mapping75
+List of Figures
+Figure 2.1. Current Curriculum Review Process21
+Figure 2.2. PD/EXD User Journey Map24
+Figure 2.3. Faculty User Journey Map25
+Figure 2.4. Root Cause Analysis26
+List of Appendices
+Appendix A. Minutes of The Meeting41
+Appendix B. Interview Documentation58
+Appendix C. Sample System59
+Appendix D. Sample Curriculum Mapping73
+Project Background
+Background of the Project
+At Asia Pacific College (APC), aligning academic programs with industry standards requires a rigorous approach to curriculum development. Governed by the principles of Outcomes-Based Education (OBE), the institution ensures that every academic requirement directly contributes to its Mission, Vision, Core Values, and Graduate Attributes. Within the School of Engineering, this framework involves a highly structured workflow.
+To understand the operational environment and the complexity of the data to be managed by the proposed system, it is necessary to establish the relationships within APC’s Outcomes-Based Education (OBE) framework. Within this structure, no academic subject exists in isolation; every course must trace its justification directly to the highest institutional goals through a cascading hierarchy of objectives. This framework operates across four interconnected tiers:
+The curriculum is anchored by the institution’s Mission, Vision, and Core Values, which dictate the long-term goals and guiding ethical principles of APC. These foundational elements are translated into measurable expectations known as Graduate Attributes. Graduate Attributes define the universal traits, skills, and mindsets that every student must possess upon leaving the institution, regardless of their specific degree program. These top-level parameters are highly restricted and can only be modified by the highest-level institutional administrators.
+Beneath the institutional level, the Executive Director establishes the Department Mission, such as the School of Engineering Goals, which aligns the specific department with the overarching institutional vision. Concurrently, the Program Director defines the Program Educational Objectives (PEOs). PEOs are denoted numerically (1, 2, 3) and represent long-term professional targets that graduates are expected to accomplish three to five years after graduation. To maintain institutional alignment, every PEO must be directly mapped to one or more Graduate Attributes.
+While PEOs measure post-graduation success, Student Outcomes (SOs) define the specific competencies, knowledge bases, and behaviors that students must demonstrate by the time of graduation. To clearly distinguish them from PEOs, SOs are denoted alphabetically (a, b, c) or numerically (1 to 13). Every SO must map directly to a specific PEO. Because curricula are subject to continuous revision, SOs must be mapped to precise, time-stamped versions of the Graduate Attributes and PEOs to ensure historical data integrity.
+The final tier involves actual academic content. Subjects are categorized into specific Course Groupings, such as Mathematics, Natural Sciences, and Professional Courses, and require detailed metadata, including unit breakdowns for lecture and laboratory components and term offerings. A subject is integrated into the curriculum exclusively through a process called Curriculum Mapping. The Program Director maps each subject to the relevant SOs using the Learning Progression Matrix, categorizing the subject’s application as follows:
+Introductory (I): The subject introduces the fundamental concepts required to achieve the Student Outcome.
+Enabling (E): The subject allows the student to practice and develop the skills necessary for the Student Outcome.
+Demonstrative (D): The subject requires the student to fully demonstrate mastery of the Student Outcome, typically executed in final-year capstone or design courses.
+This hierarchical structure creates a strict chain of traceability. For example, when a student completes a subject such as Calculus, that subject provides an Introductory (I) foundation for a specific Student Outcome, such as applied mathematical knowledge. The mastery of this SO ensures that the student fulfills a specific PEO, such as engineering career excellence. Achieving this PEO ultimately satisfies an APC Graduate Attribute, such as Industry Readiness, thereby fulfilling the institution’s Mission and Vision.
+The primary function of the proposed Curriculum Management System is to digitally enforce, calculate, and visually track this exact chain of relationships while eliminating current manual inefficiencies.
+The current curriculum process at Asia Pacific College is largely manual and sequential. The Executive Director and Program Director are required to perform each step in a specific order, including establishing the department mission, creating the program, defining PEOs, mapping Graduate Attributes, establishing Student Outcomes, and managing subjects before proceeding to the next step.
+Furthermore, the manual data-entry process creates the added difficulty of tracking artifact versions, including Graduate Attributes, PEOs, SOs, and Course Groupings that need to be linked. This can create problems with data mapping when outdated information is incorporated. Curriculum mapping is also completed manually when mapping courses to Student Outcomes along the Introductory, Enabling, and Demonstrative scale, resulting in visual fatigue and unverified outcome coverage.
+There is also a multi-year flowchart of subjects and prerequisites that must be manually redrawn in external tools whenever changes are made. In addition, because the system lacks batch spreadsheet importation, entering a full degree curriculum takes hours of repetitive typing. Furthermore, because only the Executive Director and Program Director can create and edit courses, there is no structured way of delegating these tasks, which creates a severe administrative bottleneck. Finally, because there is no trail of changes made, the process becomes lengthy, increases the possibility of undetected errors, and lacks accountability.
+Beyond data management problems, the current organizational workflow also suffers from bottlenecks in personnel and access management. The workflow requires distinct administrative authority across four internal tiers: System Administrator, Executive Director, Program Director, and Faculty. Because adding subjects and editing Course Groupings require high-level authorization, the Executive Director and Program Director become primary bottlenecks for data entry. The current setup lacks a secure mechanism for directors to delegate tasks, such as assigning temporary privileges to specific faculty members to draft or edit metadata for a particular course cluster. In addition, when administrative access levels shift, such as during leadership transitions, ensuring a traceable handover of responsibilities and preserving the history of previous adjustments is currently inefficient due to the lack of structured audit logging.
+These operational problems and administrative bottlenecks significantly impact the School of Engineering’s productivity. The reliance on manual tracking makes the curriculum updating process excessively slow, increases the risk of mapping inconsistencies in the I-E-D matrix, and places an unnecessary administrative burden on academic leadership.
+Consequently, there is clear justification for developing a centralized Curriculum Management System. To resolve these specific inefficiencies, the proposed platform should be capable of automating I-E-D mapping calculations and unit summaries, supporting batch spreadsheet importation of existing curriculum records, facilitating temporary faculty delegations through dynamic access rights, and enforcing strict version and audit controls.
+Furthermore, the integration of an automated Course Flowchart Generator is essential. This tool will dynamically generate interactive, visual prerequisite flowcharts based on encoded subject metadata, eliminating the need for manual diagramming and ensuring that academic leadership and faculty always have access to an accurate, real-time representation of the curriculum. (Refer to Appendix A. Minutes of the Meeting July 28, 2026)   
+Problem Identification
+Outcomes-Based Education (OBE) provides a framework for aligning academic programs and curricula with institutional goals, Program Educational Objectives (PEOs), and Student Outcomes (SOs). In support of this alignment, effective curriculum management involves systematic organization, maintenance, and review of curriculum information and its relationships to ensure consistency with the intended educational outcomes.
+At the School of Engineering of Asia Pacific College, curriculum management involves several connected components, including courses, Course Groupings, Graduate Attributes, PEOs, SOs, curriculum mappings, prerequisite relationships, and curriculum versions. Based on the project meetings and stakeholder discussions, several curriculum-related activities still require manual work, particularly in data entry, curriculum mapping, requirement tracking, and updating curriculum information.
+The Program Director (PD) is primarily involved in managing the academic program and its curriculum information, while the Executive Director (EXD) oversees the department and has authority over program-related decisions. The PD is responsible for creating PEOs and SOs and managing program-related curriculum components. These responsibilities make the efficient management of curriculum information important for the users who maintain and oversee the curriculum.
+The current process also presents limitations in organizing curriculum information and presenting curriculum relationships. Curriculum components need to be connected and maintained, while curriculum progression and prerequisite relationships need to be presented through a structured visual representation. The project meeting specifically identified the need for a flowchart that displays subjects by year and academic term and connects them through prerequisite relationships.
+Curriculum revisions also require the preservation of previous versions. The project meeting identified the need to maintain curriculum version history whenever changes are made, while Graduate Attributes and SOs also require version tracking to preserve historical relationships.
+In addition, curriculum management involves users with different responsibilities and access levels. The project discussions identified the need for role-based access, centralized authentication, temporary task delegation, and audit logging. In particular, task delegation was identified as a concern for the EXD and PD because selected curriculum-related tasks may need to be assigned to Faculty members through temporary permissions.
+These findings indicate a need to improve the management, mapping, visualization, revision, accessibility, and accountability of curriculum information through a centralized Curriculum Management System, primarily supporting the Program Director and other authorized users involved in curriculum management. (Refer to Appendix A. Minutes of the Meeting July 28, 2026, August 12, 2026, and August 13, 2026)  
+Statement of the Problem
+The existing curriculum management process at the School of Engineering of Asia Pacific College involves multiple interconnected academic components and activities that require continuous management and revision. Although the current process supports curriculum development and review, several activities still require manual data entry, curriculum mapping, requirement tracking, and updating.
+The process also requires the management of curriculum relationships, visual representations, curriculum versions, user access, and delegated responsibilities. These areas indicate opportunities to improve the current curriculum management process through a centralized system.
+Specifically, this project seeks to address the following:
+How can the management, organization, and structured import/export of curriculum information—including programs, courses, Course Groupings, prerequisites, co-requisites, and academic terms—be improved through a centralized system?
+How can the management and mapping of Graduate Attributes, Program Educational Objectives, Student Outcomes, and I/E/D competency levels be structured and maintained across curriculum versions?
+How can curriculum progression and prerequisite relationships be dynamically generated and presented through structured, interactive visual flowcharts?
+How can curriculum version control and historical snapshot preservation be implemented to prevent data overwriting and maintain past cohort records?
+How can centralized authentication and role-based access control (RBAC) be designed to enforce appropriate data access according to academic responsibilities?
+How can temporary task delegation and immutable audit logging be implemented to support distributed faculty workloads and administrative accountability?
+How can the system automate the generation and export of curriculum mapping matrices, curriculum compliance summaries, and development status reports for administrative oversight and accreditation?
+Project Objectives
+General Objectives
+To develop a centralized Curriculum Management System that automates the management, visualization, revision, and accessibility of curriculum information within the School of Engineering at Asia Pacific College. 
+Specific Objectives
+Curriculum Information & Data Management: To develop centralized curriculum information management functionality that allows authorized users to create, update, organize, import, and export programs, courses, Course Groupings, prerequisites, co-requisites, and academic terms in structured formats.
+OBE & Outcome Mapping: To develop curriculum mapping functionality that enables authorized users to establish and manage relationships among Graduate Attributes, Program Educational Objectives, Student Outcomes, and I/E/D competency levels while preserving alignment integrity.
+Interactive Curriculum Visualization: To develop an automated visual flowchart generator that dynamically renders courses by academic year and term, and interactive directed prerequisite dependencies to eliminate manual diagramming.
+Curriculum Version Control: To implement curriculum version management functionality that preserves historical snapshots of past curriculum iterations, tracks revisions, and prevents accidental data overwriting.
+Centralized Authentication & RBAC: To develop a secure authentication and role-based access control system that restricts interface permissions and operational privileges based on assigned user roles (Executive Director, Program Director, Faculty).
+Task Delegation & Audit Logging: To implement temporary, term-bound task delegation workflows for faculty members and an append-only audit logging mechanism to monitor and record all curricular updates.
+Compliance Reporting & Exportation: To develop automated reporting functionality that consolidates and exports curriculum mapping matrices, curriculum compliance summaries, and development status reports into standardized spreadsheet and document formats.
+Scope of Work
+Scopes
+The proposed project focuses on the development of a centralized, web-based Curriculum Management and Mapping System for the School of Engineering (SoE) at Asia Pacific College. The system provides an internal administrative workbench for academic leadership and faculty to design, map, validate, and maintain engineering curricula, replacing disconnected spreadsheet workflows and unvalidated manual mapping processes. (Refer to Appendix A. Minutes of the Meeting, July 28, 2026, August 13, 2026)
+Curriculum Information and Course Catalog Management
+Centralized encoding and management of course codes, descriptive titles, lecture hours, laboratory hours, credit units, and term scheduling within APC's Tri semester calendar.
+Categorization of courses according to CHED CMO No. 92, Series of 2017 groupings (General Education, Basic Engineering and Sciences, Allied Courses, Professional Courses, and Technical Electives).
+Relational definition and management of course prerequisite and co-requisite relationships.
+Batch Data Ingestion and Spreadsheet Importation 
+Facilitating the batch importation and ingestion of existing and historical curriculum records from standardized Microsoft Excel (.xlsx) and .csv templates to streamline initial data onboarding without manual re-typing.
+Pre-import schema validation verifying course code uniqueness, unit data types, and required fields prior to database commitment.
+Transactional staging with error reporting to identify malformed entries and prevent partial or corrupted imports.
+Outcomes-Based Education (OBE) Cascading Framework
+Digital representation of the institutional OBE hierarchy: Institutional Vision and Mission, Graduate Attributes (GAs), Program Educational Objectives (PEOs), and Student Outcomes (SOs).
+Relational mapping matrices connecting Graduate Attributes to PEOs, and PEOs to the 13 CHED-mandated Student Outcomes for the BSCpE program.
+Automated Curriculum Mapping and I-E-D Progression Validation
+Curriculum mapping interface linking courses to Student Outcomes using the Introductory (I), Enabling (E), and Demonstrative (D) taxonomy.
+Clustered, paginated matrix views organized by academic year, term, and course grouping.
+Automated progression validation checks: 
+Verification that all 13 Student Outcomes have active course coverage across the degree program.
+Flagging of terminal professional and capstone courses that lack Demonstrative (D) designations.
+Detection of illogical progression sequences across prerequisite chains.
+Real-time calculation and display of credit unit and contact hour contributions per Student Outcome.
+Prerequisite Dependency Management and Flowchart Generation
+Directed Acyclic Graph (DAG) modeling of course prerequisites with automated cycle detection to identify and prevent circular dependencies during course setup.
+Dynamic generation of a visual curriculum flowchart organized across academic years and terms.
+Interactive dependency tracing allowing users to highlight prerequisite and post-requisite chains for any selected course, with SVG/PNG export options.
+Role-Based Access Control (RBAC) and Task Delegation
+Structured access permissions across four administrative tiers: 
+System Administrator: User management, system configuration, maintenance, and audit log oversight.
+Executive Director: Initiation of curriculum revision cycles, final approval or rejection of submitted curricula, and institutional reporting.
+Program Director: Curriculum authoring, course setup, OBE alignment, prerequisite configuration, validation execution, and revision submission.
+Faculty Member: View-only access to approved curricula, with scoped authoring rights granted strictly through formal delegation.
+Scoped task delegation module enabling Program Directors to assign temporary, cluster-specific editing privileges to designated faculty members with defined expiration dates.
+System Administration and Master Data Maintenance Module
+Administrative interfaces for managing system master data without direct database access: 
+Creation and maintenance of Academic Years and Academic Terms.
+Setup and management of Degree Programs and specialized academic tracks.
+Configuration of course grouping classifications and credit unit limits.
+User account lifecycle management (account creation, role assignment, status updates, and credential management).
+Audit Logging and Curriculum Version Control
+Append-only audit trail logging user modifications, capturing user identity, role, timestamp, action type, affected record, and previous versus updated values.
+Formal curriculum lifecycle states: Draft, Pending Review, Approved (Active), and Archived.
+Non-destructive versioning rules that lock active curricula and branch proposed updates into isolated draft revisions, preserving historical curriculum records.
+Data Export and Compliance Report Generation
+Automated compilation, data extraction, and export of curriculum datasets and standardized reports in PDF and Excel (.xlsx) formats: 
+CHED CMO No. 92 Curricular Compliance Matrix (course distribution, credit unit breakdowns, and contact hours).
+Program I-E-D Outcome Alignment Matrix.
+Course Prerequisite Dependency Schedules.
+Curriculum Revision History and Change Ledgers.
+Delimitations
+Exclusion of Course Syllabus Authoring and Course Learning Outcomes (CLOs)
+The platform operates exclusively at the macro-curriculum level (aligning degree courses to Student Outcomes using the I-E-D taxonomy).
+Detailed course syllabi, weekly modular lesson plans, assessment rubrics, textbook references, and micro-level Course Learning Outcomes (CLOs) are excluded from this platform and remain assigned downstream to the existing School of Engineering Syllabus system, which receives approved course parameters and outcome levels from the proposed system.
+Exclusion of Live Registrar Database Synchronization
+The platform operates independently on the School of Engineering server and does not maintain live two-way database synchronization or automated API hooks with APC’s central Registrar database.
+Exclusion of Graduate Tracer Studies and Long-Term PEO Measurement
+While the system digitally defines PEOs and maintains their mapping to Graduate Attributes and Student Outcomes, it does not conduct alumni surveys, track employment statistics, or measure post-graduation PEO attainment (which evaluates career outcomes 3 to 5 years after graduation).
+Demarcation of External Advisory Deliberations (Program Advisory Panel)
+The system does not provide external user accounts or in-app consultation portals for members of the Program Advisory Panel (PAP), alumni, or industry partners.
+Consultative reviews occur offline during board meetings. Approved advisory recommendations and meeting minutes are uploaded or documented in the system by the Program Director.
+Exclusion of Direct Electronic Submission to Regulatory Portals (CHED)
+The system formats and exports compliant curriculum documents matching CHED CMO No. 92 standards but does not interface directly via automated APIs with external CHED web portals. Formal transmittal and regulatory filing remain an offline administrative procedure managed by the Office of the Registrar.
+Departmental and Program Scope
+System development, deployment, and pilot testing are strictly delimited to the School of Engineering (SoE) at Asia Pacific College, with the Bachelor of Science in Computer Engineering (BSCpE) serving as the primary pilot program.
+Assumptions
+The design, development, and deployment of the system proceed under the following assumptions:
+Curriculum Data Availability: The School of Engineering will provide complete and verified historical curriculum sheets, course descriptions, credit unit allocations, and current OBE alignment matrices required for baseline system setup and testing.
+Regulatory Framework Stability: The institutional OBE framework at APC and the regulatory standards set by CHED CMO No. 92, Series of 2017 will remain structurally consistent throughout the project lifecycle.
+Stakeholder Participation: The Executive Director, Program Director, and designated engineering faculty will be available at scheduled intervals to participate in requirements validation, feedback sessions, and User Acceptance Testing (UAT).
+Server Infrastructure Readiness: The School of Engineering on-premises server hosting the web server, and database environment will remain operational and accessible via the local campus network for system deployment and evaluation.
+Constraints
+The development and deployment of the system are governed by the following constraints:
+Academic Timeline: The entire project lifecycle, from requirements analysis to design, implementation, testing, and documentation, must be completed within the academic calendar timeframe allocated for the USERINX capstone course sequence.
+Regulatory Standards: Curricular structures, unit allocations, course groupings, and outcome mappings must strictly comply with the requirements of CHED CMO No. 92, Series of 2017 and APC's Tri semester academic calendar.
+On-Premises Technical Environment: The platform must run on the existing School of Engineering on-premises server infrastructure using standard web technologies without requiring paid external cloud services.
+Data Governance and Privacy: The platform must comply with the Philippine Data Privacy Act of 2012 (Republic Act No. 10173) and APC internal IT policies, ensuring secure user authentication, role-based authorization, and the protection of internal academic records.
+Significance of the Project
+This study is significant to the following individuals and groups, as it addresses the operational problems, administrative bottlenecks, and gaps identified through the current curriculum review process at Asia Pacific College's School of Engineering.
+Institution. The proposed Curriculum Management System will provide Asia Pacific College with a centralized platform that enforces the cascading OBE hierarchy, from Mission and Vision down to the I-E-D mapping matrix. This strengthens the institution's ability to maintain accreditation readiness and produce CHED-compliant documentation with fewer manual errors.
+Executive Director. The system reduces the administrative burden of approving curriculum changes by providing a centralized view of pending revisions, audit logs, and version history, allowing for faster and more informed final approvals.
+Program Director. By automating I-E-D mapping calculations and enabling temporary task delegation, the system removes the Program Director from being a constant bottleneck in subject creation and curriculum mapping, freeing time for more strategic curriculum planning.
+Faculty. Faculty members benefit from a centralized and transparent platform to participate in curriculum reviews, analyze course prerequisite dependencies, and contribute to subject cluster mappings aligned with Student Outcomes without administrative friction.
+Future Researchers. This study serves as a reference for future research on OBE curriculum digitization, automated outcome mapping, and role-based access control in academic information systems, particularly for institutions seeking to unify these three components into a single platform.
+Definition of terms
+To establish theoretical and operational consistency throughout this study, the following terms are defined in alphabetical order:
+Academic Term: A designated instructional period within Asia Pacific College's Tri semester academic calendar (Term 1, Term 2, or Term 3) in which curriculum courses are scheduled and offered.
+Audit Trail (Audit Logging): A secure, append-only record within the system that logs user actions, capturing the timestamp, user identity, role, action type, affected table, and previous versus modified values to ensure data integrity and institutional accountability.
+Batch Ingestion: An automated processing mechanism that parses, validates, and bulk-loads structured curriculum records from spreadsheet files (.xlsx or .csv) into the database, bypassing manual single-record data entry.
+CHED Memorandum Order (CMO) No. 92, Series of 2017: The statutory policies, standards, and guidelines issued by the Commission on Higher Education governing the Bachelor of Science in Computer Engineering (BSCpE) program in the Philippines.
+Co-requisite: An academic course or laboratory requirement that must be enrolled in and taken concurrently with another course during the same academic term.
+Course Grouping: The categorical classification of curriculum courses into standard statutory areas mandated by CHED CMO No. 92, consisting of General Education, Basic Engineering and Sciences, Allied Courses, Professional Courses, and Technical Electives.
+Curriculum Management System (CMS): A centralized, web-based platform designed to create, organize, map, visualize, version, and maintain academic degree programs, course catalogs, and prerequisite relationships.
+Curriculum Mapping: The analytical process of indexing and linking curriculum courses to institutional Graduate Attributes, Program Educational Objectives, and Student Outcomes using the I-E-D progression scale.
+Curriculum Version: A discrete, state-tracked iteration of a degree program's curriculum that represents its structural configuration during a specific academic period.
+Directed Acyclic Graph (DAG): A mathematical graph structure composed of vertices (courses) and directed edges (prerequisite links) containing no closed loops, used by the system to model course progression and automatically detect circular dependencies.
+Executive Director (ExD): The chief administrative and academic officer of the School of Engineering, responsible for authorizing curriculum revision cycles and granting final institutional approval for proposed curricula.
+Graduate Attributes (GAs): The overarching qualities, competencies, and values that Asia Pacific College expects every student to develop and exhibit upon graduation, regardless of degree program.
+I-E-D Mapping Taxonomy: The developmental progression scale used in Outcomes-Based Education to map courses against Student Outcomes: 
+Introductory (I): Foundational exposure where core concepts and principles are introduced.
+Enabling (E): Intermediate reinforcement where concepts are applied, synthesized, and expanded.
+Demonstrative (D): Advanced mastery where students exhibit independent synthesis, design, or comprehensive evaluation.
+Outcomes-Based Education (OBE): An educational approach that organizes curriculum structure, instructional delivery, and assessment backward from clearly defined competencies that graduates must demonstrate.
+Prerequisite: A foundational course or academic requirement that must be successfully completed before enrolling in an advanced course.
+Program Director (PD): The academic head of a degree program (such as Computer Engineering), responsible for authoring, updating, validating, and maintaining degree curricula and OBE alignment matrices.
+Program Educational Objectives (PEOs): Broad career and professional milestones that graduates are expected to achieve within three to five years after graduation.
+Role-Based Access Control (RBAC): A security and authorization mechanism that restricts system features, data visibility, and administrative capabilities based on authenticated user roles.
+Student Outcomes (SOs): The 13 specific competencies, knowledge areas, and behaviors that engineering students must demonstrate by the time of graduation, as mandated by CHED CMO No. 92.
+Temporary Task Delegation: A time-bound administrative mechanism permitting a Program Director to grant scoped editing privileges for designated course clusters to specific faculty members.
+Version Control: The systematic management and historical preservation of changes made to curriculum records, allowing prior curriculum iterations to be retrieved and audited without data loss.
+Problem Analysis
+Stakeholder Analysis
+The Executive Director is responsible for initiating curriculum revision and giving final approval of the revised curriculum. The Executive Director’s role in the system entails managing the curriculum revision process during the period when curriculum modifications are determined to be necessary after the annual meetings and planning workshops. The system is expected to help the Executive Director gain the required support through the compacted ideas and suggestions made by faculty members, stakeholders, alumni, industry representatives, and student representatives. The system must provide necessary conditions under which the Executive Director will have a well-organized and effective curriculum revision process while guaranteeing that the modifications will not be ignored and overlooked. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026) 
+The Program Director oversees creating, evaluating, and changing the curriculum. The PD is involved in various parts of curriculum management and takes into consideration proposals and feedback collected from teachers during curriculum assessments, planning sessions, gatherings, and consultations with the Program Advisory Panel (PAP). The system aims to assist the Program Director in managing, developing, and improving curriculum through better organizing curriculum data, obtaining valuable input, and managing feedback from those involved. Also, the system will allow for achieving higher effectiveness, reliability, and record-keeping in the process of development and modification of the curriculum. Since the stakeholder takes responsibility for managing and developing the curriculum, the Program Director is very interested, as well as influential in the discussed system. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+The Faculty members play an essential role in validating curriculum content and encoding course mapping data. Faculty members participate directly in the curriculum management lifecycle by reviewing prerequisite relationships, evaluating course sequences, and contributing to course-to-outcome mappings for their respective subject clusters. The proposed system provides faculty with designated, role-delegated access to review curricular changes, verify course alignment with Student Outcomes, and input accurate curriculum metadata to satisfy institutional quality and accreditation standards. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+Current Business Process
+Figure 2.1. Current Curriculum Review Process
+Figure 2.1 depicts the six steps of the existing curriculum activity management lifecycle. The current business process analysis is concerned with the functions and operations governing curriculum management within the School of Engineering at Asia Pacific College. It describes the steps taken in the process of curriculum development, which include defining, organizing, laying out, confirming, and giving the stamp of approval for degree curricula.
+The process of curriculum lifecycle begins with the initiation of the curriculum revision cycle by the Executive Director of the School of Engineering, or the initiation of a new degree program by the Executive Director. The Executive Director sets out curricular priorities in each department, determines the timeframe for curriculum revision, and appoints the respective Program Director who will oversee the process of curriculum revision.
+Following the approval from the executive, the Program Director develops or revises the Program Educational Objectives (PEOs) so that they comply with the Vision, Mission, and Graduate Attributes of Asia Pacific College. The Program Director then defines the Student Outcomes of the Program (SOs) while complying with the 13 CHED-engineering-required outcomes. The Program Director creates the full course catalog of the program that includes the courses of Years 1-4 according to the trimester schedule established by the APC.
+This involves entering Course Codes, Titles, Lecture Hours, Laboratory Hours, Total Credit Units, and Term. After the input of the courses, the Program Director sets the rules for prerequisites and co-requisites in terms of timelines and order of courses. Each course is correlated with the 13 Student Outcomes of the Outcomes-Based Education system (Introductory, Enabling, and Demonstrative) to determine the contribution of the course to the achievements of the student. 
+After the mapping and counting of the credit units, the first version of the curriculum is submitted to the Executive Director for consideration. The Executive Director visually checks whether the number of credit units complies with CHED requirements and whether all the outcomes are properly covered. If needed, the curriculum instead is sent back to the Program Director for changes. After verification, the Executive Director approves the document and makes it available for use. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026, and Appendix C. Screenshots of Existing System)
+User Analysis
+This research aims to fulfill the needs and supply a smooth working flow of the website to be accessed by the users. To understand the concept of the wants and needs of the users for this system, the researchers have created a User Persona for the sake of representation. A user persona helps the project team understand the characteristics, behaviors, needs, motivations, and challenges of the intended users, ensuring that the system is designed with the users at the center of the development process. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+User Persona 
+From the Executive Director (XD) perspective, making curriculum changes involves a tedious process, particularly when accessing and managing different curriculum versions. This indicates that XDs also experience difficulties in efficiently managing curriculum records and revisions. These challenges emphasize the need for a centralized system where curriculum versions can be easily accessed, managed, and monitored.
+From the Program Director (PD) perspective, managing and tracking different curriculum versions is one of the major difficulties in the current system. One Program Director interviewed by the researchers shared that finding records of previous curricula can be challenging, particularly when they need to review or compare older versions. The PD also mentioned that accessing the current curriculum can be a hindrance because of the process involved in locating the appropriate version. These insights highlight the challenges faced by PDs in terms of version tracking, accessibility, and the time required to locate and manage curriculum records.
+From the faculty’s perspective, managing and revising the curriculum involves several manual and time-consuming processes. During the interview, one faculty member shared their experience with the current curriculum management process, particularly the amount of manual work required when organizing, mapping, and updating curriculum information. The faculty member’s experience highlighted how curriculum revisions require them to work with different requirements and documents while coordinating with other stakeholders. This creates a pain point where maintaining and updating curriculum information can become tedious and prone to additional work. Their experience suggests that faculty members would benefit from a centralized system that can organize curriculum information and make the creation, revision, and updating process more efficient.
+User Goal
+The Executive Directors (XDs) aim to oversee the overall curriculum development process by ensuring that proposed changes are properly reviewed and aligned with the program's objectives. They consider recommendations from faculty members and stakeholders to ensure that curriculum revisions effectively address identified concerns while maintaining consistency with the Program Educational Objectives (PEO) and Student Outcomes (SO).
+The Program Directors (PDs) aim to oversee the curriculum development process by reviewing and evaluating proposed changes to the curriculum. Their goal is to assess the changes suggested by faculty members and stakeholders and ensure that these proposed revisions address identified curriculum concerns. They also ensure that the changes remain consistent with the Program Educational Objectives (PEO) and Student Outcomes (SO).
+The Faculty’s goal is to help identify the academic and structural issues of the current curriculum and to communicate with the Program Director and Executive Director about any insight regarding the current curriculum. Faculty members contribute recommendations that can help maintain the relevance and effectiveness of the curriculum.
+User Responsibility
+The Executive Directors (EXDs) are responsible for affirming and overseeing the proposed changes to the curriculum. They ensure that the revisions are aligned with the Program Educational Objectives (PEO) and Student Outcomes (SO) and that all proposed changes have been properly reviewed before the finalized curriculum is forwarded to the Asia Pacific College Registrar.
+The Program Directors (PDs) are responsible for reviewing and affirming curriculum changes proposed by faculty members and other stakeholders. They ensure that the proposed changes are consistent with and aligned with the Program Educational Objectives (PEO) and Student Outcomes (SO). Additionally, PDs ensure that the revisions undergo thorough review before the finalized curriculum is forwarded to the Asia Pacific College Registrar.
+The Faculty is responsible for providing useful insight about the current curriculum. This includes identifying the weak points of the curriculum whilst discussing other problems encountered within the current curriculum structure. Faculty members determine whether identified curriculum issues may be considered for revision to the Program and Executive Directors.
+User Journey Map
+Figure 2.2. PD/EXD User Journey Map
+The Program Director (PD) and Executive Director (EXD) journey maps both trace the process of managing and monitoring curriculum changes, beginning when a need to review or update the curriculum is identified, whether from faculty feedback, program requirements, or changes in standards, and continuing as the PD or EXD gathers the current curriculum, reviews existing information, and consults with faculty and other relevant stakeholders before deciding which courses, learning outcomes, or proposed changes should move forward; once revisions are finalized, the curriculum is submitted through the appropriate approval process before implementation, and afterward the EXD also monitors the curriculum and retains records for future review. A major challenge for both roles occurs when they need to access previous curriculum versions or track how changes were made over time, since locating and comparing past records can be tedious. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+Figure 2.3. Faculty User Journey Map
+The Faculty Journey Map focuses on the process faculty members go through when creating or revising curriculum information. Their journey begins when a need for revision is identified through faculty feedback, meetings, or changes in requirements. Faculty then gather and review existing curriculum documents, standards, and feedback before deciding which courses and learning outcomes need to be modified. During the actual revision process, faculty may need to manually organize information, map out courses and learning outcomes, and ensure that the curriculum follows required standards and formats. After the curriculum is revised, the updated information needs to be maintained for future reference. This journey highlights the need for a centralized system that can reduce manual work, simplify curriculum mapping, and help faculty manage revisions and documentation more efficiently. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+Pain Point Analysis
+Figure 2.4. Root Cause Analysis
+Manual and Repetitive Curriculum Management
+The management of curriculum information involves activities that require users to repeatedly enter, update, or track information manually. Curriculum data requires considerable manual input, and existing information cannot easily be copied, imported, or reused, requiring users to create new files or manually modify Excel files. Because the current system lacks a batch importation feature to upload existing curriculum spreadsheets, entering courses one by one remains a time-consuming task. Curriculum mapping and requirement tracking also involve heavy manual work without automated assistance. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+Curriculum Information and Visualization
+The current curriculum process presents limitations in organizing, managing, and presenting curriculum information, including course details, prerequisite relationships, and overall curriculum structure. There is a clear need for better organization and visual representation of course progression and prerequisite flowcharts to support the management and review of curriculum information without relying on manual drawing tools. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+User Responsibilities and Task Management
+Curriculum-related activities involve users with different responsibilities and levels of authority. The current system lacks a clear separation of user roles, while the curriculum revision process also requires a way to temporarily assign selected curriculum-related responsibilities to faculty members without granting them permanent administrative access. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+Fragmented System Access
+Curriculum-related information and activities are handled through different unlinked files and separate access arrangements, making access inconvenient and disorganized for users. There is a clear need to centralize curriculum tools and provide a single, secure login to make accessing curriculum information and performing updates more unified. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+Curriculum Records and Change Tracking
+Curriculum information undergoes regular revisions and must be maintained across different versions. While previous systems implemented basic records, modifying a curriculum often overwrites existing data. There is a need to provide users with better control over curriculum versions, to preserve historical records for past student cohorts, and to track user activities and changes made within the system. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+Reporting and Document Preparation
+Preparing curriculum compliance documents and outcome matrices currently requires manual compilation. The current system provides very limited export options, lacking the ability to export complete curriculum datasets into structured spreadsheet formats such as Excel or CSV. Furthermore, because the system does not provide working automated reports, users must manually calculate credit unit totals and format compliance tables in Excel, which takes considerable time and increases the chance of clerical errors. (Refer to Appendix A. Minutes of the Meeting, August 12, 2026, August 13, 2026)
+Gap Analysis
+Centralized and Reusable Curriculum Information
+A centralized environment is needed to bring curriculum-related information together and allow existing and historical curriculum data to be imported from spreadsheets and reused when creating or modifying curriculum records. This addresses the need to onboard and update curriculum information without repeatedly recreating or manually typing separate files. (Refer to Appendix A. Minutes of the Meeting July 21,2026, August 12, 2026, August 13, 2026)
+Prerequisite and Curriculum Visualization
+The curriculum requires structured management and visual representation of course relationships and curriculum progression. The system therefore needs to support automated prerequisite validation to prevent circular errors and provide dynamically generated curriculum flowcharts. (Refer to Appendix A. Minutes of the Meeting July 21,2026, August 12, 2026, August 13, 2026)
+Role-Based Access and Task Delegation
+The system needs to provide access according to the responsibilities of different users while allowing selected curriculum-related tasks to be temporarily delegated to authorized faculty members. (Refer to Appendix A. Minutes of the Meeting July 21,2026, August 12, 2026, August 13, 2026)
+Centralized Authentication
+A centralized authentication mechanism is needed to provide users with a single, secure method of accessing the curriculum management environment according to their assigned permissions. (Refer to Appendix A. Minutes of the Meeting July 21,2026, August 12, 2026, August 13, 2026)
+Version Management and Audit Logging
+The system needs to provide controlled management of curriculum versions while preserving previous curriculum information and recording relevant curriculum-related activities. Version management ensures that historical records are preserved during revisions, while audit logging provides a reliable record of the users who perform changes within the system. (Refer to Appendix A. Minutes of the Meeting July 21,2026, August 12, 2026, August 13, 2026)
+Automated Compliance Reporting and Data Export
+The system needs to automate the generation and export of curriculum compliance reports, outcome mapping matrices, and structured curriculum datasets in standardized formats such as PDF and Excel. This eliminates the need for manual data consolidation and calculation during academic reviews and accreditation, while allowing curriculum records to be easily exported for institutional use. (Refer to Appendix A. Minutes of the Meeting July 21,2026, August 12, 2026, August 13, 2026)
+Review of Related Literatures
+The development of a centralized Curriculum Management and Mapping System for the School of Engineering at Asia Pacific College intersects educational compliance, software engineering, access governance, and graph data modeling. This section critically synthesizes relevant academic literature across four core thematic domains: statutory quality assurance frameworks, Outcomes-Based Education (OBE) digitization, graph-based curriculum visualization, and delegated role-based access control. The review concludes with a comparative synthesis establishing the research gap addressed by the proposed system.
+Statutory Framework: CHED Outcomes-Based Quality Assurance Policies
+The structural architecture of the proposed Curriculum Management and Mapping System is directly anchored in the regulatory mandates of the Commission on Higher Education (CHED). CHED Memorandum Order (CMO) No. 46, Series of 2012, titled "Policy-Standard to Enhance Quality Assurance in Philippine Higher Education through an Outcomes-Based and Typology-Based QA," stands as the landmark statutory policy governing academic programs in the Philippines. Under this directive, CHED mandates that Higher Education Institutions (HEIs) transition from traditional, input-based curricular structures toward learner-centered, Outcomes-Based Education (OBE). The memorandum defines institutional quality as the strict alignment and consistency of the educational environment with the institution's Vision, Mission, and Goals (VMG), demonstrated through verifiable service and learning competencies.
+To operationalize CMO No. 46, CHED published the official Handbook on Typology, Outcomes-Based Education, and Institutional Sustainability Assessment. The handbook establishes the fundamental requirement for multi-tiered outcome alignment: an HEI must translate its VMG into defined Graduate Attributes, which subsequently serve as the foundation for Program Educational Objectives (PEOs) and measurable Student Outcomes (SOs). Crucially, the CHED OBE framework establishes that this cascading hierarchy must be formally operationalized through a comprehensive Curriculum Map. CHED defines the curriculum map as the core structural artifact that explicitly delineates the extent to which academic courses correspond to, support, and fulfill mandated program competencies.
+Furthermore, CHED’s regulatory framework integrates the Plan-Do-Check-Act (PDCA) quality cycle to govern Continuous Quality Improvement (CQI) across academic programs. Under this model, curricula are not static administrative documents; they require continuous monitoring, review, and systematic refinement to address evolving industry competencies and statutory guidelines, such as CHED CMO No. 92, Series of 2017 for Computer Engineering. To satisfy CHED’s internal quality assurance (IQA) and external accreditation audits, engineering programs must maintain verifiable, auditable records demonstrating how curricular revisions maintain alignment with national standards. The proposed Centralized Curriculum Management and Mapping System directly supports this statutory mandate by transforming CHED-required curriculum mapping and compliance monitoring from manual, error-prone spreadsheet processes into an automated, verifiable digital platform.
+Outcomes-Based Education (OBE) Curriculum Frameworks and Digital Management Systems
+The implementation of OBE in higher education requires translating educational objectives into structured, computable data. Wike, Novita, and Haryono (2026) analyzed OBE institutionalization using Korten's Fit Model, demonstrating that curriculum success depends on tight structural alignment between institutional policy, curriculum design, and operational execution. The foundational importance of curriculum mapping was established by Plaza et al. (2007), who demonstrated that matrix-based mapping serves as an indispensable diagnostic instrument for program assessment, gap detection, and institutional accreditation reviews. Furthermore, Uchiyama and Radin (2009) emphasized that curriculum mapping is inherently a collaborative undertaking; when curricular design is trapped in disconnected faculty spreadsheets, organizational alignment breaks down. 
+To resolve these operational bottlenecks, recent research focuses on semantic and ontological modeling of academic curricula. Aminah, Krisnadhi, and Hidayanto (2025) introduced OBC-ONTO, an ontology that models OBE curriculum components as structured, traceable database entities, precisely reflecting how APC models Graduate Attributes, PEOs, SOs, and Course Groupings. Asmaranto, Kusumasari, and Alam (2025) built a centralized OBE dashboard to replace manual learning outcome spreadsheets, achieving a System Usability Scale (SUS) score of 74.42 and validating that centralized web workbenches significantly reduce clerical fatigue and human error. Magfira et al. (2024) implemented an automated OBE curriculum management workbench utilizing Model-View-Controller (MVC) architecture, while Galeon (2022) established that sustainable OBE execution requires treating curriculum data as structured, version-controlled institutional assets rather than static office documents.
+Curriculum Mapping, Prerequisite Modeling, and Flowchart Visualization
+Curriculum mapping serves as a structural diagnostic mechanism to verify that all required student outcomes are systematically addressed across course sequences. Frost and Ackrill (2025) demonstrated that comprehensive curriculum mapping must be multidimensional—incorporating course sequencing, prerequisite logic, and developmental proficiency levels (Introductory, Enabling, Demonstrative) rather than simple binary checklists. While classical curriculum mapping studies relied on manual consensus panels (Dera, 2021; Okojie, Baştaş, & Miralay, 2022), recent engineering literature has shifted toward algorithmic and computable mapping. Das, Paul, Ray, and Paul (2025) leveraged Natural Language Processing to compute outcome alignment scores, and Choudhari et al. (2026) demonstrated automated alignment algorithms for identifying curriculum gaps.
+Beyond matrix calculation, presenting prerequisite dependencies visually is essential for academic planning. In engineering education, prerequisite course dependencies inherently constitute a Course Prerequisite Network (CPN) modeled as a Directed Acyclic Graph (DAG). In a foundational IEEE study, Slim, Heileman, Kozlick, and Abdallah (2014) established that modeling curricula as DAGs enables academic systems to dynamically visualize degree paths, detect circular dependency deadlocks, and quantify course bottlenecks. Expanding on this, Heileman, Slim, and Hickman (2018) developed the Curricular Analytics framework, demonstrating that curriculum complexity can be computationally evaluated through structural graph properties. In the proposed KapTau system, implementing dynamic topological sorting and automated layered graph layout algorithms eliminates the need for manual Visio or Canva flowchart drafting, guaranteeing that academic leadership maintains a mathematically valid, real-time visual representation of curriculum progression.
+Role-Based Access Control (RBAC) and Delegated Task Workflows (D-RBAC)
+Academic information systems manage data shared across heterogeneous stakeholders with differing levels of authority, necessitating robust access governance. Role-Based Access Control (RBAC) has long served as the industry standard for restricting system capabilities based on organizational roles. Jin et al. (2020) proposed a Role and Object Domain-Based Access Control model (RDBAC) that scopes authorization not merely to function types, but to specific data domains (e.g., restricting a Program Director’s editing authority strictly to their own department). Kabier, Yassin, and Abduljabbar (2023) demonstrated that pairing RBAC with centralized session management and multi-factor authentication prevents unauthorized privilege escalation in academic environments. Florencio Martínez et al. (2026) validated that implementing RBAC with row-level security policies provides fine-grained data isolation necessary for multi-program academic systems.
+However, standard RBAC exhibits limitations when academic administrators need to distribute seasonal workloads without granting full administrative privileges. To solve this, Barka and Sandhu (2004) developed the Role-Based Delegation Model (RBDM/D-RBAC), establishing the formal framework for temporary, scope-restricted delegation of administrative authority with automated revocation. Kornienko and Protasov (2025) utilized Mutually Exclusive Role constraints to prevent conflicting privilege assignments, while Larin, Zaharchenko, and Dichenko (2026) demonstrated that combining role hierarchies with attribute-based constraints enables secure, time-bound task delegation. Within academic curriculum engineering, this architecture allows the Program Director to assign specific course clusters to designated faculty members for compliance review and metadata encoding, ensuring accountability through immutable audit logging without granting permanent administrative rights.
+Synthesis and Research Gap
+The literature confirms that each component of the proposed system—OBE digitization, automated outcome mapping, prerequisite DAG visualization, and fine-grained RBAC—is individually well supported. However, existing academic platforms address these domains in isolation:
+Commercial Student Information Systems (SIS) manage student records but lack four-tier cascading OBE mapping and CHED CMO No. 92 compliance checking.
+Dedicated Curriculum Mapping Tools calculate outcome matrices but lack fine-grained, delegated faculty editing workflows and dynamic flowchart generation.
+Access Governance Studies propose advanced D-RBAC models but evaluate them in generic enterprise environments rather than multi-tiered academic curriculum workflows.
+No reviewed study or operational platform integrates temporal curriculum versioning, automated DAG-based flowchart generation, delegated faculty permissions (D-RBAC), append-only audit trails, and CHED-compliant matrix exportation into a unified internal workbench. This is the gap that the proposed Curriculum Management System for the APC School of Engineering addresses.
+Requirement Analysis
+The Requirement Analysis specifies the functional and non-functional requirements of the proposed Centralized Curriculum Management and Mapping System based on findings from the Stakeholder Analysis, Current Business Process, User Analysis, User Journey Map, Pain Point Analysis, and Gap Analysis. These requirements incorporate institutional directives gathered from the Executive Director, Program Director, faculty members, and panel critiques during project consultations. (Refer to Appendix A. Minutes of the Meeting July 21,2026, July 28, 2026, August 12, 2026, August 13, 2026, August 24, 2026)
+Functional Requirements
+The functional requirements define the essential services, automated operations, and capabilities that the system must provide to support end-to-end curriculum management, OBE alignment, batch data ingestion, visualization, compliance reporting, and administrative governance.
+User Authentication and Centralized Access
+The system shall provide a centralized, secure authentication mechanism requiring authorized users to access the platform using validated institutional credentials.
+The system shall implement secure session management, automatic session timeout after periods of inactivity, and credential encryption to prevent unauthorized access.
+The system shall support administrative password reset, account recovery, and account activation protocols managed by the System Administrator.
+Multi-Tier Role-Based Access Control (RBAC)
+The system shall enforce a four-tier Role-Based Access Control architecture comprising System Administrator, Executive Director, Program Director, and Faculty Member roles.
+The system shall restrict interface modules, data modification capabilities, and approval controls strictly according to the active role of the authenticated user.
+The system shall grant the System Administrator full governance over user accounts, role provisioning, and system configuration parameters.
+The system shall grant the Executive Director institutional read and executive oversight privileges, including system-wide curriculum review, final approval endorsement, and accreditation report viewing.
+The system shall grant the Program Director authority to create, modify, structure, and submit degree programs, course catalogs, prerequisite networks, OBE outcome mappings, and faculty task delegations.
+The system shall grant Faculty Members scoped permissions limited to viewing approved curricula, contributing to assigned course clusters, and updating delegated outcome mapping sections.
+System Configuration and Maintenance Module
+The system shall provide a dedicated administrative maintenance module to configure and maintain global academic parameters, including academic years, terms/semesters, and grading periods.
+The system shall allow authorized administrators to manage standardized curriculum classification categories, including CHED CMO No. 92 Course Groupings (e.g., General Education, Technical Core, Professional Courses, Allied Courses, Track/Electives, and Free Electives).
+The system shall enable dynamic management of institutional metadata and curriculum status flags without requiring hard-coded source code modifications or system redeployment.
+Curriculum Information Management and Course Catalog
+The system shall provide a centralized repository to create, view, modify, and manage complete curriculum structures, including degree program profiles, curriculum versions, academic year levels, and terms.
+The system shall maintain an institutional master course catalog containing detailed course records, including course codes, descriptive titles, lecture credit units, laboratory credit units, contact hours, and course descriptions.
+The system shall allow authorized users to assign courses to standardized course groupings and track cumulative credit unit requirements in real time to verify compliance with institutional and regulatory minimums.
+Batch Data Importation and Spreadsheet Ingestion
+The system shall provide an automated batch data importation utility capable of ingesting existing curriculum records and course data from standardized spreadsheet formats (.xlsx and .csv).
+The system shall perform automated pre-import schema validation to verify field completeness, data types, unit distributions, and format conformance prior to database staging.
+The system shall provide transactional staging with visual error highlighting, flagging missing prerequisites, invalid course codes, duplicated records, or formatting discrepancies for user correction before committing changes.
+The system shall allow authorized users to clone, migrate, and adapt existing approved curriculum baselines into new revision drafts, eliminating redundant manual data re-entry.
+Outcomes-Based Education (OBE) Cascading and Mapping
+The system shall provide structured matrix interfaces to establish and manage the direct cascading alignment across Graduate Attributes (GAs), Program Educational Objectives (PEOs), and Student Outcomes (SOs).
+The system shall link each degree program's course inventory directly to approved Student Outcomes to ensure systematic curriculum alignment with institutional and regulatory OBE frameworks.
+The system shall dynamically generate outcome coverage matrices displaying the relationship between course offerings and corresponding Student Outcomes.
+I-E-D Progression Mapping and Automated Verification
+The system shall allow authorized users to assign competency proficiency levels—Introductory (I), Enabling (E), and Demonstrative (D)—to every course-to-Student-Outcome mapping entry.
+The system shall dynamically compute coverage summaries and verify learning progression, alerting users to developmental gaps (such as courses marked Demonstrative without preceding Introductory or Enabling foundations).
+The system shall calculate outcome distribution statistics to verify that all prescribed Student Outcomes are adequately developed across the chronological progression of the academic program.
+Course Dependency and Prerequisite Management
+The system shall allow authorized users to define, modify, and enforce prerequisite, co-requisite, and academic year standing requirements for all courses.
+The system shall incorporate a Directed Acyclic Graph (DAG) validation algorithm that automatically executes cycle detection during dependency configuration, actively preventing circular prerequisite loops (e.g., Course A requiring Course B, which requires Course A).
+The system shall automatically detect and flag prerequisite inconsistencies, orphaned courses, or missing prerequisite chains across academic terms.
+Dynamic Interactive Curriculum Visualization
+The system shall automatically generate visual, node-link flowcharts and dependency graphs representing curriculum structure, course sequences, and prerequisite pathways organized by academic year and term.
+The system shall render interactive visual elements that allow users to select individual courses, dynamically highlight complete prerequisite and co-requisite pathways, and inspect course details.
+The system shall provide responsive controls for panning, zooming, filtering by course grouping, and switching between chronological flowchart layouts and matrix representations.
+Curriculum Compliance Reporting and Multi-Format Data Exportation
+The system shall generate comprehensive compliance dashboards and formal reports reflecting CHED CMO No. 92 credit distribution summaries, category balances, and total credit unit totals.
+The system shall generate standardized OBE mapping reports, including PEO-to-SO matrices, Course-to-SO relationship schedules, and complete I-E-D developmental matrices.
+The system shall provide multi-format data exportation allowing authorized users to export curriculum summaries, course catalogs, flowcharts, and accreditation matrices directly into industry-standard formats, including Excel (.xlsx), Comma-Separated Values (.csv), and printable PDF files tailored for CHED accreditation submissions.
+Curriculum Version Control and Historical Archiving
+The system shall support complete curriculum versioning, managing distinct operational lifecycle states for every curriculum record (including Draft, Under Review, Active/Approved, and Archived).
+The system shall preserve historical curriculum baselines as immutable, read-only archives when a new curriculum revision is published, ensuring historical records for ongoing student batches remain untampered.
+The system shall provide side-by-side comparison utilities highlighting differences in course titles, credit unit weights, prerequisite paths, and outcome mapping levels between different curriculum revisions.
+Collaborative Task Delegation and Cluster Scoping
+The system shall allow the Program Director to delegate specific curriculum mapping, curriculum compliance review, and course updating tasks to designated faculty members based on specialized course clusters (e.g., Computer Networks, Hardware Systems, Software Development).
+The system shall restrict delegated faculty members to modify only their assigned course clusters, preserving administrative approval gates before modifications can be committed to the program curriculum.
+The system shall provide progress monitoring dashboards displaying the submission, review, and completion status of all delegated curriculum tasks.
+Immutable Audit Logging and Traceability
+The system shall maintain an automated, tamper-evident audit log recording all critical curriculum operations, administrative modifications, user authentications, and data exports.
+The system shall record metadata for every logged event, including the authenticated user ID, role, exact timestamp, action category, affected course or curriculum entity, and prior vs. updated data values.
+The system shall provide administrative filtering and search capabilities to inspect audit records by date range, user, action type, or academic program for institutional transparency and internal quality auditing.
+Non-Functional Requirements
+The non-functional requirements establish the quality standards, architectural constraints, security controls, and operational performance expectations of the system.
+Usability and Human-Centered Interface Design
+The system shall feature an intuitive, responsive user interface designed to minimize cognitive load, reduce visual clutter, and mitigate visual fatigue during data entry and matrix evaluation.
+The system shall provide real-time input validation, responsive contextual tooltips, and clear visual notifications (success, warning, and error alerts) for all user actions.
+The system shall organize complex outcome matrices and curriculum flowcharts with consistent visual hierarchies, high-contrast typography, and intuitive color indicators for I-E-D competency levels.
+Security and Access Governance
+The system shall enforce strict authentication and authorization boundaries across all endpoints, verifying user role permissions before processing any query or data modification.
+The system shall protect sensitive user data and authentication credentials using industry-standard cryptographic hashing and secure HTTP transport protocols (TLS/HTTPS).
+The system shall protect against common web vulnerabilities, including SQL injection, Cross-Site Scripting (XSS), Cross-Site Request Forgery (CSRF), and unauthorized direct object references.
+Data Integrity and Transactional Consistency
+The system shall utilize ACID-compliant relational transactions to guarantee that all multi-record operations (such as batch spreadsheet imports, curriculum cloning, and bulk prerequisite assignments) execute atomically with automated rollback upon error.
+The system shall enforce strict relational integrity constraints, foreign key validation, and uniqueness rules to eliminate orphan records and duplicate entries.
+The system shall maintain historical baseline immutability, ensuring that past approved curricula cannot be retroactively altered or corrupted by subsequent revisions.
+Auditability and Traceability
+The system shall enforce non-repudiation by generating persistent audit trail entries that cannot be edited, cleared, or deleted by any regular application user.
+The system shall ensure that all historical changes, delegations, and approval transitions remain fully reconstructible for institutional accreditation and governance audits.
+Compatibility and Interoperability
+The system shall provide complete cross-browser compatibility across standard modern web browsers, including Google Chrome, Mozilla Firefox, Microsoft Edge, and Apple Safari.
+The system shall support standard file format specifications for data exchange, specifically parsing .xlsx and .csv files for importation and generating standardized .xlsx, .csv, and vector-rendered PDF documents for reporting.
+On-Premises Infrastructure and Zero Recurring Cloud Cost
+The system shall be engineered for containerized on-premises deployment on existing APC School of Engineering (SoE) server hardware, eliminating third-party cloud subscription dependencies and turnover hosting costs.
+The system shall encapsulate its application services, web server, and relational database management system using containerized environments to ensure consistent installation, maintainability, and local deployment portability.
+Performance, Scalability, and Responsiveness
+The system shall render interactive curriculum flowcharts and complex outcome matrices within three seconds under standard local campus network conditions.
+The system shall process batch spreadsheet uploads of complete undergraduate curriculum programs (comprising 140+ credit units and associated course groupings) within five seconds during pre-import validation and staging.
+The system shall support concurrent multi-user access across department administrators and faculty members during peak curriculum review periods without degradation in responsiveness.
+Reliability and Maintainability
+The system shall incorporate robust exception handling to provide meaningful, user-friendly error messages while logging technical traces for administrative troubleshooting.
+The system shall support automated database backup and restore routines to protect against system failures or hardware disruptions.
+The system shall be built with a clean, modular architecture separating presentation, business logic, and data persistence layers to facilitate future institutional extensions and long-term academic maintenance.
+ 
+References
+Aminah, S., Krisnadhi, A. A., & Hidayanto, A. (2025). Ontological framework for the analysis of outcome-based curriculum in higher education. IEEE Access, 13, 31497–31516. https://doi.org/10.1109/ACCESS.2025.3542881
+Asmaranto, N. A., Kusumasari, T. F., & Alam, E. N. (2025). A dashboard system for enhancing learning outcome monitoring and curriculum management under the outcome-based education framework. In 2025 International Seminar on Intelligent Technology and Its Applications (ISITIA) (pp. 661–666). IEEE. https://doi.org/10.1109/ISITIA66279.2025.11137419
+Barka, E., & Sandhu, R. (2004). Role-based delegation model/hierarchical roles (RBDM1). In Proceedings of the 20th Annual Computer Security Applications Conference (ACSAC) (pp. 396–404). IEEE. https://doi.org/10.1109/CSAC.2004.14
+Choudhari, V., Sargar, R. S., Shirguppikar, S., Harip, S., Patil, S. H., Gaikwad, N. C., Jadhav, P., Gavali, P. B., & Todkar, A. S. (2026). Enhancing curriculum compliance through CO-PO mapping and strategic gap-bridging in outcome-based education. Journal of Engineering Education Transformations, 39(2), 26032. https://doi.org/10.16920/jeet/2026/v39is2/26032
+Commission on Higher Education. (2012). Policy-standard to enhance quality assurance in Philippine higher education through an outcomes-based and typology-based QA (CHED Memorandum Order No. 46, Series of 2012). Republic of the Philippines.
+Commission on Higher Education. (2014). Handbook on typology, outcomes-based education, and institutional sustainability assessment. Republic of the Philippines.
+Commission on Higher Education. (2017). Policies, standards, and guidelines for the Bachelor of Science in Computer Engineering (BSCpE) program (CHED Memorandum Order No. 92, Series of 2017). Republic of the Philippines.
+Das, D., Paul, A. K., Ray, R. S., & Paul, S. (2025). Automated alignment of course outcomes with program outcomes and program educational objectives using NLP techniques. In 2025 International Conference on Computing, Intelligence, and Application (CIACON) (pp. 1–6). IEEE. https://doi.org/10.1109/CIACON65473.2025.11189748
+Dera, A. H. (2021). Curriculum mapping and alignment of the neuroscience block in an undergraduate medical education program: A Delphi study. Advances in Medical Education and Practice, 12, 567–575. https://doi.org/10.2147/AMEP.S263915
+Florencio Martínez, M. Á., Morales, A. F., Villegas, A. C., & Valencia, R. C. E. (2026). Diseño de un modelo de control de acceso basado en roles y seguridad a nivel de filas en APIs académicas. FEGLININ. https://doi.org/10.70417/t23ojujqv(27
+Frost, D., & Ackrill, R. (2025). The multiple dimensions of curriculum mapping: Designing a comprehensive outcomes-based framework. London Review of Education, 23(1), 17. https://doi.org/10.14324/lre.23.1.17
+Galeon, D. (2022). Towards a sustainable outcomes-based education guided by knowledge management system: expoleIT design and development roadmap. In 2022 IEEE 7th International Conference on Information Technology and Digital Applications (ICITDA) (pp. 1–9). IEEE. https://doi.org/10.1109/ICITDA55840.2022.9971357
+Heileman, G. L., Slim, A., & Hickman, M. (2018). Curricular analytics: A framework for quantifying the impact of curricular reforms and pedagogical innovations (arXiv:1811.09676). arXiv. https://doi.org/10.48550/arXiv.1811.09676
+Jin, G., Wang, D., Yang, D., Hong, D., Dong, Q., & Wang, Y. (2020). Role and object domain-based access control model for graduate education information system. Procedia Computer Science, 174, 1241–1250. https://doi.org/10.1016/j.procs.2020.09.133
+Kabier, M. K., Yassin, A., & Abduljabbar, Z. (2023). Towards designing educational system using role-based access control. International Journal of Intelligent Engineering and Systems, 16(4), 48–58. https://doi.org/10.22266/ijies2023.0430.05
+Kornienko, S., & Protasov, M. (2025). Implementation of the role-based access control model (mutually exclusive roles model) at higher education institution. Intellectual Technologies on Transport, 444, 5–16. https://doi.org/10.20295/2413-2527-2025-444-5-16
+Larin, D., Zaharchenko, R. I., & Dichenko, S. A. (2026). Mandatory role-centric attribute-based access control model for large-scale information systems. Izvestiya SFedU. Engineering Sciences, 1, 179–191. https://doi.org/10.18522/2311-3103-2026-1-179-191
+Magfira, F., Matulatan, T., Fahmitra, N. F., Irawan, F., & Herikson, R. (2024). Implementation of model view controller architecture in designing Outcome-Based Education (OBE) curriculum management information system. BIO Web of Conferences, 134, 05002. https://doi.org/10.1051/bioconf/202413405002
+Okojie, M. U., Baştaş, M., & Miralay, F. (2022). Using curriculum mapping as a tool to match student learning outcomes and social studies curricula. Frontiers in Psychology, 13, 850264. https://doi.org/10.3389/fpsyg.2022.850264
+Plaza, C. M., Draugalis, J. R., Slack, M. K., Skrepnek, G. H., & Sauer, K. A. (2007). Curriculum mapping in program assessment and evaluation. American Journal of Pharmaceutical Education, 71(2), 20. https://doi.org/10.5688/aj710220
+Salim, A., Narongraksakhet, I., Hayani, A., Rouzi, K. S., Putri, M. A., Hassama, A., & Abdullah, A. A. (2026). Outcome-based education, e-learning, and student satisfaction: Evidence from Indonesia and Thailand. Jurnal Ilmiah Peuradeun, 14(1), 1285. https://doi.org/10.26811/peuradeun.v14i1.1285
+Uchiyama, K. P., & Radin, J. L. (2009). Curriculum mapping in higher education: A vehicle for collaboration. Innovative Higher Education, 33(4), 271–281. https://doi.org/10.1007/s10755-008-9078-8
+Wike, Novita, E., & Haryono, B. (2026). Bridging policy and practice: An analysis of Outcome-Based Education (OBE) curriculum implementation using David C. Korten’s Fit Model. Jurnal Kependidikan: Jurnal Hasil Penelitian dan Kajian Kepustakaan di Bidang Pendidikan, Pengajaran, dan Pembelajaran, 12(1), 19879. https://doi.org/10.33394/jk.v12i1.19879
+Appendices
+Appendix A. Minutes of The Meeting
+ACTIVITY DETAILS
+Meeting Date:
+July 21, 2026
+Start Time:
+7:30 AM
+End Time:
+9:30 AM
+Venue:
+Asia Pacific College, Room 308
+Group Name:
+KapTau
+Attendees
+Name
+Signature
+1.Matheus Vincenzo M. Reyna
+2.Joshua Manuel C. Muceros
+3. Einstein D. Yong
+PROCEEDINGS
+Agenda
+Discussion Notes
+Resolution
+Requirements of User Management System
+User Management
+-Single Log-In System
+-Both User and Curriculum Management
+-You need to research of diff methods on how privileges and access rights are given for each page
+-All page designs must be uniform
+-Home Page first, there must be clickables that redirect the users to the different parts of the curriculum
+-Home Page is white, the sides are blue (use APC's website as a basis)
+-Research on methods for Access Rights
+Obtain the general information to make a login system – Obtain the necessary framework of making a login system
+Requirement of Curriculum Management System
+Curriculum Management
+-Executive Director has the capability to change the curriculum program
+-Create a page that shows the Program Educational Objective (PEO) with versioning
+-We need to map out Student Outcomes (SO) and make an option to edit them
+Obtain the necessary framework of the current curriculum system
+– Obtain the information of creating a curriculum system – To
+be able to acknowledge the general problems of the current curriculum system
+-Adding Subjects, Full Units, when is it offered per year, per term, their units, type of subject if its lab or not.
+Subcategories such as Capstone and Thesis
+-Course Code and Pre-Requisites, Categories, and Description
+-Each Subject needs an SO chart
+-Introductory, Enabling, Demonstrative. These are the program development learning progression. (Types of Subjects).
+We will put these in the charts (IED)
+APPROVAL DETAILS
+Prepared by:
+Daniel Joshua E. Madrid
+Verified by:
+Einstein D. Yong
+Date :
+July 21, 2026
+Date :
+July 28, 2026
+ACTIVITY DETAILS
+Meeting Date:
+July 28, 2026
+Start Time:
+7:44 AM
+End Time:
+8:31 AM
+Venue:
+Asia Pacific College Room 308
+Group Name:
+KapTau
+Attendees
+Name
+Signature
+1.  Dean Alejandrino
+2.  Joshua Manuel Muceros
+3.  Matheus Vincenzo Reyna
+4.  Engr. Einstein D. Yong (Interviewee)
+PROCEEDINGS
+Agenda
+Discussion Notes
+Resolution
+Institutional & Departmental Setup
+Administration System
+The system requires an Administrator (Admin) role to create schools and departments.
+Department Leadership
+Each department is overseen by an Executive Director (ExD).
+Institutional Foundations
+Asia Pacific College operates based on its Mission, Vision, and Core Values.
+Note: The Core Values are currently missing from the General Information section.
+System Updates
+Implement Top-Level Admin, ExD, and Institutional Data configurations.
+Only the user with the highest institutional authority is authorized to update the following:
+Mission
+Vision
+Core Values
+Graduate Attributes (the overarching objectives for every student in the institution)
+Department Mission
+The Executive Director (ExD) establishes the department- specific mission (e.g., SOE Goal).
+Program Creation
+After the department is set up, the Executive Director (ExD) creates specific academic programs (e.g., Computer EngineeringandCivil Engineering) and assigns a Program Director (PD) to manage
+each program.
+Program Objectives & Student Outcomes (PEOs & SOs)
+Program Educational Objectives (PEOs)
+Program Educational Objectives (PEOs) are created by the Program Director (PD).
+PEOs represent the long-term goals that graduates are expected to achieve 3 to 5 years after graduation.
+PEOs are numbered sequentially (e.g., 1, 2, 3, ...).
+Mapping to Institutional Goals
+Every PEO must be linked to at least one APC Graduate Attribute.
+Student Outcomes (SOs)
+Student Outcomes (SOs) are created by the Program Director (PD) to align with the PEOs.
+SOs are labeled alphabetically (e.g., a, b, c, d, ...).
+Each SO must directly map to a specific PEO.
+Version Control
+Design relational database tables mapping Graduate Attributes -> PEOs -> SOs with strict version tracking.
+Both Graduate Attributes and Student Outcomes (SOs) require strict version control.
+When Graduate Attributes are updated, the mappings between Graduate Attributes and SOs must preserve historical versions.
+Post-Graduate Surveys
+Graduates are surveyed 3 to 5 years after graduation to evaluate the achievement of the Program Educational Objectives (PEOs).
+Note: This survey component is out of scope for the current group's assignment.
+Curriculum Structuring & Subject Categorization
+Subject Addition Restrictions
+The Program Director (PD) cannot add subjects arbitrarily.
+Every subject must be assigned to a predefined Course Grouping (e.g., Mathematics, Natural Science, Engineering Sciences, Allied Courses, or Professional Courses).
+Course Grouping Management
+The Program Director (PD) can add, edit, or delete Course Groupings.
+Similar to Student Outcomes (SOs), Course Groupings are version-controlled. Any changes create a new version while preserving previous versions for historical reference.
+Subject Details
+When adding a subject (e.g., Calculus), the Program Director (PD) selects the appropriate Course Grouping from a dropdown menu (e.g., Mathematics).
+The following subject information must be provided:
+Course Code
+Course Description
+Total Units
+Create a Course Grouping categorization module with full metadata required for subject entry.
+Prerequisites and/or Co- requisites
+Course Type
+Subject Type (Lecture or Laboratory)
+Course Offering Schedule
+The system must require the
+Program Director (PD) to specify:
+Year Level in which the subject is offered
+AcademicTerm(e.g.,
+Term 3) in which the
+subject is offered
+Curriculum Mapping & Flowchart Logic
+Learning Progression
+Newly added subjects must be mapped to the appropriate Student Outcomes (SOs) in the Curriculum Mapping table.
+The Program Director (PD) assigns the level of contribution of each subject to an SO using the following indicators:
+I – Introductory
+E – Enabling
+D – Demonstrative
+Curriculum Mapping Summary
+At the bottom of the curriculum document, the system must automatically calculate the total number of:
+I(Introductory)
+indicators per SO column
+E (Enabling) indicators per SO column
+D(Demonstrative)
+indicators per SO column
+Unit Totals
+The curriculum document must automatically display:
+Total Lecture Units
+Total Laboratory Units
+Overall Total Units Curriculum Flowchart
+The system must provide a Graphical User Interface (GUI) that generates a curriculum flowchart.
+Develop the Curriculum Mapping table with automated I/E/D counters, Unit split calculations, and build the visual Flowchart GUI.
+The flowchart must:
+Display subjects from 1st Year to 4th Year, organized by academic term.
+Visually connect subjects with arrows to represent prerequisite relationships.
+Version Control and Access
+The system must maintain version history for the curriculum, preserving previous versions whenever changes are made.
+Creating or editing the curriculum must require different access permissions than viewing the
+curriculum.
+User Access, Auditing & Role Delegation
+Access Rights Tiers
+Roles are separated into:
+Institutional
+Executive Director
+Program Director
+Faculty
+Student (View Only)
+Flexibility
+Positions/Roles assigned to users must be easily replaceable and editable by higher tiers.
+Comprehensive Auditing
+Every edit or addition within the curriculum management system must be securely logged with the identity of the user who performed the action.
+Role Transitions
+If access levels or positions are shifted, the adjustments and previous permissions are saved, but subsequent actions are strictly logged under the newly assigned user.
+Faculty Delegation
+A major pain point for the ExD and PD is task delegation.
+The system must allow ExDs and PDs   to   assign specific
+Implement a 5-tier role-based access control (RBAC) system with temporary task delegation and comprehensive audit logging.
+curriculum/subject creation tasks to Faculty members by granting
+them temporary privileges and permissions.
+APPROVAL DETAILS
+Prepared by:
+Dean Alejandrino
+Verified by:
+Engr. Einstein D. Yong
+Date :
+July 28, 2026
+Date :
+July 28, 2026
+ACTIVITY DETAILS
+Meeting Date:
+August 9, 2026
+Start Time:
+8:47pm
+End Time:
+9:28pm
+Venue:
+Online Meeting, Microsoft Teams
+Group Name:
+KapTau
+Attendees
+Name
+Signature
+1.Joshua Manuel C. Muceros
+2.Jacques Brendan E. Sanchez
+PROCEEDINGS
+Agenda
+Discussion Notes
+Resolution
+Paper Progression (Chapter 1)
+Numbering inconsistent (1.2 missing,
+jumped to 1.3)
+Background section too complex
+Formatting mixed letters/numbers
+inconsistently
+Problem statement needs grouping, not
+paragraph form
+Problem identification section still
+missing
+Specific objectives only cover
+curriculum, missing login part
+Finish revisions by Saturday
+Add login content to objectives
+UI Design of Login Page & Homepage
+Canva drafts shown for sign-in + homepage, inspired by APC portal
+3 roles: Student, Executive, Admin
+Interview students/profs on
+login page pain points
+Report findings next meeting
+Homepage still in progress
+Wants pages linked to all group systems
+instead of plain buttons
+Meeting Logistics & Points of Contact
+Point persons: Matheus Reyna (scheduling/general), Joshua Muceros (design), Dean Alejandrino (paper)
+MOM rotates among members
+Adviser available Wednesdays, MOM
+due Thursday
+Coordinate scheduling with
+adviser in advance
+Submit MOM by Wednesday
+Relay future concerns through
+Matheus Reyna
+APPROVAL DETAILS
+Prepared by:
+Abigail Kristine D. Tendero
+Verified by:
+Jacques Brendan E. Sanchez
+Date :
+August 12, 2026
+Date :
+August 12, 2026
+ACTIVITY DETAILS
+Meeting Date:
+August 12, 2026
+Start Time:
+1:30pm
+End Time:
+2:10pm
+Venue:
+Online Meeting, Microsoft Teams
+Group Name:
+KapTau
+Attendees
+Name
+Signature
+1.Dean R. Alejandrino
+2.Daniel Joshua E. Madrid
+3.Joshua Manuel C. Muceros
+4.Matheus Vincenzo M. Reyna
+5.Engr. Leonardo A. Samaniego Jr.
+PROCEEDINGS
+Agenda
+Discussion Notes
+Resolution
+Curriculum Revision and Approval Process
+The Executive Director is responsible for calling for curriculum revisions and providing the final approval. Curriculum revisions are discussed through annual meetings and planning workshops when a revision is needed. Inputs are consolidated from faculty, stakeholders, alumni, industry partners, and student representatives. Once finalized, the revised curriculum is submitted to the
+Registrar, who then submits it to CHED.
+Document the existing curriculum revision and approval workflow and use it as the basis for designing the curriculum management process in the proposed system.
+Stakeholder Inputs and Curriculum Review
+Curriculum revisions are based on faculty syllabus reviews, existing curriculum and course content, and inputs gathered from stakeholders such as industry partners, alumni, students, and other organizations. During planning workshops, the collected
+inputs are discussed and prioritized based on what is considered most essential.
+Incorporate a process that supports the consolidation and management of curriculum revision inputs while allowing authorized users to review and prioritize proposed changes.
+Current Challenges in Curriculum Revision
+Some faculty members do not submit their syllabus review forms, resulting in missing inputs. Gathering feedback becomes more difficult when an immediate curriculum change is needed.
+Industry partners may also provide different perspectives, and not all proposed changes can be implemented.
+Adding additional units to introduce a new
+course is also a limitation.
+Identify these challenges as areas that the proposed system should address by making curriculum revision and input management more accessible and organized.
+Curriculum Access and User Roles
+Older curriculum versions are accessible through the Registrar, Program Directors, and Executive Director. The Executive Director and Program Director have authority to edit or revise curriculum information, while faculty and students have viewing access. The hierarchy follows Admin → Executive Director → Program
+Director → Faculty/Student.
+Implement a centralized role-based access structure that reflects the identified hierarchy and provides users with appropriate access to curriculum information and functions.
+Centralized System and User Access
+Older curriculum versions are accessible through the Registrar, Program Directors, and Executive Director. The Executive Director and Program Director have authority to edit or revise curriculum information, while faculty and students have viewing access. The hierarchy follows Admin → Executive Director → Program
+Director → Faculty/Student.
+Use centralized authentication, integrated system access, and a streamlined curriculum revision workflow as major considerations in the proposed system.
+APPROVAL DETAILS
+Prepared by:
+MATHEUS VINCENZO M. REYNA
+Verified by:
+ENGR. LEONARDO A. SAMANIEGO
+Date : 8/12/26
+Date :8/12/26
+ACTIVITY DETAILS
+Meeting Date:
+August 13, 2026
+Start Time:
+2:00 pm
+End Time:
+2:21 pm
+Venue:
+Asia Pacific College, Room 403-A, Consultation Room C
+Group Name:
+KapTau
+Attendees
+Name
+Signature
+1.Dean R. Alejandrino
+2.Daniel Joshua E. Madrid
+3.Joshua Manuel C. Muceros
+4.Matheus Vincenzo M. Reyna
+5.Abigail Kristine D. Tendero
+6.Sergio R. Peruda Jr.
+PROCEEDINGS
+Agenda
+Discussion Notes
+Resolution
+Curriculum Development and Revision
+The Program Director (PD) is responsible for creating and revising the curriculum. Revisions are based on feedback and inputs gathered from faculty members, curriculum reviews, workshops, and the Program Advisory Panel (PAP). The PAP includes industry representatives, professionals, representatives from other institutions, alumni, and student
+representatives.
+Incorporate faculty and stakeholder feedback into curriculum development and revisions.
+Conduct regular curriculum reviews to ensure continued relevance.
+Curriculum Approval and CHED Requirements
+Once the curriculum is created or revised, it is presented to the Academic Council, which includes Program Directors, executive directors, administrators, the president, and chairman of the board. The approved curriculum follows the required CHED Excel template, including the curriculum, program of study, course information, and comparison of CHED
+requirements with APC's curriculum.
+Submit the curriculum for
+Academic Council approval.
+Ensure the approved curriculum complies with CHED requirements and templates.
+Forward the finalized
+curriculum to the Registrar.
+PEOs, SOs, and Graduate Attributes
+Graduate Attributes are institutional-level attributes and are not directly managed by the PD. The PD manages and updates the Program Educational Objectives (PEOs) and Student Outcomes (SOs). The PEOs and SOs must remain aligned with the institutional framework and OBE
+requirements.
+Maintain alignment between PEOs, SOs, and the institution's Graduate Attributes.
+Update PEOs and SOs when necessary, based on curriculum reviews and stakeholder
+feedback.
+Course Learning Outcomes and Curriculum Mapping
+Faculty members currently create the syllabus and identify the Course Learning Outcomes (CLOs). CLOs should be aligned with the program's Student Outcomes through the existing Curriculum Map.
+Course prerequisites and outcomes should also support a progressive development of
+students' knowledge and skills.
+Align CLOs with the appropriate
+SOs through curriculum mapping.
+Ensure course prerequisites and outcomes support progressive student development.
+Curriculum Management and Pain Points
+Curriculum development and revision are not necessarily difficult but are tedious because many processes are performed manually. CHED templates add complexity, while curriculum mapping and requirement tracking are largely manual. The Registrar manages curriculum versions, assigns the appropriate curriculum to students, and tracks which curriculum each student belongs to. The school/program manages course
+offerings.
+Develop a centralized system to
+reduce manual processes.
+Support automated curriculum
+mapping and tracking.
+Generate outputs that follow
+CHED templates.
+Maintain accurate curriculum
+versions and records.
+APPROVAL DETAILS
+Prepared by:
+Abigail Kristine D. Tendero
+Verified by:
+Sergio R. Peruda Jr.
+Date :
+August 14, 2026
+Date :
+August 14, 2026
+ACTIVITY DETAILS
+Meeting Date:
+August 24, 2026
+Start Time:
+1:30 PM
+End Time:
+3:30 PM
+Venue:
+Consultation Room A-403C
+Group Name:
+KapTau
+Attendees
+Name
+Signature
+1.Dean R. Alejandrino
+2.Daniel Joshua E. Madrid
+3.Joshua Manuel C. Muceros
+4.Matheus Vincenzo M. Reyna
+5.Abigail Kristine D. Tendero
+6.Einstein D. Yong
+PROCEEDINGS
+Agenda
+Discussion Notes
+Resolution
+Comments About the General Objective
+The professor underlined various areas for development when it comes to the curriculum system. There are concerns over its usability and effectiveness. First, it is hard to input curriculum data while it does not allow for copying and editing of already existing data making users either create a new file or edit an Excel file
+manually. It lacks good prerequisite management, flowchart of curriculum
+Revise the general objective based on the professor's comments about usability, version control, prerequisite management, visualization of the curriculum, mapping, and task assignment.
+development, improvement of tracking learning progress as well as general objectives, outcomes of students and learning outcomes. The software must allow for preparing PEOs and mapping them to attributes of graduates and delegating activities with curriculum. Stakeholders must also participate in the
+process since it solely involves faculty.
+Comments About the Specific Objective
+The professor provides feedback on how to improve the specific objectives of the proposed curriculum system. The new system should improve the process of delivering information related to curriculum with the help of Excel module as well as of developing and constructing relevant curriculum components. The second objective needs to be reconsidered and removed or discussed. The term “curriculum planning” must be substituted with “curriculum visualization.” In addition, the system should be enhanced to allow the users to control various versions of the curriculum. The new system should not be integrated with registrar and have no references to CHED. Suggested changes include audit logging, task delegation for PDs of different subjects temporally, and preservation of standards of previous system. Furthermore, the system needs to provide IDE summary, prerequisite flowcharts, reports with IDE materials included, and dashboard with curriculum
+representations.
+Align with the features such as Excel compatibility, versioning, visualization, audit logging, assignment, reports, flowcharts, IDE summary, and dashboard.
+Comments About the User Persona
+The professor has suggested doing a revision of user personas based on the information gathered regarding the stakeholders who will participate in the implementation of the suggested curriculum system. The user personas should be adjusted in accordance with what the current involvement of the individuals is in the work. The Registrar should be excluded from the system
+stakeholders and user personas.
+Add the relevant user personas based on the actual stakeholders and exclude the Registrar from the intended users list.
+APPROVAL DETAILS
+Prepared by:
+Daniel Joshua E. Madrid
+Verified by:
+Einstein D. Yong
+Date :
+Date :
+Sep 1, 2026
+Appendix B. Interview Documentation
+Appendix C. Sample System 
+Appendix D. Sample Curriculum Mapping

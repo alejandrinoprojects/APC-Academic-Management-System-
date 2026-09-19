@@ -597,16 +597,36 @@
       if (progCont) progCont.classList.remove('hidden');
       if (progChev) progChev.classList.add('rotate-90');
 
-      // 5. Open Curriculums Management & Revision 2026-2030 by default for curriculum views
+      // 5. Open Curriculums Management & Revision 2026-2030 ONLY for curriculum-specific views
+      const isCurriculumView = ['curriculum-home', 'flowchart', 'spreadsheet', 'registrar'].includes(viewType) || (!viewType);
+
       const curricCont = document.getElementById(progId + 'CurricCont');
       const curricChev = document.getElementById(progId + 'CurricChev');
-      if (curricCont) curricCont.classList.remove('hidden');
-      if (curricChev) curricChev.classList.add('rotate-90');
-
       const revCont = document.getElementById(progId + 'Rev2026Cont');
       const revChev = document.getElementById(progId + 'Rev2026Chev');
-      if (revCont) revCont.classList.remove('hidden');
-      if (revChev) revChev.classList.add('rotate-90');
+
+      if (isCurriculumView && viewType !== 'workbench' && viewType !== 'homePdProgramView') {
+        if (curricCont) curricCont.classList.remove('hidden');
+        if (curricChev) curricChev.classList.add('rotate-90');
+
+        if (viewType !== 'curriculum-home') {
+          if (revCont) revCont.classList.remove('hidden');
+          if (revChev) revChev.classList.add('rotate-90');
+        }
+      } else {
+        // For non-curriculum views (syllabus, course, workbench), keep curriculum and revision accordions collapsed
+        if (curricCont) curricCont.classList.add('hidden');
+        if (curricChev) curricChev.classList.remove('rotate-90');
+
+        if (revCont) revCont.classList.add('hidden');
+        if (revChev) revChev.classList.remove('rotate-90');
+
+        // Also ensure any other revision folders for this program are hidden
+        const subRevs = document.querySelectorAll(`[id^="${progId}Rev"], [id^="${progId}OffDocs"]`);
+        subRevs.forEach(el => el.classList.add('hidden'));
+        const subChevs = document.querySelectorAll(`[id^="${progId}Rev"][id$="Chev"], [id^="${progId}OffDocs"][id$="Chev"]`);
+        subChevs.forEach(el => el.classList.remove('rotate-90', 'rotate-180'));
+      }
 
       // 6. Highlight active leaf node
       if (viewType === 'workbench' || viewType === 'homePdProgramView') {
