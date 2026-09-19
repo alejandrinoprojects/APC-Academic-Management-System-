@@ -538,7 +538,9 @@
         el.classList.remove('bg-slate-800', 'text-white', 'border-l-4', 'border-[#E5A823]', 'bg-[#E5A823]/20', 'text-[#E5A823]', 'active-sidebar-node');
       });
 
-      const schoolIds = ['soe', 'socit', 'soma', 'som', 'soa'];
+      const schoolIds = (typeof ACADEMIC_SCHOOLS_DATA !== 'undefined' && Array.isArray(ACADEMIC_SCHOOLS_DATA)) 
+        ? ACADEMIC_SCHOOLS_DATA.map(s => s.id.toLowerCase()) 
+        : ['soe', 'socit', 'soma', 'som', 'soa'];
 
       // If no school and no program -> Admin Institutional Home (Path: Schools)
       if (!schoolId && !progCode) {
@@ -836,9 +838,9 @@
           </div>`;
       }
 
-      // If SoE, we don't overwrite static grid unless needed, or dynamically populate if non-SoE
+      // Populate degree program cards dynamically for all schools
       const grid = document.getElementById('exdDegreeProgramsGrid');
-      if (grid && normKey !== 'soe') {
+      if (grid) {
         grid.innerHTML = '';
         const programsList = Array.isArray(school.programs) ? school.programs : [];
         programsList.forEach(p => {
@@ -897,15 +899,18 @@
             </div>
 
             <div class="p-4 pt-0 space-y-3">
-              <div class="pt-2 border-t border-slate-700/60 flex items-center justify-between gap-2">
-                <button type="button" onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="flex-1 px-3 py-2 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black tracking-wider uppercase transition text-center cursor-pointer shadow-xs">
+              <div class="pt-2 border-t border-slate-700/60 flex items-center justify-between gap-1.5">
+                <button type="button" onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="flex-1 px-2.5 py-2 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black tracking-wider uppercase transition text-center cursor-pointer shadow-xs">
                   Manage Curriculum &rarr;
                 </button>
-                <button type="button" onclick="event.stopPropagation(); selectProgram('${prog.code}', 'homePdProgramView')" class="px-2.5 py-2 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-slate-300 hover:text-white text-xs font-semibold transition cursor-pointer" title="PD Workbench">
+                <button type="button" onclick="event.stopPropagation(); selectProgram('${prog.code}', 'homePdProgramView')" class="px-2 py-2 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-slate-300 hover:text-white text-xs font-semibold transition cursor-pointer" title="PD Workbench">
                   Workbench
                 </button>
-                <button type="button" onclick="event.stopPropagation(); showToast('Edit ${prog.code} Curriculum Baseline')" class="w-9 h-9 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-white flex items-center justify-center text-sm transition cursor-pointer" title="Edit Program">
+                <button type="button" onclick="event.stopPropagation(); showToast('Edit ${prog.code} Curriculum Baseline')" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-white flex items-center justify-center text-xs transition cursor-pointer" title="Edit Program">
                   ✎
+                </button>
+                <button type="button" onclick="event.stopPropagation(); deleteProgram('${prog.code}')" class="w-8 h-8 bg-[#10151E] hover:bg-red-950/80 border border-slate-700/70 text-slate-400 hover:text-red-400 flex items-center justify-center text-xs transition cursor-pointer" title="Delete Program">
+                  🗑
                 </button>
               </div>
               <div class="h-2 w-full -mb-4 -mx-4" style="background-color: ${schoolColor};"></div>
@@ -1038,7 +1043,31 @@
       'BSArch': { schoolId: 'soa', schoolName: 'School of Architecture', schoolShort: 'SoA', name: 'Bachelor of Science in Architecture' }
     };
 
+    function syncProgramSchoolMap() {
+      if (typeof ACADEMIC_SCHOOLS_DATA !== 'undefined' && Array.isArray(ACADEMIC_SCHOOLS_DATA)) {
+        ACADEMIC_SCHOOLS_DATA.forEach(school => {
+          if (Array.isArray(school.programs)) {
+            school.programs.forEach(p => {
+              const code = typeof p === 'object' ? p.code : p;
+              const name = typeof p === 'object' ? p.name : p;
+              if (code && !PROGRAM_TO_SCHOOL_MAP[code]) {
+                PROGRAM_TO_SCHOOL_MAP[code] = {
+                  schoolId: school.id,
+                  schoolName: `${school.bannerTitle || 'SCHOOL OF'} ${school.name}`,
+                  schoolShort: school.name,
+                  name: name
+                };
+              }
+            });
+          }
+        });
+      }
+    }
+    window.syncProgramSchoolMap = syncProgramSchoolMap;
+    window.PROGRAM_TO_SCHOOL_MAP = PROGRAM_TO_SCHOOL_MAP;
+
     function getProgramInfo(p) {
+      syncProgramSchoolMap();
       if (typeof p === 'object' && p !== null) return p;
       const str = String(p).trim();
       for (const [code, info] of Object.entries(PROGRAM_TO_SCHOOL_MAP)) {
@@ -1052,6 +1081,7 @@
     }
 
     function selectProgram(progCode, targetView = 'flowchart', docIdx = null) {
+      syncProgramSchoolMap();
       currentSelectedProgram = progCode;
       const progInfo = PROGRAM_TO_SCHOOL_MAP[progCode] || { schoolShort: 'SoE', schoolId: 'soe', name: progCode };
       

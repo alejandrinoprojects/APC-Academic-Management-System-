@@ -179,7 +179,7 @@
                 </svg>
                 <span class="tracking-wide uppercase text-xs font-black text-amber-200">Academic Schools</span>
               </span>
-              <span class="text-[10px] font-mono px-1.5 py-0.2 bg-amber-400/20 text-amber-300 border border-amber-400/40">5</span>
+              <span id="schoolsCountBadge" class="text-[10px] font-mono px-1.5 py-0.2 bg-amber-400/20 text-amber-300 border border-amber-400/40">5</span>
             </button>
 
             <!-- All schools container (CLOSED by default) -->
@@ -4179,7 +4179,7 @@
                   <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                     Programs Offered and Program Directors:
                   </h2>
-                  <button type="button" onclick="showToast('Add Program dialog provisioned for Executive Director.')" class="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 shadow-xs font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+                  <button type="button" onclick="openAddProgramModal(currentSelectedSchool)" class="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 shadow-xs font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
                     <span class="text-sm leading-none">+</span>
                     <span>Add Program</span>
                   </button>
@@ -6910,6 +6910,7 @@
   <!-- ========================================================================= -->
   <!-- JAVASCRIPT CONTROLLERS & GRAPH ENGINE -->
   <!-- ========================================================================= -->
+  <script src="js/admin_schools.js"></script>
   <script src="js/registrar_excel_data.js"></script>
   <script src="js/registrar_docs.js"></script>
   <script src="js/curriculum_workbench.js"></script>
@@ -7882,6 +7883,43 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   </div>
 
   <!-- ========================================================================= -->
+  <!-- ADD PROGRAM MODAL -->
+  <!-- ========================================================================= -->
+  <div id="modalAddProgram" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+      <div class="bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-700/80">
+        <div class="flex items-center space-x-2.5">
+          <span class="text-[#E5A823] font-bold text-base">&#10133;</span>
+          <h3 class="font-black text-sm tracking-wider text-white uppercase">Add Degree Program</h3>
+        </div>
+        <button type="button" onclick="closeAddProgramModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <form onsubmit="submitAddProgram(event)" class="p-6 space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Academic School</label>
+          <select id="newProgSchool" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]">
+            <!-- Dynamically populated by openAddProgramModal -->
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code / Acronym</label>
+          <input type="text" id="newProgCode" placeholder="e.g. BSSE, BSMech, BSData" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Full Degree Program Title</label>
+          <input type="text" id="newProgName" placeholder="e.g. Bachelor of Science in Software Engineering" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+        </div>
+
+        <div class="pt-2 flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeAddProgramModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase cursor-pointer">Add Degree Program</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
   <!-- ADD SCHOOL MODAL -->
   <!-- ========================================================================= -->
   <div id="modalAddSchool" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
@@ -8024,8 +8062,6 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       </form>
     </div>
   </div>
-
-  <script src="js/admin_schools.js"></script>
 
   <!-- APC Top Bar Interactive Breadcrumbs & Quick Navigation Command Palette -->
   <script src="js/top_bar_nav.js"></script>
