@@ -1349,38 +1349,33 @@
             </div>
 
             <!-- Right: Directorate Governance & Authority Callout -->
-            <div class="flex-1 bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-xs p-4 flex flex-col justify-between">
-              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
-                <div class="space-y-0.5">
-                  <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-[#002855] dark:text-sky-300 text-[9px] font-mono font-black uppercase tracking-widest">
-                    <span>CURRICULUM ARCHITECTURE</span>
-                    <span>&bull;</span>
-                    <span>ACTIVE WORKSPACE</span>
-                  </div>
-                  <h3 id="curricHomeProgramTitle" class="text-sm font-black uppercase text-slate-900 dark:text-white tracking-tight">
-                    Bachelor of Science in <span class="text-[#E5A823]">Computer Engineering</span>
-                  </h3>
+            <div class="flex-1 bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-[#002855] dark:text-sky-300 text-[9px] font-mono font-black uppercase tracking-widest">
+                  <span>CURRICULUM ARCHITECTURE</span>
+                  <span>&bull;</span>
+                  <span>ACTIVE WORKSPACE</span>
                 </div>
-                <div class="flex items-center gap-2">
-                  <button type="button" id="curricHomeReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer" title="Return to School of Engineering Overview">
-                    <span>&larr;</span>
-                    <span>School of Engineering</span>
-                  </button>
-                  <button type="button" onclick="goToProgramPd('BSCpE')" class="px-3 py-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs flex items-center gap-1.5 transition cursor-pointer border border-[#001733] shadow-xs" title="Return to Multi-Subsystem PD Workbench">
-                    <span>&larr;</span>
-                    <span>PD Multi-Subsystem Workbench</span>
-                  </button>
-                </div>
+                <h3 id="curricHomeProgramTitle" class="text-sm font-black uppercase text-slate-900 dark:text-white tracking-tight">
+                  Bachelor of Science in <span class="text-[#E5A823]">Computer Engineering</span>
+                </h3>
               </div>
-              <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-                Dedicated workspace for authoring, reviewing, and maintaining BSCpE degree sequences, prerequisite topological DAG validation, curricular credit distributions, and official document baselines.
-              </p>
+              <div class="flex items-center gap-2 shrink-0">
+                <button type="button" id="curricHomeReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-1.5 transition-all duration-150 cursor-pointer hover:shadow-xs hover:-translate-y-0.5" title="Return to School of Engineering Overview">
+                  <span>&larr;</span>
+                  <span>School of Engineering</span>
+                </button>
+                <button type="button" onclick="goToProgramPd('BSCpE')" class="px-3.5 py-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs flex items-center gap-1.5 transition-all duration-150 cursor-pointer border border-[#001733] shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0" title="Return to Multi-Subsystem PD Workbench">
+                  <span>&larr;</span>
+                  <span>PD Multi-Subsystem Workbench</span>
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- Institutional Panoramic Banner -->
-          <div class="bg-[#002855] text-white p-5 rounded-none border border-[#001733] shadow-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden">
-            <div class="relative z-10 space-y-1">
+          <div class="bg-[#002855] text-white p-6 sm:p-7 rounded-none border border-[#001733] shadow-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden">
+            <div class="relative z-10 space-y-2">
               <span id="curricHomeProgramTag" class="hidden"></span>
               <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/40 border border-[#E5A823]/40 text-[#E5A823] text-[10px] font-mono font-black uppercase tracking-widest">
                 <span class="w-1.5 h-1.5 bg-[#E5A823] rounded-none animate-pulse"></span>
@@ -1388,19 +1383,16 @@
                 <span>&bull;</span>
                 <span>CURRICULUM 2026–2030</span>
               </div>
-              <h2 id="curricHomeHeading" class="text-xl sm:text-2xl font-black tracking-tight uppercase flex items-center gap-2">
+              <h2 id="curricHomeHeading" class="text-2xl sm:text-3xl font-black tracking-tight uppercase flex items-center gap-2.5">
                 <span>Curriculum Management</span>
                 <span class="text-[#E5A823]">Homepage</span>
               </h2>
-              <p class="text-xs text-blue-100/80 font-normal">
-                Program baseline sequence: <strong>74 Courses</strong> &bull; <strong>184.0 Total Units</strong> &bull; <strong>12 Academic Terms</strong> &bull; <strong>CHED CMO 92 Compliant</strong>
-              </p>
             </div>
-            <div class="relative z-10 flex items-center gap-2">
-              <div class="px-3 py-1.5 bg-blue-950/80 border border-blue-800 text-blue-200 text-xs font-mono">
+            <div class="relative z-10 flex items-center gap-2.5">
+              <div class="px-3.5 py-2 bg-blue-950/80 border border-blue-800 text-blue-200 text-xs font-mono shadow-xs">
                 <span class="text-slate-400">Total:</span> <span class="text-[#E5A823] font-bold">184.0 Units</span>
               </div>
-              <div class="px-3 py-1.5 bg-blue-950/80 border border-blue-800 text-blue-200 text-xs font-mono">
+              <div class="px-3.5 py-2 bg-blue-950/80 border border-blue-800 text-blue-200 text-xs font-mono shadow-xs">
                 <span class="text-slate-400">Courses:</span> <span class="text-[#E5A823] font-bold">74 Subjects</span>
               </div>
             </div>
@@ -1412,49 +1404,54 @@
           </div>
 
           <!-- Curriculum Workspace Quick-Action Toolbar & Partner Links -->
-          <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-4 shadow-xs space-y-3">
-            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-2.5">
-              <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                Curriculum Authoring &amp; Review Tools
+          <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-xs space-y-3.5">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
+              <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+                <span class="text-amber-500">🛠️</span>
+                <span>Curriculum Authoring &amp; Review Tools</span>
               </div>
               <div class="flex items-center gap-2 text-xs">
                 <span class="text-slate-400 text-[11px]">Academic Consoles:</span>
-                <button type="button" onclick="selectProgram('BSCpE', 'syllabus')" class="px-2 py-1 bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300 border border-sky-200 dark:border-sky-800 font-bold text-[10px] hover:bg-sky-100 transition cursor-pointer">
+                <button type="button" onclick="selectProgram('BSCpE', 'syllabus')" class="px-2.5 py-1 bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300 border border-sky-200 dark:border-sky-800 font-bold text-[10px] hover:bg-sky-100 dark:hover:bg-sky-900 hover:border-sky-400 dark:hover:border-sky-600 hover:shadow-xs hover:-translate-y-0.5 transition-all duration-150 cursor-pointer">
                   📘 Syllabus Management
                 </button>
-                <button type="button" onclick="selectProgram('BSCpE', 'course')" class="px-2 py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold text-[10px] hover:bg-emerald-100 transition cursor-pointer">
+                <button type="button" onclick="selectProgram('BSCpE', 'course')" class="px-2.5 py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold text-[10px] hover:bg-emerald-100 dark:hover:bg-emerald-900 hover:border-emerald-400 dark:hover:border-emerald-600 hover:shadow-xs hover:-translate-y-0.5 transition-all duration-150 cursor-pointer">
                   📗 Course Management
                 </button>
               </div>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <button type="button" onclick="selectProgram('BSCpE', 'flowchart')" class="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-left transition cursor-pointer group shadow-xs">
-                <div class="text-base mb-1">📊</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              <button type="button" onclick="selectProgram('BSCpE', 'flowchart')" class="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-600 hover:border-[#002855] dark:hover:border-[#E5A823] text-left transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md hover:-translate-y-1">
+                <div class="text-lg mb-1 group-hover:scale-110 transition-transform duration-150">📊</div>
                 <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-[#E5A823]">Curriculum Flowchart</div>
                 <div class="text-[10px] text-slate-500 mt-0.5">DAG Prerequisite Network</div>
               </button>
-              <button type="button" onclick="selectProgram('BSCpE', 'spreadsheet')" class="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-left transition cursor-pointer group shadow-xs">
-                <div class="text-base mb-1">📑</div>
+              <button type="button" onclick="selectProgram('BSCpE', 'spreadsheet')" class="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-600 hover:border-[#002855] dark:hover:border-[#E5A823] text-left transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md hover:-translate-y-1">
+                <div class="text-lg mb-1 group-hover:scale-110 transition-transform duration-150">📑</div>
                 <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-[#E5A823]">Curriculum Spreadsheet</div>
                 <div class="text-[10px] text-slate-500 mt-0.5">Catalog &amp; Mass Cell Editor</div>
               </button>
-              <button type="button" onclick="selectProgram('BSCpE', 'dashboard')" class="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-left transition cursor-pointer group shadow-xs">
-                <div class="text-base mb-1">⚖️</div>
+              <button type="button" onclick="selectProgram('BSCpE', 'dashboard')" class="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-600 hover:border-[#002855] dark:hover:border-[#E5A823] text-left transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md hover:-translate-y-1">
+                <div class="text-lg mb-1 group-hover:scale-110 transition-transform duration-150">⚖️</div>
                 <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-[#E5A823]">Curriculum Dashboard</div>
                 <div class="text-[10px] text-slate-500 mt-0.5">CHED CMO 92 &amp; Analytics</div>
               </button>
-              <button type="button" onclick="selectProgram('BSCpE', 'obe')" class="p-3 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-left transition cursor-pointer group shadow-xs">
-                <div class="text-base mb-1">🎯</div>
+              <button type="button" onclick="selectProgram('BSCpE', 'obe')" class="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-600 hover:border-[#002855] dark:hover:border-[#E5A823] text-left transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md hover:-translate-y-1">
+                <div class="text-lg mb-1 group-hover:scale-110 transition-transform duration-150">🎯</div>
                 <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-[#E5A823]">OBE Matrix</div>
                 <div class="text-[10px] text-slate-500 mt-0.5">Student Outcomes a–m</div>
               </button>
             </div>
           </div>
 
-          <!-- Section Label: By Academic Year Breakdown -->
-          <div class="pt-2">
-            <div class="px-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-              Curriculum Sequence by Academic Year
+          <!-- Section Label: By Academic Year Breakdown (with generous whitespace & separation) -->
+          <div class="pt-8 pb-4 mt-8 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between">
+              <div class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-[#E5A823] shrink-0"></span>
+                <span>Curriculum Sequence by Academic Year</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">AY 2026–2030 Active Cohort</span>
             </div>
           </div>
 
@@ -1462,10 +1459,10 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <!-- Card 1: 1st Year (AY 2026–2027) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-[#002855] hover:shadow-md transition">
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-[#002855] dark:hover:border-[#E5A823] hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-[#002855] text-[#E5A823] flex items-center justify-center font-bold text-sm border border-[#E5A823]/40 shadow-xs">
+                  <div class="w-10 h-10 bg-[#002855] text-[#E5A823] flex items-center justify-center font-bold text-sm border border-[#E5A823]/40 shadow-xs group-hover:scale-105 transition-transform duration-200">
                     Y1
                   </div>
                   <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 border border-blue-200 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-800">
@@ -1473,7 +1470,7 @@
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-[#002855] dark:text-blue-200 uppercase tracking-tight">
+                  <h3 class="text-base font-black text-[#002855] dark:text-blue-200 uppercase tracking-tight group-hover:text-blue-600 dark:group-hover:text-amber-400 transition-colors">
                     1st Year Curriculum
                   </h3>
                   <p class="text-xs text-slate-500 font-semibold">General Engineering &amp; Foundation</p>
@@ -1494,11 +1491,11 @@
                 </div>
               </div>
               <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openFlowchartForYear(1)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openFlowchartForYear(1)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                   <span>Curriculum Flowchart (Year 1)</span>
                 </button>
-                <button type="button" onclick="openSpreadsheetForYear(1)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openSpreadsheetForYear(1)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                   <span>Curriculum Spreadsheet (Year 1)</span>
                 </button>
@@ -1506,10 +1503,10 @@
             </div>
 
             <!-- Card 2: 2nd Year (AY 2027–2028) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-[#002855] hover:shadow-md transition">
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-[#002855] dark:hover:border-teal-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-teal-900 text-white flex items-center justify-center font-bold text-sm border border-teal-700 shadow-xs">
+                  <div class="w-10 h-10 bg-teal-900 text-white flex items-center justify-center font-bold text-sm border border-teal-700 shadow-xs group-hover:scale-105 transition-transform duration-200">
                     Y2
                   </div>
                   <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-teal-50 text-teal-800 border border-teal-200 dark:bg-teal-950/70 dark:text-teal-300 dark:border-teal-800">
@@ -1517,7 +1514,7 @@
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-teal-950 dark:text-teal-200 uppercase tracking-tight">
+                  <h3 class="text-base font-black text-teal-950 dark:text-teal-200 uppercase tracking-tight group-hover:text-teal-600 dark:group-hover:text-teal-300 transition-colors">
                     2nd Year Curriculum
                   </h3>
                   <p class="text-xs text-slate-500 font-semibold">Intermediate Hardware &amp; Software Core</p>
@@ -1538,11 +1535,11 @@
                 </div>
               </div>
               <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openFlowchartForYear(2)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openFlowchartForYear(2)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                   <span>Curriculum Flowchart (Year 2)</span>
                 </button>
-                <button type="button" onclick="openSpreadsheetForYear(2)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openSpreadsheetForYear(2)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                   <span>Curriculum Spreadsheet (Year 2)</span>
                 </button>
@@ -1550,10 +1547,10 @@
             </div>
 
             <!-- Card 3: 3rd Year (AY 2028–2029) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-[#002855] hover:shadow-md transition">
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-[#002855] dark:hover:border-indigo-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-indigo-900 text-white flex items-center justify-center font-bold text-sm border border-indigo-700 shadow-xs">
+                  <div class="w-10 h-10 bg-indigo-900 text-white flex items-center justify-center font-bold text-sm border border-indigo-700 shadow-xs group-hover:scale-105 transition-transform duration-200">
                     Y3
                   </div>
                   <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-indigo-50 text-indigo-800 border border-indigo-200 dark:bg-indigo-950/70 dark:text-indigo-300 dark:border-indigo-800">
@@ -1561,7 +1558,7 @@
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-indigo-950 dark:text-indigo-200 uppercase tracking-tight">
+                  <h3 class="text-base font-black text-indigo-950 dark:text-indigo-200 uppercase tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors">
                     3rd Year Curriculum
                   </h3>
                   <p class="text-xs text-slate-500 font-semibold">Systems Specialization &amp; Design</p>
@@ -1582,11 +1579,11 @@
                 </div>
               </div>
               <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openFlowchartForYear(3)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openFlowchartForYear(3)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                   <span>Curriculum Flowchart (Year 3)</span>
                 </button>
-                <button type="button" onclick="openSpreadsheetForYear(3)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openSpreadsheetForYear(3)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                   <span>Curriculum Spreadsheet (Year 3)</span>
                 </button>
@@ -1594,10 +1591,10 @@
             </div>
 
             <!-- Card 4: 4th Year (AY 2029–2030) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-[#002855] hover:shadow-md transition">
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-[#002855] dark:hover:border-amber-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-amber-600 text-white flex items-center justify-center font-bold text-sm border border-amber-700 shadow-xs">
+                  <div class="w-10 h-10 bg-amber-600 text-white flex items-center justify-center font-bold text-sm border border-amber-700 shadow-xs group-hover:scale-105 transition-transform duration-200">
                     Y4
                   </div>
                   <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800">
@@ -1605,7 +1602,7 @@
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-amber-950 dark:text-amber-200 uppercase tracking-tight">
+                  <h3 class="text-base font-black text-amber-950 dark:text-amber-200 uppercase tracking-tight group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
                     4th Year Curriculum
                   </h3>
                   <p class="text-xs text-slate-500 font-semibold">Capstone Design &amp; Practicum</p>
@@ -1626,11 +1623,11 @@
                 </div>
               </div>
               <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openFlowchartForYear(4)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openFlowchartForYear(4)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                   <span>Curriculum Flowchart (Year 4)</span>
                 </button>
-                <button type="button" onclick="openSpreadsheetForYear(4)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openSpreadsheetForYear(4)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                   <span>Curriculum Spreadsheet (Year 4)</span>
                 </button>
@@ -1638,10 +1635,10 @@
             </div>
 
             <!-- Card 5: Past Curriculums -->
-            <div class="bg-slate-50 dark:bg-slate-900/60 border border-dashed border-slate-300 dark:border-slate-700 p-5 flex flex-col justify-between shadow-xs hover:border-slate-400 transition">
+            <div class="bg-slate-50 dark:bg-slate-900/60 border border-dashed border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-slate-500 dark:hover:border-slate-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-slate-700 text-white flex items-center justify-center font-bold text-sm border border-slate-600 shadow-xs">
+                  <div class="w-10 h-10 bg-slate-700 text-white flex items-center justify-center font-bold text-sm border border-slate-600 shadow-xs group-hover:scale-105 transition-transform duration-200">
                     PAST
                   </div>
                   <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-slate-200 text-slate-800 border border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
@@ -1649,7 +1646,7 @@
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight">
+                  <h3 class="text-base font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                     Past Curriculums
                   </h3>
                   <p class="text-xs text-slate-500 font-semibold">Superseded &amp; Historical Editions</p>
@@ -1669,11 +1666,11 @@
                 </div>
               </div>
               <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openComparativeCurriculumModal()" class="w-full px-3 py-2 bg-white hover:bg-slate-50 text-slate-700 dark:bg-slate-800/60 dark:hover:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-600 text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="openComparativeCurriculumModal()" class="w-full px-3 py-2 bg-white hover:bg-slate-100 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-xs font-semibold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <span>📊</span>
                   <span>Comparative Summary</span>
                 </button>
-                <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full px-3 py-2 bg-white hover:bg-slate-50 text-slate-700 dark:bg-slate-800/60 dark:hover:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-600 text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs">
+                <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full px-3 py-2 bg-white hover:bg-slate-100 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-xs font-semibold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
                   <span>📑</span>
                   <span>Curriculum Prospectus Archive</span>
                 </button>
@@ -1681,8 +1678,8 @@
             </div>
 
             <!-- Card 6: Create New Curriculum -->
-            <div onclick="openCreateCurriculumModal()" class="bg-gradient-to-br from-slate-50 to-amber-50/30 dark:from-[#131923] dark:to-amber-950/20 border-2 border-dashed border-[#E5A823]/70 hover:border-[#E5A823] p-6 flex flex-col items-center justify-center text-center shadow-xs hover:shadow-md transition cursor-pointer group min-h-[260px]">
-              <div class="w-14 h-14 bg-[#E5A823]/15 group-hover:bg-[#E5A823] border border-[#E5A823]/60 text-slate-800 dark:text-amber-300 group-hover:text-slate-950 flex items-center justify-center text-3xl font-bold transition shadow-xs">
+            <div onclick="openCreateCurriculumModal()" class="bg-gradient-to-br from-slate-50 to-amber-50/30 dark:from-[#131923] dark:to-amber-950/20 border-2 border-dashed border-[#E5A823]/70 hover:border-[#E5A823] p-6 flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1 hover:bg-amber-50/50 dark:hover:bg-amber-950/30 transition-all duration-200 cursor-pointer group min-h-[260px]">
+              <div class="w-14 h-14 bg-[#E5A823]/15 group-hover:bg-[#E5A823] border border-[#E5A823]/60 text-slate-800 dark:text-amber-300 group-hover:text-slate-950 flex items-center justify-center text-3xl font-bold transition-all duration-200 shadow-xs group-hover:scale-110">
                 +
               </div>
               <h3 class="mt-4 text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#E5A823] transition-colors">
