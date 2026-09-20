@@ -14,7 +14,7 @@
   'use strict';
 
   // --- STATE CONFIGURATION ---
-  let showAllArrowsEnabled = true;
+  let showAllArrowsEnabled = false;
   let requisiteFilterMode = 'direct'; // 'direct' or 'all'
   let currentSelectedCode = null;
   let currentHoveredCode = null;
@@ -58,21 +58,21 @@
     }
     const group = (groupName || 'Core').toLowerCase();
     if (group.includes('basic eng')) {
-      return { color: 'amber', name: 'Basic Eng', dot: 'bg-amber-500', border: 'border-l-amber-500' };
+      return { color: 'amber', name: 'Basic Eng', dot: 'bg-amber-500', border: 'border-l-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/30' };
     }
     if (group.includes('gen ed') || group.includes('general ed')) {
-      return { color: 'sky', name: 'Gen Ed', dot: 'bg-sky-500', border: 'border-l-sky-500' };
+      return { color: 'sky', name: 'Gen Ed', dot: 'bg-sky-500', border: 'border-l-sky-500', bg: 'bg-sky-50 dark:bg-sky-950/30' };
     }
     if (group.includes('allied')) {
-      return { color: 'purple', name: 'Allied', dot: 'bg-purple-500', border: 'border-l-purple-500' };
+      return { color: 'purple', name: 'Allied', dot: 'bg-purple-500', border: 'border-l-purple-500', bg: 'bg-purple-50 dark:bg-purple-950/30' };
     }
     if (group.includes('elective') || group.includes('cognate')) {
-      return { color: 'rose', name: 'Elective', dot: 'bg-rose-500', border: 'border-l-rose-500' };
+      return { color: 'rose', name: 'Elective', dot: 'bg-rose-500', border: 'border-l-rose-500', bg: 'bg-rose-50 dark:bg-rose-950/30' };
     }
     if (group.includes('inst')) {
-      return { color: 'emerald', name: 'Inst', dot: 'bg-emerald-500', border: 'border-l-emerald-500' };
+      return { color: 'emerald', name: 'Inst', dot: 'bg-emerald-500', border: 'border-l-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/30' };
     }
-    return { color: 'indigo', name: 'Core', dot: 'bg-indigo-600', border: 'border-l-indigo-600' };
+    return { color: 'indigo', name: 'Core', dot: 'bg-indigo-600', border: 'border-l-indigo-600', bg: 'bg-indigo-50 dark:bg-indigo-950/30' };
   }
 
   // =========================================================================
@@ -190,7 +190,7 @@
                  data-course-code="${course.code}"
                  data-col="${col}"
                  data-row="${r}"
-                 class="course-card flow-course-card select-none relative p-2 flex flex-col justify-between cursor-pointer border border-slate-300 dark:border-slate-700 ${borderClass} border-l-4 shadow-2xs">
+                 class="course-card flow-course-card select-none relative p-2 flex flex-col justify-between cursor-pointer border border-slate-300 dark:border-slate-700 ${borderClass} border-l-[6px] shadow-2xs ${catMeta.bg || ''}">
               
               <!-- Left Port for Prerequisite Inflow -->
               <div class="port-dot port-left" title="Prerequisite Entry Port"></div>
@@ -209,9 +209,9 @@
               </div>
 
               <!-- Card Footer: Category + Requisite Counter (NO textual listing, pure arrows) -->
-              <div class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-1 font-mono leading-none">
-                <span class="inline-flex items-center gap-1 font-semibold truncate max-w-[95px]">
-                  <span class="w-1.5 h-1.5 rounded-none ${catMeta.dot || 'bg-slate-400'} shrink-0"></span>
+              <div class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700 pt-1 font-mono leading-none">
+                <span class="inline-flex items-center gap-1 font-bold truncate max-w-[95px]">
+                  <span class="w-2 h-2 rounded-none ${catMeta.dot || 'bg-slate-400'} shrink-0"></span>
                   <span class="truncate">${catMeta.name || 'Core'}</span>
                 </span>
                 <span class="font-bold ${prereqCount > 0 ? 'text-blue-700 dark:text-blue-400' : 'text-slate-400'}">
