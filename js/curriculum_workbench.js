@@ -3612,6 +3612,15 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
     window.openSpreadsheetForYear = openSpreadsheetForYear;
 
+    function openDocsForYear(yearNum, docIdx = 1) {
+      const prog = currentSelectedProgram || 'BSCpE';
+      if (typeof window.setSidebarYear === 'function') {
+        window.setSidebarYear(yearNum);
+      }
+      selectProgram(prog, 'registrar', docIdx, yearNum);
+    }
+    window.openDocsForYear = openDocsForYear;
+
     function openComparativeCurriculumModal() {
       const prog = currentSelectedProgram || 'BSCpE';
       selectProgram(prog, 'registrar', 6);
