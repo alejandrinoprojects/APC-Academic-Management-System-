@@ -178,7 +178,7 @@
       activeCols.forEach(col => {
         const course = slotMap[`${col}-${r}`];
 
-        tbodyHtml += `<td class="flow-col-term p-1 border-r border-slate-200 dark:border-slate-800 align-top">`;
+        tbodyHtml += `<td class="flow-col-term border-r border-slate-200 dark:border-slate-800 align-top">`;
         if (course) {
           const catMeta = getCategoryMeta(course.group);
           const borderClass = catMeta.border || 'border-l-indigo-600';
@@ -224,8 +224,8 @@
         } else {
           // Empty slot placeholder
           tbodyHtml += `
-            <div class="w-full h-full min-h-[84px] flex items-center justify-center text-slate-300 dark:text-slate-700 text-xs font-mono select-none bg-slate-50/20 dark:bg-slate-900/10">
-              <span class="opacity-30">&mdash;</span>
+            <div class="w-full h-full min-h-[86px] flex items-center justify-center text-slate-300 dark:text-slate-700 text-xs font-mono select-none bg-transparent">
+              <span class="opacity-20">&bull;</span>
             </div>
           `;
         }
@@ -345,6 +345,11 @@
       return;
     }
 
+    svg.setAttribute('width', innerRect.width);
+    svg.setAttribute('height', innerRect.height);
+    svg.style.width = innerRect.width + 'px';
+    svg.style.height = innerRect.height + 'px';
+
     svgGroup.innerHTML = '';
 
     // Precompute node DOM port coordinates
@@ -411,15 +416,24 @@
         const x2 = tgt.leftX;
         const y2 = tgt.midY;
         const dx = x2 - x1;
+        const dy = y2 - y1;
 
-        // Path generation: S-curve cubic bezier with horizontal exit and entry
+        // Path generation: Clean bezier curves traversing dedicated 36px alleys & 20px corridors
         let pathData = '';
-        if (dx > 0 && Math.abs(y1 - y2) < 3.0 && (tgt.col === src.col + 1)) {
-          // Direct horizontal line for same row in adjacent columns
+        if (dx > 0 && Math.abs(dy) < 3.0 && (tgt.col === src.col + 1)) {
+          // Direct horizontal line across inter-column alley
           pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+        } else if (tgt.col === src.col + 1) {
+          // Adjacent column, different row: S-curve centered in the alley
+          const midX = (x1 + x2) / 2;
+          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${midX.toFixed(1)} ${y1.toFixed(1)}, ${midX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+        } else if (tgt.col === src.col) {
+          // Same column co-requisite: loops out into the right alley
+          const loopX = x1 + 22;
+          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${loopX.toFixed(1)} ${y1.toFixed(1)}, ${loopX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
         } else {
-          // Smooth horizontal S-curve bezier
-          const cOffset = Math.min(Math.max(dx * 0.45, 20), 85);
+          // Multi-column jump: smooth S-curve traversing horizontal corridors
+          const cOffset = Math.min(Math.max(dx * 0.38, 30), 100);
           pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${(x1 + cOffset).toFixed(1)} ${y1.toFixed(1)}, ${(x2 - cOffset).toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
         }
 
@@ -435,17 +449,17 @@
 
         if (reqType === 'co') {
           path.setAttribute('stroke', '#d97706');
-          path.setAttribute('stroke-width', '2.0');
+          path.setAttribute('stroke-width', '2.2');
           path.setAttribute('stroke-dasharray', '5,4');
           path.setAttribute('marker-end', 'url(#diag-arrow-coreq)');
         } else if (reqType === 'soft') {
           path.setAttribute('stroke', '#7c3aed');
-          path.setAttribute('stroke-width', '2.0');
+          path.setAttribute('stroke-width', '2.2');
           path.setAttribute('stroke-dasharray', '3,3');
           path.setAttribute('marker-end', 'url(#diag-arrow-soft)');
         } else {
           path.setAttribute('stroke', '#1e40af');
-          path.setAttribute('stroke-width', '2.0');
+          path.setAttribute('stroke-width', '2.2');
           path.setAttribute('stroke-dasharray', 'none');
           path.setAttribute('marker-end', 'url(#diag-arrow-default)');
         }

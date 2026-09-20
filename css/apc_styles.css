@@ -185,18 +185,17 @@
     }
     .flowchart-matrix-table th,
     .flowchart-matrix-table td {
-      border: 1px solid #cbd5e1;
-      padding: 0;
+      border: 1px solid #e2e8f0;
       position: relative;
     }
     .dark .flowchart-matrix-table th,
     .dark .flowchart-matrix-table td {
-      border-color: #334155;
+      border-color: #1e293b;
     }
     .flowchart-matrix-table .flow-col-no {
-      width: 42px;
-      min-width: 42px;
-      max-width: 42px;
+      width: 44px;
+      min-width: 44px;
+      max-width: 44px;
       position: sticky;
       left: 0;
       z-index: 25;
@@ -206,33 +205,55 @@
       background-color: #0c1017;
     }
     .flowchart-matrix-table .flow-col-term {
-      width: 185px;
-      min-width: 185px;
-      max-width: 185px;
+      width: 236px;
+      min-width: 236px;
+      max-width: 236px;
+      padding: 10px 18px !important;
     }
     .flow-course-card {
-      width: 100%;
-      height: 84px;
-      padding: 7px 9px;
+      width: 196px;
+      height: 86px;
+      margin: 0 auto;
+      padding: 8px 10px;
       background-color: #ffffff;
+      border-radius: 2px;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      position: relative;
     }
     .dark .flow-course-card {
       background-color: #131923;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     }
     .flow-course-card .port-dot {
-      opacity: 0.85;
-      width: 6px;
-      height: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      opacity: 0.9;
+      width: 8px;
+      height: 8px;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    }
+    .flow-course-card .port-left {
+      left: -5px;
+    }
+    .flow-course-card .port-right {
+      right: -5px;
     }
     .flow-course-card:hover {
-      box-shadow: 0 4px 12px rgba(0, 40, 85, 0.15);
+      box-shadow: 0 6px 16px rgba(0, 40, 85, 0.2);
       border-color: #002855;
+      transform: translateY(-1px);
     }
     .dark .flow-course-card:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
       border-color: #E5A823;
+      transform: translateY(-1px);
+    }
+    #diagramSvg {
+      z-index: 20 !important;
+      pointer-events: none !important;
+    }
+    .dag-arrow {
+      pointer-events: none !important;
     }
     .flowchart-year-focus {
       animation: yearPulse 1.8s ease-in-out;
