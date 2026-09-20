@@ -561,7 +561,7 @@
     // Automatically expands and highlights the left sidebar folder tree to match
     // the currently active view and path breadcrumbs (mirroring topBarPathPill).
     // =========================================================================
-    function syncSidebarToCurrentPath(schoolId, progCode, viewType, regDocIdx) {
+    function syncSidebarToCurrentPath(schoolId, progCode, viewType, regDocIdx, yearNum, subItemType) {
       // 1. Expand Academic Schools root container
       const schoolsCont = document.getElementById('schoolsFolderCont');
       const schoolsChev = document.getElementById('schoolsFolderChev');
@@ -703,49 +703,91 @@
         }
       }
 
-      // 6. Highlight active leaf node
-      if (viewType === 'workbench' || viewType === 'homePdProgramView') {
-        const progBtn = document.querySelector(`#node-prog-${progId} > button`);
-        if (progBtn) progBtn.classList.add('bg-slate-800', 'text-white', 'border-l-2', 'border-[#E5A823]');
-      } else if (viewType === 'curriculum-home') {
-        const curBtn = document.querySelector(`#node-${progId}-curriculums > button`);
-        if (curBtn) curBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (!viewType || viewType === 'flowchart') {
-        const fcBtn = document.getElementById(`nav-${progId}-flowchart`);
-        if (fcBtn) fcBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (viewType === 'spreadsheet' || viewType === 'catalog') {
-        const ssBtn = document.getElementById(`nav-${progId}-spreadsheet`);
-        if (ssBtn) ssBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (viewType === 'dashboard' || viewType === 'compliance') {
-        const dbBtn = document.getElementById(`nav-${progId}-dashboard`);
-        if (dbBtn) dbBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (viewType === 'registrar') {
-        const offDocsCont = document.getElementById(progId + 'OffDocsCont');
-        const offDocsChev = document.getElementById(progId + 'OffDocsChev');
-        if (offDocsCont) offDocsCont.classList.remove('hidden');
-        if (offDocsChev) offDocsChev.classList.add('rotate-90');
-        const docBtn = document.getElementById(`nav-${progId}-regdoc-${regDocIdx || 1}`);
-        if (docBtn) docBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (viewType === 'syllabus') {
-        const sylvBtn = document.getElementById(`nav-${progId}-syllabus`);
-        if (sylvBtn) sylvBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (viewType === 'course') {
-        const crsBtn = document.getElementById(`nav-${progId}-course`);
-        if (crsBtn) crsBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      } else if (['obe', 'delegation', 'audit'].includes(viewType)) {
-        const toolBtn = document.getElementById(`nav-${progId}-${viewType}`);
-        if (toolBtn) toolBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-      }
+      // 6. Check for Year-level targeting (Unified Synchronous State Machine)
+      const effectiveYear = (yearNum !== undefined && yearNum !== null)
+        ? yearNum
+        : (['spreadsheet', 'flowchart'].includes(viewType) && window.currentSidebarYear ? window.currentSidebarYear : null);
 
-      // 7. Collapse all year accordions (Y1–Y4) when not doing a year-specific navigation
-      //    Year-specific highlighting is handled by _expandSidebarYear() called from the year functions.
-      const yearOrdinals = ['Y1', 'Y2', 'Y3', 'Y4'];
-      yearOrdinals.forEach(ord => {
-        const yCont = document.getElementById(`${progId}${ord}Cont`);
-        const yChev = document.getElementById(`${progId}${ord}Chev`);
-        if (yCont) yCont.classList.add('hidden');
-        if (yChev) { yChev.classList.remove('rotate-90', 'rotate-180'); }
-      });
+      if (effectiveYear) {
+        window.currentSidebarYear = effectiveYear;
+        const clampedYear = Math.max(1, Math.min(4, parseInt(effectiveYear, 10) || 1));
+        const targetOrd = 'Y' + clampedYear;
+        const yearOrdinals = ['Y1', 'Y2', 'Y3', 'Y4'];
+
+        yearOrdinals.forEach(ord => {
+          const yCont = document.getElementById(`${progId}${ord}Cont`);
+          const yChev = document.getElementById(`${progId}${ord}Chev`);
+          if (ord === targetOrd) {
+            if (yCont) {
+              yCont.classList.remove('hidden');
+              const activeType = subItemType || (viewType === 'flowchart' ? 'flowchart' : 'spreadsheet');
+              const fnName = activeType === 'flowchart' ? 'openFlowchartForYear' : 'openSpreadsheetForYear';
+              yCont.querySelectorAll('button').forEach(btn => {
+                if (btn.getAttribute('onclick')?.includes(fnName)) {
+                  btn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+                } else {
+                  btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+                }
+              });
+            }
+            if (yChev) {
+              yChev.classList.add('rotate-90');
+              yChev.classList.remove('rotate-180');
+            }
+          } else {
+            if (yCont) yCont.classList.add('hidden');
+            if (yChev) {
+              yChev.classList.remove('rotate-90', 'rotate-180');
+            }
+          }
+        });
+      } else {
+        // Clear active year for program-level views
+        window.currentSidebarYear = null;
+
+        // Highlight active leaf node for program-level views
+        if (viewType === 'workbench' || viewType === 'homePdProgramView') {
+          const progBtn = document.querySelector(`#node-prog-${progId} > button`);
+          if (progBtn) progBtn.classList.add('bg-slate-800', 'text-white', 'border-l-2', 'border-[#E5A823]');
+        } else if (viewType === 'curriculum-home') {
+          const curBtn = document.querySelector(`#node-${progId}-curriculums > button`);
+          if (curBtn) curBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        } else if (!viewType || viewType === 'flowchart') {
+          const fcBtn = document.getElementById(`nav-${progId}-flowchart`);
+          if (fcBtn) fcBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        } else if (viewType === 'spreadsheet' || viewType === 'catalog') {
+          const ssBtn = document.getElementById(`nav-${progId}-spreadsheet`);
+          if (ssBtn) ssBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        } else if (viewType === 'dashboard' || viewType === 'compliance') {
+          const dbBtn = document.getElementById(`nav-${progId}-dashboard`);
+          if (dbBtn) dbBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        } else if (viewType === 'registrar') {
+          const offDocsCont = document.getElementById(progId + 'OffDocsCont');
+          const offDocsChev = document.getElementById(progId + 'OffDocsChev');
+          if (offDocsCont) offDocsCont.classList.remove('hidden');
+          if (offDocsChev) offDocsChev.classList.add('rotate-90');
+          const docBtn = document.getElementById(`nav-${progId}-regdoc-${regDocIdx || 1}`);
+          if (docBtn) docBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        } else if (viewType === 'syllabus') {
+          const sylvBtn = document.getElementById(`nav-${progId}-syllabus`);
+          if (sylvBtn) sylvBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        } else if (viewType === 'course') {
+          const crsBtn = document.getElementById(`nav-${progId}-course`);
+          if (crsBtn) crsBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        } else if (['obe', 'delegation', 'audit'].includes(viewType)) {
+          const toolBtn = document.getElementById(`nav-${progId}-${viewType}`);
+          if (toolBtn) toolBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        }
+
+        // 7. Collapse all year accordions (Y1–Y4) when on a program-level view
+        const yearOrdinals = ['Y1', 'Y2', 'Y3', 'Y4'];
+        yearOrdinals.forEach(ord => {
+          const yCont = document.getElementById(`${progId}${ord}Cont`);
+          const yChev = document.getElementById(`${progId}${ord}Chev`);
+          if (yCont) yCont.classList.add('hidden');
+          if (yChev) { yChev.classList.remove('rotate-90', 'rotate-180'); }
+        });
+      }
     }
 
     function goToProgramPd(progCode) {
@@ -2806,7 +2848,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       // selectProgram() already calls this, but navigateView() can also be called
       // directly (e.g. from sidebar buttons like "Management Homepage"), so we
       // ensure the sidebar is always up-to-date regardless of the call path.
-      if (currentSelectedProgram && typeof syncSidebarToCurrentPath === 'function') {
+      if (!inSelectProgram && currentSelectedProgram && typeof syncSidebarToCurrentPath === 'function') {
         const pInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[currentSelectedProgram])
           || { schoolId: 'soe' };
         syncSidebarToCurrentPath(pInfo.schoolId, currentSelectedProgram, viewId);
@@ -3340,67 +3382,50 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     // SIDEBAR YEAR-LEVEL ACCORDION HIGHLIGHTER
     // Expands the correct Year accordion in the sidebar and highlights the
-    // year-specific flowchart / spreadsheet button.
-    // Called AFTER selectProgram() so that year-item visibility is layered on
-    // top of the main syncSidebarToCurrentPath() result.
+    // =========================================================================
+    // SIDEBAR YEAR-LEVEL ACCORDION HIGHLIGHTER (Synchronous Single-Pass)
     // =========================================================================
     function _expandSidebarYear(progCode, yearNum, type) {
-      const progCodeToId = {
-        'BSCpE': 'cpe', 'BSCE': 'ce', 'BSECE': 'ece',
-        'BSCS': 'cs', 'BSIT': 'it',
-        'BMMA': 'mma', 'BSPsych': 'psych',
-        'BSBA': 'ba', 'BSA': 'acc', 'BSArch': 'arch'
-      };
-      const pid = progCodeToId[progCode] || progCode.toLowerCase();
-      const ordinals = ['Y1', 'Y2', 'Y3', 'Y4'];
-
-      // Remove year-item highlights from all year buttons for this program
-      ordinals.forEach(ord => {
-        const yCont = document.getElementById(`${pid}${ord}Cont`);
-        if (yCont) {
-          yCont.querySelectorAll('button').forEach(btn => {
-            btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'border-l-2', 'border-[#E5A823]');
-          });
-        }
-      });
-
-      const clampedYear = Math.max(1, Math.min(4, yearNum));
-      const ord = ordinals[clampedYear - 1];
-      const yCont = document.getElementById(`${pid}${ord}Cont`);
-      const yChev = document.getElementById(`${pid}${ord}Chev`);
-
-      // Expand the matching year accordion
-      if (yCont) yCont.classList.remove('hidden');
-      if (yChev) {
-        yChev.classList.add('rotate-90');
-        yChev.classList.remove('rotate-180');
-      }
-
-      // Highlight the specific year-level button (flowchart or spreadsheet)
-      if (yCont) {
-        const fnName = type === 'flowchart' ? 'openFlowchartForYear' : 'openSpreadsheetForYear';
-        const btn = yCont.querySelector(`button[onclick*="${fnName}"]`);
-        if (btn) btn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'border-l-2', 'border-[#E5A823]');
-      }
+      const prog = progCode || currentSelectedProgram || 'BSCpE';
+      const progInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[prog]) || { schoolId: 'soe' };
+      syncSidebarToCurrentPath(progInfo.schoolId, prog, type || 'spreadsheet', null, yearNum, type || 'spreadsheet');
     }
     window._expandSidebarYear = _expandSidebarYear;
 
     function openFlowchartForYear(yearNum) {
       const prog = currentSelectedProgram || 'BSCpE';
+      currentSelectedProgram = prog;
+      if (typeof window.setSidebarYear === 'function') {
+        window.setSidebarYear(yearNum);
+      }
+
       if (typeof setFlowchartYearFilter === 'function') {
         setFlowchartYearFilter(yearNum);
       }
-      selectProgram(prog, 'flowchart');
       if (typeof switchFlowchartViewMode === 'function') {
         switchFlowchartViewMode('diagram');
       }
-      if (typeof setFlowchartYearFilter === 'function') {
-        setFlowchartYearFilter(yearNum);
-      } else if (typeof diagramScrollToYear === 'function') {
-        setTimeout(() => diagramScrollToYear(yearNum), 50);
+
+      inSelectProgram = true;
+      try {
+        navigateView('flowchart');
+      } finally {
+        inSelectProgram = false;
       }
-      // Expand year accordion in sidebar after navigation settles
-      setTimeout(() => _expandSidebarYear(prog, yearNum, 'flowchart'), 60);
+
+      if (typeof diagramScrollToYear === 'function') {
+        diagramScrollToYear(yearNum);
+      }
+
+      const progInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[prog]) || { schoolShort: 'SoE', schoolId: 'soe', name: prog };
+      const topPill = document.getElementById('topBarPathPill');
+      if (topPill) {
+        topPill.innerText = `Schools > ${progInfo.schoolShort} > ${prog} > Flowchart (Year ${yearNum})`;
+      }
+
+      // Synchronous sidebar sync in one pass - zero timeouts, zero accordion collapse
+      syncSidebarToCurrentPath(progInfo.schoolId, prog, 'flowchart', null, yearNum, 'flowchart');
+
       if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
         window.spaRouter.updateParam('year', yearNum);
       }
@@ -3409,20 +3434,49 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     function openSpreadsheetForYear(yearNum) {
       const prog = currentSelectedProgram || 'BSCpE';
-      selectProgram(prog, 'spreadsheet');
-      if (typeof openIntegratedSpreadsheet === 'function') {
-        openIntegratedSpreadsheet('all', 'curriculum-home');
+      currentSelectedProgram = prog;
+      if (typeof window.setSidebarYear === 'function') {
+        window.setSidebarYear(yearNum);
       }
+      spreadsheetReturnSourceView = 'curriculum-home';
+
+      // 1. Set the year filter value
       const yearFilter = document.getElementById('sheetYearFilter');
       if (yearFilter) {
         yearFilter.value = String(yearNum);
       }
       sheetYearFilter = String(yearNum);
-      if (typeof sheetFilterChange === 'function') {
-        sheetFilterChange();
+
+      // 2. Set active tab to 'all' visually
+      currentSpreadsheetTab = 'all';
+      document.querySelectorAll('.sheet-tab-btn').forEach(btn => {
+        const tab = btn.getAttribute('data-tab');
+        if (tab === 'all') {
+          btn.className = 'sheet-tab-btn px-3.5 py-1.5 text-xs font-bold border-b-2 border-[#002855] dark:border-[#E5A823] text-[#002855] dark:text-[#E5A823] cursor-pointer';
+        } else {
+          btn.className = 'sheet-tab-btn px-3.5 py-1.5 text-xs font-bold border-b-2 border-transparent text-slate-600 hover:text-slate-900 cursor-pointer';
+        }
+      });
+
+      // 3. Switch view directly to spreadsheet in a single pass
+      inSelectProgram = true;
+      try {
+        navigateView('spreadsheet');
+      } finally {
+        inSelectProgram = false;
       }
-      // Expand year accordion in sidebar after navigation settles
-      setTimeout(() => _expandSidebarYear(prog, yearNum, 'spreadsheet'), 60);
+
+      // 4. Update top breadcrumbs
+      const progInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[prog]) || { schoolShort: 'SoE', schoolId: 'soe', name: prog };
+      const topPill = document.getElementById('topBarPathPill');
+      if (topPill) {
+        topPill.innerText = `Schools > ${progInfo.schoolShort} > ${prog} > Curriculum Spreadsheet (Year ${yearNum})`;
+      }
+
+      // 5. Synchronous sidebar sync in one pass - zero timeouts, zero accordion collapse
+      syncSidebarToCurrentPath(progInfo.schoolId, prog, 'spreadsheet', null, yearNum, 'spreadsheet');
+
+      // 6. Router parameter update
       if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
         window.spaRouter.updateParam('year', yearNum);
       }
