@@ -1255,7 +1255,7 @@
         function buildProgramCard(prog, isArchived) {
           const banner = getProgramBannerConfig(prog.code, prog.name, schoolColor);
           const card = document.createElement('div');
-          card.className = `program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all ${isArchived ? 'opacity-85 hover:opacity-100' : ''}`;
+          card.className = `program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all`;
           card.onclick = function() { selectProgram(prog.code, 'homePdProgramView'); };
           card.innerHTML = `
             <div>
