@@ -5568,7 +5568,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         group: (field === 'group' ? val : 'Professional Core'),
         prereqs: (field === 'prereqs' ? val.split(',').map(s => s.trim().toUpperCase()).filter(Boolean) : []),
         sos: ["-","-","-","-","-","-","-","-","-","-","-","-","-"],
-        desc: ""
+        desc: (field === 'desc' ? val : "")
       };
 
       if (field === 'year') newCourse.year = parseInt(val, 10) || 1;
@@ -5698,7 +5698,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           const matchCode = (c.code || '').toLowerCase().includes(sheetFilterQuery);
           const matchTitle = (c.title || '').toLowerCase().includes(sheetFilterQuery);
           const matchPrereq = (c.prereqs || []).some(p => (typeof p === 'object' ? p.code || '' : String(p)).toLowerCase().includes(sheetFilterQuery));
-          if (!matchCode && !matchTitle && !matchPrereq) return;
+          const matchDesc = (c.desc || '').toLowerCase().includes(sheetFilterQuery);
+          if (!matchCode && !matchTitle && !matchPrereq && !matchDesc) return;
         }
         rows.push({ course: c, originalIndex: idx });
       });
@@ -5726,6 +5727,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           <th class="py-2 px-2 text-center w-12 border-r border-slate-300 dark:border-slate-700">Row</th>
           <th class="py-2 px-2 w-28 border-r border-slate-300 dark:border-slate-700">Code</th>
           <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700">Descriptive Title</th>
+          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[280px]">Course Description</th>
           <th class="py-2 px-2 text-center w-16 border-r border-slate-300 dark:border-slate-700">Units</th>
           <th class="py-2 px-2 text-center w-16 border-r border-slate-300 dark:border-slate-700">Lec</th>
           <th class="py-2 px-2 text-center w-16 border-r border-slate-300 dark:border-slate-700">Lab</th>
@@ -5752,6 +5754,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
             <input type="text" value="${(c.title || '').replace(/"/g, '&quot;')}" onfocus="selectExcelCell('B${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'title', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+          </td>
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
+            <input type="text" value="${(c.desc || '').replace(/"/g, '&quot;')}" onfocus="selectExcelCell('DESC_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'desc', this.value)" placeholder="Enter course description..." title="${(c.desc || '').replace(/"/g, '&quot;')}" class="w-full px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none truncate">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
             <input type="number" step="0.5" min="0" max="12" value="${c.units || 0}" onfocus="selectExcelCell('C${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'units', this.value)" class="w-full text-center px-1 py-0.5 font-mono font-bold text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
@@ -5804,6 +5809,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
             <input type="text" placeholder="" onfocus="selectExcelCell('B${r}', this)" onchange="onEmptySheetCellChange(${r}, 'title', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+          </td>
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
+            <input type="text" placeholder="" onfocus="selectExcelCell('DESC_${r}', this)" onchange="onEmptySheetCellChange(${r}, 'desc', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center">
             <input type="number" step="0.5" placeholder="" onfocus="selectExcelCell('C${r}', this)" onchange="onEmptySheetCellChange(${r}, 'units', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">

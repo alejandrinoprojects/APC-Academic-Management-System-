@@ -3777,7 +3777,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         group: (field === 'group' ? val : 'Professional Core'),
         prereqs: (field === 'prereqs' ? val.split(',').map(s => s.trim().toUpperCase()).filter(Boolean) : []),
         sos: ["-","-","-","-","-","-","-","-","-","-","-","-","-"],
-        desc: ""
+        desc: (field === 'desc' ? val : "")
       };
 
       if (field === 'year') newCourse.year = parseInt(val, 10) || 1;
@@ -3944,10 +3944,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     const FACULTY_SCHOOL_LABELS = {
-      soe: 'School of Engineering (SoE)',
-      socit: 'School of Computing & Info Tech (SoCIT)',
-      som: 'School of Management (SoM)',
-      soad: 'School of Architecture & Design (SoAD)'
+      soe: 'SoE',
+      socit: 'SoCIT',
+      som: 'SoM',
+      soad: 'SoAD'
     };
 
     const DEFAULT_FACULTY_MEMBERS = [
@@ -3991,46 +3991,43 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       tbody.innerHTML = window.FACULTY_MEMBERS.map((f, idx) => {
         const schoolName = FACULTY_SCHOOL_LABELS[f.school] || f.school?.toUpperCase() || 'SoE';
-        const coursesList = Array.isArray(f.courses) ? f.courses.join(', ') : (f.courses || '');
         const courseCount = Array.isArray(f.courses) ? f.courses.length : 0;
         const initial = (f.name || 'F').charAt(0).toUpperCase();
 
         return `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
-            <td class="py-3 px-3">
+            <td class="py-2.5 px-3">
               <div class="flex items-center space-x-2.5">
-                <div class="w-7 h-7 rounded-none bg-[#002855] dark:bg-[#E5A823] text-white dark:text-[#002855] flex items-center justify-center font-bold text-xs">
+                <div class="w-6 h-6 rounded-none bg-[#002855] dark:bg-[#E5A823] text-white dark:text-[#002855] flex items-center justify-center font-bold text-xs shrink-0">
                   ${initial}
                 </div>
                 <div>
                   <div class="font-bold text-slate-900 dark:text-white leading-tight">${f.name}</div>
-                  <div class="font-mono text-[10.5px] text-slate-500 dark:text-slate-400">${f.email}</div>
+                  <div class="text-[10.5px] text-slate-400 font-mono">${f.email}</div>
                 </div>
               </div>
             </td>
-            <td class="py-3 px-3">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-none font-bold text-[10.5px] bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+            <td class="py-2.5 px-3">
+              <span class="inline-flex items-center px-1.5 py-0.5 font-bold text-[10.5px] bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                 ${schoolName}
               </span>
             </td>
-            <td class="py-3 px-3 text-slate-700 dark:text-slate-300 font-medium">
+            <td class="py-2.5 px-3 text-slate-700 dark:text-slate-300 font-medium">
               ${f.rank || 'Faculty Member'}
             </td>
-            <td class="py-3 px-3">
-              <div class="font-bold text-slate-900 dark:text-white text-xs">${f.cluster || 'General Engineering'}</div>
-              <div class="text-[10.5px] font-mono text-slate-500 dark:text-slate-400 truncate max-w-xs" title="${coursesList}">
-                ${courseCount > 0 ? `${coursesList} (${courseCount} courses)` : coursesList}
-              </div>
+            <td class="py-2.5 px-3">
+              <div class="font-semibold text-slate-900 dark:text-white text-xs">${f.cluster || 'General'}</div>
+              <div class="text-[10px] text-slate-400">${courseCount} courses</div>
             </td>
-            <td class="py-3 px-3">
-              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10.5px] font-mono font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Entra ID Verified</span>
+            <td class="py-2.5 px-3">
+              <span class="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span>Verified</span>
               </span>
             </td>
-            <td class="py-3 px-3 text-right">
-              <button type="button" onclick="openAssignTaskModal('${f.cluster || ''}', '${f.name}')" class="px-2.5 py-1 bg-slate-100 hover:bg-[#002855] dark:bg-slate-800 dark:hover:bg-[#E5A823] text-slate-700 hover:text-white dark:text-slate-300 dark:hover:text-[#002855] font-bold text-[11px] rounded-none border border-slate-300 dark:border-slate-700 transition cursor-pointer">
-                Delegate Task
+            <td class="py-2.5 px-3 text-right">
+              <button type="button" onclick="openAssignTaskModal('${f.cluster || ''}', '${f.name}')" class="px-2.5 py-1 bg-slate-100 hover:bg-[#002855] dark:bg-slate-800 dark:hover:bg-[#E5A823] text-slate-700 hover:text-white dark:text-slate-300 dark:hover:text-[#002855] font-bold text-xs transition cursor-pointer">
+                Assign Task
               </button>
             </td>
           </tr>
@@ -4111,7 +4108,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           const matchCode = (c.code || '').toLowerCase().includes(sheetFilterQuery);
           const matchTitle = (c.title || '').toLowerCase().includes(sheetFilterQuery);
           const matchPrereq = (c.prereqs || []).some(p => (typeof p === 'object' ? p.code || '' : String(p)).toLowerCase().includes(sheetFilterQuery));
-          if (!matchCode && !matchTitle && !matchPrereq) return;
+          const matchDesc = (c.desc || '').toLowerCase().includes(sheetFilterQuery);
+          if (!matchCode && !matchTitle && !matchPrereq && !matchDesc) return;
         }
         rows.push({ course: c, originalIndex: idx });
       });
@@ -4128,7 +4126,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         <tr class="text-[11px] uppercase font-bold text-slate-700 dark:text-slate-200">
           <th class="py-2 px-2 text-center w-12 border-r border-slate-300 dark:border-slate-700">Row</th>
           <th class="py-2 px-2 w-24 border-r border-slate-300 dark:border-slate-700">Code</th>
-          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[200px]">Descriptive Title</th>
+          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[200px]">Descriptive Title</th>`;
+
+      if (showGeneral) {
+        html += `
+          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[280px]">Course Description</th>`;
+      }
+
+      html += `
           <th class="py-2 px-2 text-center w-16 border-r border-slate-300 dark:border-slate-700">Units</th>
           <th class="py-2 px-2 text-center w-14 border-r border-slate-300 dark:border-slate-700">Lec</th>
           <th class="py-2 px-2 text-center w-14 border-r border-slate-300 dark:border-slate-700">Lab</th>
@@ -4174,7 +4179,16 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
             <input type="text" value="${(c.title || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="selectExcelCell('B${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'title', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
-          </td>
+          </td>`;
+
+        if (showGeneral) {
+          html += `
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
+            <input type="text" value="${(c.desc || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="selectExcelCell('DESC_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'desc', this.value)" placeholder="Enter course description..." title="${(c.desc || '').replace(/"/g, '&quot;')}" class="w-full px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none truncate ${disClass}">
+          </td>`;
+        }
+
+        html += `
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
             <input type="number" step="0.5" min="0" max="12" value="${c.units || 0}" ${disAttr} onfocus="selectExcelCell('C${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'units', this.value)" class="w-full text-center px-1 py-0.5 font-mono font-bold text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
@@ -4260,6 +4274,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
               <input type="text" placeholder="" onfocus="selectExcelCell('B${r}', this)" onchange="onEmptySheetCellChange(${r}, 'title', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            </td>
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
+              <input type="text" placeholder="" onfocus="selectExcelCell('DESC_${r}', this)" onchange="onEmptySheetCellChange(${r}, 'desc', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center">
               <input type="number" step="0.5" placeholder="" onfocus="selectExcelCell('C${r}', this)" onchange="onEmptySheetCellChange(${r}, 'units', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">

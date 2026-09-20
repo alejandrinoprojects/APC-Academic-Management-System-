@@ -1193,51 +1193,12 @@
             <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <!-- Left: Institutional Identity & Degree Info -->
-              <div class="space-y-3 max-w-3xl">
-                <!-- Metadata Strip -->
-                <div class="flex flex-wrap items-center gap-2">
-                  <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-black/40 border border-[#E5A823]/40 text-[#E5A823] text-[10px] font-mono font-black uppercase tracking-wider shadow-xs">
-                    <img src="assets/apc_seal.png" class="w-3.5 h-3.5 object-contain" alt="APC Seal">
-                    <span id="curricHomeSchoolName">SCHOOL OF ENGINEERING</span>
-                  </div>
-                  <div class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 border border-white/20 text-slate-200 text-[10px] font-mono font-bold uppercase">
-                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-none animate-pulse"></span>
-                    <span id="curricHomeProgramTag">BSCpE AY 2026–2030</span>
-                  </div>
-                  <span class="px-2 py-1 bg-blue-900/60 border border-blue-700/60 text-blue-200 text-[10px] font-mono font-bold">
-                    CHED CMO No. 92, s. 2017 Compliant
-                  </span>
-                </div>
-
-                <!-- Degree Title & Subtitle -->
-                <div>
-                  <h2 id="curricHomeProgramTitle" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase text-white">
-                    Bachelor of Science in <span class="text-[#E5A823]">Computer Engineering</span>
-                  </h2>
-                  <h3 id="curricHomeHeading" class="hidden">Curriculum Management Homepage</h3>
-                  <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">
-                    Outcomes-Based Education (OBE) Master Curriculum &bull; 4-Year Active Baseline Cohort
-                  </p>
-                </div>
-
-                <!-- Director & Governance Meta Line -->
-                <div class="flex flex-wrap items-center gap-4 text-xs text-slate-300 pt-2 border-t border-white/10">
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-slate-400 text-[11px]">Program Director:</span>
-                    <span id="curricHomeDirectorName" class="font-bold text-[#E5A823]">Program Director</span>
-                  </div>
-                  <span class="text-slate-500">&bull;</span>
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-slate-400 text-[11px]">Sequence:</span>
-                    <span class="font-bold text-emerald-400">12 Trimesters</span>
-                  </div>
-                  <span class="text-slate-500">&bull;</span>
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-slate-400 text-[11px]">Accreditation:</span>
-                    <span class="font-bold text-slate-200">PACUCOA Level IV</span>
-                  </div>
-                </div>
+              <!-- Left: Degree Title -->
+              <div>
+                <h2 id="curricHomeProgramTitle" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase text-white">
+                  Bachelor of Science in <span class="text-[#E5A823]">Computer Engineering</span>
+                </h2>
+                <h3 id="curricHomeHeading" class="hidden">Curriculum Management Homepage</h3>
               </div>
 
               <!-- Right: Navigation Button -->
@@ -1250,46 +1211,6 @@
                   <svg class="w-4 h-4 text-[#002855]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                   <span id="curricHomeWorkbenchBtnText">PD Workbench</span>
                 </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Modern 4-Tile Metric Ribbon -->
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-4 shadow-xs flex items-center gap-3.5">
-              <div class="w-10 h-10 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-[#002855] dark:text-[#E5A823] flex items-center justify-center font-black text-sm shrink-0 font-mono">
-                U
-              </div>
-              <div>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Program Load</div>
-                <div class="text-lg font-black text-slate-900 dark:text-white font-mono">184.0 <span class="text-xs font-sans font-semibold text-slate-500">Units</span></div>
-              </div>
-            </div>
-            <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-4 shadow-xs flex items-center gap-3.5">
-              <div class="w-10 h-10 bg-amber-50 dark:bg-amber-950/70 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-[#E5A823] flex items-center justify-center font-black text-sm shrink-0 font-mono">
-                #
-              </div>
-              <div>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Curriculum Courses</div>
-                <div class="text-lg font-black text-slate-900 dark:text-white font-mono">74 <span class="text-xs font-sans font-semibold text-slate-500">Subjects</span></div>
-              </div>
-            </div>
-            <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-4 shadow-xs flex items-center gap-3.5">
-              <div class="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-black text-sm shrink-0 font-mono">
-                T
-              </div>
-              <div>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Trimester Cadence</div>
-                <div class="text-lg font-black text-slate-900 dark:text-white font-mono">12 <span class="text-xs font-sans font-semibold text-slate-500">Terms (4 Yrs)</span></div>
-              </div>
-            </div>
-            <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-4 shadow-xs flex items-center gap-3.5">
-              <div class="w-10 h-10 bg-purple-50 dark:bg-purple-950/70 border border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-400 flex items-center justify-center font-black text-sm shrink-0 font-mono">
-                SO
-              </div>
-              <div>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">OBE Competencies</div>
-                <div class="text-lg font-black text-slate-900 dark:text-white font-mono">13 <span class="text-xs font-sans font-semibold text-slate-500">Outcomes (a–m)</span></div>
               </div>
             </div>
           </div>
@@ -2706,12 +2627,7 @@
             <!-- Suite Header -->
             <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
               <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] text-[10px] font-mono font-bold uppercase tracking-wider">D-RBAC</span>
-                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Governance &amp; Faculty Administration</span>
-                </div>
-                <h2 class="font-extrabold text-slate-900 dark:text-white text-xl tracking-tight">Collaborative Task &amp; Faculty Cluster Delegation</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Assign faculty members across academic schools, configure Entra ID accounts, and delegate time-bound subject cluster review authority.</p>
+                <h2 class="font-extrabold text-slate-900 dark:text-white text-xl tracking-tight">Faculty &amp; Cluster Delegations</h2>
               </div>
               <div class="flex flex-wrap items-center gap-2">
                 <button type="button" id="btnOpenAddFacultyModal" onclick="openAddFacultyModal()" class="px-3.5 py-2 bg-[#047857] hover:bg-[#065f46] text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 cursor-pointer">
@@ -2720,7 +2636,7 @@
                 </button>
                 <button type="button" id="btnOpenAssignTaskModal" onclick="openAssignTaskModal('Hardware &amp; Embedded Systems', 'Faculty Member')" class="px-3.5 py-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] text-xs font-bold rounded-none shadow-xs border border-[#E5A823] transition flex items-center gap-1.5 cursor-pointer">
                   <span>+</span>
-                  <span>Delegate Cluster / Assign Task</span>
+                  <span>Assign Task</span>
                 </button>
               </div>
             </div>
@@ -2728,29 +2644,23 @@
             <!-- SECTION 1: ACTIVE CURRICULUM CLUSTER DELEGATIONS -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <div>
-                  <h3 class="font-extrabold text-sm text-slate-900 dark:text-white flex items-center gap-2">
-                    <span>👥 Active Curriculum Cluster Delegations</span>
-                    <span class="px-2 py-0.5 bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-mono font-bold">2 Clusters Active</span>
-                  </h3>
-                  <p class="text-[11px] text-slate-500 dark:text-slate-400">Scoped course cluster leads with time-bound syllabus continuous quality review tokens.</p>
-                </div>
+                <h3 class="font-extrabold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                  <span>Cluster Delegations</span>
+                  <span class="px-2 py-0.5 bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-mono font-bold">2 Active</span>
+                </h3>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 <!-- Cluster 1 Card -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4.5 space-y-3 shadow-xs">
+                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4 space-y-2.5 shadow-xs">
                   <div class="flex items-start justify-between gap-3">
                     <div class="space-y-1">
-                      <div class="flex items-center gap-2">
-                        <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] text-[9px] font-mono font-bold uppercase">Cluster 1</span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Hardware &amp; Systems</span>
-                      </div>
+                      <span class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[9px] font-mono font-bold uppercase">Cluster 1</span>
                       <h4 class="font-bold text-slate-900 dark:text-white text-sm">Hardware &amp; Embedded Systems</h4>
-                      <p class="text-[11px] text-slate-500 font-mono">Scope: LOGCDES, EMICROS, EMBEDDS, COMAROR</p>
+                      <p class="text-[11px] text-slate-500 font-mono">4 Courses: LOGCDES, EMICROS, EMBEDDS, COMAROR</p>
                     </div>
                     <span class="px-2 py-0.5 rounded-none bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-bold shrink-0 border border-blue-200 dark:border-blue-800">
-                      PENDING SUBMISSION
+                      Pending
                     </span>
                   </div>
 
@@ -2759,27 +2669,24 @@
                       <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span>
                       <span class="font-medium text-slate-700 dark:text-slate-300">Lead: Faculty Member 2</span>
                       <span class="text-slate-400">&bull;</span>
-                      <span class="text-slate-500 font-mono">Expires: Nov 01, 2026</span>
+                      <span class="text-slate-500 font-mono">Expires Nov 01, 2026</span>
                     </div>
                     <button type="button" id="btnReassignCluster1" onclick="openAssignTaskModal('Hardware &amp; Embedded Systems', 'Faculty Member 2')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
-                      Reassign Lead
+                      Reassign
                     </button>
                   </div>
                 </div>
 
                 <!-- Cluster 2 Card -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4.5 space-y-3 shadow-xs">
+                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4 space-y-2.5 shadow-xs">
                   <div class="flex items-start justify-between gap-3">
                     <div class="space-y-1">
-                      <div class="flex items-center gap-2">
-                        <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] text-[9px] font-mono font-bold uppercase">Cluster 2</span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Networking &amp; Comms</span>
-                      </div>
+                      <span class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[9px] font-mono font-bold uppercase">Cluster 2</span>
                       <h4 class="font-bold text-slate-900 dark:text-white text-sm">Computer Networks &amp; Security</h4>
-                      <p class="text-[11px] text-slate-500 font-mono">Scope: DATCOMS, COMNETS, NETSLAB</p>
+                      <p class="text-[11px] text-slate-500 font-mono">3 Courses: DATCOMS, COMNETS, NETSLAB</p>
                     </div>
                     <span class="px-2 py-0.5 rounded-none bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold shrink-0 border border-emerald-200 dark:border-emerald-800">
-                      ACTIVE (In Review)
+                      Active
                     </span>
                   </div>
 
@@ -2788,10 +2695,10 @@
                       <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span>
                       <span class="font-medium text-slate-700 dark:text-slate-300">Lead: Faculty Member 1</span>
                       <span class="text-slate-400">&bull;</span>
-                      <span class="text-slate-500 font-mono">Expires: Oct 15, 2026</span>
+                      <span class="text-slate-500 font-mono">Expires Oct 15, 2026</span>
                     </div>
                     <button type="button" id="btnReassignCluster2" onclick="openAssignTaskModal('Computer Networks &amp; Security', 'Faculty Member 1')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
-                      Reassign Lead
+                      Reassign
                     </button>
                   </div>
                 </div>
@@ -2799,19 +2706,9 @@
             </div>
 
             <!-- SECTION 2: REGISTERED FACULTY DIRECTORY & SCHOOL ASSIGNMENTS -->
-            <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <h3 class="font-extrabold text-sm text-slate-900 dark:text-white flex items-center gap-2">
-                    <span>📋 Registered Faculty Directory &amp; School Assignment</span>
-                    <span class="text-xs font-normal text-slate-500 dark:text-slate-400">(Linked with Microsoft Entra ID)</span>
-                  </h3>
-                  <p class="text-[11px] text-slate-500 dark:text-slate-400">Institutional roster of faculty members assigned to academic schools with verified institutional accounts.</p>
-                </div>
-                <div class="flex items-center gap-2 text-[11px] font-mono text-slate-500">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
-                  <span>OAuth 2.0 Directory Sync Active</span>
-                </div>
+            <div class="space-y-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-sm text-slate-900 dark:text-white">Faculty Directory</h3>
               </div>
 
               <!-- Faculty Table Container -->
@@ -2819,12 +2716,12 @@
                 <table class="w-full text-left text-xs text-slate-700 dark:text-slate-200">
                   <thead class="bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider select-none">
                     <tr>
-                      <th class="py-3 px-3">Faculty Member</th>
-                      <th class="py-3 px-3">Assigned School</th>
-                      <th class="py-3 px-3">Rank / Position</th>
-                      <th class="py-3 px-3">Subject Cluster &amp; Scope</th>
-                      <th class="py-3 px-3">Account Status</th>
-                      <th class="py-3 px-3 text-right">Actions</th>
+                      <th class="py-2.5 px-3">Faculty</th>
+                      <th class="py-2.5 px-3">School</th>
+                      <th class="py-2.5 px-3">Rank</th>
+                      <th class="py-2.5 px-3">Cluster</th>
+                      <th class="py-2.5 px-3">Status</th>
+                      <th class="py-2.5 px-3 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody id="facultyDirectoryTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
@@ -2835,8 +2732,7 @@
             </div>
 
             <!-- Footer Return Strip -->
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-              <span class="text-slate-500 dark:text-slate-400">Asia Pacific College &bull; Academic Management System &bull; Delegated Access Control</span>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end text-xs">
               <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="font-bold text-[#002855] dark:text-[#E5A823] hover:underline flex items-center gap-1.5 cursor-pointer">
                 <span>&larr;</span>
                 <span>Return to Program Director Workbench</span>
