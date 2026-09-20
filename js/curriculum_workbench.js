@@ -712,7 +712,7 @@
       // 6. Check for Year-level targeting (Unified Synchronous State Machine)
       const effectiveYear = (yearNum !== undefined && yearNum !== null)
         ? yearNum
-        : (['spreadsheet', 'flowchart'].includes(viewType) && window.currentSidebarYear ? window.currentSidebarYear : null);
+        : (['spreadsheet', 'flowchart', 'registrar'].includes(viewType) && window.currentSidebarYear ? window.currentSidebarYear : null);
 
       if (effectiveYear) {
         window.currentSidebarYear = effectiveYear;
@@ -726,15 +726,48 @@
           if (ord === targetOrd) {
             if (yCont) {
               yCont.classList.remove('hidden');
-              const activeType = subItemType || (viewType === 'flowchart' ? 'flowchart' : 'spreadsheet');
-              const fnName = activeType === 'flowchart' ? 'openFlowchartForYear' : 'openSpreadsheetForYear';
-              yCont.querySelectorAll('button').forEach(btn => {
-                if (btn.getAttribute('onclick')?.includes(fnName)) {
-                  btn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
-                } else {
-                  btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+              if (viewType === 'registrar') {
+                // Ensure Year Official Documents container is expanded
+                const offDocsYearCont = document.getElementById(`${progId}OffDocs${targetOrd}Cont`);
+                const offDocsYearChev = document.getElementById(`${progId}OffDocs${targetOrd}Chev`);
+                if (offDocsYearCont) offDocsYearCont.classList.remove('hidden');
+                if (offDocsYearChev) {
+                  offDocsYearChev.classList.add('rotate-90');
+                  offDocsYearChev.classList.remove('rotate-180');
                 }
-              });
+
+                // Clear direct flowchart/spreadsheet highlights in year container
+                yCont.querySelectorAll('button').forEach(btn => {
+                  if (btn.getAttribute('onclick')?.includes('openFlowchartForYear') || btn.getAttribute('onclick')?.includes('openSpreadsheetForYear')) {
+                    btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+                  }
+                });
+
+                // Highlight active document in year official documents list
+                if (offDocsYearCont) {
+                  const targetDocIdx = parseInt(regDocIdx || 1, 10);
+                  offDocsYearCont.querySelectorAll('button').forEach(btn => {
+                    const oc = btn.getAttribute('onclick') || '';
+                    if (oc.includes(`'registrar', ${targetDocIdx}`) || oc.includes(`"registrar", ${targetDocIdx}`) || oc.includes(`'registrar',${targetDocIdx}`)) {
+                      btn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+                      btn.classList.remove('text-slate-400');
+                    } else {
+                      btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+                      btn.classList.add('text-slate-400');
+                    }
+                  });
+                }
+              } else {
+                const activeType = subItemType || (viewType === 'flowchart' ? 'flowchart' : 'spreadsheet');
+                const fnName = activeType === 'flowchart' ? 'openFlowchartForYear' : 'openSpreadsheetForYear';
+                yCont.querySelectorAll('button').forEach(btn => {
+                  if (btn.getAttribute('onclick')?.includes(fnName)) {
+                    btn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+                  } else {
+                    btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+                  }
+                });
+              }
             }
             if (yChev) {
               yChev.classList.add('rotate-90');
@@ -1556,12 +1589,13 @@
       return { code: code, name: str };
     }
 
-    function selectProgram(progCode, targetView = 'flowchart', docIdx = null) {
+    function selectProgram(progCode, targetView = 'flowchart', docIdx = null, yearNum = null) {
       syncProgramSchoolMap();
       currentSelectedProgram = progCode;
       const progInfo = PROGRAM_TO_SCHOOL_MAP[progCode] || { schoolShort: 'SoE', schoolId: 'soe', name: progCode };
       
       const topPill = document.getElementById('topBarPathPill');
+      const activeYear = (yearNum !== undefined && yearNum !== null) ? yearNum : window.currentSidebarYear;
       
       if (targetView === 'homePdProgramView' || targetView === 'workbench') {
         renderProgramOverview(progCode);
@@ -1569,7 +1603,7 @@
         if (topPill) {
           topPill.innerText = pText;
         }
-        syncSidebarToCurrentPath(progInfo.schoolId, progCode, 'workbench');
+        syncSidebarToCurrentPath(progInfo.schoolId, progCode, 'workbench', null, activeYear);
         recordNavigationStep({
           type: 'pd',
           progCode: progCode,
@@ -1620,8 +1654,8 @@
           topPill.innerText = pText;
         }
         
-        // Auto-sync sidebar to this program and view
-        syncSidebarToCurrentPath(progInfo.schoolId, progCode, targetView || 'flowchart', docIdx);
+        // Auto-sync sidebar to this program and view (forward active year if set)
+        syncSidebarToCurrentPath(progInfo.schoolId, progCode, targetView || 'flowchart', docIdx, activeYear);
 
         recordNavigationStep({
           type: 'program',
