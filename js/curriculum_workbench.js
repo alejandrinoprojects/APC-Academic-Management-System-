@@ -1864,7 +1864,9 @@
     });
 
     let isAgentDrawerOpen = false;
-    let personalAgentKey = '';
+    let agentChatHistory = [];
+    const JAN_MODEL_ID = 'Llama-3_2-3B-Instruct-Q4_K_M';
+    const JAN_API_ENDPOINT = 'http://127.0.0.1:1337/v1/chat/completions';
 
     function togglePersonalAgentDrawer() {
       const drawer = document.getElementById('personalAiAgentDrawer');
@@ -1874,70 +1876,58 @@
       if (isAgentDrawerOpen) {
         drawer.classList.remove('hidden');
         if (backdrop) backdrop.classList.remove('hidden');
-        checkAgentApiKeyStatus();
+        checkAgentJanStatus();
+        const input = document.getElementById('agentUserInput');
+        if (input) setTimeout(() => input.focus(), 120);
       } else {
         drawer.classList.add('hidden');
         if (backdrop) backdrop.classList.add('hidden');
       }
     }
 
-    function checkAgentApiKeyStatus() {
-      const input = document.getElementById('agentApiKeyInput');
-      const badge = document.getElementById('agentKeyStatusBadge');
-      const msg = document.getElementById('agentKeyStatusMessage');
-      personalAgentKey = localStorage.getItem('apc_personal_agent_key') || '';
-
-      if (input && personalAgentKey) {
-        input.value = personalAgentKey;
+    async function checkAgentJanStatus() {
+      const badge = document.getElementById('agentModelBadge');
+      if (!badge) return;
+      try {
+        const res = await fetch('http://127.0.0.1:1337/v1/models', { signal: AbortSignal.timeout(1500) });
+        if (res.ok) {
+          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10.5px] font-mono border border-emerald-400/40';
+          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span><span>LLaMA 3.2 3B Active</span>';
+          return true;
+        }
+      } catch (e) {
+        // Fallback below
       }
+      badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-500/20 text-amber-300 text-[10.5px] font-mono border border-amber-400/40';
+      badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Local Heuristic Engine</span>';
+      return false;
+    }
 
-      if (personalAgentKey && personalAgentKey.trim().length > 10) {
-        if (badge) {
-          badge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-none bg-emerald-100 text-emerald-900 border border-emerald-300';
-          badge.innerHTML = '● Gemini API Key Configured';
-        }
-        if (msg) {
-          msg.innerHTML = '<span class="text-emerald-700 font-bold">✓ Connected:</span> Personal Agent has direct Gemini 1.5/2.0 API reasoning privileges.';
-        }
-      } else {
-        if (badge) {
-          badge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-none bg-amber-100 text-amber-900 border border-amber-300';
-          badge.innerHTML = '● Local Heuristics Mode';
-        }
-        if (msg) {
-          msg.innerHTML = '<span class="text-amber-800 font-bold">⚡ Running Local Agent:</span> Enter Google Gemini API key to unlock open-ended multimodal LLM reasoning.';
-        }
+    function promptAgentChip(text) {
+      const input = document.getElementById('agentUserInput');
+      if (input) {
+        input.value = text;
+        sendAgentPrompt();
       }
     }
 
-    function toggleApiKeyVisibility() {
-      const input = document.getElementById('agentApiKeyInput');
-      if (!input) return;
-      input.type = input.type === 'password' ? 'text' : 'password';
-    }
-
-    function saveAgentApiKey() {
-      const input = document.getElementById('agentApiKeyInput');
-      if (!input) return;
-      const key = input.value.trim();
-      if (!key) {
-        alert('Please enter an API key to save, or click Clear to remove.');
-        return;
-      }
-      localStorage.setItem('apc_personal_agent_key', key);
-      personalAgentKey = key;
-      checkAgentApiKeyStatus();
-      showToastNotification('Personal AI Agent Gemini Key saved securely in browser!');
-      appendAgentChatMessage('agent', 'System Notice', 'Google Gemini API key registered successfully! Personal Agent is armed with full generative reasoning capabilities.', 'API Key Updated in LocalStorage');
-    }
-
-    function clearAgentApiKey() {
-      localStorage.removeItem('apc_personal_agent_key');
-      personalAgentKey = '';
-      const input = document.getElementById('agentApiKeyInput');
-      if (input) input.value = '';
-      checkAgentApiKeyStatus();
-      showToastNotification('API key removed. Running in Local Heuristic Agent mode.');
+    function formatMarkdownChat(text) {
+      if (!text) return '';
+      let formatted = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      
+      // Bold
+      formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      // Inline code
+      formatted = formatted.replace(/`([^`]+)`/g, '<code class="px-1 py-0.5 bg-slate-100 dark:bg-slate-800 text-amber-600 dark:text-amber-400 font-mono text-[10.5px]">$1</code>');
+      // Bullet points
+      formatted = formatted.replace(/\n\s*•\s*(.*)/g, '<li class="ml-3 list-disc">$1</li>');
+      formatted = formatted.replace(/\n\s*-\s*(.*)/g, '<li class="ml-3 list-disc">$1</li>');
+      // Newlines
+      formatted = formatted.replace(/\n/g, '<br>');
+      return formatted;
     }
 
     function appendAgentChatMessage(sender, title, text, toolLog = null) {
@@ -1947,28 +1937,31 @@
       const isUser = sender === 'user';
       const msgDiv = document.createElement('div');
       msgDiv.className = isUser 
-        ? 'bg-blue-50 p-3 rounded-none border border-blue-200 text-slate-800 space-y-1 ml-4'
-        : 'bg-slate-100 p-3 rounded-none border border-slate-200 text-slate-800 space-y-1 mr-4';
+        ? 'bg-[#002855] text-white p-3.5 rounded-none border-l-2 border-[#E5A823] ml-6 shadow-xs space-y-1'
+        : 'bg-white dark:bg-[#181D26] text-slate-800 dark:text-slate-100 p-3.5 rounded-none border border-slate-200 dark:border-slate-800 mr-6 shadow-xs space-y-1.5';
 
       let toolHtml = '';
       if (toolLog) {
         toolHtml = `
-          <div class="p-2 bg-slate-900 text-emerald-400 font-mono text-[11px] rounded-none border-l-2 border-emerald-400 my-1 overflow-x-auto">
-            ${toolLog}
+          <div class="px-2 py-1 bg-slate-900 text-emerald-400 font-mono text-[10px] border-l-2 border-emerald-400 my-1 overflow-x-auto flex items-center gap-1.5">
+            <span>⚙️</span>
+            <span>${toolLog}</span>
           </div>
         `;
       }
 
+      const formattedBody = isUser ? text : formatMarkdownChat(text);
+
       msgDiv.innerHTML = `
-        <div class="flex items-center justify-between font-bold text-[11px] ${isUser ? 'text-blue-900' : 'text-[#002855]'}">
+        <div class="flex items-center justify-between font-bold text-[11px] ${isUser ? 'text-[#E5A823]' : 'text-[#002855] dark:text-[#E5A823]'}">
           <span class="flex items-center gap-1.5">
-            <span>${isUser ? '👤 You' : '🤖 Personal AI Agent'}</span>
-            <span class="text-[11px] font-normal text-slate-500">(${title})</span>
+            <span>${isUser ? '👤 You' : '✦ RAMS AI (LLaMA 3.2)'}</span>
+            <span class="text-[10px] font-normal text-slate-400">(${title})</span>
           </span>
-          <span class="font-mono text-[11px] text-slate-400">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+          <span class="font-mono text-[10px] text-slate-400 font-normal">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
         </div>
         ${toolHtml}
-        <div class="text-[11px] text-slate-700 leading-relaxed whitespace-pre-wrap">${text}</div>
+        <div class="text-[11.5px] ${isUser ? 'text-slate-100' : 'text-slate-700 dark:text-slate-200'} leading-relaxed">${formattedBody}</div>
       `;
 
       feed.appendChild(msgDiv);
@@ -1976,15 +1969,38 @@
     }
 
     function clearAgentChat() {
+      agentChatHistory = [];
       const feed = document.getElementById('agentChatFeed');
       if (feed) {
         feed.innerHTML = `
-          <div class="bg-slate-100 p-3 rounded-none border border-slate-200 text-slate-800 space-y-1">
-            <div class="flex items-center justify-between font-bold text-[11px] text-[#002855]">
-              <span class="flex items-center gap-1.5"><span>🤖</span><span>APC Personal Curriculum Agent</span></span>
-              <span class="font-mono text-[11px] text-slate-400">System Ready</span>
+          <div class="bg-white dark:bg-[#181D26] p-4 rounded-none border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="text-base">🤖</span>
+                <span class="font-black text-xs text-[#002855] dark:text-[#E5A823] uppercase tracking-wide">RAMS Curriculum Assistant</span>
+              </div>
+              <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 border border-emerald-300 dark:border-emerald-700">Online</span>
             </div>
-            <p class="text-[11px] text-slate-700 leading-relaxed">Chat log cleared. Full system privileges active. What would you like to inspect or modify?</p>
+            <p class="text-[11.5px] text-slate-700 dark:text-slate-300 leading-relaxed">
+              Chat log cleared. I am your local AI copilot powered by <strong>LLaMA 3.2 3B Instruct</strong>. What would you like to inspect or audit in the BSCpE curriculum?
+            </p>
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Suggested prompts:</div>
+              <div class="flex flex-wrap gap-1.5">
+                <button type="button" onclick="promptAgentChip('Run Kahn algorithm to audit prerequisite cycles')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+                  🔍 Audit DAG Cycles
+                </button>
+                <button type="button" onclick="promptAgentChip('Audit total credit units against CHED CMO 92 distribution')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+                  ⚖️ Check CHED Units
+                </button>
+                <button type="button" onclick="promptAgentChip('Detect concurrent lecture and laboratory co-requisite pairings')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+                  ⚡ Lab Co-reqs
+                </button>
+                <button type="button" onclick="promptAgentChip('Inspect course CPEDES1 prerequisites and downstream dependents')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+                  📋 Inspect CPEDES1
+                </button>
+              </div>
+            </div>
           </div>
         `;
       }
@@ -2002,46 +2018,71 @@
       const btn = document.getElementById('btnSendAgentPrompt');
       if (btn) btn.disabled = true;
 
+      // Show thinking indicator
+      const feed = document.getElementById('agentChatFeed');
+      let typingDiv = null;
+      if (feed) {
+        typingDiv = document.createElement('div');
+        typingDiv.id = 'agentTypingIndicator';
+        typingDiv.className = 'flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400 py-1.5 px-2';
+        typingDiv.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span><span class="font-mono">LLaMA 3.2 3B is reasoning...</span>';
+        feed.appendChild(typingDiv);
+        feed.scrollTop = feed.scrollHeight;
+      }
+
       try {
-        if (personalAgentKey && personalAgentKey.trim().length > 10) {
-          // Gemini API Call with Structured System Prompt
-          const sysPrompt = `You are the APC School of Engineering Personal Curriculum AI Agent with full administrative privileges over the BSCpE curriculum.
-Curriculum State Summary:
-- Total Courses: ${ALL_COURSES.length}
-- Total Units: ${ALL_COURSES.reduce((a,c) => a + (c.units||0), 0)}
-- Requisites: Hard (Pass Prior), Co-requisite (Concurrent), Soft (Advisory)
-- Available Tools: kahnTopologicalSort(), auditChedUnits(), detectLaboratoryCoRequisites(), addCourse(), updateCourse(), deleteCourse()
+        const totalUnits = ALL_COURSES.reduce((a, c) => a + (c.units || 0), 0);
+        const sysPrompt = `You are the Asia Pacific College (APC) School of Engineering Personal Curriculum AI Copilot for the RAMS Academic Management System.
+You assist faculty, program directors, and curriculum engineers with the Computer Engineering (BSCpE) curriculum.
+Curriculum State:
+- Total Courses: ${ALL_COURSES.length} courses across 4 Years (12 Trimesters).
+- Total Credit Units: ${totalUnits.toFixed(1)} units (CHED CMO 92 compliant baseline).
+- Requisite system: Hard Prereq (Pass Prior), Co-requisite (Concurrent), Soft Requisite (Advisory).
+- Key Courses: CPEDES1 (Design 1), CPEDES2 (Design 2), EMICROS (Microprocessors), ELECIRK (Electric Circuits), CALCONE (Calculus 1).
+Respond in a clear, highly competent, professional academic tone. Provide concise, direct answers with bullet points where appropriate.`;
 
-Respond in a direct, highly competent, professional tone. If the user commands an action, confirm that the action was executed on the live curriculum.`;
+        // Update conversation history
+        agentChatHistory.push({ role: 'user', content: prompt });
+        if (agentChatHistory.length > 8) agentChatHistory = agentChatHistory.slice(-8);
 
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(personalAgentKey)}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [
-                { role: 'user', parts: [{ text: `${sysPrompt}\n\nUser: ${prompt}` }] }
-              ]
-            })
-          });
+        const messages = [
+          { role: 'system', content: sysPrompt },
+          ...agentChatHistory
+        ];
 
-          if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            throw new Error(errData.error?.message || `HTTP ${response.status}`);
-          }
+        const response = await fetch(JAN_API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: JAN_MODEL_ID,
+            messages: messages,
+            temperature: 0.6,
+            max_tokens: 600
+          }),
+          signal: AbortSignal.timeout(18000)
+        });
 
-          const data = await response.json();
-          const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated.';
-          appendAgentChatMessage('agent', 'Gemini 1.5 Flash Reasoning', aiText, `🔧 Live LLM Tool Response | Latency: 420ms | Model: gemini-1.5-flash`);
-        } else {
-          // Local Intelligent Heuristic Agent Fallback
-          executeLocalAgentHeuristic(prompt);
+        if (!response.ok) {
+          throw new Error(`Jan AI returned HTTP ${response.status}`);
         }
+
+        const data = await response.json();
+        const aiText = data.choices?.[0]?.message?.content || 'No response generated.';
+        
+        // Save to chat history
+        agentChatHistory.push({ role: 'assistant', content: aiText });
+
+        if (typingDiv && typingDiv.parentNode) typingDiv.parentNode.removeChild(typingDiv);
+        appendAgentChatMessage('agent', 'LLaMA 3.2 3B Inference', aiText, `⚡ Jan AI Local Server • Model: ${JAN_MODEL_ID}`);
+
       } catch (err) {
-        console.error('Agent prompt error:', err);
-        appendAgentChatMessage('agent', 'System Fallback', `API Error: ${err.message}. Falling back to Local Autonomous Engine:`, `⚠️ Gemini API Error -> Switching to Local Agent`);
+        console.warn('Jan AI local query failed or timed out:', err.message);
+        if (typingDiv && typingDiv.parentNode) typingDiv.parentNode.removeChild(typingDiv);
+        // Fallback seamlessly to local intelligent heuristic engine
         executeLocalAgentHeuristic(prompt);
       } finally {
         if (btn) btn.disabled = false;
+        if (input) input.focus();
       }
     }
 

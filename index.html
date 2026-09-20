@@ -282,176 +282,28 @@
                                 <span class="truncate">Curriculum Spreadsheet (Year 1)</span>
                               </button>
 
-                              <!-- Section: Curriculum Revisions -->
-                              <div class="px-2 pt-1 pb-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                                Curriculum Revisions
-                              </div>
-
-                              <!-- Revision 2026–2030 (Active Baseline) -->
-                              <div id="node-cpe-rev2026">
-                                <button type="button" onclick="toggleFolderAccordion('cpeRev2026Cont', 'cpeRev2026Chev')"
-                                  class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                              <!-- 1st Year Official Documents Accordion -->
+                              <div>
+                                <button type="button" onclick="toggleFolderAccordion('cpeOffDocsY1Cont', 'cpeOffDocsY1Chev')"
+                                  class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
                                   <span class="flex items-center space-x-1.5 truncate">
-                                    <svg id="cpeRev2026Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg id="cpeOffDocsY1Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
                                     </svg>
-                                    <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                      <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                    <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
                                     </svg>
-                                    <span class="truncate text-[11px] font-bold text-amber-300">2026–2030</span>
-                                  </span>
-                                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" title="Active Baseline"></span>
-                                </button>
-
-                                <!-- Revision 2026–2030: Official Documents Only -->
-                                <div id="cpeRev2026Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-2.5">
-                                  <div>
-                                    <button type="button" onclick="toggleFolderAccordion('cpeOffDocs2026Cont', 'cpeOffDocs2026Chev')"
-                                      class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
-                                      <span class="flex items-center space-x-1.5 truncate">
-                                        <svg id="cpeOffDocs2026Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                        </svg>
-                                        <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
-                                        </svg>
-                                        <span class="truncate text-[11px]">Official Documents</span>
-                                      </span>
-                                    </button>
-
-                                    <div id="cpeOffDocs2026Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <!-- Revision 2025–2029 -->
-                              <div id="node-cpe-rev2025">
-                                <button type="button" onclick="toggleFolderAccordion('cpeRev2025Cont', 'cpeRev2025Chev')"
-                                  class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                                  <span class="flex items-center space-x-1.5 truncate">
-                                    <svg id="cpeRev2025Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                    <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                      <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                                    </svg>
-                                    <span class="truncate text-[11px] font-bold text-slate-300">2025–2029</span>
+                                    <span class="truncate text-[11px]">Official Documents</span>
                                   </span>
                                 </button>
-                                <div id="cpeRev2025Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-2.5">
-                                  <div>
-                                    <button type="button" onclick="toggleFolderAccordion('cpeOffDocs2025Cont', 'cpeOffDocs2025Chev')"
-                                      class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
-                                      <span class="flex items-center space-x-1.5 truncate">
-                                        <svg id="cpeOffDocs2025Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                        </svg>
-                                        <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
-                                        </svg>
-                                        <span class="truncate text-[11px]">Official Documents</span>
-                                      </span>
-                                    </button>
-                                    <div id="cpeOffDocs2025Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <!-- Revision 2024–2028 -->
-                              <div id="node-cpe-rev2024">
-                                <button type="button" onclick="toggleFolderAccordion('cpeRev2024Cont', 'cpeRev2024Chev')"
-                                  class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                                  <span class="flex items-center space-x-1.5 truncate">
-                                    <svg id="cpeRev2024Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                    <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                      <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                                    </svg>
-                                    <span class="truncate text-[11px] font-bold text-slate-300">2024–2028</span>
-                                  </span>
-                                </button>
-                                <div id="cpeRev2024Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-2.5">
-                                  <div>
-                                    <button type="button" onclick="toggleFolderAccordion('cpeOffDocs2024Cont', 'cpeOffDocs2024Chev')"
-                                      class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
-                                      <span class="flex items-center space-x-1.5 truncate">
-                                        <svg id="cpeOffDocs2024Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                        </svg>
-                                        <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
-                                        </svg>
-                                        <span class="truncate text-[11px]">Official Documents</span>
-                                      </span>
-                                    </button>
-                                    <div id="cpeOffDocs2024Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <!-- Revision 2023–2027 -->
-                              <div id="node-cpe-rev2023">
-                                <button type="button" onclick="toggleFolderAccordion('cpeRev2023Cont', 'cpeRev2023Chev')"
-                                  class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                                  <span class="flex items-center space-x-1.5 truncate">
-                                    <svg id="cpeRev2023Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                    <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                      <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                                    </svg>
-                                    <span class="truncate text-[11px] font-bold text-slate-300">2023–2027</span>
-                                  </span>
-                                </button>
-                                <div id="cpeRev2023Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-2.5">
-                                  <div>
-                                    <button type="button" onclick="toggleFolderAccordion('cpeOffDocs2023Cont', 'cpeOffDocs2023Chev')"
-                                      class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
-                                      <span class="flex items-center space-x-1.5 truncate">
-                                        <svg id="cpeOffDocs2023Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                                        </svg>
-                                        <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                          <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
-                                        </svg>
-                                        <span class="truncate text-[11px]">Official Documents</span>
-                                      </span>
-                                    </button>
-                                    <div id="cpeOffDocs2023Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
-                                      <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
-                                    </div>
-                                  </div>
+                                <div id="cpeOffDocsY1Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
+                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
+                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
+                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
+                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
+                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
+                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
                                 </div>
                               </div>
                             </div>
@@ -482,6 +334,31 @@
                                 <span class="text-emerald-400">📑</span>
                                 <span class="truncate">Curriculum Spreadsheet (Year 2)</span>
                               </button>
+
+                              <!-- 2nd Year Official Documents Accordion -->
+                              <div>
+                                <button type="button" onclick="toggleFolderAccordion('cpeOffDocsY2Cont', 'cpeOffDocsY2Chev')"
+                                  class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
+                                  <span class="flex items-center space-x-1.5 truncate">
+                                    <svg id="cpeOffDocsY2Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                    <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="truncate text-[11px]">Official Documents</span>
+                                  </span>
+                                </button>
+                                <div id="cpeOffDocsY2Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
+                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
+                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
+                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
+                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
+                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
+                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
+                                </div>
+                              </div>
                             </div>
                           </div>
 
@@ -510,6 +387,31 @@
                                 <span class="text-emerald-400">📑</span>
                                 <span class="truncate">Curriculum Spreadsheet (Year 3)</span>
                               </button>
+
+                              <!-- 3rd Year Official Documents Accordion -->
+                              <div>
+                                <button type="button" onclick="toggleFolderAccordion('cpeOffDocsY3Cont', 'cpeOffDocsY3Chev')"
+                                  class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
+                                  <span class="flex items-center space-x-1.5 truncate">
+                                    <svg id="cpeOffDocsY3Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                    <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="truncate text-[11px]">Official Documents</span>
+                                  </span>
+                                </button>
+                                <div id="cpeOffDocsY3Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
+                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
+                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
+                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
+                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
+                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
+                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
+                                </div>
+                              </div>
                             </div>
                           </div>
 
@@ -538,6 +440,206 @@
                                 <span class="text-emerald-400">📑</span>
                                 <span class="truncate">Curriculum Spreadsheet (Year 4)</span>
                               </button>
+
+                              <!-- 4th Year Official Documents Accordion -->
+                              <div>
+                                <button type="button" onclick="toggleFolderAccordion('cpeOffDocsY4Cont', 'cpeOffDocsY4Chev')"
+                                  class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
+                                  <span class="flex items-center space-x-1.5 truncate">
+                                    <svg id="cpeOffDocsY4Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                    <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="truncate text-[11px]">Official Documents</span>
+                                  </span>
+                                </button>
+                                <div id="cpeOffDocsY4Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
+                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
+                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
+                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
+                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
+                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
+                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Section: Curriculum Revisions -->
+                          <div class="mt-2 pt-1.5 border-t border-slate-700/60 space-y-0.5">
+                            <div class="px-2 py-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                              Curriculum Revisions
+                            </div>
+
+                            <!-- Revision 2026–2030 (Active Baseline) -->
+                            <div id="node-cpe-rev2026">
+                              <button type="button" onclick="toggleFolderAccordion('cpeRev2026Cont', 'cpeRev2026Chev')"
+                                class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                                <span class="flex items-center space-x-1.5 truncate">
+                                  <svg id="cpeRev2026Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                  </svg>
+                                  <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                  </svg>
+                                  <span class="truncate text-[11px] font-bold text-amber-300">2026–2030</span>
+                                </span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" title="Active Baseline"></span>
+                              </button>
+
+                              <!-- Revision 2026–2030: Official Documents Only -->
+                              <div id="cpeRev2026Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-2.5">
+                                <div>
+                                  <button type="button" onclick="toggleFolderAccordion('cpeOffDocs2026Cont', 'cpeOffDocs2026Chev')"
+                                    class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
+                                    <span class="flex items-center space-x-1.5 truncate">
+                                      <svg id="cpeOffDocs2026Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                      </svg>
+                                      <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+                                      </svg>
+                                      <span class="truncate text-[11px]">Official Documents</span>
+                                    </span>
+                                  </button>
+
+                                  <div id="cpeOffDocs2026Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Revision 2025–2029 -->
+                            <div id="node-cpe-rev2025">
+                              <button type="button" onclick="toggleFolderAccordion('cpeRev2025Cont', 'cpeRev2025Chev')"
+                                class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                                <span class="flex items-center space-x-1.5 truncate">
+                                  <svg id="cpeRev2025Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                  </svg>
+                                  <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                  </svg>
+                                  <span class="truncate text-[11px] font-bold text-slate-300">2025–2029</span>
+                                </span>
+                              </button>
+                              <div id="cpeRev2025Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-2.5">
+                                <div>
+                                  <button type="button" onclick="toggleFolderAccordion('cpeOffDocs2025Cont', 'cpeOffDocs2025Chev')"
+                                    class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
+                                    <span class="flex items-center space-x-1.5 truncate">
+                                      <svg id="cpeOffDocs2025Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                      </svg>
+                                      <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+                                      </svg>
+                                      <span class="truncate text-[11px]">Official Documents</span>
+                                    </span>
+                                  </button>
+                                  <div id="cpeOffDocs2025Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Revision 2024–2028 -->
+                            <div id="node-cpe-rev2024">
+                              <button type="button" onclick="toggleFolderAccordion('cpeRev2024Cont', 'cpeRev2024Chev')"
+                                class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                                <span class="flex items-center space-x-1.5 truncate">
+                                  <svg id="cpeRev2024Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                  </svg>
+                                  <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                  </svg>
+                                  <span class="truncate text-[11px] font-bold text-slate-300">2024–2028</span>
+                                </span>
+                              </button>
+                              <div id="cpeRev2024Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-2.5">
+                                <div>
+                                  <button type="button" onclick="toggleFolderAccordion('cpeOffDocs2024Cont', 'cpeOffDocs2024Chev')"
+                                    class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
+                                    <span class="flex items-center space-x-1.5 truncate">
+                                      <svg id="cpeOffDocs2024Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                      </svg>
+                                      <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+                                      </svg>
+                                      <span class="truncate text-[11px]">Official Documents</span>
+                                    </span>
+                                  </button>
+                                  <div id="cpeOffDocs2024Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Revision 2023–2027 -->
+                            <div id="node-cpe-rev2023">
+                              <button type="button" onclick="toggleFolderAccordion('cpeRev2023Cont', 'cpeRev2023Chev')"
+                                class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                                <span class="flex items-center space-x-1.5 truncate">
+                                  <svg id="cpeRev2023Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                  </svg>
+                                  <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                  </svg>
+                                  <span class="truncate text-[11px] font-bold text-slate-300">2023–2027</span>
+                                </span>
+                              </button>
+                              <div id="cpeRev2023Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-2.5">
+                                <div>
+                                  <button type="button" onclick="toggleFolderAccordion('cpeOffDocs2023Cont', 'cpeOffDocs2023Chev')"
+                                    class="w-full flex items-center justify-between px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/60 transition cursor-pointer text-left group">
+                                    <span class="flex items-center space-x-1.5 truncate">
+                                      <svg id="cpeOffDocs2023Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                      </svg>
+                                      <svg class="w-3 h-3 text-amber-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+                                      </svg>
+                                      <span class="truncate text-[11px]">Official Documents</span>
+                                    </span>
+                                  </button>
+                                  <div id="cpeOffDocs2023Cont" class="hidden mt-0.5 space-y-0.5 pl-2 border-l border-slate-700/60 ml-2">
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 1)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Official Flowchart</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
+                                    <button type="button" onclick="selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
 
@@ -546,24 +648,6 @@
                             <div class="px-2 py-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
                               Curriculum Tools &amp; Reports
                             </div>
-
-                            <!-- 1. Curriculum Flowchart -->
-                            <button type="button" id="nav-cpe-flowchart" onclick="selectProgram('BSCpE', 'flowchart')"
-                              class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                              <svg class="w-3.5 h-3.5 text-sky-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                              </svg>
-                              <span class="truncate text-[11px]">Curriculum Flowchart</span>
-                            </button>
-
-                            <!-- 2. Curriculum Spreadsheet (Merged Catalog & Spreadsheet) -->
-                            <button type="button" id="nav-cpe-spreadsheet" onclick="selectProgram('BSCpE', 'spreadsheet')"
-                              class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                              <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
-                              </svg>
-                              <span class="truncate text-[11px]">Curriculum Spreadsheet</span>
-                            </button>
 
                             <!-- 3. Curriculum Dashboard (Merged Analytics & Compliance) -->
                             <button type="button" id="nav-cpe-dashboard" onclick="selectProgram('BSCpE', 'dashboard')"
@@ -3411,11 +3495,7 @@
 
 
 
-    <!-- RAMS OFFICIAL DEEP NAVY INSTITUTIONAL FOOTER -->
-    <footer id="ramsFooter" class="h-8 bg-[#1B355A] text-slate-300 text-[11px] flex items-center justify-between px-6 shrink-0 border-t border-slate-700 z-30 no-print">
-      <div>Copyright &copy; 2026 <span class="text-[#E5A823] font-bold">Asia Pacific College</span>. All rights reserved.</div>
-      <div class="font-medium text-slate-400">School of Engineering &bull; RAMS Academic Curriculum Management System</div>
-    </footer>
+
   
   <!-- ========================================================================= -->
   <!-- MICROSOFT ENTRA ID / APC LOGIN MODAL (Curriculum System Responsibility) -->
@@ -3663,153 +3743,101 @@
   </button>
 
   <!-- ========================================================================= -->
-  <!-- PERSONAL AI AGENT SLIDE-OUT DRAWER (FULL SYSTEM PRIVILEGES & API KEY)      -->
+  <!-- PERSONAL AI AGENT SLIDE-OUT DRAWER (LOCAL LLAMA 3.2 3B POWERED VIA JAN)   -->
   <!-- ========================================================================= -->
-  <div id="personalAgentBackdrop" onclick="togglePersonalAgentDrawer()" class="hidden fixed inset-0 bg-slate-950/40 z-40 backdrop-blur-xs transition-opacity"></div>
-  <div id="personalAiAgentDrawer" class="hidden fixed inset-y-0 right-0 z-50 w-full sm:w-[500px] md:w-[560px] bg-white shadow-2xl border-l-4 border-[#002855] flex flex-col transform transition-transform duration-300">
-    <!-- Top Header -->
-    <div class="bg-[#002855] text-white px-5 py-4 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
+  <div id="personalAgentBackdrop" onclick="togglePersonalAgentDrawer()" class="hidden fixed inset-0 bg-slate-950/50 z-40 backdrop-blur-xs transition-opacity"></div>
+  <div id="personalAiAgentDrawer" class="hidden fixed inset-y-0 right-0 z-50 w-full sm:w-[500px] md:w-[560px] bg-white dark:bg-[#151921] shadow-2xl border-l-2 border-[#002855] dark:border-[#E5A823] flex flex-col transform transition-transform duration-300">
+    <!-- Header -->
+    <div class="bg-[#002855] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-none bg-[#E5A823] text-slate-950 font-black text-lg flex items-center justify-center font-mono shadow">
-          AI
+        <div class="w-8 h-8 rounded-none bg-[#E5A823] text-slate-950 font-black text-sm flex items-center justify-center font-mono shadow-sm">
+          ✦
         </div>
         <div>
           <div class="flex items-center space-x-2">
-            <h3 class="font-black text-sm text-[#E5A823] tracking-wide uppercase">Curriculum Personal AI Agent</h3>
-            <span class="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 text-[11px] font-mono border border-emerald-400 font-bold">FULL ACCESS</span>
+            <h3 class="font-black text-sm text-white tracking-wide uppercase">RAMS AI Copilot</h3>
+            <span id="agentModelBadge" class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10.5px] font-mono border border-emerald-400/40">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>LLaMA 3.2 3B Active</span>
+            </span>
           </div>
-          <p class="text-[10.5px] text-slate-300">Autonomous Curriculum Engineer & Knowledge Agent</p>
+          <p class="text-[10px] text-slate-300">APC School of Engineering • Local Jan AI Engine</p>
         </div>
       </div>
-      <button onclick="togglePersonalAgentDrawer()" class="text-slate-300 hover:text-white p-1 text-2xl font-bold leading-none">&times;</button>
+      <div class="flex items-center space-x-1.5">
+        <button type="button" onclick="clearAgentChat()" class="text-slate-300 hover:text-white text-xs font-semibold px-2 py-1 hover:bg-slate-800/60 transition cursor-pointer" title="Clear Conversation">
+          Clear
+        </button>
+        <button type="button" onclick="togglePersonalAgentDrawer()" class="text-slate-300 hover:text-white p-1 text-2xl font-bold leading-none cursor-pointer" title="Close">
+          &times;
+        </button>
+      </div>
     </div>
 
-    <!-- Drawer Body -->
-    <div class="p-4 flex-1 overflow-y-auto space-y-4 text-xs bg-slate-50">
-
-      <!-- Section: API Key & Intelligence Provider Configuration -->
-      <div class="bg-white p-4 rounded-none border border-slate-300 shadow-xs space-y-2.5">
+    <!-- Main Chat Feed (Hero Element) -->
+    <div id="agentChatFeed" class="flex-1 overflow-y-auto p-4 space-y-3 text-xs bg-slate-50 dark:bg-[#10151E]">
+      <!-- Welcome Message -->
+      <div class="bg-white dark:bg-[#181D26] p-4 rounded-none border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
         <div class="flex items-center justify-between">
-          <div class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5 text-[#002855]">
-            <span>🔑</span>
-            <span>Personal Agent API Key</span>
-          </div>
-          <span id="agentKeyStatusBadge" class="text-[11px] font-bold px-2 py-0.5 rounded-none bg-amber-100 text-amber-900 border border-amber-300">
-            Checking Key...
-          </span>
-        </div>
-        <p class="text-[11px] text-slate-600 leading-tight">
-          Provide your <strong>Google Gemini API Key</strong>. It is stored securely in your browser's <code class="font-mono bg-slate-100 px-1">localStorage</code> and grants this personal agent full autonomous access to parse, edit, audit, and reason over the APC curriculum.
-        </p>
-
-        <div class="flex items-center gap-2">
-          <div class="relative flex-1">
-            <input type="password" id="agentApiKeyInput" placeholder="Enter Gemini API key (AIzaSy...)" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-none font-mono text-xs text-slate-900 focus:ring-2 focus:ring-[#002855] focus:bg-white" />
-            <button type="button" onclick="toggleApiKeyVisibility()" class="absolute right-2 top-2 text-slate-400 hover:text-slate-700 text-xs font-mono" title="Show/Hide">👁️</button>
-          </div>
-          <button type="button" onclick="saveAgentApiKey()" class="px-3 py-2 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] font-bold rounded-none shadow-xs text-xs shrink-0 border border-[#E5A823]">
-            Save Key
-          </button>
-          <button type="button" onclick="clearAgentApiKey()" class="px-2.5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-none text-xs shrink-0" title="Remove key from browser">
-            Clear
-          </button>
-        </div>
-
-        <div id="agentKeyStatusMessage" class="text-[10.5px] text-slate-500 font-mono">
-          <!-- Populated by JS -->
-        </div>
-      </div>
-
-      <!-- Section: Quick-Action System Tools -->
-      <div class="bg-white p-4 rounded-none border border-slate-300 shadow-xs space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-slate-900 text-xs uppercase tracking-wider text-[#002855]">⚡ Quick Autonomous Actions</span>
-          <span class="text-[11px] text-slate-400">1-click system execution</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <button type="button" onclick="agentTriggerAction('audit_cycles')" class="p-2 text-left bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 text-slate-800 transition">
-            <span class="font-bold text-xs flex items-center gap-1.5 text-blue-900">
-              <span>🔍</span>
-              <span>DAG Cycle Audit</span>
-            </span>
-            <span class="text-[11px] text-slate-500 block mt-0.5">Check for circular prerequisites via Kahn's sort</span>
-          </button>
-
-          <button type="button" onclick="openAiImportModal()" class="p-2 text-left bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 text-slate-800 transition">
-            <span class="font-bold text-xs flex items-center gap-1.5 text-amber-900">
-              <span>📥</span>
-              <span>AI Syllabus Parser</span>
-            </span>
-            <span class="text-[11px] text-slate-500 block mt-0.5">Parse & ingest raw syllabus text or tables</span>
-          </button>
-
-          <button type="button" onclick="agentTriggerAction('audit_units')" class="p-2 text-left bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-slate-800 transition">
-            <span class="font-bold text-xs flex items-center gap-1.5 text-emerald-900">
-              <span>⚖️</span>
-              <span>CHED CMO 92 Unit Check</span>
-            </span>
-            <span class="text-[11px] text-slate-500 block mt-0.5">Audit 184 units vs baseline distribution</span>
-          </button>
-
-          <button type="button" onclick="agentTriggerAction('detect_coreqs')" class="p-2 text-left bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 text-slate-800 transition">
-            <span class="font-bold text-xs flex items-center gap-1.5 text-purple-900">
-              <span>⚡</span>
-              <span>Detect Laboratory Co-reqs</span>
-            </span>
-            <span class="text-[11px] text-slate-500 block mt-0.5">Auto-link concurrent Lecture & Lab pairings</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Section: Conversational AI Agent Console -->
-      <div class="bg-white p-4 rounded-none border border-slate-300 shadow-xs flex-1 flex flex-col space-y-3">
-        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
           <div class="flex items-center space-x-2">
-            <span class="w-2 h-2 rounded-none bg-emerald-500"></span>
-            <span class="font-bold text-xs text-slate-900">Agent Interactive Console</span>
+            <span class="text-base">🤖</span>
+            <span class="font-black text-xs text-[#002855] dark:text-[#E5A823] uppercase tracking-wide">RAMS Curriculum Assistant</span>
           </div>
-          <button type="button" onclick="clearAgentChat()" class="text-[11px] text-slate-500 hover:text-slate-800 underline">Clear Log</button>
+          <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 border border-emerald-300 dark:border-emerald-700">Online</span>
         </div>
-
-        <!-- Chat Feed Messages -->
-        <div id="agentChatFeed" class="space-y-3 max-h-[280px] overflow-y-auto pr-1 text-xs">
-          <!-- Initial Welcome Message -->
-          <div class="bg-slate-100 p-3 rounded-none border border-slate-200 text-slate-800 space-y-1">
-            <div class="flex items-center justify-between font-bold text-[11px] text-[#002855]">
-              <span class="flex items-center gap-1.5">
-                <span>🤖</span>
-                <span>APC Personal Curriculum Agent</span>
-              </span>
-              <span class="font-mono text-[11px] text-slate-400">System Ready</span>
-            </div>
-            <p class="text-[11px] text-slate-700 leading-relaxed">
-              Hello! I am your personal Curriculum AI Agent with full access to the BSCpE curriculum database, prerequisite DAG router, and OBE outcome matrices. You can ask me questions, command changes (e.g. <em>"Add course CPE499 in Year 4 Term 2"</em>), or click the quick actions above!
-            </p>
-          </div>
-        </div>
-
-        <!-- Chat Input Form -->
-        <div class="pt-2 border-t border-slate-200 space-y-2">
-          <div class="flex items-start gap-2">
-            <textarea id="agentUserInput" rows="2" placeholder="Ask or instruct your Personal AI Agent (e.g. 'Audit prerequisites for CPEDES1', 'Add new course...', 'Why is CALCONE a prerequisite?')" class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-none text-xs text-slate-900 focus:ring-2 focus:ring-[#002855] focus:bg-white resize-none"></textarea>
-            <button type="button" id="btnSendAgentPrompt" onclick="sendAgentPrompt()" class="px-4 py-3 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] font-bold text-xs rounded-none border border-[#E5A823] shadow-xs flex items-center justify-center shrink-0">
-              Send &rarr;
+        <p class="text-[11.5px] text-slate-700 dark:text-slate-300 leading-relaxed">
+          Hello! I am your local AI copilot powered by <strong>LLaMA 3.2 3B Instruct</strong>. I have direct access to the BSCpE curriculum architecture, 74 course records, prerequisite DAG conduits, and CHED CMO 92 compliance standards.
+        </p>
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Suggested prompts:</div>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" onclick="promptAgentChip('Run Kahn algorithm to audit prerequisite cycles')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+              🔍 Audit DAG Cycles
+            </button>
+            <button type="button" onclick="promptAgentChip('Audit total credit units against CHED CMO 92 distribution')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+              ⚖️ Check CHED Units
+            </button>
+            <button type="button" onclick="promptAgentChip('Detect concurrent lecture and laboratory co-requisite pairings')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+              ⚡ Lab Co-reqs
+            </button>
+            <button type="button" onclick="promptAgentChip('Inspect course CPEDES1 prerequisites and downstream dependents')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+              📋 Inspect CPEDES1
             </button>
           </div>
-          <div class="flex items-center justify-between text-[11px] text-slate-400">
-            <span>Direct mutation privileges active</span>
-            <span class="font-mono">AY 2026&ndash;2027 Tri-Semester</span>
-          </div>
         </div>
-
       </div>
-
     </div>
 
-    <!-- Drawer Footer -->
-    <div class="bg-slate-100 px-5 py-3 border-t border-slate-300 flex items-center justify-between text-[11px] text-slate-600 shrink-0">
-      <span>Curriculum Personal Agent &bull; v2.6</span>
-      <button onclick="togglePersonalAgentDrawer()" class="px-3 py-1 bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-200">Close</button>
+    <!-- Quick Action Chips Bar -->
+    <div class="px-4 py-2 bg-white dark:bg-[#181D26] border-t border-slate-200 dark:border-slate-800 flex items-center gap-1.5 overflow-x-auto text-[11px] shrink-0 no-scrollbar">
+      <span class="text-slate-400 font-bold text-[10px] uppercase tracking-wider shrink-0">Actions:</span>
+      <button type="button" onclick="agentTriggerAction('audit_cycles')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shrink-0 transition text-[10.5px] cursor-pointer">
+        🔍 DAG Cycle Audit
+      </button>
+      <button type="button" onclick="agentTriggerAction('audit_units')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shrink-0 transition text-[10.5px] cursor-pointer">
+        ⚖️ CHED Unit Check
+      </button>
+      <button type="button" onclick="agentTriggerAction('detect_coreqs')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-purple-950/40 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shrink-0 transition text-[10.5px] cursor-pointer">
+        ⚡ Co-requisites
+      </button>
+      <button type="button" onclick="openAiImportModal()" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shrink-0 transition text-[10.5px] cursor-pointer">
+        📥 Syllabus Parser
+      </button>
+    </div>
+
+    <!-- Input Form -->
+    <div class="p-3 bg-white dark:bg-[#181D26] border-t border-slate-200 dark:border-slate-800 space-y-1.5 shrink-0">
+      <div class="flex items-center gap-2">
+        <input type="text" id="agentUserInput" onkeydown="if(event.key==='Enter') sendAgentPrompt()" placeholder="Ask LLaMA 3.2 about curriculum, prerequisites, or policies..." class="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+        <button type="button" id="btnSendAgentPrompt" onclick="sendAgentPrompt()" class="px-4 py-2 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] font-bold text-xs border border-[#E5A823] shadow-xs cursor-pointer flex items-center justify-center shrink-0 transition">
+          <span>Send</span>
+          <span class="ml-1">&rarr;</span>
+        </button>
+      </div>
+      <div class="flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 font-mono">
+        <span>Jan AI: LLaMA 3.2 3B Instruct</span>
+        <span>Port 1337 • AY 2026–2027</span>
+      </div>
     </div>
   </div>
 
