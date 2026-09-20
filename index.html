@@ -3038,7 +3038,21 @@
                 </h2>
                 <p class="text-xs text-slate-500">Chronological record of all curriculum updates and verifications.</p>
               </div>
-              <button onclick="showToast('Exporting Audit Report...')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-none border border-slate-300 transition cursor-pointer">
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 border border-slate-200">
+              <div class="flex flex-wrap items-center gap-2">
+                <input type="text" id="auditFilterText" oninput="renderAuditTable()" placeholder="Search action, target, description..." class="px-3 py-1.5 bg-white border border-slate-300 text-xs text-slate-800 placeholder-slate-400 outline-none focus:border-apc-navy w-64" />
+                <select id="auditFilterRole" onchange="renderAuditTable()" class="px-3 py-1.5 bg-white border border-slate-300 text-xs text-slate-700 outline-none focus:border-apc-navy font-bold">
+                  <option value="">All Roles</option>
+                  <option value="Program Director">Program Director</option>
+                  <option value="System Administrator">System Administrator</option>
+                  <option value="Executive Director">Executive Director</option>
+                  <option value="Faculty Member">Faculty Member</option>
+                </select>
+                <span id="auditCount" class="text-xs font-bold font-mono text-slate-500 ml-2"></span>
+              </div>
+              <button onclick="showToast('Exporting Audit Report...')" class="px-3.5 py-1.5 bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold rounded-none border border-slate-300 transition cursor-pointer shadow-xs">
                 Export Audit Log (.csv)
               </button>
             </div>
@@ -3053,28 +3067,11 @@
                     <th class="py-2.5 px-3">Target</th>
                     <th class="py-2.5 px-3">Description</th>
                     <th class="py-2.5 px-3 font-mono text-[11px]">Record ID</th>
-                    <th class="py-2.5 px-3 text-right">Status</th>
+                    <th class="py-2.5 px-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
-                  <tr class="hover:bg-slate-50">
-                    <td class="py-2.5 px-3 font-mono text-slate-500">2026-09-10 14:12:01</td>
-                    <td class="py-2.5 px-3"><span class="font-bold text-slate-900">Program Director</span> <span class="text-[11px] text-slate-400">(PD)</span></td>
-                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-none bg-blue-50 text-blue-700 text-[11px] font-bold">IMPORT_FLOWCHART</span></td>
-                    <td class="py-2.5 px-3 font-mono text-xs">BSCpE 2026 Curriculum</td>
-                    <td class="py-2.5 px-3">Loaded 74 courses and configured flowchart connections</td>
-                    <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">REC-9C4E81</td>
-                    <td class="py-2.5 px-3 text-right"><span class="text-emerald-600 font-bold">Verified</span></td>
-                  </tr>
-                  <tr class="hover:bg-slate-50">
-                    <td class="py-2.5 px-3 font-mono text-slate-500">2026-09-10 02:42:12</td>
-                    <td class="py-2.5 px-3"><span class="font-bold text-slate-900">Program Director</span> <span class="text-[11px] text-slate-400">(PD)</span></td>
-                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-none bg-emerald-50 text-emerald-700 text-[11px] font-bold">VERIFY_PREREQS</span></td>
-                    <td class="py-2.5 px-3 font-mono text-xs">Prerequisite Flow</td>
-                    <td class="py-2.5 px-3">Checked prerequisite flow: 74/74 courses verified, 0 conflicts</td>
-                    <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">REC-8F2A9D</td>
-                    <td class="py-2.5 px-3 text-right"><span class="text-emerald-600 font-bold">Verified</span></td>
-                  </tr>
+                <tbody id="auditTableBody" class="divide-y divide-slate-100 font-medium">
+                  <!-- Populated dynamically via renderAuditTable() -->
                 </tbody>
               </table>
             </div>
@@ -4515,6 +4512,48 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </div>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- MODAL: AUDIT LOG PREVIOUS VS NEW VALUE DIFF INSPECTOR                 -->
+  <!-- =================================================================== -->
+  <div id="auditDiffModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/70 backdrop-blur-xs p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col rounded-none animate-in fade-in zoom-in-95 duration-150">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/60">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 font-mono font-bold text-xs">AUDIT INSPECT</span>
+            <span id="diffModalRecordId" class="font-mono text-xs text-slate-500 font-bold">REC-000000</span>
+          </div>
+          <h3 id="diffModalTitle" class="text-sm font-bold text-slate-900 dark:text-white mt-1">Inspecting Field-Level Modifications</h3>
+        </div>
+        <button type="button" onclick="closeAuditDiffModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xl font-bold cursor-pointer">&times;</button>
+      </div>
+      <div class="p-4 overflow-y-auto space-y-3 text-xs flex-1">
+        <div id="diffModalMeta" class="p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1 text-slate-600 dark:text-slate-300">
+          <!-- Meta populated dynamically -->
+        </div>
+        <div class="overflow-x-auto border border-slate-200 dark:border-slate-700">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-700">
+              <tr>
+                <th class="py-2 px-3 w-1/4">Field / Property</th>
+                <th class="py-2 px-3 w-3/8 text-rose-700 dark:text-rose-400 bg-rose-50/50 dark:bg-rose-950/30">Previous Value</th>
+                <th class="py-2 px-3 w-3/8 text-emerald-700 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/30">New Value</th>
+              </tr>
+            </thead>
+            <tbody id="diffModalTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+              <!-- Diff rows populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="p-3 border-t border-slate-200 dark:border-slate-800 flex justify-end bg-slate-50 dark:bg-slate-800/60">
+        <button type="button" onclick="closeAuditDiffModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer">
+          Close Inspection
+        </button>
+      </div>
     </div>
   </div>
 

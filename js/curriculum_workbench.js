@@ -5419,7 +5419,20 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       if (typeof appendAuditLog === 'function') {
-        appendAuditLog('TASK_DELEGATE', course, `Delegation granted to ${faculty} from ${start} to ${end}`);
+        const role = (() => {
+          const sel = document.getElementById('roleSelector');
+          const map = { admin: 'System Administrator', exd: 'Executive Director', pd: 'Program Director', faculty: 'Faculty Member' };
+          return map[sel ? sel.value : 'pd'] || 'Program Director';
+        })();
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        const summary = `${role} created cluster delegation "${course}" at ${timeStr} for BSCpE 2026 Curriculum`;
+        const diff = [
+          { field: 'Assigned Faculty', old: '(unassigned)', new: faculty },
+          { field: 'Delegation Validity Period', old: 'None', new: `${start} to ${end}` }
+        ];
+        appendAuditLog('TASK_DELEGATE', course, summary, diff, { faculty, start, end, course });
       }
 
       closeAssignTaskModal();
@@ -5448,7 +5461,21 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       if (typeof appendAuditLog === 'function') {
-        appendAuditLog('TASK_DELEGATE', course, `Delegation granted to ${faculty} (${start} to ${end}). Spreadsheet opened.`);
+        const role = (() => {
+          const sel = document.getElementById('roleSelector');
+          const map = { admin: 'System Administrator', exd: 'Executive Director', pd: 'Program Director', faculty: 'Faculty Member' };
+          return map[sel ? sel.value : 'pd'] || 'Program Director';
+        })();
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        const summary = `${role} created cluster delegation "${course}" at ${timeStr} for BSCpE 2026 Curriculum`;
+        const diff = [
+          { field: 'Assigned Faculty', old: '(unassigned)', new: faculty },
+          { field: 'Delegation Validity Period', old: 'None', new: `${start} to ${end}` },
+          { field: 'Spreadsheet Access', old: 'Closed', new: 'Active / Opened' }
+        ];
+        appendAuditLog('TASK_DELEGATE', course, summary, diff, { faculty, start, end, course });
       }
 
       closeAssignTaskModal();

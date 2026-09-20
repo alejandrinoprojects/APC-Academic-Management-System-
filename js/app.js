@@ -77,6 +77,7 @@ let currentSelectedCode = null;
       const idx = parseInt(idxEl.value, 10);
       if (isNaN(idx) || !window.APC_GRADUATE_ATTRIBUTES[idx]) return;
 
+      const oldGa = { ...window.APC_GRADUATE_ATTRIBUTES[idx] };
       const code = (document.getElementById('editGaCode')?.value || '').trim();
       const title = (document.getElementById('editGaTitle')?.value || '').trim();
       const desc = (document.getElementById('editGaDesc')?.value || '').trim();
@@ -85,11 +86,22 @@ let currentSelectedCode = null;
       window.APC_GRADUATE_ATTRIBUTES[idx].title = title || window.APC_GRADUATE_ATTRIBUTES[idx].title;
       window.APC_GRADUATE_ATTRIBUTES[idx].desc = desc || window.APC_GRADUATE_ATTRIBUTES[idx].desc;
 
+      const diff = [];
+      if (oldGa.code !== window.APC_GRADUATE_ATTRIBUTES[idx].code) {
+        diff.push({ field: 'Attribute Code', old: oldGa.code, new: window.APC_GRADUATE_ATTRIBUTES[idx].code });
+      }
+      if (oldGa.title !== window.APC_GRADUATE_ATTRIBUTES[idx].title) {
+        diff.push({ field: 'Attribute Title', old: oldGa.title, new: window.APC_GRADUATE_ATTRIBUTES[idx].title });
+      }
+      if (oldGa.desc !== window.APC_GRADUATE_ATTRIBUTES[idx].desc) {
+        diff.push({ field: 'Description', old: oldGa.desc, new: window.APC_GRADUATE_ATTRIBUTES[idx].desc });
+      }
+
       renderGaCards();
       closeEditGaModal();
       showToast(`Graduate Attribute ${window.APC_GRADUATE_ATTRIBUTES[idx].code} updated.`);
       if (typeof appendAuditLog === 'function') {
-        appendAuditLog('GA_UPDATE', window.APC_GRADUATE_ATTRIBUTES[idx].code, `Graduate Attribute updated to "${window.APC_GRADUATE_ATTRIBUTES[idx].title}"`);
+        appendAuditLog('GA_UPDATE', window.APC_GRADUATE_ATTRIBUTES[idx].code, `Graduate Attribute updated to "${window.APC_GRADUATE_ATTRIBUTES[idx].title}"`, diff.length > 0 ? diff : null);
       }
     }
 
@@ -114,12 +126,20 @@ let currentSelectedCode = null;
       const mVal = (document.getElementById('editMissionInput')?.value || '').trim();
       const vEl = document.getElementById('visionText');
       const mEl = document.getElementById('missionText');
+      const oldV = vEl ? vEl.textContent.trim() : '';
+      const oldM = mEl ? mEl.textContent.trim() : '';
+
       if (vEl && vVal) vEl.textContent = vVal;
       if (mEl && mVal) mEl.textContent = mVal;
+
+      const diff = [];
+      if (oldV !== vVal && vVal) diff.push({ field: 'Institutional Vision', old: oldV, new: vVal });
+      if (oldM !== mVal && mVal) diff.push({ field: 'Institutional Mission', old: oldM, new: mVal });
+
       closeEditVisionModal();
       showToast('Vision & Mission updated.');
       if (typeof appendAuditLog === 'function') {
-        appendAuditLog('VISION_UPDATE', 'Institutional Vision & Mission', 'Updated institutional vision and mission statements');
+        appendAuditLog('VISION_UPDATE', 'Institutional Vision & Mission', 'Updated institutional vision and mission statements', diff.length > 0 ? diff : null);
       }
     }
 
@@ -127,11 +147,50 @@ let currentSelectedCode = null;
     // APPEND-ONLY AUDIT LOG TRAIL & CONTROLLER (WP3)
     // =========================================================================
     window.AUDIT_LOG = [
-      { ts: '2026-09-10 14:12:01', role: 'Program Director', action: 'IMPORT_FLOWCHART', entity: 'BSCpE 2026 Curriculum', summary: 'Loaded 74 courses and configured flowchart connections', hash: 'REC-9C4E81' },
-      { ts: '2026-09-10 02:42:12', role: 'Program Director', action: 'VERIFY_PREREQS', entity: 'Prerequisite Flow', summary: 'Checked prerequisite flow: 74/74 courses verified, 0 conflicts', hash: 'REC-8F2A9D' },
+      {
+        ts: '2026-09-10 14:12:01',
+        role: 'Program Director',
+        action: 'COURSE_CREATE',
+        entity: 'CPE314',
+        summary: 'Program Director created course "Operating Systems" at 14:12:01 for BSCpE 2026 Curriculum',
+        diff: null,
+        hash: 'REC-9C4E81'
+      },
+      {
+        ts: '2026-09-10 11:35:20',
+        role: 'Program Director',
+        action: 'COURSE_EDIT',
+        entity: 'CPE312',
+        summary: 'Program Director edited course "Computer Architecture and Organization" (CPE312) [2 fields modified]',
+        diff: [
+          { field: 'Credit Units', old: '3.0 units', new: '4.0 units' },
+          { field: 'Laboratory Hours', old: '0 hrs', new: '3 hrs' }
+        ],
+        hash: 'REC-7B1A42'
+      },
+      {
+        ts: '2026-09-10 09:20:45',
+        role: 'System Administrator',
+        action: 'SCHOOL_UPDATE',
+        entity: 'SCHOOL OF ENGINEERING',
+        summary: 'Updated metadata for SCHOOL OF ENGINEERING (1 fields modified)',
+        diff: [
+          { field: 'Executive Director / Dean', old: 'Engr. J. Santos', new: 'Engr. R. De Leon, M.Eng.' }
+        ],
+        hash: 'REC-5D3C19'
+      },
+      {
+        ts: '2026-09-10 02:42:12',
+        role: 'Program Director',
+        action: 'VERIFY_PREREQS',
+        entity: 'Prerequisite Flow',
+        summary: 'Checked prerequisite flow: 74/74 courses verified, 0 conflicts',
+        diff: null,
+        hash: 'REC-8F2A9D'
+      },
     ];
 
-    function appendAuditLog(action, entity, summary) {
+    function appendAuditLog(action, entity, summary, diff = null, meta = {}) {
       const role = (() => {
         const sel = document.getElementById('roleSelector');
         const map = { admin: 'System Administrator', exd: 'Executive Director', pd: 'Program Director', faculty: 'Faculty Member' };
@@ -141,8 +200,66 @@ let currentSelectedCode = null;
       const pad = n => String(n).padStart(2, '0');
       const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
       const hash = 'REC-' + Math.random().toString(36).slice(2, 8).toUpperCase();
-      window.AUDIT_LOG.unshift({ ts, role, action, entity, summary, hash });
+      window.AUDIT_LOG.unshift({ ts, role, action, entity, summary, hash, diff: (diff && diff.length > 0) ? diff : null, meta });
       renderAuditTable();
+    }
+
+    function openAuditDiffModal(hash) {
+      const modal = document.getElementById('auditDiffModal');
+      if (!modal) return;
+      const record = (window.AUDIT_LOG || []).find(r => r.hash === hash);
+      if (!record) return;
+
+      const recordIdEl = document.getElementById('diffModalRecordId');
+      const titleEl = document.getElementById('diffModalTitle');
+      const metaEl = document.getElementById('diffModalMeta');
+      const tbodyEl = document.getElementById('diffModalTableBody');
+
+      if (recordIdEl) recordIdEl.textContent = record.hash;
+      if (titleEl) titleEl.textContent = `Modifications for: ${record.entity}`;
+
+      if (metaEl) {
+        metaEl.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-200 dark:border-slate-700">
+            <div><span class="font-bold text-slate-800 dark:text-slate-200">Author:</span> ${record.role}</div>
+            <div><span class="font-bold text-slate-800 dark:text-slate-200">Timestamp:</span> ${record.ts}</div>
+          </div>
+          <div class="pt-1 text-slate-700 dark:text-slate-300 font-medium">${record.summary}</div>
+        `;
+      }
+
+      if (tbodyEl) {
+        if (!record.diff || record.diff.length === 0) {
+          tbodyEl.innerHTML = `<tr><td colspan="3" class="py-6 text-center text-slate-400 italic">No field-level diff recorded for this entry.</td></tr>`;
+        } else {
+          tbodyEl.innerHTML = record.diff.map(d => `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+              <td class="py-2.5 px-3 font-mono font-bold text-slate-900 dark:text-white align-top">${d.field}</td>
+              <td class="py-2.5 px-3 bg-rose-50/40 dark:bg-rose-950/20 text-rose-800 dark:text-rose-300 font-mono text-xs align-top break-words">
+                ${escapeAuditHtml(String(d.old ?? '(empty)'))}
+              </td>
+              <td class="py-2.5 px-3 bg-emerald-50/40 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 font-mono text-xs align-top break-words font-bold">
+                ${escapeAuditHtml(String(d.new ?? '(empty)'))}
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeAuditDiffModal() {
+      const modal = document.getElementById('auditDiffModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function escapeAuditHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
     }
 
     function renderAuditTable() {
@@ -165,7 +282,9 @@ let currentSelectedCode = null;
         VERIFY_PREREQS: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
         VERSION_CREATE: 'bg-indigo-50 text-indigo-700 border border-indigo-200',
         VERSION_STATE_CHANGE: 'bg-cyan-50 text-cyan-700 border border-cyan-200',
-        COURSE_EDIT: 'bg-slate-100 text-slate-700 border border-slate-300',
+        COURSE_CREATE: 'bg-emerald-50 text-emerald-800 border border-emerald-300 font-black',
+        COURSE_EDIT: 'bg-amber-50 text-amber-800 border border-amber-300 font-bold',
+        SCHOOL_UPDATE: 'bg-purple-50 text-purple-700 border border-purple-200',
       };
 
       let logs = window.AUDIT_LOG || [];
@@ -179,7 +298,9 @@ let currentSelectedCode = null;
       const count = document.getElementById('auditCount');
       if (count) count.textContent = `${logs.length} records`;
 
-      tbody.innerHTML = logs.map(l => `
+      tbody.innerHTML = logs.map(l => {
+        const hasDiff = l.diff && Array.isArray(l.diff) && l.diff.length > 0;
+        return `
         <tr class="hover:bg-slate-50 transition">
           <td class="py-2.5 px-3 font-mono text-slate-500 text-[11px] whitespace-nowrap">${l.ts}</td>
           <td class="py-2.5 px-3"><span class="font-bold text-slate-900">${l.role}</span></td>
@@ -187,9 +308,20 @@ let currentSelectedCode = null;
           <td class="py-2.5 px-3 font-mono text-xs font-bold text-apc-navy">${l.entity}</td>
           <td class="py-2.5 px-3 text-[11px] text-slate-700 leading-snug">${l.summary}</td>
           <td class="py-2.5 px-3 font-mono text-[11px] text-slate-400">${l.hash}</td>
-          <td class="py-2.5 px-3 text-right whitespace-nowrap"><button type="button" onclick="verifyHashModal('${l.hash}')" class="text-blue-600 hover:underline font-bold text-[11px] cursor-pointer">Verify</button></td>
+          <td class="py-2.5 px-3 text-right whitespace-nowrap">
+            <div class="inline-flex items-center gap-2 justify-end">
+              ${hasDiff ? `
+                <button type="button" onclick="openAuditDiffModal('${l.hash}')" class="px-2 py-0.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[11px] rounded-none cursor-pointer flex items-center gap-1 shadow-xs" title="Inspect previous vs new values">
+                  <span>🔍</span>
+                  <span>Inspect Values</span>
+                </button>
+              ` : ''}
+              <button type="button" onclick="verifyHashModal('${l.hash}')" class="text-blue-600 hover:underline font-bold text-[11px] cursor-pointer">Verify</button>
+            </div>
+          </td>
         </tr>
-      `).join('') || '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">No audit trail records found matching criteria.</td></tr>';
+      `;
+      }).join('') || '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">No audit trail records found matching criteria.</td></tr>';
     }
 
     // =========================================================================
@@ -477,12 +609,16 @@ let currentSelectedCode = null;
     function changeVersionState(versionId, newState) {
       const ver = window.VERSION_REGISTRY.find(v => v.id === versionId);
       if (!ver) return;
+      const oldState = ver.state;
       ver.state = newState;
       ver.lastEvent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       renderVersionTable();
       showToast(`Version ${ver.label} state updated to: ${VERSION_STATES[newState]?.label || newState}`);
       if (typeof appendAuditLog === 'function') {
-        appendAuditLog('VERSION_STATE_CHANGE', ver.label, `State updated to ${VERSION_STATES[newState]?.label || newState}`);
+        const diff = [
+          { field: 'Curriculum Lifecycle State', old: VERSION_STATES[oldState]?.label || oldState, new: VERSION_STATES[newState]?.label || newState }
+        ];
+        appendAuditLog('VERSION_STATE_CHANGE', ver.label, `State updated to ${VERSION_STATES[newState]?.label || newState} for ${ver.label}`, diff);
       }
     }
 
@@ -501,7 +637,16 @@ let currentSelectedCode = null;
       renderVersionTable();
       showToast(`New draft version ${newId} initialized from active baseline.`);
       if (typeof appendAuditLog === 'function') {
-        appendAuditLog('VERSION_CREATE', newId, 'New curriculum revision draft created from active baseline');
+        const role = (() => {
+          const sel = document.getElementById('roleSelector');
+          const map = { admin: 'System Administrator', exd: 'Executive Director', pd: 'Program Director', faculty: 'Faculty Member' };
+          return map[sel ? sel.value : 'pd'] || 'Program Director';
+        })();
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        const summary = `${role} created curriculum revision "${newId}" at ${timeStr} for BSCpE 2026 Curriculum`;
+        appendAuditLog('VERSION_CREATE', newId, summary, null, { curriculum: 'BSCpE 2026 Curriculum', versionId: newId });
       }
     }
 
@@ -3252,11 +3397,16 @@ let currentSelectedCode = null;
       const levels = ['-', 'I', 'E', 'D'];
       const current = ALL_COURSES[courseIdx].sos[soIdx];
       const nextIdx = (levels.indexOf(current) + 1) % levels.length;
-      ALL_COURSES[courseIdx].sos[soIdx] = levels[nextIdx];
+      const nextVal = levels[nextIdx];
+      ALL_COURSES[courseIdx].sos[soIdx] = nextVal;
       renderObeMatrix();
-      showToast(`${ALL_COURSES[courseIdx].code} SO level updated to [${levels[nextIdx]}]`);
+      showToast(`${ALL_COURSES[courseIdx].code} SO level updated to [${nextVal}]`);
       if (typeof appendAuditLog === 'function') {
-        appendAuditLog('SO_UPDATE', ALL_COURSES[courseIdx].code, `SO-${String.fromCharCode(97 + soIdx).toUpperCase()} updated to [${levels[nextIdx]}]`);
+        const soLetter = `SO-${String.fromCharCode(97 + soIdx).toUpperCase()}`;
+        const diff = [
+          { field: `OBE Outcome Mapping (${soLetter})`, old: current || '-', new: nextVal }
+        ];
+        appendAuditLog('SO_UPDATE', ALL_COURSES[courseIdx].code, `${soLetter} updated from [${current || '-'}] to [${nextVal}] for ${ALL_COURSES[courseIdx].code}`, diff);
       }
       if (typeof runIedValidation === 'function') runIedValidation();
       if (typeof renderSoSummaryRow === 'function') renderSoSummaryRow();
@@ -3623,6 +3773,7 @@ let currentSelectedCode = null;
     // USER-FRIENDLY CURRICULUM DATA EDITING SUITE (Curriculum Management v2.4-OBE)
     // =========================================================================
     let editingCourseCodeOriginal = null;
+    let editingCourseOriginalSnapshot = null;
     let editModalPrereqs = [];
     let editModalCoreqs = [];
     let editModalSos = ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
@@ -3647,6 +3798,9 @@ let currentSelectedCode = null;
       let course = null;
       if (!isNew) {
         course = ALL_COURSES.find(c => c.code === editingCourseCodeOriginal);
+        editingCourseOriginalSnapshot = course ? JSON.parse(JSON.stringify(course)) : null;
+      } else {
+        editingCourseOriginalSnapshot = null;
       }
 
       // Populate Inputs
@@ -4035,6 +4189,8 @@ let currentSelectedCode = null;
         desc
       };
 
+      const isNewCourse = !editingCourseCodeOriginal;
+
       if (editingCourseCodeOriginal) {
         // Update existing course
         const idx = ALL_COURSES.findIndex(c => c.code === editingCourseCodeOriginal);
@@ -4064,12 +4220,77 @@ let currentSelectedCode = null;
       filterCoursesTable();
 
       // If Detail Drawer is open on this course, refresh it
-      if (document.getElementById('drawerCourseCode').innerText === code) {
+      if (document.getElementById('drawerCourseCode')?.innerText === code) {
         openDetailDrawer(code);
       }
 
+      // Audit Trail Record Generation
       if (typeof appendAuditLog === 'function') {
-        appendAuditLog('COURSE_EDIT', code, `Saved course record for ${code}: ${title}`);
+        const role = (() => {
+          const sel = document.getElementById('roleSelector');
+          const map = { admin: 'System Administrator', exd: 'Executive Director', pd: 'Program Director', faculty: 'Faculty Member' };
+          return map[sel ? sel.value : 'pd'] || 'Program Director';
+        })();
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        const curriculumName = window.CURRICULUM_EDITIONS && window.CURRICULUM_EDITIONS[window.ACTIVE_CURRICULUM_EDITION]?.title 
+          ? window.CURRICULUM_EDITIONS[window.ACTIVE_CURRICULUM_EDITION].title 
+          : 'BSCpE 2026 Curriculum';
+
+        if (isNewCourse) {
+          // Exactly: [Role] created course "[title]" at [time] for [curriculum]
+          const createSummary = `${role} created course "${title}" at ${timeStr} for ${curriculumName}`;
+          appendAuditLog('COURSE_CREATE', code, createSummary, null, { code, title, curriculum: curriculumName });
+        } else {
+          // Compute field-level differences
+          const diff = [];
+          const old = editingCourseOriginalSnapshot || {};
+
+          const checkField = (fieldKey, label, fmt = v => v) => {
+            const oldVal = fmt(old[fieldKey]);
+            const newVal = fmt(courseObj[fieldKey]);
+            if (JSON.stringify(oldVal) !== JSON.stringify(newVal)) {
+              diff.push({ field: label, old: oldVal, new: newVal });
+            }
+          };
+
+          checkField('title', 'Course Title', v => v || '');
+          checkField('group', 'Course Classification', v => v || '');
+          checkField('year', 'Curricular Year', v => v != null ? `Year ${v}` : '');
+          checkField('term', 'Term', v => v != null ? `Term ${v}` : '');
+          checkField('lec', 'Lecture Hours', v => v != null ? `${v} hrs` : '');
+          checkField('lab', 'Laboratory Hours', v => v != null ? `${v} hrs` : '');
+          checkField('units', 'Credit Units', v => v != null ? `${v} units` : '');
+          checkField('desc', 'Description', v => v || '');
+
+          // Check prerequisites
+          const oldPrereqsStr = (old.prereqs || []).map(p => (typeof p === 'string' ? p : p.code)).sort().join(', ') || 'None';
+          const newPrereqsStr = (courseObj.prereqs || []).map(p => (typeof p === 'string' ? p : p.code)).sort().join(', ') || 'None';
+          if (oldPrereqsStr !== newPrereqsStr) {
+            diff.push({ field: 'Prerequisites', old: oldPrereqsStr, new: newPrereqsStr });
+          }
+
+          // Check co-requisites
+          const oldCoreqsStr = (old.coreqs || []).sort().join(', ') || 'None';
+          const newCoreqsStr = (courseObj.coreqs || []).sort().join(', ') || 'None';
+          if (oldCoreqsStr !== newCoreqsStr) {
+            diff.push({ field: 'Co-requisites', old: oldCoreqsStr, new: newCoreqsStr });
+          }
+
+          // Check student outcomes mapping
+          const oldSosStr = (old.sos || []).join('-') || '-------------';
+          const newSosStr = (courseObj.sos || []).join('-') || '-------------';
+          if (oldSosStr !== newSosStr) {
+            diff.push({ field: 'OBE SO Mapping (a-m)', old: oldSosStr, new: newSosStr });
+          }
+
+          const changesSummary = diff.length > 0 
+            ? `${role} edited course "${title}" (${code}) [${diff.length} field${diff.length > 1 ? 's' : ''} modified]`
+            : `${role} verified course record for "${title}" (${code})`;
+
+          appendAuditLog('COURSE_EDIT', code, changesSummary, diff.length > 0 ? diff : null, { code, title, diffCount: diff.length });
+        }
       }
 
       closeCourseEditModal();

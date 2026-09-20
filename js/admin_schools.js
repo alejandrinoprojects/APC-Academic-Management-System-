@@ -538,6 +538,13 @@
       const newColor = document.getElementById('editSchoolColor').value.trim() || school.color;
       const newIcon = document.getElementById('editSchoolIcon').value.trim() || school.bannerIcon;
 
+      const oldPrefix = school.bannerTitle;
+      const oldName = school.name;
+      const oldDirector = school.director;
+      const oldColor = school.color;
+      const oldIcon = school.bannerIcon;
+      const oldProgramsStr = (school.programs || []).map(p => typeof p === 'string' ? p : `${p.code}: ${p.name}`).join(', ');
+
       school.bannerTitle = newPrefix;
       school.name = newName;
       school.director = newDirector;
@@ -563,6 +570,8 @@
         return { code: code, name: line };
       });
 
+      const newProgramsStr = (school.programs || []).map(p => typeof p === 'string' ? p : `${p.code}: ${p.name}`).join(', ');
+
       // Save custom state to localStorage
       try {
         localStorage.setItem('academic_schools_data_custom', JSON.stringify(ACADEMIC_SCHOOLS_DATA));
@@ -576,6 +585,20 @@
 
       if (typeof renderSchoolOverview === 'function' && typeof currentSelectedSchool !== 'undefined' && currentSelectedSchool === schoolId) {
         renderSchoolOverview(schoolId);
+      }
+
+      // Compute field-level diff
+      const diff = [];
+      if (oldPrefix !== newPrefix) diff.push({ field: 'Banner Prefix', old: oldPrefix, new: newPrefix });
+      if (oldName !== newName) diff.push({ field: 'School Name', old: oldName, new: newName });
+      if (oldDirector !== newDirector) diff.push({ field: 'Executive Director / Dean', old: oldDirector, new: newDirector });
+      if (oldColor !== newColor) diff.push({ field: 'Theme Accent Color', old: oldColor, new: newColor });
+      if (oldIcon !== newIcon) diff.push({ field: 'Banner Icon', old: oldIcon, new: newIcon });
+      if (oldProgramsStr !== newProgramsStr) diff.push({ field: 'Offered Programs', old: oldProgramsStr, new: newProgramsStr });
+
+      if (typeof appendAuditLog === 'function') {
+        const fullSchoolName = `${school.bannerTitle} ${school.name}`;
+        appendAuditLog('SCHOOL_UPDATE', fullSchoolName, `Updated metadata for ${fullSchoolName} (${diff.length} fields modified)`, diff.length > 0 ? diff : null);
       }
 
       if (typeof showToast === 'function') {
