@@ -14,7 +14,7 @@
   'use strict';
 
   // --- STATE CONFIGURATION ---
-  let showAllArrowsEnabled = false;
+  let showAllArrowsEnabled = true;
   let requisiteFilterMode = 'direct'; // 'direct' or 'all'
   let currentSelectedCode = null;
   let currentHoveredCode = null;
