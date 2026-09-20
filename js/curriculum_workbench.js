@@ -697,6 +697,16 @@
         const toolBtn = document.getElementById(`nav-${progId}-${viewType}`);
         if (toolBtn) toolBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
       }
+
+      // 7. Collapse all year accordions (Y1–Y4) when not doing a year-specific navigation
+      //    Year-specific highlighting is handled by _expandSidebarYear() called from the year functions.
+      const yearOrdinals = ['Y1', 'Y2', 'Y3', 'Y4'];
+      yearOrdinals.forEach(ord => {
+        const yCont = document.getElementById(`${progId}${ord}Cont`);
+        const yChev = document.getElementById(`${progId}${ord}Chev`);
+        if (yCont) yCont.classList.add('hidden');
+        if (yChev) { yChev.classList.remove('rotate-90', 'rotate-180'); }
+      });
     }
 
     function goToProgramPd(progCode) {
@@ -1955,31 +1965,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
     window.toggleCurriculumManagementFolder = toggleCurriculumManagementFolder;
 
-    window.openFlowchartForYear = function(year) {
-      if (typeof openFlowchartForYear === 'function') {
-        openFlowchartForYear(year);
-      } else {
-        selectProgram(currentSelectedProgram || 'BSCpE', 'flowchart');
-        if (typeof diagramScrollToYear === 'function') {
-          setTimeout(() => diagramScrollToYear(year), 150);
-        }
-      }
-    };
 
-    window.openSpreadsheetForYear = function(year) {
-      if (typeof openSpreadsheetForYear === 'function') {
-        openSpreadsheetForYear(year);
-      } else {
-        selectProgram(currentSelectedProgram || 'BSCpE', 'spreadsheet');
-        const yFilter = document.getElementById('sheetYearFilter');
-        if (yFilter) {
-          yFilter.value = String(year);
-          if (typeof sheetFilterChange === 'function') {
-            sheetFilterChange();
-          }
-        }
-      }
-    };
+
 
     window.openCreateCurriculumModal = function() {
       const modal = document.getElementById('createCurriculumModal');
@@ -2173,6 +2160,16 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       window.scrollTo({ top: 0, behavior: 'instant' });
       const mainEl = document.querySelector('main');
       if (mainEl) mainEl.scrollTo({ top: 0, behavior: 'instant' });
+
+      // Sync left sidebar to reflect the newly active view.
+      // selectProgram() already calls this, but navigateView() can also be called
+      // directly (e.g. from sidebar buttons like "Management Homepage"), so we
+      // ensure the sidebar is always up-to-date regardless of the call path.
+      if (currentSelectedProgram && typeof syncSidebarToCurrentPath === 'function') {
+        const pInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[currentSelectedProgram])
+          || { schoolId: 'soe' };
+        syncSidebarToCurrentPath(pInfo.schoolId, currentSelectedProgram, viewId);
+      }
     }
 
     // =========================================================================
@@ -2695,19 +2692,71 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
     }
 
+    // =========================================================================
+    // SIDEBAR YEAR-LEVEL ACCORDION HIGHLIGHTER
+    // Expands the correct Year accordion in the sidebar and highlights the
+    // year-specific flowchart / spreadsheet button.
+    // Called AFTER selectProgram() so that year-item visibility is layered on
+    // top of the main syncSidebarToCurrentPath() result.
+    // =========================================================================
+    function _expandSidebarYear(progCode, yearNum, type) {
+      const progCodeToId = {
+        'BSCpE': 'cpe', 'BSCE': 'ce', 'BSECE': 'ece',
+        'BSCS': 'cs', 'BSIT': 'it',
+        'BMMA': 'mma', 'BSPsych': 'psych',
+        'BSBA': 'ba', 'BSA': 'acc', 'BSArch': 'arch'
+      };
+      const pid = progCodeToId[progCode] || progCode.toLowerCase();
+      const ordinals = ['Y1', 'Y2', 'Y3', 'Y4'];
+
+      // Remove year-item highlights from all year buttons for this program
+      ordinals.forEach(ord => {
+        const yCont = document.getElementById(`${pid}${ord}Cont`);
+        if (yCont) {
+          yCont.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'border-l-2', 'border-[#E5A823]');
+          });
+        }
+      });
+
+      const clampedYear = Math.max(1, Math.min(4, yearNum));
+      const ord = ordinals[clampedYear - 1];
+      const yCont = document.getElementById(`${pid}${ord}Cont`);
+      const yChev = document.getElementById(`${pid}${ord}Chev`);
+
+      // Expand the matching year accordion
+      if (yCont) yCont.classList.remove('hidden');
+      if (yChev) {
+        yChev.classList.add('rotate-90');
+        yChev.classList.remove('rotate-180');
+      }
+
+      // Highlight the specific year-level button (flowchart or spreadsheet)
+      if (yCont) {
+        const fnName = type === 'flowchart' ? 'openFlowchartForYear' : 'openSpreadsheetForYear';
+        const btn = yCont.querySelector(`button[onclick*="${fnName}"]`);
+        if (btn) btn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'border-l-2', 'border-[#E5A823]');
+      }
+    }
+    window._expandSidebarYear = _expandSidebarYear;
+
     function openFlowchartForYear(yearNum) {
-      selectProgram(currentSelectedProgram || 'BSCpE', 'flowchart');
+      const prog = currentSelectedProgram || 'BSCpE';
+      selectProgram(prog, 'flowchart');
       if (typeof switchFlowchartViewMode === 'function') {
         switchFlowchartViewMode('diagram');
       }
       if (typeof diagramScrollToYear === 'function') {
         setTimeout(() => diagramScrollToYear(yearNum), 150);
       }
+      // Expand year accordion in sidebar after navigation settles
+      setTimeout(() => _expandSidebarYear(prog, yearNum, 'flowchart'), 60);
     }
     window.openFlowchartForYear = openFlowchartForYear;
 
     function openSpreadsheetForYear(yearNum) {
-      selectProgram(currentSelectedProgram || 'BSCpE', 'spreadsheet');
+      const prog = currentSelectedProgram || 'BSCpE';
+      selectProgram(prog, 'spreadsheet');
       if (typeof openIntegratedSpreadsheet === 'function') {
         openIntegratedSpreadsheet('all', 'dashboard');
       }
@@ -2718,6 +2767,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           sheetFilterChange();
         }
       }
+      // Expand year accordion in sidebar after navigation settles
+      setTimeout(() => _expandSidebarYear(prog, yearNum, 'spreadsheet'), 60);
     }
     window.openSpreadsheetForYear = openSpreadsheetForYear;
 
