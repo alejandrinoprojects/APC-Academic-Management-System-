@@ -819,113 +819,6 @@
       });
     }
 
-    function renderSchoolOverview(schoolKey = 'soe') {
-      // ── RBAC GUARD: Tier 3 (Executive Director) or above ONLY ───────────────
-      const _role = currentActiveRole || 'admin';
-      if (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f') {
-        if (typeof showToast === 'function') {
-          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director authority.');
-        }
-        renderProgramOverview(currentSelectedProgram || 'BSCpE');
-        return;
-      }
-      // ── END RBAC GUARD ───────────────────────────────────────────────────────
-
-      navigateView('home');
-      const normKey = String(schoolKey).toLowerCase();
-      currentSelectedSchool = normKey;
-
-      const adminView = document.getElementById('homeAdminInstitutionalView');
-      const exdView = document.getElementById('homeExdProgramsView');
-      const pdView = document.getElementById('homePdProgramView');
-      const facView = document.getElementById('homeFacultyWorkerView');
-
-      if (adminView) adminView.classList.add('hidden');
-      if (exdView) exdView.classList.remove('hidden');
-      if (pdView) pdView.classList.add('hidden');
-      if (facView) facView.classList.add('hidden');
-
-      const main = document.querySelector('main');
-      if (main) main.scrollTop = 0;
-
-      const school = ACADEMIC_SCHOOLS_DATA.find(s => s.id.toLowerCase() === normKey) || ACADEMIC_SCHOOLS_DATA[0];
-      const schoolName = `${school.bannerTitle || 'SCHOOL OF'} ${school.name}`;
-      const schoolColor = school.color || '#FF6B00';
-
-      const pathPill = document.getElementById('topBarPathPill');
-      if (pathPill) pathPill.innerText = `Schools > ${school.name} > EXD`;
-
-      // Auto-sync sidebar to EXD path
-      syncSidebarToCurrentPath(normKey, null, null);
-
-      recordNavigationStep({
-        type: 'school',
-        schoolId: normKey,
-        pathText: `Schools > ${school.name} > EXD`
-      });
-
-      // Left Box Emblem
-      const leftEmblem = document.getElementById('exdLeftEmblemBox');
-      if (leftEmblem) {
-        if (normKey === 'soe') {
-          leftEmblem.innerHTML = `<img src="assets/exd_soe_logo_crop.png" class="max-h-32 max-w-full object-contain" alt="APC School of Engineering" onerror="this.onerror=null; this.src='assets/apc_seal.png';" />`;
-        } else {
-          leftEmblem.innerHTML = `
-            <div class="relative flex flex-col items-center justify-center p-2">
-              <div class="w-14 h-14 rounded-full bg-white p-1 shadow-md border-2" style="border-color: ${schoolColor};">
-                <div class="w-full h-full rounded-full flex items-center justify-center text-white text-xl font-bold shadow-inner" style="background: ${schoolColor};">
-                  ${school.bannerIcon || '★'}
-                </div>
-              </div>
-              <div class="bg-[#10151E] text-white px-3 py-1 mt-2 text-center border" style="border-color: ${schoolColor};">
-                <div class="text-[11px] font-black leading-tight tracking-wider uppercase text-slate-300">ASIA PACIFIC COLLEGE</div>
-              </div>
-              <div class="text-[10px] font-black tracking-wider uppercase mt-1 text-slate-900">
-                ${school.bannerTitle || 'SCHOOL OF'} <span style="color: ${schoolColor};">${school.name}</span>
-              </div>
-            </div>`;
-        }
-      }
-
-      // Panoramic Banner: Clean Geometric SVG Vector Theme (Zero Photo Banners)
-      // ── "All Academic Schools" button: only rendered for admin (Tier 4) ──────
-      const isAdmin = (_role === 'admin' || _role === 'a');
-      const allSchoolsBtnHtml = isAdmin
-        ? `<button type="button" id="exdReturnToAdminBtn" onclick="renderAdminOverview()" class="px-3.5 py-2 bg-[#10151E]/90 hover:bg-[#10151E] border border-amber-500/60 hover:border-amber-400 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md group">
-              <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
-              <span>All Academic Schools</span>
-            </button>`
-        : '';
-
-      const rightBanner = document.getElementById('exdRightBannerBox');
-      if (rightBanner) {
-        rightBanner.innerHTML = `
-          <div class="absolute inset-0 pointer-events-none overflow-hidden">
-            <svg class="w-full h-full object-cover" preserveAspectRatio="none" viewBox="0 0 800 180" fill="none">
-              <polygon points="0,0 350,0 260,180 0,180" fill="#12263f" fill-opacity="0.7"/>
-              <polygon points="320,0 620,0 520,180 220,180" fill="#193557" fill-opacity="0.5"/>
-              <polygon points="580,0 800,0 800,180 480,180" fill="#0f2035" fill-opacity="0.8"/>
-              <polygon points="450,180 520,60 580,180" fill="${schoolColor}" fill-opacity="0.25"/>
-              <line x1="0" y1="180" x2="400" y2="0" stroke="${schoolColor}" stroke-width="1.5" stroke-opacity="0.3"/>
-            </svg>
-          </div>
-          <div class="relative z-10 space-y-1 p-6">
-            <div class="inline-block px-2 py-0.5 bg-black/40 border border-amber-500/40 text-amber-400 text-[10px] font-mono font-black uppercase tracking-widest">
-              ${schoolName} &bull; Executive Directorate
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase flex items-center gap-2">
-              <span>${school.name}</span>
-              <span class="text-[#E5A823]">EXD</span>
-              <span style="color: ${schoolColor};">OVERVIEW</span>
-            </h2>
-            <p class="text-xs text-slate-300 font-medium">Executive Director: ${school.director || 'Academic Leadership'} &bull; Operational Baseline</p>
-          </div>
-          <div class="relative z-10 flex items-center space-x-3 pr-6">
-            ${allSchoolsBtnHtml}
-          </div>`;
-      }
-    }
-
     function getProgramBannerConfig(progCode, progName, schoolColor = '#FF6B00') {
       const code = String(progCode || '').trim();
       const name = String(progName || '').trim();
@@ -1189,6 +1082,114 @@
       }
     }
     window.getProgramBannerConfig = getProgramBannerConfig;
+
+    function renderSchoolOverview(schoolKey = 'soe') {
+      // ── RBAC GUARD: Tier 3 (Executive Director) or above ONLY ───────────────
+      const _role = currentActiveRole || 'admin';
+      if (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f') {
+        if (typeof showToast === 'function') {
+          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director authority.');
+        }
+        renderProgramOverview(currentSelectedProgram || 'BSCpE');
+        return;
+      }
+      // ── END RBAC GUARD ───────────────────────────────────────────────────────
+
+      navigateView('home');
+      const normKey = String(schoolKey).toLowerCase();
+      currentSelectedSchool = normKey;
+
+      const adminView = document.getElementById('homeAdminInstitutionalView');
+      const exdView = document.getElementById('homeExdProgramsView');
+      const pdView = document.getElementById('homePdProgramView');
+      const facView = document.getElementById('homeFacultyWorkerView');
+
+      if (adminView) adminView.classList.add('hidden');
+      if (exdView) exdView.classList.remove('hidden');
+      if (pdView) pdView.classList.add('hidden');
+      if (facView) facView.classList.add('hidden');
+
+      const main = document.querySelector('main');
+      if (main) main.scrollTop = 0;
+
+      const school = ACADEMIC_SCHOOLS_DATA.find(s => s.id.toLowerCase() === normKey) || ACADEMIC_SCHOOLS_DATA[0];
+      const schoolName = `${school.bannerTitle || 'SCHOOL OF'} ${school.name}`;
+      const schoolColor = school.color || '#FF6B00';
+
+      const pathPill = document.getElementById('topBarPathPill');
+      if (pathPill) pathPill.innerText = `Schools > ${school.name} > EXD`;
+
+      // Auto-sync sidebar to EXD path
+      syncSidebarToCurrentPath(normKey, null, null);
+
+      recordNavigationStep({
+        type: 'school',
+        schoolId: normKey,
+        pathText: `Schools > ${school.name} > EXD`
+      });
+
+      // Left Box Emblem
+      const leftEmblem = document.getElementById('exdLeftEmblemBox');
+      if (leftEmblem) {
+        if (normKey === 'soe') {
+          leftEmblem.innerHTML = `<img src="assets/exd_soe_logo_crop.png" class="max-h-32 max-w-full object-contain" alt="APC School of Engineering" onerror="this.onerror=null; this.src='assets/apc_seal.png';" />`;
+        } else {
+          leftEmblem.innerHTML = `
+            <div class="relative flex flex-col items-center justify-center p-2">
+              <div class="w-14 h-14 rounded-full bg-white p-1 shadow-md border-2" style="border-color: ${schoolColor};">
+                <div class="w-full h-full rounded-full flex items-center justify-center text-white text-xl font-bold shadow-inner" style="background: ${schoolColor};">
+                  ${school.bannerIcon || '★'}
+                </div>
+              </div>
+              <div class="bg-[#10151E] text-white px-3 py-1 mt-2 text-center border" style="border-color: ${schoolColor};">
+                <div class="text-[11px] font-black leading-tight tracking-wider uppercase text-slate-300">ASIA PACIFIC COLLEGE</div>
+              </div>
+              <div class="text-[10px] font-black tracking-wider uppercase mt-1 text-slate-900">
+                ${school.bannerTitle || 'SCHOOL OF'} <span style="color: ${schoolColor};">${school.name}</span>
+              </div>
+            </div>`;
+        }
+      }
+
+      // Panoramic Banner: Clean Geometric SVG Vector Theme (Zero Photo Banners)
+      // ── "All Academic Schools" button: only rendered for admin (Tier 4) ──────
+      const isAdmin = (_role === 'admin' || _role === 'a');
+      const allSchoolsBtnHtml = isAdmin
+        ? `<button type="button" id="exdReturnToAdminBtn" onclick="renderAdminOverview()" class="px-3.5 py-2 bg-[#10151E]/90 hover:bg-[#10151E] border border-amber-500/60 hover:border-amber-400 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md group">
+              <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
+              <span>All Academic Schools</span>
+            </button>`
+        : '';
+
+      const rightBanner = document.getElementById('exdRightBannerBox');
+      if (rightBanner) {
+        rightBanner.innerHTML = `
+          <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <svg class="w-full h-full object-cover" preserveAspectRatio="none" viewBox="0 0 800 180" fill="none">
+              <polygon points="0,0 350,0 260,180 0,180" fill="#12263f" fill-opacity="0.7"/>
+              <polygon points="320,0 620,0 520,180 220,180" fill="#193557" fill-opacity="0.5"/>
+              <polygon points="580,0 800,0 800,180 480,180" fill="#0f2035" fill-opacity="0.8"/>
+              <polygon points="450,180 520,60 580,180" fill="${schoolColor}" fill-opacity="0.25"/>
+              <line x1="0" y1="180" x2="400" y2="0" stroke="${schoolColor}" stroke-width="1.5" stroke-opacity="0.3"/>
+            </svg>
+          </div>
+          <div class="relative z-10 space-y-1 p-6">
+            <div class="inline-block px-2 py-0.5 bg-black/40 border border-amber-500/40 text-amber-400 text-[10px] font-mono font-black uppercase tracking-widest">
+              ${schoolName} &bull; Executive Directorate
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase flex items-center gap-2">
+              <span>${school.name}</span>
+              <span class="text-[#E5A823]">EXD</span>
+              <span style="color: ${schoolColor};">OVERVIEW</span>
+            </h2>
+            <p class="text-xs text-slate-300 font-medium">Executive Director: ${school.director || 'Academic Leadership'} &bull; Operational Baseline</p>
+          </div>
+          <div class="relative z-10 flex items-center space-x-3 pr-6">
+            ${allSchoolsBtnHtml}
+          </div>`;
+      }
+
+
 
       // Populate degree program cards dynamically for all schools
       const grid = document.getElementById('exdDegreeProgramsGrid');
@@ -2682,9 +2683,17 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // Scroll viewport back to top
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (typeof window.scrollTo === 'function') {
+        try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
+      }
       const mainEl = document.querySelector('main');
-      if (mainEl) mainEl.scrollTo({ top: 0, behavior: 'instant' });
+      if (mainEl) {
+        if (typeof mainEl.scrollTo === 'function') {
+          try { mainEl.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { mainEl.scrollTop = 0; }
+        } else {
+          mainEl.scrollTop = 0;
+        }
+      }
 
       // Sync left sidebar to reflect the newly active view.
       // selectProgram() already calls this, but navigateView() can also be called
@@ -4333,6 +4342,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.getCategoryMeta = getCategoryMeta;
     window.selectProgram = selectProgram;
     window.goToSchoolExd = goToSchoolExd;
+    window.renderSchoolOverview = renderSchoolOverview;
     window.renderAdminOverview = renderAdminOverview;
     window.navigateView = navigateView;
     window.switchRole = switchRole;
