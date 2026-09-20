@@ -132,9 +132,9 @@
         systemView: 'flowchart',
         subFolder: 'Governance & Compliance',
         subFolderView: 'compliance',
-        leaf: 'Cluster Delegations (D-RBAC)',
+        leaf: 'Faculty & Cluster Delegations',
         leafIcon: '👥',
-        ext: '.rbac',
+        ext: '.delegation',
         parent: 'compliance'
       },
       audit: {
@@ -283,7 +283,7 @@
           bSec.innerText = 'Governance';
           bPage.innerText = 'CHED CMO 92 Statutory Audit';
         } else if (viewId === 'delegation') {
-          bSec.innerText = 'D-RBAC Collaboration';
+          bSec.innerText = 'Faculty Delegations';
           bPage.innerText = 'Faculty Cluster Scoping';
         } else if (viewId === 'audit') {
           bSec.innerText = 'Security';
@@ -1671,7 +1671,7 @@
       }
     }
 
-    // ROLE-BASED SIDEBAR FOLDER VISIBILITY (D-RBAC Tree Scoping)
+    // ROLE-BASED SIDEBAR FOLDER VISIBILITY (Role-Based Tree Scoping)
     function updateSidebarHierarchy(specifiedRole) {
       const role = specifiedRole || (document.getElementById('roleSelector') ? document.getElementById('roleSelector').value : 'admin');
       const rootSchools     = document.getElementById('node-schools-root');
@@ -4024,7 +4024,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     // =========================================================================
-    // FACULTY SCOPED CLUSTER ASSIGNMENTS & DIRECTORY REGISTRY (D-RBAC)
+    // FACULTY SCOPED CLUSTER ASSIGNMENTS & DIRECTORY REGISTRY
     // =========================================================================
     const FACULTY_ASSIGNED_COURSES = new Set([
       'LOGCDES', 'LOGICLB', 'EMICROS', 'MCROLAB', 'EMBEDDS', 'EMBEDLB',

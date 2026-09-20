@@ -181,7 +181,7 @@
       </div>
     </div>
 
-    <!-- RIGHT SIDE: D-RBAC AUTHORITY SELECTOR & USER PROFILE & AI COPILOT -->
+    <!-- RIGHT SIDE: AUTHORITY SELECTOR & USER PROFILE & AI COPILOT -->
     <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
 
       <!-- Dynamic Role Clearance Badge -->
@@ -3329,13 +3329,13 @@
 
 
         <!-- =================================================================== -->
-        <!-- VIEW 5: FACULTY SCOPED CLUSTER DELEGATIONS (D-RBAC) -->
+        <!-- VIEW 5: FACULTY SCOPED CLUSTER DELEGATIONS () -->
         <!-- =================================================================== -->
         <section id="view-delegation" class="hidden space-y-4">
           <div class="bg-white rounded-none border border-slate-200 p-5 shadow-sm space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-3">
               <div>
-                <h2 class="font-extrabold text-slate-900 text-lg tracking-tight">Collaborative Task Delegation (D-RBAC)</h2>
+                <h2 class="font-extrabold text-slate-900 text-lg tracking-tight">Collaborative Task Delegation</h2>
                 <p class="text-xs text-slate-500">Program Director assigns specific subject clusters to faculty members for time-bound review.</p>
               </div>
               <button onclick="showToast('New Cluster Delegation Created')" class="px-3.5 py-2 bg-apc-navy hover:bg-apc-blue text-white text-xs font-bold rounded-none shadow transition">
@@ -3809,7 +3809,7 @@
         systemView: 'flowchart',
         subFolder: 'Governance & Compliance',
         subFolderView: 'compliance',
-        leaf: 'Cluster Delegations (D-RBAC)',
+        leaf: 'Cluster Delegations',
         leafIcon: '👥',
         ext: '.rbac',
         parent: 'compliance'
@@ -3960,7 +3960,7 @@
           bSec.innerText = 'Governance';
           bPage.innerText = 'CHED CMO 92 Statutory Audit';
         } else if (viewId === 'delegation') {
-          bSec.innerText = 'D-RBAC Collaboration';
+          bSec.innerText = 'Faculty Delegations';
           bPage.innerText = 'Faculty Cluster Scoping';
         } else if (viewId === 'audit') {
           bSec.innerText = 'Security';

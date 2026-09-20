@@ -324,7 +324,7 @@ let currentSelectedCode = null;
     };
 
     // =========================================================================
-    // D-RBAC DELEGATION PROGRESS BOARD (WP7)
+    // FACULTY DELEGATION PROGRESS BOARD (WP7)
     // =========================================================================
     window.DELEGATION_REGISTRY = [
       {
@@ -672,9 +672,9 @@ let currentSelectedCode = null;
         systemView: 'flowchart',
         subFolder: 'Governance & Compliance',
         subFolderView: 'compliance',
-        leaf: 'Cluster Delegations (D-RBAC)',
+        leaf: 'Faculty & Cluster Delegations',
         leafIcon: '👥',
-        ext: '.rbac',
+        ext: '.delegation',
         parent: 'compliance'
       },
       audit: {
@@ -823,7 +823,7 @@ let currentSelectedCode = null;
           bSec.innerText = 'Governance';
           bPage.innerText = 'CHED CMO 92 Statutory Audit';
         } else if (viewId === 'delegation') {
-          bSec.innerText = 'D-RBAC Collaboration';
+          bSec.innerText = 'Faculty Delegations';
           bPage.innerText = 'Faculty Cluster Scoping';
         } else if (viewId === 'audit') {
           bSec.innerText = 'Security';
@@ -4970,7 +4970,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           'dashboard': 'Curriculum Analytics Dashboard',
           'spreadsheet': 'Integrated Master Spreadsheet',
           'compliance': 'CHED CMO 92 & ABET Compliance',
-          'delegation': 'Cluster Delegations (D-RBAC)',
+          'delegation': 'Faculty & Cluster Delegations',
           'audit': 'System Audit Trail',
           'registrar': 'Official Registrar Documents Suite',
           'syllabus': 'Syllabus Management System (SMS)',
@@ -4982,7 +4982,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         }
       }
 
-      // Direct access allowed to all institutional views (Registrar, Compliance, D-RBAC Delegation, Audit)
+      // Direct access allowed to all institutional views (Registrar, Compliance, Faculty Delegation, Audit)
 
       if (!viewId) viewId = 'flowchart';
 
@@ -6512,7 +6512,7 @@ function openAddExdModal() {
         'dashboard': 'Curriculum Analytics Dashboard',
         'spreadsheet': 'Integrated Master Spreadsheet',
         'compliance': 'CHED & ABET Compliance Matrix',
-        'delegation': 'Task Delegation & D-RBAC Hub',
+        'delegation': 'Faculty & Cluster Delegations',
         'registrar': 'Official Registrar Documents (7 Sheets)',
         'syllabus': 'Syllabus Management System',
         'course': 'Course Offerings & Loading',
@@ -6767,7 +6767,7 @@ function openAddExdModal() {
         { id: 'obe', title: 'OBE Matrix (13 Student Outcomes)', icon: '🎯', desc: 'Student outcome mapping a through m alignment' },
         { id: 'registrar', title: 'Official Registrar Documents (7 Sheets)', icon: '📜', desc: 'Complete unredacted institutional registrar curriculum output suite' },
         { id: 'compliance', title: 'CHED CMO 92 & ABET Compliance', icon: '⚖️', desc: 'Statutory compliance verification and standards audit' },
-        { id: 'delegation', title: 'Institutional Governance & D-RBAC Hub', icon: '👔', desc: 'Designate faculty tasks and manage curriculum authority' },
+        { id: 'delegation', title: 'Faculty & Cluster Delegations', icon: '👔', desc: 'Designate faculty tasks and manage curriculum authority' },
         { id: 'dashboard', title: 'Curriculum Analytics Dashboard', icon: '📈', desc: 'Curriculum analytics, unit ratios, and distribution charts' },
         { id: 'syllabus', title: 'Syllabus Management System (SMS)', icon: '📑', desc: 'Course syllabus specifications and authoring repository' },
         { id: 'course', title: 'Course Offerings & Loading Hub', icon: '🏛️', desc: 'Term offerings, room allocations, and faculty load matrix' },
