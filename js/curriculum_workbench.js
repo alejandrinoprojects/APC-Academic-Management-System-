@@ -922,9 +922,6 @@
           </div>
           <div class="relative z-10 flex items-center space-x-3 pr-6">
             ${allSchoolsBtnHtml}
-            <div class="hidden sm:flex flex-col items-center justify-center px-2.5 py-1.5 bg-black/60 border border-white/10 backdrop-blur-xs">
-              <span class="text-[9px] font-mono text-amber-400 font-bold uppercase tracking-wider">Tier 3 EXD</span>
-            </div>
           </div>`;
       }
     }
