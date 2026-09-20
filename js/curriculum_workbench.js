@@ -2139,6 +2139,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       // Safe view-specific trigger hooks
       if (viewId === 'flowchart') {
+        if (typeof renderFlowchartDiagram === 'function') renderFlowchartDiagram();
         setTimeout(() => { 
           if (typeof drawAllArrows === 'function') drawAllArrows(); 
         }, 80);
@@ -2742,12 +2743,17 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     function openFlowchartForYear(yearNum) {
       const prog = currentSelectedProgram || 'BSCpE';
+      if (typeof setFlowchartYearFilter === 'function') {
+        setFlowchartYearFilter(yearNum);
+      }
       selectProgram(prog, 'flowchart');
       if (typeof switchFlowchartViewMode === 'function') {
         switchFlowchartViewMode('diagram');
       }
-      if (typeof diagramScrollToYear === 'function') {
-        setTimeout(() => diagramScrollToYear(yearNum), 150);
+      if (typeof setFlowchartYearFilter === 'function') {
+        setFlowchartYearFilter(yearNum);
+      } else if (typeof diagramScrollToYear === 'function') {
+        setTimeout(() => diagramScrollToYear(yearNum), 50);
       }
       // Expand year accordion in sidebar after navigation settles
       setTimeout(() => _expandSidebarYear(prog, yearNum, 'flowchart'), 60);
@@ -2758,19 +2764,26 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const prog = currentSelectedProgram || 'BSCpE';
       selectProgram(prog, 'spreadsheet');
       if (typeof openIntegratedSpreadsheet === 'function') {
-        openIntegratedSpreadsheet('all', 'dashboard');
+        openIntegratedSpreadsheet('all', 'curriculum-home');
       }
       const yearFilter = document.getElementById('sheetYearFilter');
       if (yearFilter) {
         yearFilter.value = String(yearNum);
-        if (typeof sheetFilterChange === 'function') {
-          sheetFilterChange();
-        }
+      }
+      sheetYearFilter = String(yearNum);
+      if (typeof sheetFilterChange === 'function') {
+        sheetFilterChange();
       }
       // Expand year accordion in sidebar after navigation settles
       setTimeout(() => _expandSidebarYear(prog, yearNum, 'spreadsheet'), 60);
     }
     window.openSpreadsheetForYear = openSpreadsheetForYear;
+
+    function openComparativeCurriculumModal() {
+      const prog = currentSelectedProgram || 'BSCpE';
+      selectProgram(prog, 'registrar', 6);
+    }
+    window.openComparativeCurriculumModal = openComparativeCurriculumModal;
 
     function refreshAllCategoryViews() {
       renderFlowchartLegend();
@@ -2797,12 +2810,13 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const returnText = document.getElementById('spreadsheetReturnText');
       if (returnText) {
         const titles = {
+          'curriculum-home': 'Back to Curriculum Management',
           'flowchart': 'Back to Prerequisite Flowchart',
           'catalog': 'Back to Course Catalog',
           'obe': 'Back to OBE Matrix',
           'dashboard': 'Back to Curriculum Dashboard'
         };
-        returnText.textContent = titles[spreadsheetReturnSourceView] || 'Back to Module';
+        returnText.textContent = titles[spreadsheetReturnSourceView] || 'Back to Curriculum Management';
       }
       if (typeof showToastNotification === 'function') {
         showToastNotification(`Switched to Integrated Spreadsheet (Full Master Sheet)`);
@@ -2810,7 +2824,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function returnFromSpreadsheet() {
-      navigateView(spreadsheetReturnSourceView || 'flowchart');
+      navigateView(spreadsheetReturnSourceView || 'curriculum-home');
     }
 
     // =========================================================================
@@ -3227,9 +3241,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       });
 
       // 2. Render Empty Excel Rows for Master/General view
+      let totalToRender = rows.length;
       if (showGeneral && !showObe) {
         const renderedCount = rows.length;
-        const totalToRender = Math.max(excelGridTotalRows, renderedCount + 20);
+        totalToRender = Math.max(excelGridTotalRows, renderedCount + 20);
         for (let r = renderedCount + 1; r <= totalToRender; r++) {
           const bg = (r % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50';
           html += `<tr class="${bg} hover:bg-amber-50/30 dark:hover:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-slate-400">
