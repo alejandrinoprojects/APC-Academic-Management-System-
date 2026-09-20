@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>04 · Tier 2: Program Director (BSCpE) Workbench &middot; APC School of Engineering</title>
+  <title>04 · Program Director (BSCpE) Workbench &middot; APC School of Engineering</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -2047,13 +2047,6 @@
                       <p class="text-xs text-blue-100 max-w-2xl font-normal leading-relaxed">
                         Operating under the <strong>School of Engineering</strong>. You lead curriculum architecture, prerequisite DAG topological verification, outcomes-based syllabus alignment, and master course catalogs.
                       </p>
-                    </div>
-
-                    <div class="flex flex-wrap items-center gap-2">
-                      <button type="button" onclick="goToSchoolExd('soe')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer" title="Return to Executive Directorate">
-                        <span>&larr;</span>
-                        <span>School Overview</span>
-                      </button>
                     </div>
                   </div>
 
@@ -4224,23 +4217,23 @@
       } else if (role === 'pd' || role === 'p') {
         if (avatar) avatar.innerText = 'PD';
         if (name) name.innerText = 'Program Director';
-        if (roleText) roleText.innerText = 'Program Director &bull; BSCpE (Tier 2)';
+        if (roleText) roleText.innerText = 'Program Director &bull; BSCpE';
         if (headerBadge) {
-          headerBadge.innerText = 'TIER 2 &bull; PD';
+          headerBadge.innerText = 'PROGRAM DIRECTOR';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-blue-100 text-blue-800 border border-blue-300';
         }
         renderHomepageForRole('pd');
-        showToast('Active Role: Program Director (Tier 2 &bull; BS Computer Engineering)');
+        showToast('Active Role: Program Director (BS Computer Engineering)');
       } else if (role === 'faculty' || role === 'f') {
         if (avatar) avatar.innerText = 'FC';
         if (name) name.innerText = 'Faculty Member';
-        if (roleText) roleText.innerText = 'Hardware Cluster (Tier 1)';
+        if (roleText) roleText.innerText = 'Hardware Cluster';
         if (headerBadge) {
-          headerBadge.innerText = 'TIER 1 &bull; FACULTY';
+          headerBadge.innerText = 'FACULTY';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-300';
         }
         renderHomepageForRole('faculty');
-        showToast('Active Role: Faculty Member (Tier 1 &bull; Hardware & Embedded Cluster)');
+        showToast('Active Role: Faculty Member (Hardware & Embedded Cluster)');
       }
     }
 

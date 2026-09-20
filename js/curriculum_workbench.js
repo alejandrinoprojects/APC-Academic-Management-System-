@@ -510,7 +510,7 @@
       const _role = currentActiveRole || 'admin';
       if (_role !== 'admin' && _role !== 'a') {
         if (typeof showToast === 'function') {
-          showToast('⛔ Access Restricted: Institutional Overview requires System Administrator (Tier 4) authority.');
+          showToast('⛔ Access Restricted: Institutional Overview requires System Administrator authority.');
         }
         // Redirect to authorized homepage
         if (_role === 'exd' || _role === 'x') {
@@ -540,7 +540,7 @@
       const pill = document.getElementById('homeRolePill');
       const title = document.getElementById('homeSectionTitle');
       const scope = document.getElementById('homeScopeText');
-      if (pill) pill.innerText = 'SYSTEM ADMINISTRATOR (TIER 4)';
+      if (pill) pill.innerText = 'SYSTEM ADMINISTRATOR';
       if (title) title.innerText = 'Asia Pacific College • Institutional Governance Suite';
       if (scope) scope.innerText = 'All Academic Schools & Divisions (SoE, SoCIT, SoM, SoAD)';
 
@@ -776,7 +776,7 @@
       const _role = currentActiveRole || 'admin';
       if (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f') {
         if (typeof showToast === 'function') {
-          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director (Tier 3) authority.');
+          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director authority.');
         }
         // Expand the school folder accordion so they can reach their program
         const soeCont = document.getElementById('soeFolderCont');
@@ -824,7 +824,7 @@
       const _role = currentActiveRole || 'admin';
       if (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f') {
         if (typeof showToast === 'function') {
-          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director (Tier 3) authority.');
+          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director authority.');
         }
         renderProgramOverview(currentSelectedProgram || 'BSCpE');
         return;
@@ -1381,7 +1381,7 @@
       const pill = document.getElementById('homeRolePill');
       const title = document.getElementById('homeSectionTitle');
       const scope = document.getElementById('homeScopeText');
-      if (pill) pill.innerText = 'FACULTY WORKSTATION (TIER 1)';
+      if (pill) pill.innerText = 'FACULTY WORKSTATION';
       if (title) title.innerText = 'Faculty Academic Workbench &bull; Course Cluster Contributor';
       if (scope) scope.innerText = 'Hardware & Embedded Systems Cluster (Under BSCpE PD)';
     }
@@ -1615,54 +1615,54 @@
         if (avatar) avatar.innerText = 'SA';
         if (sbAvatar) sbAvatar.innerText = 'SA';
         if (name) name.innerText = 'System Administrator';
-        if (roleText) roleText.innerText = 'Institutional Superuser (Tier 4)';
+        if (roleText) roleText.innerText = 'Institutional Superuser';
         if (sbName) sbName.innerText = 'System Administrator';
         if (sbEmail) sbEmail.innerText = 'admin@apc.edu.ph';
         if (headerBadge) {
-          headerBadge.innerText = 'TIER 4 &bull; ROOT';
+          headerBadge.innerText = 'ROOT ADMIN';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-300';
         }
         renderHomepageForRole('admin');
-        showToast('Active Role: System Administrator (Tier 4 &bull; Full Institutional Authority)');
+        showToast('Active Role: System Administrator (Institutional Authority)');
       } else if (role === 'exd' || role === 'x') {
         if (avatar) avatar.innerText = 'ED';
         if (sbAvatar) sbAvatar.innerText = 'ED';
         if (name) name.innerText = 'Executive Director';
-        if (roleText) roleText.innerText = 'Executive Director &bull; SoE (Tier 3)';
+        if (roleText) roleText.innerText = 'Executive Director &bull; SoE';
         if (sbName) sbName.innerText = 'Executive Director';
         if (sbEmail) sbEmail.innerText = 'exd.soe@apc.edu.ph';
         if (headerBadge) {
-          headerBadge.innerText = 'TIER 3 &bull; EXD';
+          headerBadge.innerText = 'EXD';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300';
         }
         renderHomepageForRole('exd');
-        showToast('Active Role: Executive Director (Tier 3 &bull; School of Engineering)');
+        showToast('Active Role: Executive Director (School of Engineering)');
       } else if (role === 'pd' || role === 'p') {
         if (avatar) avatar.innerText = 'PD';
         if (sbAvatar) sbAvatar.innerText = 'PD';
         if (name) name.innerText = 'Program Director';
-        if (roleText) roleText.innerText = 'Program Director &bull; BSCpE (Tier 2)';
+        if (roleText) roleText.innerText = 'Program Director &bull; BSCpE';
         if (sbName) sbName.innerText = 'Program Director';
         if (sbEmail) sbEmail.innerText = 'pd.cpe@apc.edu.ph';
         if (headerBadge) {
-          headerBadge.innerText = 'TIER 2 &bull; PD';
+          headerBadge.innerText = 'PROGRAM DIRECTOR';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-blue-100 text-blue-800 border border-blue-300';
         }
         renderHomepageForRole('pd');
-        showToast('Active Role: Program Director (Tier 2 &bull; BS Computer Engineering)');
+        showToast('Active Role: Program Director (BS Computer Engineering)');
       } else if (role === 'faculty' || role === 'f') {
         if (avatar) avatar.innerText = 'FC';
         if (sbAvatar) sbAvatar.innerText = 'FM';
         if (name) name.innerText = 'Faculty Member';
-        if (roleText) roleText.innerText = 'Hardware Cluster (Tier 1)';
+        if (roleText) roleText.innerText = 'Hardware Cluster';
         if (sbName) sbName.innerText = 'Faculty Member';
         if (sbEmail) sbEmail.innerText = 'faculty@apc.edu.ph';
         if (headerBadge) {
-          headerBadge.innerText = 'TIER 1 &bull; FACULTY';
+          headerBadge.innerText = 'FACULTY';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-300';
         }
         renderHomepageForRole('faculty');
-        showToast('Active Role: Faculty Member (Tier 1 &bull; Hardware & Embedded Cluster)');
+        showToast('Active Role: Faculty Member (Hardware & Embedded Cluster)');
       }
 
       // Apply role-based sidebar folder visibility
@@ -1729,7 +1729,7 @@
       const _role = currentActiveRole || 'admin';
       if (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f') {
         if (typeof showToast === 'function') {
-          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director (Tier 3) authority.');
+          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director authority.');
         }
         return; // accordion expanded above; do NOT navigate to school overview
       }
