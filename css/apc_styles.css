@@ -1,11 +1,11 @@
 /* =========================================================================
-       GLOBAL FONT: SEGOE UI
+       GLOBAL FONT: SEGOE UI (Mandatory Universal System Font)
        ========================================================================= */
-    html, body, button, input, select, textarea, .font-sans {
+    *, *::before, *::after,
+    html, body, button, input, select, textarea,
+    p, span, div, a, h1, h2, h3, h4, h5, h6, label, table, th, td,
+    code, kbd, samp, pre, .font-sans, .font-mono {
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif !important;
-    }
-    code, kbd, samp, pre, .font-mono {
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
     }
 
 /* =========================================================================
@@ -282,7 +282,7 @@
         overflow: visible !important;
         background: white !important;
         color: black !important;
-        font-family: Arial, sans-serif !important;
+        font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif !important;
       }
       header, nav, #flowchartDetailDrawer, #cycleModal, #batchModal, #toastNotification, .no-print, aside, #sidebar, #ramsFooter, footer {
         display: none !important;

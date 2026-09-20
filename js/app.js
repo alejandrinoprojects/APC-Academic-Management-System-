@@ -2609,9 +2609,9 @@ let currentSelectedCode = null;
 
       let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
       svg += '<style>';
-      svg += 'text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }';
+      svg += 'text { font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; }';
       svg += '.dag-arrow { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }';
-      svg += '.diagram-node { position: absolute; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 0px; box-sizing: border-box; padding: 8px 10px; font-family: sans-serif; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }';
+      svg += '.diagram-node { position: absolute; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 0px; box-sizing: border-box; padding: 8px 10px; font-family: "Segoe UI", sans-serif; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }';
       svg += '</style>';
       svg += '<rect width="100%" height="100%" fill="#ffffff"/>';
 
@@ -3088,13 +3088,13 @@ let currentSelectedCode = null;
           <meta charset="utf-8">
           <title>Course Syllabus &mdash; ${c.code}: ${c.title}</title>
           <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 40px; color: #0f172a; font-size: 13px; line-height: 1.6; }
+            body { font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif; margin: 40px; color: #0f172a; font-size: 13px; line-height: 1.6; }
             .hdr { border-bottom: 3px solid #002855; padding-bottom: 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; }
             .inst { font-size: 18px; font-weight: 900; color: #002855; text-transform: uppercase; margin: 0; }
             .dept { font-size: 12px; font-weight: 600; color: #475569; margin: 2px 0 0; }
-            .pill { background: #002855; color: #E5A823; font-weight: bold; font-family: monospace; font-size: 11px; padding: 4px 10px; }
+            .pill { background: #002855; color: #E5A823; font-weight: bold; font-family: "Segoe UI", sans-serif; font-size: 11px; padding: 4px 10px; }
             .banner { background: #f8fafc; border: 1px solid #cbd5e1; padding: 14px; margin-bottom: 18px; }
-            .c-code { font-size: 20px; font-weight: 900; color: #002855; font-family: monospace; }
+            .c-code { font-size: 20px; font-weight: 900; color: #002855; font-family: "Segoe UI", sans-serif; }
             .c-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-top: 2px; }
             .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
             .g-label { font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; }
@@ -3386,7 +3386,7 @@ let currentSelectedCode = null;
 
       let svgXml = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`;
       svgXml += '<style>';
-      svgXml += 'text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }';
+      svgXml += 'text { font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }';
       svgXml += '.flow-arrow { stroke: #64748b; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }';
       svgXml += '</style>';
       svgXml += '<rect width="100%" height="100%" fill="#ffffff"/>';
