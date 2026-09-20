@@ -5215,7 +5215,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // Hide all application views
-      const allViews = ['home', 'curriculum-home', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
+      const allViews = ['home', 'curriculum-home', 'past-curriculums', 'past-flowchart', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
       
       allViews.forEach(v => {
         const el = document.getElementById('view-' + v);

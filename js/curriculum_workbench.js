@@ -2865,7 +2865,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // Hide all application views
-      const allViews = ['home', 'curriculum-home', 'past-curriculums', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
+      const allViews = ['home', 'curriculum-home', 'past-curriculums', 'past-flowchart', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
       
       allViews.forEach(v => {
         const el = document.getElementById('view-' + v);
@@ -2923,6 +2923,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (viewId === 'home') topPill.innerText = 'Schools';
         else if (viewId === 'curriculum-home') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Management';
         else if (viewId === 'past-curriculums') topPill.innerText = 'Schools > SoE > BSCpE > Historical Editions Archive';
+        else if (viewId === 'past-flowchart') topPill.innerText = 'Schools > SoE > BSCpE > Historical Flowchart';
         else if (viewId === 'flowchart') topPill.innerText = 'Schools > SoE > BSCpE > Flowchart';
         else if (viewId === 'spreadsheet') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Spreadsheet';
         else if (viewId === 'dashboard') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Dashboard';
@@ -3630,10 +3631,15 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // Past Curriculum Launchers
     function openPastFlowchart(editionId) {
       const prog = currentSelectedProgram || 'BSCpE';
-      if (typeof switchFlowchartViewMode === 'function') {
-        switchFlowchartViewMode('diagram');
+      if (!editionId) editionId = 'BSCpE-2021';
+      
+      // Render historical edition data into dedicated historical flowchart page
+      if (typeof renderPastFlowchart === 'function') {
+        renderPastFlowchart(editionId, 'all');
       }
-      navigateView('flowchart');
+
+      navigateView('past-flowchart');
+      
       const topPill = document.getElementById('topBarPathPill');
       if (topPill) {
         topPill.innerText = `Schools > SoE > ${prog} > Historical Flowchart (${editionId})`;

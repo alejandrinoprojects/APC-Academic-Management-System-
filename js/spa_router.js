@@ -58,6 +58,7 @@
     'curriculum': 'curriculum-home',
     'past-curriculums': 'past-curriculums',
     'historical': 'past-curriculums',
+    'past-flowchart': 'past-flowchart',
     'dashboard': 'dashboard',
     'obe': 'obe',
     'catalog': 'catalog',
@@ -78,6 +79,7 @@
     'spreadsheet': 'spreadsheet',
     'curriculum-home': 'curriculum-home',
     'past-curriculums': 'historical',
+    'past-flowchart': 'past-flowchart',
     'dashboard': 'dashboard',
     'obe': 'obe',
     'catalog': 'catalog',
@@ -147,6 +149,14 @@
     else if (viewId === 'registrar' || viewSlug === 'documents') {
       const sheet = state.regDocIdx || window.currentRegistrarTab || 1;
       queryParts.push(`sheet=${sheet}`);
+    }
+    // Historical Flowchart edition param
+    else if (viewId === 'past-flowchart') {
+      const edition = state.edition || 'BSCpE-2021';
+      queryParts.push(`edition=${edition}`);
+      if (state.year && state.year !== 'all') {
+        queryParts.push(`year=${state.year}`);
+      }
     }
 
     if (queryParts.length > 0) {
@@ -248,13 +258,15 @@
     const targetView = VIEW_SLUGS[viewSegment.toLowerCase()] || 'curriculum-home';
     const yearParam = params.get('year');
     const sheetParam = params.get('sheet');
+    const editionParam = params.get('edition');
 
     return {
       type: 'program',
       progCode: progCode,
       targetView: targetView,
       year: yearParam ? parseInt(yearParam, 10) : undefined,
-      regDocIdx: sheetParam ? parseInt(sheetParam, 10) : undefined
+      regDocIdx: sheetParam ? parseInt(sheetParam, 10) : undefined,
+      edition: editionParam || undefined
     };
   }
 
@@ -318,6 +330,13 @@
           const sheet = routeState.regDocIdx || 1;
           if (typeof window.selectProgram === 'function') {
             window.selectProgram(prog, 'registrar', sheet);
+          }
+        } else if (view === 'past-flowchart') {
+          if (typeof window.openPastFlowchart === 'function') {
+            window.openPastFlowchart(routeState.edition || 'BSCpE-2021');
+          }
+          if (routeState.year && typeof window.setPastFlowchartYear === 'function') {
+            window.setPastFlowchartYear(routeState.year);
           }
         } else if (view === 'homePdProgramView') {
           if (typeof window.selectProgram === 'function') {

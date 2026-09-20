@@ -184,6 +184,7 @@
 
   function mapViewPart(str) {
     const s = str.toLowerCase();
+    if (s.includes('historical flowchart') || s === 'past-flowchart') return { label: 'Historical Flowchart', icon: '🗺️', viewId: 'past-flowchart', tooltip: 'Historical Curriculum Flowchart' };
     if (s.includes('flowchart') || s.includes('dag')) return { label: 'Flowchart', icon: '🗺️', viewId: 'flowchart', tooltip: 'Curriculum DAG Flowchart' };
     if (s.includes('spread') || s.includes('master')) return { label: 'Integrated Spreadsheet', icon: '📊', viewId: 'spreadsheet', tooltip: 'Master Curriculum Spreadsheet' };
     if (s.includes('syllab') || s.includes('sms')) return { label: 'Syllabus Management', icon: '📋', viewId: 'syllabus', tooltip: 'Syllabus Management System (SMS)' };
