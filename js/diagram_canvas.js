@@ -352,31 +352,58 @@
 
     svgGroup.innerHTML = '';
 
-    // Precompute node DOM port coordinates
+    // ── Build gutter X-position map ──────────────────────────────────────────
+    // For every column index, find the midpoint of the gap between col(N-1) right
+    // edge and col(N) left edge. Route vertical segments through that gap.
+    // We read actual td positions from the first tbody row.
+    const gutterX = {};  // colIndex → X midpoint of gap BEFORE that column
+    const colLeftX = {}; // colIndex → left edge of column (left port offset)
+    const colRightX = {};// colIndex → right edge of column (right port offset)
+
+    const tbody = tableInner.querySelector('tbody');
+    if (tbody) {
+      const firstRow = tbody.querySelector('tr');
+      if (firstRow) {
+        const tds = firstRow.querySelectorAll('td.flow-col-term');
+        tds.forEach((td, i) => {
+          const colIdx = i + 1; // 1-based term column
+          const r = td.getBoundingClientRect();
+          colLeftX[colIdx]  = r.left  - innerRect.left;
+          colRightX[colIdx] = r.right - innerRect.left;
+          if (i > 0) {
+            const prevTd = tds[i - 1];
+            const prevR  = prevTd.getBoundingClientRect();
+            gutterX[colIdx] = ((prevR.right - innerRect.left) + (r.left - innerRect.left)) / 2;
+          }
+        });
+      }
+    }
+
+    // ── Precompute node port coordinates ─────────────────────────────────────
     const portMap = {};
     courses.forEach(c => {
       const el = document.getElementById(`node-${c.code}`);
       if (el) {
         const rect = el.getBoundingClientRect();
+        const colIdx = (c.year - 1) * 3 + (c.term || 1);
         portMap[c.code] = {
-          code: c.code,
-          col: c.col || ((c.year - 1) * 3 + c.term),
-          row: c.row || 1,
-          leftX: rect.left - innerRect.left,
-          rightX: rect.right - innerRect.left,
-          midY: rect.top + (rect.height / 2) - innerRect.top,
+          code:    c.code,
+          col:     colIdx,
+          row:     c.row || 1,
+          leftX:   rect.left  - innerRect.left,
+          rightX:  rect.right - innerRect.left,
+          midY:    rect.top + (rect.height / 2) - innerRect.top,
           prereqs: Array.isArray(c.prereqs) ? c.prereqs : []
         };
       }
     });
 
-    // Check transitive prerequisites to reduce clutter
+    // ── Transitive prereq check (unchanged) ──────────────────────────────────
     function isTransitivePrereq(fromCode, tgtPrereqs) {
       for (let i = 0; i < tgtPrereqs.length; i++) {
         const item = tgtPrereqs[i];
         const sib = (typeof item === 'object' && item !== null && item.code) ? item.code : String(item);
         if (sib === fromCode) continue;
-
         const visited = new Set();
         const queue = [sib];
         while (queue.length > 0) {
@@ -387,102 +414,150 @@
             const p = currC.prereqs[j];
             const pCode = (typeof p === 'object' && p !== null && p.code) ? p.code : String(p);
             if (pCode === fromCode) return true;
-            if (!visited.has(pCode)) {
-              visited.add(pCode);
-              queue.push(pCode);
-            }
+            if (!visited.has(pCode)) { visited.add(pCode); queue.push(pCode); }
           }
         }
       }
       return false;
     }
 
-    // Build and render edges — sorted by column distance descending so short
-    // same-column and adjacent-column arrows render ON TOP of long arcs
+    // ── Build edge list ───────────────────────────────────────────────────────
     const edges = [];
     Object.values(portMap).forEach(tgt => {
       tgt.prereqs.forEach(pItem => {
-        const norm = typeof pItem === 'string' ? { code: pItem, type: 'hard' } : { code: pItem.code, type: pItem.type || 'hard' };
-        const pCode = norm.code;
+        const norm = typeof pItem === 'string'
+          ? { code: pItem, type: 'hard' }
+          : { code: pItem.code, type: pItem.type || 'hard' };
+        const pCode   = norm.code;
         const reqType = norm.type || 'hard';
-
-        if (requisiteFilterMode === 'direct' && isTransitivePrereq(pCode, tgt.prereqs)) {
-          return;
-        }
-
+        if (requisiteFilterMode === 'direct' && isTransitivePrereq(pCode, tgt.prereqs)) return;
         const src = portMap[pCode];
         if (!src) return;
-
         edges.push({ src, tgt, reqType });
       });
     });
 
-    // Sort: long-distance arcs first (paint under), short arcs on top
+    // Long-distance arcs render first (paint under short arcs)
     edges.sort((a, b) => {
       const distA = Math.abs(a.tgt.col - a.src.col) * 1000 + Math.abs(a.tgt.midY - a.src.midY);
       const distB = Math.abs(b.tgt.col - b.src.col) * 1000 + Math.abs(b.tgt.midY - b.src.midY);
       return distB - distA;
     });
 
+    // ── Build path data with gutter-aware orthogonal routing ─────────────────
+    //
+    // Strategy:
+    //   colDiff = 0  → same-column co-req: small right loop
+    //   colDiff = 1  → adjacent column: tight bezier through the single gutter
+    //   colDiff > 1  → multi-column: Z-path routing through the gutter that
+    //                   sits immediately LEFT of the destination column so the
+    //                   vertical segment never crosses any intermediate card.
+    //
+    // Z-path anatomy (forward arrow, dx > 0):
+    //   M x1 y1
+    //   H gx          ← horizontal to gutter (stays at y1, within source card row)
+    //   V y2          ← vertical drop/rise inside the gutter column gap
+    //   H x2          ← horizontal into dest card (stays at y2)
+    //   (arrowhead painted at x2 y2)
+    //
+    // Corner rounding uses a tiny cubic-bezier elbow at each turn.
+
+    const R = 6; // corner rounding radius (px)
+
+    function elbowPath(x1, y1, gx, y2, x2) {
+      // Two 90° turns, each rounded with R px cubic-bezier elbow
+      const s1y = y1 + Math.sign(y2 - y1) * R; // start of first vertical
+      const e1y = y2 - Math.sign(y2 - y1) * R; // end of first vertical
+      // If distance is too short to round, fall back to straight Z
+      if (Math.abs(y2 - y1) < R * 2 + 1 || Math.abs(gx - x1) < R + 1 || Math.abs(x2 - gx) < R + 1) {
+        return `M ${x1.toFixed(1)} ${y1.toFixed(1)} H ${gx.toFixed(1)} V ${y2.toFixed(1)} H ${x2.toFixed(1)}`;
+      }
+      // Elbow 1: horizontal→vertical at (gx, y1)
+      const gx1a = gx - Math.sign(gx - x1) * R;  // approach horizontal
+      const gx1b = gx;                              // depart = corner X
+      // Elbow 2: vertical→horizontal at (gx, y2)
+      const gx2a = gx;
+      const gx2b = gx + Math.sign(x2 - gx) * R;  // depart horizontal
+      return [
+        `M ${x1.toFixed(1)} ${y1.toFixed(1)}`,
+        `H ${gx1a.toFixed(1)}`,
+        `C ${gx.toFixed(1)} ${y1.toFixed(1)}, ${gx.toFixed(1)} ${y1.toFixed(1)}, ${gx.toFixed(1)} ${s1y.toFixed(1)}`,
+        `V ${e1y.toFixed(1)}`,
+        `C ${gx2a.toFixed(1)} ${y2.toFixed(1)}, ${gx2a.toFixed(1)} ${y2.toFixed(1)}, ${gx2b.toFixed(1)} ${y2.toFixed(1)}`,
+        `H ${x2.toFixed(1)}`
+      ].join(' ');
+    }
+
     edges.forEach(({ src, tgt, reqType }) => {
-        const x1 = src.rightX;
-        const y1 = src.midY;
-        const x2 = tgt.leftX;
-        const y2 = tgt.midY;
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const colDiff = tgt.col - src.col;
+      const x1 = src.rightX;
+      const y1 = src.midY;
+      const x2 = tgt.leftX;
+      const y2 = tgt.midY;
+      const colDiff = tgt.col - src.col;
 
-        // Path generation: orthogonal-ish bezier curves
-        let pathData = '';
-        if (dx > 0 && Math.abs(dy) < 2.5 && colDiff === 1) {
-          // Direct horizontal — same row, adjacent column
+      let pathData = '';
+
+      if (colDiff === 0) {
+        // Same-column co-requisite: small right-side loop
+        const loopX = x1 + 22;
+        pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${loopX.toFixed(1)} ${y1.toFixed(1)}, ${loopX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+
+      } else if (colDiff === 1) {
+        // Adjacent column: route through the single gutter between them
+        const gx = gutterX[tgt.col] !== undefined ? gutterX[tgt.col] : (x1 + x2) / 2;
+        if (Math.abs(y2 - y1) < 2) {
+          // Practically same row → direct horizontal
           pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
-        } else if (colDiff === 1) {
-          // Adjacent column, different row: tight S-curve through the gap
-          const gapX = (x1 + x2) / 2;
-          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${gapX.toFixed(1)} ${y1.toFixed(1)}, ${gapX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
-        } else if (colDiff === 0) {
-          // Same column co-requisite: small right-side loop
-          const loopX = x1 + 24;
-          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${loopX.toFixed(1)} ${y1.toFixed(1)}, ${loopX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
         } else {
-          // Multi-column jump: use fixed 55px handles so curves don't bow outward
-          // and sort by dy to reduce visual crossing — handle anchored near source/target
-          const hCtrl = Math.min(Math.abs(dx) * 0.28, 80);
-          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${(x1 + hCtrl).toFixed(1)} ${y1.toFixed(1)}, ${(x2 - hCtrl).toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+          pathData = elbowPath(x1, y1, gx, y2, x2);
         }
 
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', pathData);
-        path.setAttribute('data-from', src.code);
-        path.setAttribute('data-to', tgt.code);
-        path.setAttribute('data-type', reqType);
-        path.setAttribute('class', 'dag-arrow');
-        path.setAttribute('fill', 'none');
-        path.setAttribute('stroke-linecap', 'round');
-        path.setAttribute('stroke-linejoin', 'round');
+      } else if (colDiff > 1) {
+        // Multi-column forward jump:
+        // Route vertical segment through gutter immediately LEFT of dest column.
+        // That gutter is between (tgt.col - 1) and tgt.col — never any card there.
+        const gx = gutterX[tgt.col] !== undefined
+          ? gutterX[tgt.col]
+          : x2 - 8; // fallback: just before dest left edge
+        pathData = elbowPath(x1, y1, gx, y2, x2);
 
-        if (reqType === 'co') {
-          path.setAttribute('stroke', '#d97706');
-          path.setAttribute('stroke-width', '1.8');
-          path.setAttribute('stroke-dasharray', '5,4');
-          path.setAttribute('marker-end', 'url(#diag-arrow-coreq)');
-        } else if (reqType === 'soft') {
-          path.setAttribute('stroke', '#7c3aed');
-          path.setAttribute('stroke-width', '1.8');
-          path.setAttribute('stroke-dasharray', '3,3');
-          path.setAttribute('marker-end', 'url(#diag-arrow-soft)');
-        } else {
-          path.setAttribute('stroke', '#1e40af');
-          path.setAttribute('stroke-width', '1.6');
-          path.setAttribute('stroke-dasharray', 'none');
-          path.setAttribute('marker-end', 'url(#diag-arrow-default)');
-        }
+      } else {
+        // Backward arrow (right→left): route above the grid rows via top margin
+        // Use a looping arc above both cards to avoid covering forward arrows
+        const topY = Math.min(y1, y2) - 28;
+        const midX = (x1 + x2) / 2;
+        pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${x1.toFixed(1)} ${topY.toFixed(1)}, ${x2.toFixed(1)} ${topY.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+      }
 
-        // Ambient opacity — subtle but visible
-        path.style.opacity = showAllArrowsEnabled ? '0.45' : '0';
-        svgGroup.appendChild(path);
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', pathData);
+      path.setAttribute('data-from', src.code);
+      path.setAttribute('data-to', tgt.code);
+      path.setAttribute('data-type', reqType);
+      path.setAttribute('class', 'dag-arrow');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-linejoin', 'round');
+
+      if (reqType === 'co') {
+        path.setAttribute('stroke', '#d97706');
+        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke-dasharray', '5,4');
+        path.setAttribute('marker-end', 'url(#diag-arrow-coreq)');
+      } else if (reqType === 'soft') {
+        path.setAttribute('stroke', '#7c3aed');
+        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke-dasharray', '3,3');
+        path.setAttribute('marker-end', 'url(#diag-arrow-soft)');
+      } else {
+        path.setAttribute('stroke', '#1e40af');
+        path.setAttribute('stroke-width', '1.6');
+        path.setAttribute('stroke-dasharray', 'none');
+        path.setAttribute('marker-end', 'url(#diag-arrow-default)');
+      }
+
+      path.style.opacity = showAllArrowsEnabled ? '0.45' : '0';
+      svgGroup.appendChild(path);
     });
 
     // Re-apply highlight if active
