@@ -774,6 +774,143 @@
       }
     }
 
+    // Program Director management helpers
+    function getProgramDirector(progCode) {
+      if (!progCode) return 'Program Director';
+      try {
+        const customMap = JSON.parse(localStorage.getItem('program_directors_custom') || '{}');
+        if (customMap && customMap[progCode]) return customMap[progCode];
+      } catch (e) {}
+
+      for (const s of ACADEMIC_SCHOOLS_DATA) {
+        if (Array.isArray(s.programs)) {
+          const p = s.programs.find(item => (typeof item === 'object' ? item.code : item) === progCode);
+          if (p && typeof p === 'object' && p.director) {
+            return p.director;
+          }
+        }
+      }
+
+      const defaultDirectors = {
+        'BSCpE': 'Engr. Sergio R. Peruda Jr.',
+        'BSCE': 'Engr. Ronald V. Santos',
+        'BSECE': 'Engr. Melissa C. David',
+        'BSCS': 'Dr. Alan Turing',
+        'BSIT': 'Prof. Tim Berners-Lee',
+        'BMMA': 'Prof. Paul Rand',
+        'BSPsych': 'Dr. Carl Rogers',
+        'BSBA': 'Prof. Peter Drucker',
+        'BSA': 'Prof. Luca Pacioli',
+        'BSArch': 'Ar. Zaha Hadid'
+      };
+      return defaultDirectors[progCode] || `${progCode} Program Director`;
+    }
+
+    function openEditProgramModal(progCode) {
+      if (!progCode) return;
+      let foundProg = null;
+      let foundSchool = null;
+
+      for (const s of ACADEMIC_SCHOOLS_DATA) {
+        if (Array.isArray(s.programs)) {
+          const p = s.programs.find(item => (typeof item === 'object' ? item.code : item) === progCode);
+          if (p) {
+            foundProg = p;
+            foundSchool = s;
+            break;
+          }
+        }
+      }
+
+      const codeVal = progCode;
+      const nameVal = typeof foundProg === 'object' && foundProg ? foundProg.name : (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[progCode] ? PROGRAM_TO_SCHOOL_MAP[progCode].name : progCode);
+      const dirVal = getProgramDirector(progCode);
+
+      const titleEl = document.getElementById('editProgramModalTitle');
+      const origCodeEl = document.getElementById('editProgOriginalCode');
+      const codeEl = document.getElementById('editProgCode');
+      const nameEl = document.getElementById('editProgName');
+      const dirEl = document.getElementById('editProgDirector');
+
+      if (titleEl) titleEl.innerText = `Edit ${progCode} Program & Director`;
+      if (origCodeEl) origCodeEl.value = codeVal;
+      if (codeEl) codeEl.value = codeVal;
+      if (nameEl) nameEl.value = nameVal;
+      if (dirEl) dirEl.value = dirVal;
+
+      const modal = document.getElementById('modalEditProgram');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeEditProgramModal() {
+      const modal = document.getElementById('modalEditProgram');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function submitEditProgram(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const origCode = document.getElementById('editProgOriginalCode')?.value.trim();
+      const newName = document.getElementById('editProgName')?.value.trim();
+      const newDirector = document.getElementById('editProgDirector')?.value.trim();
+
+      if (!origCode || !newName || !newDirector) return;
+
+      // Update in ACADEMIC_SCHOOLS_DATA
+      let targetSchool = null;
+      for (const s of ACADEMIC_SCHOOLS_DATA) {
+        if (Array.isArray(s.programs)) {
+          const idx = s.programs.findIndex(item => (typeof item === 'object' ? item.code : item) === origCode);
+          if (idx !== -1) {
+            s.programs[idx] = { code: origCode, name: newName, director: newDirector };
+            targetSchool = s;
+            break;
+          }
+        }
+      }
+
+      // Save custom directors map in localStorage
+      try {
+        const customMap = JSON.parse(localStorage.getItem('program_directors_custom') || '{}');
+        customMap[origCode] = newDirector;
+        localStorage.setItem('program_directors_custom', JSON.stringify(customMap));
+        localStorage.setItem('academic_schools_data_custom', JSON.stringify(ACADEMIC_SCHOOLS_DATA));
+      } catch (err) {
+        console.warn('LocalStorage save failed:', err);
+      }
+
+      // Update PROGRAM_TO_SCHOOL_MAP if present
+      if (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[origCode]) {
+        PROGRAM_TO_SCHOOL_MAP[origCode].name = newName;
+      }
+
+      // Update static fallback card DOM elements if present
+      const staticDirEl = document.getElementById(`exdProgDirector_${origCode}`);
+      if (staticDirEl) staticDirEl.innerText = newDirector;
+
+      // Update active PD workbench headers if this program is currently selected
+      const pdDirName = document.getElementById('pdHeaderDirectorName');
+      if (pdDirName && (typeof currentSelectedProgram === 'undefined' || currentSelectedProgram === origCode)) {
+        pdDirName.innerText = newDirector;
+      }
+      const curricDirName = document.getElementById('curricHomeDirectorName');
+      if (curricDirName && (typeof currentSelectedProgram === 'undefined' || currentSelectedProgram === origCode)) {
+        curricDirName.innerText = newDirector;
+      }
+
+      closeEditProgramModal();
+
+      // Refresh school overview dynamic cards if active
+      if (targetSchool && typeof renderSchoolOverview === 'function') {
+        renderSchoolOverview(targetSchool.id);
+      } else if (typeof renderSchoolCards === 'function') {
+        renderSchoolCards();
+      }
+
+      if (typeof showToast === 'function') {
+        showToast(`Updated ${origCode} Program Director to ${newDirector}!`);
+      }
+    }
+
     function deleteProgram(progCode) {
       let targetSchool = null;
       let progObj = null;
@@ -1562,6 +1699,10 @@
     window.submitAddSchool = submitAddSchool;
     window.deleteCurrentSchool = deleteCurrentSchool;
     window.submitEditSchool = submitEditSchool;
+    window.getProgramDirector = getProgramDirector;
+    window.openEditProgramModal = openEditProgramModal;
+    window.closeEditProgramModal = closeEditProgramModal;
+    window.submitEditProgram = submitEditProgram;
 
     // Initialize carousel and saved custom images on load
     document.addEventListener('DOMContentLoaded', function() {

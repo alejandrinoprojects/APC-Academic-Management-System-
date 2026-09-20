@@ -900,7 +900,7 @@
               <div class="p-4 space-y-3 text-slate-200">
                 <div>
                   <label class="block text-xs font-bold text-slate-400 mb-1">Program Director:</label>
-                  <div class="bg-[#10151E] border border-slate-700/70 p-2 text-xs text-white font-medium">${school.director}</div>
+                  <div class="bg-[#10151E] border border-slate-700/70 p-2 text-xs text-white font-medium">${prog.director || (typeof getProgramDirector === 'function' ? getProgramDirector(prog.code) : school.director)}</div>
                 </div>
                 <div>
                   <div class="flex items-center justify-between mb-1">
@@ -930,18 +930,9 @@
             </div>
 
             <div class="p-4 pt-0 space-y-3">
-              <div class="pt-2 border-t border-slate-700/60 flex items-center justify-between gap-1.5">
-                <button type="button" onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="flex-1 px-2.5 py-2 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black tracking-wider uppercase transition text-center cursor-pointer shadow-xs">
-                  Manage Curriculum &rarr;
-                </button>
-                <button type="button" onclick="event.stopPropagation(); selectProgram('${prog.code}', 'homePdProgramView')" class="px-2 py-2 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-slate-300 hover:text-white text-xs font-semibold transition cursor-pointer" title="PD Workbench">
-                  Workbench
-                </button>
-                <button type="button" onclick="event.stopPropagation(); showToast('Edit ${prog.code} Curriculum Baseline')" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-white flex items-center justify-center text-xs transition cursor-pointer" title="Edit Program">
+              <div class="pt-2 border-t border-slate-700/60 flex items-center justify-end">
+                <button type="button" onclick="event.stopPropagation(); (typeof openEditProgramModal === 'function' ? openEditProgramModal('${prog.code}') : showToast('Edit ${prog.code} Program Director'))" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit ${prog.code} Program &amp; Director">
                   ✎
-                </button>
-                <button type="button" onclick="event.stopPropagation(); deleteProgram('${prog.code}')" class="w-8 h-8 bg-[#10151E] hover:bg-red-950/80 border border-slate-700/70 text-slate-400 hover:text-red-400 flex items-center justify-center text-xs transition cursor-pointer" title="Delete Program">
-                  🗑
                 </button>
               </div>
               <div class="h-2 w-full -mb-4 -mx-4" style="background-color: ${schoolColor};"></div>
@@ -969,14 +960,16 @@
       const progInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[progCode]) 
         ? PROGRAM_TO_SCHOOL_MAP[progCode] 
         : { schoolShort: 'SoE', schoolId: 'soe', schoolName: 'School of Engineering', name: progCode };
-      const directorMap = {
-        'BSCpE': 'Engr. Sergio R. Peruda Jr.',
-        'BSCE': 'Engr. John Doe',
-        'BSECE': 'Engr. Melissa C. David',
-        'BSCS': 'Dr. Alan Turing',
-        'BSIT': 'Prof. Tim Berners-Lee'
-      };
-      const director = directorMap[progCode] || `${progCode} Program Director`;
+      
+      const director = (typeof getProgramDirector === 'function') 
+        ? getProgramDirector(progCode) 
+        : ({
+            'BSCpE': 'Engr. Sergio R. Peruda Jr.',
+            'BSCE': 'Engr. Ronald V. Santos',
+            'BSECE': 'Engr. Melissa C. David',
+            'BSCS': 'Dr. Alan Turing',
+            'BSIT': 'Prof. Tim Berners-Lee'
+          }[progCode] || `${progCode} Program Director`);
 
       const pdDirName = document.getElementById('pdHeaderDirectorName');
       if (pdDirName) pdDirName.innerText = director;

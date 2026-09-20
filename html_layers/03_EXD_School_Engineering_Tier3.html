@@ -2006,14 +2006,8 @@
 
                       <!-- Bottom Actions & Orange Stripe Accent -->
                       <div class="space-y-3 pt-2">
-                        <div class="flex items-center gap-2">
-                          <button type="button" onclick="event.stopPropagation(); selectProgram('BSCpE', 'flowchart')" class="flex-1 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs py-2 font-black uppercase tracking-wider transition cursor-pointer text-center shadow-xs">
-                            Manage Curriculum &rarr;
-                          </button>
-                          <button type="button" onclick="event.stopPropagation(); selectProgram('BSCpE', 'homePdProgramView')" class="px-2.5 py-2 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-slate-300 hover:text-white text-xs font-semibold transition cursor-pointer" title="Program Director Workbench">
-                            PD Workbench
-                          </button>
-                          <button type="button" onclick="event.stopPropagation(); showToast('Edit BSCpE Curriculum Baseline & Director Settings')" class="w-9 h-9 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-amber-300 flex items-center justify-center text-sm transition cursor-pointer" title="Edit BSCpE Curriculum">
+                        <div class="flex items-center justify-end">
+                          <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSCpE')" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSCpE Program &amp; Director">
                             ✎
                           </button>
                         </div>
@@ -2029,22 +2023,24 @@
                     <div class="relative h-28 bg-[#0f1b26] overflow-hidden flex flex-col items-center justify-center text-center p-3">
                       <!-- Geometric Structural Truss Background -->
                       <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
-                        <polygon points="0,0 150,0 100,120 0,120" fill="#172b3c"/>
-                        <polygon points="140,0 300,0 300,120 200,120" fill="#132433"/>
-                        <line x1="20" y1="100" x2="280" y2="100" stroke="#E5A823" stroke-width="2"/>
-                        <line x1="40" y1="100" x2="80" y2="40" stroke="#E5A823" stroke-width="1.5"/>
-                        <line x1="80" y1="40" x2="120" y2="100" stroke="#E5A823" stroke-width="1.5"/>
-                        <line x1="120" y1="100" x2="160" y2="40" stroke="#E5A823" stroke-width="1.5"/>
-                        <line x1="160" y1="40" x2="200" y2="100" stroke="#E5A823" stroke-width="1.5"/>
-                        <line x1="200" y1="100" x2="240" y2="40" stroke="#E5A823" stroke-width="1.5"/>
-                        <line x1="240" y1="40" x2="280" y2="100" stroke="#E5A823" stroke-width="1.5"/>
+                        <polygon points="0,0 150,0 75,120 0,120" fill="#152433"/>
+                        <polygon points="120,0 300,0 300,120 200,120" fill="#1d3042"/>
+                        <!-- Structural Truss lines -->
+                        <line x1="0" y1="120" x2="300" y2="120" stroke="#FF6B00" stroke-width="2"/>
+                        <line x1="0" y1="60" x2="300" y2="60" stroke="#FF6B00" stroke-width="1.5" stroke-dasharray="4 2"/>
+                        <line x1="20" y1="120" x2="60" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="60" y1="60" x2="100" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="100" y1="120" x2="140" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="140" y1="60" x2="180" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="180" y1="120" x2="220" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="220" y1="60" x2="260" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
                       </svg>
-                      <!-- Drafting Triangle Icon -->
-                      <div class="w-8 h-8 rounded-sm bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-[#E5A823] text-xs font-bold mb-1">
-                        📐
+                      <!-- Building Truss Vector Icon -->
+                      <div class="w-8 h-8 rounded-sm bg-orange-500/10 border border-orange-500/40 flex items-center justify-center text-[#FF6B00] text-xs font-bold mb-1">
+                        🏗️
                       </div>
                       <div class="relative z-10 leading-tight">
-                        <span class="block text-xs font-black text-white tracking-widest uppercase drop-shadow-md">BACHELOR OF SCIENCE IN</span>
+                        <span class="block text-xs sm:text-sm font-black text-white tracking-widest uppercase drop-shadow-md">BACHELOR OF SCIENCE IN</span>
                         <span class="block text-base sm:text-lg font-black text-[#FF6B00] group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">CIVIL ENGINEERING</span>
                       </div>
                     </div>
@@ -2092,14 +2088,8 @@
 
                       <!-- Bottom Actions & Orange Stripe Accent -->
                       <div class="space-y-3 pt-2">
-                        <div class="flex items-center gap-2">
-                          <button type="button" onclick="event.stopPropagation(); selectProgram('BSCE', 'flowchart')" class="flex-1 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs py-2 font-black uppercase tracking-wider transition cursor-pointer text-center shadow-xs">
-                            Manage Curriculum &rarr;
-                          </button>
-                          <button type="button" onclick="event.stopPropagation(); selectProgram('BSCE', 'homePdProgramView')" class="px-2.5 py-2 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-slate-300 hover:text-white text-xs font-semibold transition cursor-pointer" title="Program Director Workbench">
-                            PD Workbench
-                          </button>
-                          <button type="button" onclick="event.stopPropagation(); showToast('Edit BSCE Curriculum Baseline & Director Settings')" class="w-9 h-9 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-amber-300 flex items-center justify-center text-sm transition cursor-pointer" title="Edit BSCE Curriculum">
+                        <div class="flex items-center justify-end">
+                          <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSCE')" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSCE Program &amp; Director">
                             ✎
                           </button>
                         </div>
@@ -2176,14 +2166,8 @@
 
                       <!-- Bottom Actions & Orange Stripe Accent -->
                       <div class="space-y-3 pt-2">
-                        <div class="flex items-center gap-2">
-                          <button type="button" onclick="event.stopPropagation(); selectProgram('BSECE', 'flowchart')" class="flex-1 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs py-2 font-black uppercase tracking-wider transition cursor-pointer text-center shadow-xs">
-                            Manage Curriculum &rarr;
-                          </button>
-                          <button type="button" onclick="event.stopPropagation(); selectProgram('BSECE', 'homePdProgramView')" class="px-2.5 py-2 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-slate-300 hover:text-white text-xs font-semibold transition cursor-pointer" title="Program Director Workbench">
-                            PD Workbench
-                          </button>
-                          <button type="button" onclick="event.stopPropagation(); showToast('Edit BSECE Curriculum Baseline & Director Settings')" class="w-9 h-9 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-amber-300 flex items-center justify-center text-sm transition cursor-pointer" title="Edit BSECE Curriculum">
+                        <div class="flex items-center justify-end">
+                          <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSECE')" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSECE Program &amp; Director">
                             ✎
                           </button>
                         </div>
