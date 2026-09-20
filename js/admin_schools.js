@@ -811,14 +811,22 @@
       if (!progCode) return 'Program Director';
       try {
         const customMap = JSON.parse(localStorage.getItem('program_directors_custom') || '{}');
-        if (customMap && customMap[progCode]) return customMap[progCode];
+        if (customMap && customMap[progCode]) {
+          const val = String(customMap[progCode]).trim();
+          if (!val.toLowerCase().includes('peruda') && !val.toLowerCase().includes('sergio') && val !== '') {
+            return val;
+          }
+        }
       } catch (e) {}
 
       for (const s of ACADEMIC_SCHOOLS_DATA) {
         if (Array.isArray(s.programs)) {
           const p = s.programs.find(item => (typeof item === 'object' ? item.code : item) === progCode);
           if (p && typeof p === 'object' && p.director) {
-            return p.director;
+            const dir = String(p.director).trim();
+            if (!dir.toLowerCase().includes('peruda') && !dir.toLowerCase().includes('sergio') && dir !== '') {
+              return dir;
+            }
           }
         }
       }
@@ -1608,7 +1616,7 @@
       // Check saved academic schools data with version gate
       try {
         const version = localStorage.getItem('schools_data_version');
-        if (version === 'v4_dev_soe_cpe_only') {
+        if (version === 'v5_anonymized_titles') {
           const savedCustom = localStorage.getItem('academic_schools_data_custom');
           if (savedCustom) {
             const parsed = JSON.parse(savedCustom);
@@ -1617,8 +1625,17 @@
             }
           }
         } else {
-          // Initialize fresh version with only active development school (SoE BSCpE)
-          localStorage.setItem('schools_data_version', 'v4_dev_soe_cpe_only');
+          // Initialize fresh version with only active development school (SoE BSCpE) and purge legacy personal names
+          localStorage.setItem('schools_data_version', 'v5_anonymized_titles');
+          try {
+            const customMap = JSON.parse(localStorage.getItem('program_directors_custom') || '{}');
+            for (const k in customMap) {
+              if (customMap[k] && (customMap[k].toLowerCase().includes('peruda') || customMap[k].toLowerCase().includes('sergio'))) {
+                delete customMap[k];
+              }
+            }
+            localStorage.setItem('program_directors_custom', JSON.stringify(customMap));
+          } catch (e) {}
           localStorage.setItem('academic_schools_data_custom', JSON.stringify(ACADEMIC_SCHOOLS_DATA));
         }
       } catch (err) {

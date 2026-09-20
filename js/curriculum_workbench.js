@@ -349,8 +349,13 @@
     };
 
     function deselectSchool() {
-      currentSelectedSchool = 'SoE';
+      currentSelectedSchool = null;
     }
+    function deselectProgram() {
+      currentSelectedProgram = null;
+    }
+    window.deselectSchool = deselectSchool;
+    window.deselectProgram = deselectProgram;
 
     // =========================================================================
     // NAVIGATION HISTORY CONTROLLER (< BACK & > NEXT)
@@ -526,6 +531,7 @@
 
       navigateView('home');
       deselectSchool();
+      deselectProgram();
 
       const adminView = document.getElementById('homeAdminInstitutionalView');
       const exdView = document.getElementById('homeExdProgramsView');
@@ -1348,17 +1354,20 @@
       
       const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
 
-      const director = (typeof getProgramDirector === 'function') 
+      const rawDirector = (typeof getProgramDirector === 'function') 
         ? getProgramDirector(progCode) 
+        : 'Program Director';
+      const cleanDirector = (rawDirector && !rawDirector.toLowerCase().includes('peruda') && !rawDirector.toLowerCase().includes('sergio') && rawDirector.trim() !== '')
+        ? rawDirector.trim()
         : 'Program Director';
 
       const pdRoleTitle = document.getElementById('pdHeaderRoleTitle');
       const pdDirName = document.getElementById('pdHeaderDirectorName');
       if (pdRoleTitle) pdRoleTitle.innerText = isFaculty ? 'FACULTY MEMBER' : 'PROGRAM DIRECTOR';
-      if (pdDirName) pdDirName.innerText = isFaculty ? 'Faculty Member 1' : director;
+      if (pdDirName) pdDirName.innerText = isFaculty ? 'Faculty Member 1' : cleanDirector;
 
       const cDirName = document.getElementById('curricHomeDirectorName');
-      if (cDirName) cDirName.innerText = isFaculty ? 'Faculty Member 1' : director;
+      if (cDirName) cDirName.innerText = isFaculty ? 'Faculty Member 1' : cleanDirector;
 
       const pdSchoolName = document.getElementById('pdHeaderSchoolName');
       if (pdSchoolName) pdSchoolName.innerText = (progInfo.schoolName || 'SCHOOL OF ENGINEERING').toUpperCase();
@@ -1826,7 +1835,13 @@
 
       switchRole(roleKey);
 
-      if (window._pendingRouteAfterLogin && window.spaRouter && typeof window.spaRouter.applyRouteState === 'function') {
+      if (roleKey === 'admin' || roleKey === 'a') {
+        window._pendingRouteAfterLogin = null;
+        if (typeof deselectSchool === 'function') deselectSchool();
+        if (typeof deselectProgram === 'function') deselectProgram();
+        syncSidebarToCurrentPath(null, null, null);
+        renderAdminOverview();
+      } else if (window._pendingRouteAfterLogin && window.spaRouter && typeof window.spaRouter.applyRouteState === 'function') {
         const pending = window._pendingRouteAfterLogin;
         window._pendingRouteAfterLogin = null;
         window.spaRouter.applyRouteState(pending);
@@ -1907,6 +1922,9 @@
 
       // Route directly to the role's dedicated homepage
       if (roleKey === 'admin' || roleKey === 'a') {
+        window._pendingRouteAfterLogin = null;
+        if (typeof deselectSchool === 'function') deselectSchool();
+        if (typeof deselectProgram === 'function') deselectProgram();
         syncSidebarToCurrentPath(null, null, null);
         renderAdminOverview();
       } else if (roleKey === 'exd' || roleKey === 'x') {
