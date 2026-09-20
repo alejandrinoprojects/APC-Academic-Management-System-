@@ -535,7 +535,7 @@
       // 2. Clear previous active highlights across all sidebar nodes
       const allNavItems = document.querySelectorAll('#sidebar button, #sidebar [id^="node-"], #sidebar [id^="nav-"]');
       allNavItems.forEach(el => {
-        el.classList.remove('bg-slate-800', 'text-white', 'border-l-4', 'border-[#E5A823]', 'bg-[#E5A823]/20', 'text-[#E5A823]', 'active-sidebar-node');
+        el.classList.remove('bg-slate-800', 'bg-[#002855]', 'text-white', 'border-l-4', 'border-l-2', 'border-[#E5A823]', 'bg-[#E5A823]/20', 'text-[#E5A823]', 'active-sidebar-node', 'active-rams-btn');
       });
 
       const schoolIds = (typeof ACADEMIC_SCHOOLS_DATA !== 'undefined' && Array.isArray(ACADEMIC_SCHOOLS_DATA)) 
@@ -2091,7 +2091,6 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       // Reveal target view
       const targetView = document.getElementById('view-' + viewId);
-      const targetNav = document.getElementById('nav-' + viewId) || (viewId === 'spreadsheet' ? document.getElementById('nav-cpe-spreadsheet') : null) || (viewId === 'dashboard' ? document.getElementById('nav-cpe-dashboard') : null);
 
       if (targetView) {
         targetView.classList.remove('hidden');
@@ -2109,10 +2108,6 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             renderHomepageForRole(currentActiveRole || 'admin');
           }
         }
-      }
-      if (targetNav) {
-        targetNav.classList.add('active-rams-btn', 'bg-[#002855]', 'text-white');
-        targetNav.classList.remove('text-slate-300');
       }
 
       // Update Path Bar indicator
