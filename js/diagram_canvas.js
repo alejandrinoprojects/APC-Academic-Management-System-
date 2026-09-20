@@ -165,7 +165,7 @@
     // 2. TBODY: 8 Rows
     let tbodyHtml = '<tbody>';
     for (let r = 1; r <= 8; r++) {
-      tbodyHtml += `<tr class="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50/40 dark:hover:bg-slate-900/30 transition-colors">`;
+      tbodyHtml += `<tr class="border-b border-transparent">`;
       
       // Sticky Row Number Column
       tbodyHtml += `
@@ -397,7 +397,9 @@
       return false;
     }
 
-    // Build and render edges
+    // Build and render edges — sorted by column distance descending so short
+    // same-column and adjacent-column arrows render ON TOP of long arcs
+    const edges = [];
     Object.values(portMap).forEach(tgt => {
       tgt.prereqs.forEach(pItem => {
         const norm = typeof pItem === 'string' ? { code: pItem, type: 'hard' } : { code: pItem.code, type: pItem.type || 'hard' };
@@ -411,35 +413,49 @@
         const src = portMap[pCode];
         if (!src) return;
 
+        edges.push({ src, tgt, reqType });
+      });
+    });
+
+    // Sort: long-distance arcs first (paint under), short arcs on top
+    edges.sort((a, b) => {
+      const distA = Math.abs(a.tgt.col - a.src.col) * 1000 + Math.abs(a.tgt.midY - a.src.midY);
+      const distB = Math.abs(b.tgt.col - b.src.col) * 1000 + Math.abs(b.tgt.midY - b.src.midY);
+      return distB - distA;
+    });
+
+    edges.forEach(({ src, tgt, reqType }) => {
         const x1 = src.rightX;
         const y1 = src.midY;
         const x2 = tgt.leftX;
         const y2 = tgt.midY;
         const dx = x2 - x1;
         const dy = y2 - y1;
+        const colDiff = tgt.col - src.col;
 
-        // Path generation: Clean bezier curves traversing dedicated 36px alleys & 20px corridors
+        // Path generation: orthogonal-ish bezier curves
         let pathData = '';
-        if (dx > 0 && Math.abs(dy) < 3.0 && (tgt.col === src.col + 1)) {
-          // Direct horizontal line across inter-column alley
+        if (dx > 0 && Math.abs(dy) < 2.5 && colDiff === 1) {
+          // Direct horizontal — same row, adjacent column
           pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
-        } else if (tgt.col === src.col + 1) {
-          // Adjacent column, different row: S-curve centered in the alley
-          const midX = (x1 + x2) / 2;
-          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${midX.toFixed(1)} ${y1.toFixed(1)}, ${midX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
-        } else if (tgt.col === src.col) {
-          // Same column co-requisite: loops out into the right alley
-          const loopX = x1 + 22;
+        } else if (colDiff === 1) {
+          // Adjacent column, different row: tight S-curve through the gap
+          const gapX = (x1 + x2) / 2;
+          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${gapX.toFixed(1)} ${y1.toFixed(1)}, ${gapX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+        } else if (colDiff === 0) {
+          // Same column co-requisite: small right-side loop
+          const loopX = x1 + 24;
           pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${loopX.toFixed(1)} ${y1.toFixed(1)}, ${loopX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
         } else {
-          // Multi-column jump: smooth S-curve traversing horizontal corridors
-          const cOffset = Math.min(Math.max(dx * 0.38, 30), 100);
-          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${(x1 + cOffset).toFixed(1)} ${y1.toFixed(1)}, ${(x2 - cOffset).toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+          // Multi-column jump: use fixed 55px handles so curves don't bow outward
+          // and sort by dy to reduce visual crossing — handle anchored near source/target
+          const hCtrl = Math.min(Math.abs(dx) * 0.28, 80);
+          pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${(x1 + hCtrl).toFixed(1)} ${y1.toFixed(1)}, ${(x2 - hCtrl).toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
         }
 
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', pathData);
-        path.setAttribute('data-from', pCode);
+        path.setAttribute('data-from', src.code);
         path.setAttribute('data-to', tgt.code);
         path.setAttribute('data-type', reqType);
         path.setAttribute('class', 'dag-arrow');
@@ -449,25 +465,24 @@
 
         if (reqType === 'co') {
           path.setAttribute('stroke', '#d97706');
-          path.setAttribute('stroke-width', '2.2');
+          path.setAttribute('stroke-width', '1.8');
           path.setAttribute('stroke-dasharray', '5,4');
           path.setAttribute('marker-end', 'url(#diag-arrow-coreq)');
         } else if (reqType === 'soft') {
           path.setAttribute('stroke', '#7c3aed');
-          path.setAttribute('stroke-width', '2.2');
+          path.setAttribute('stroke-width', '1.8');
           path.setAttribute('stroke-dasharray', '3,3');
           path.setAttribute('marker-end', 'url(#diag-arrow-soft)');
         } else {
           path.setAttribute('stroke', '#1e40af');
-          path.setAttribute('stroke-width', '2.2');
+          path.setAttribute('stroke-width', '1.6');
           path.setAttribute('stroke-dasharray', 'none');
           path.setAttribute('marker-end', 'url(#diag-arrow-default)');
         }
 
-        // Visibility
-        path.style.opacity = showAllArrowsEnabled ? '0.75' : '0';
+        // Ambient opacity — subtle but visible
+        path.style.opacity = showAllArrowsEnabled ? '0.45' : '0';
         svgGroup.appendChild(path);
-      });
     });
 
     // Re-apply highlight if active
@@ -582,7 +597,7 @@
       } else {
         path.setAttribute('marker-end', 'url(#diag-arrow-default)');
       }
-      path.style.opacity = showAllArrowsEnabled ? '0.75' : '0';
+      path.style.opacity = showAllArrowsEnabled ? '0.45' : '0';
     });
 
     closeDetailDrawer();
