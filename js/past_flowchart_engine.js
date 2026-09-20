@@ -606,21 +606,69 @@
       }
     });
 
+    // ── Transitive prereq check ──────────────────────────────────────────
+    function isTransitivePrereq(fromCode, tgtPrereqs) {
+      for (let i = 0; i < tgtPrereqs.length; i++) {
+        const item = tgtPrereqs[i];
+        const sib = (typeof item === 'object' && item !== null && item.code) ? item.code : String(item);
+        if (sib === fromCode) continue;
+        const visited = new Set();
+        const queue = [sib];
+        while (queue.length > 0) {
+          const curr = queue.shift();
+          const currC = courses.find(c => c.code === curr);
+          if (!currC || !Array.isArray(currC.prereqs)) continue;
+          for (let j = 0; j < currC.prereqs.length; j++) {
+            const p = currC.prereqs[j];
+            const pCode = (typeof p === 'object' && p !== null && p.code) ? p.code : String(p);
+            if (pCode === fromCode) return true;
+            if (!visited.has(pCode)) { visited.add(pCode); queue.push(pCode); }
+          }
+        }
+      }
+      return false;
+    }
+
     const edges = [];
     Object.values(portMap).forEach(tgt => {
       tgt.prereqs.forEach(pItem => {
         const pCode = (typeof pItem === 'object' && pItem !== null && pItem.code) ? pItem.code : String(pItem);
+        if (isTransitivePrereq(pCode, tgt.prereqs)) return;
         const src = portMap[pCode];
         if (!src) return;
         edges.push({ src, tgt });
       });
     });
 
+    // Long-distance arcs render first (paint under short arcs)
+    edges.sort((a, b) => {
+      const distA = Math.abs(a.tgt.col - a.src.col) * 1000 + Math.abs(a.tgt.midY - a.src.midY);
+      const distB = Math.abs(b.tgt.col - b.src.col) * 1000 + Math.abs(b.tgt.midY - b.src.midY);
+      return distB - distA;
+    });
+
+    const R = 6;
+    const ABOVE_LANE = 12;
+
+    function roundedCorner(px, py, cx, cy, nx, ny) {
+      const d1 = Math.hypot(px - cx, py - cy);
+      const d2 = Math.hypot(nx - cx, ny - cy);
+      const rr = Math.min(R, d1 * 0.45, d2 * 0.45);
+      if (rr < 0.5) return `L ${cx.toFixed(1)} ${cy.toFixed(1)}`;
+      const a1x = cx + (px - cx) / d1 * rr, a1y = cy + (py - cy) / d1 * rr;
+      const a2x = cx + (nx - cx) / d2 * rr, a2y = cy + (ny - cy) / d2 * rr;
+      return `L ${a1x.toFixed(1)} ${a1y.toFixed(1)} Q ${cx.toFixed(1)} ${cy.toFixed(1)} ${a2x.toFixed(1)} ${a2y.toFixed(1)}`;
+    }
+
     function orthoPath(pts) {
       if (pts.length < 2) return '';
       let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
       for (let i = 1; i < pts.length; i++) {
-        d += ` L ${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)}`;
+        if (i < pts.length - 1) {
+          d += ' ' + roundedCorner(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y, pts[i+1].x, pts[i+1].y);
+        } else {
+          d += ` L ${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)}`;
+        }
       }
       return d;
     }
@@ -631,13 +679,21 @@
       const y1 = src.midY;
       const x2 = tgt.leftX;
       const y2 = tgt.midY;
+      const colDiff = tgt.col - src.col;
 
       let pathData = '';
-      if (tgt.col > src.col) {
-        if (tgt.col === src.col + 1 && Math.abs(y1 - y2) < 4) {
+
+      if (colDiff === 0) {
+        // Same-column co-requisite: right-side loop
+        const loopX = x1 + 22;
+        pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${loopX.toFixed(1)} ${y1.toFixed(1)}, ${loopX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+
+      } else if (colDiff === 1) {
+        // Adjacent column: 4-waypoint Z through the single gutter
+        const gx = gutterX[tgt.col] !== undefined ? gutterX[tgt.col] : (x1 + x2) / 2;
+        if (Math.abs(y2 - y1) < 2) {
           pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
         } else {
-          const gx = gutterX[src.col + 1] !== undefined ? gutterX[src.col + 1] : (x1 + x2) / 2;
           pathData = orthoPath([
             { x: x1, y: y1 },
             { x: gx, y: y1 },
@@ -645,8 +701,31 @@
             { x: x2, y: y2 }
           ]);
         }
+
+      } else if (colDiff > 1) {
+        // Multi-column forward jump: route ABOVE the cards through open horizontal corridor
+        const gx1 = gutterX[src.col + 1] !== undefined
+          ? gutterX[src.col + 1]
+          : src.rightX + 6;
+        const gx2 = gutterX[tgt.col] !== undefined
+          ? gutterX[tgt.col]
+          : tgt.leftX - 6;
+        
+        // Offset lane slightly based on vertical span to prevent collinear stacking
+        const laneY = Math.min(src.topY, tgt.topY) - ABOVE_LANE;
+
+        pathData = orthoPath([
+          { x: x1,  y: y1    },   // source right port
+          { x: gx1, y: y1    },   // enter gutter after src col
+          { x: gx1, y: laneY },   // rise above row cards
+          { x: gx2, y: laneY },   // travel horizontally through clearance lane
+          { x: gx2, y: y2    },   // descend through gutter before tgt col
+          { x: x2,  y: y2    }    // enter dest left port
+        ]);
+
       } else {
-        const topY = Math.min(y1, y2) - 26;
+        // Backward arrow (right→left): smooth arc above
+        const topY = Math.min(y1, y2) - 28;
         pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${x1.toFixed(1)} ${topY.toFixed(1)}, ${x2.toFixed(1)} ${topY.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
       }
 
@@ -664,6 +743,12 @@
       path.style.opacity = '0.55';
       svgGroup.appendChild(path);
     });
+
+    if (pastSelectedCourseCode) {
+      highlightPastPrereqTree(pastSelectedCourseCode);
+    } else if (pastHoveredCourseCode) {
+      highlightPastPrereqTree(pastHoveredCourseCode);
+    }
   }
 
   // =========================================================================
