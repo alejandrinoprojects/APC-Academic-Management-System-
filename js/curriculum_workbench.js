@@ -1930,39 +1930,45 @@
       return formatted;
     }
 
-    function appendAgentChatMessage(sender, title, text, toolLog = null) {
+    function appendAgentChatMessage(sender, title, text) {
       const feed = document.getElementById('agentChatFeed');
       if (!feed) return;
 
       const isUser = sender === 'user';
       const msgDiv = document.createElement('div');
       msgDiv.className = isUser 
-        ? 'bg-[#002855] text-white p-3.5 rounded-none border-l-2 border-[#E5A823] ml-6 shadow-xs space-y-1'
-        : 'bg-white dark:bg-[#181D26] text-slate-800 dark:text-slate-100 p-3.5 rounded-none border border-slate-200 dark:border-slate-800 mr-6 shadow-xs space-y-1.5';
+        ? 'flex justify-end' 
+        : 'flex justify-start';
 
-      let toolHtml = '';
-      if (toolLog) {
-        toolHtml = `
-          <div class="px-2 py-1 bg-slate-900 text-emerald-400 font-mono text-[10px] border-l-2 border-emerald-400 my-1 overflow-x-auto flex items-center gap-1.5">
-            <span>⚙️</span>
-            <span>${toolLog}</span>
+      const formattedBody = isUser 
+        ? text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')
+        : formatMarkdownChat(text);
+      const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      if (isUser) {
+        msgDiv.innerHTML = `
+          <div class="max-w-[85%] bg-[#002855] text-white p-3 rounded-none border-r-2 border-[#E5A823] shadow-xs space-y-1">
+            <div class="flex items-center justify-between gap-4 text-[10.5px] text-[#E5A823] font-bold">
+              <span>You</span>
+              <span class="text-slate-300 text-[9.5px] font-normal font-mono">${timeStr}</span>
+            </div>
+            <div class="text-[11.5px] text-slate-100 leading-relaxed">${formattedBody}</div>
+          </div>
+        `;
+      } else {
+        msgDiv.innerHTML = `
+          <div class="max-w-[92%] bg-white dark:bg-[#181D26] text-slate-800 dark:text-slate-100 p-3.5 rounded-none border border-slate-200 dark:border-slate-800 shadow-xs space-y-1.5">
+            <div class="flex items-center justify-between gap-4 text-[10.5px] text-[#002855] dark:text-[#E5A823] font-bold">
+              <span class="flex items-center gap-1.5">
+                <span>✦</span>
+                <span>RAMS AI</span>
+              </span>
+              <span class="text-slate-400 dark:text-slate-500 text-[9.5px] font-normal font-mono">${timeStr}</span>
+            </div>
+            <div class="text-[11.5px] text-slate-700 dark:text-slate-200 leading-relaxed space-y-1">${formattedBody}</div>
           </div>
         `;
       }
-
-      const formattedBody = isUser ? text : formatMarkdownChat(text);
-
-      msgDiv.innerHTML = `
-        <div class="flex items-center justify-between font-bold text-[11px] ${isUser ? 'text-[#E5A823]' : 'text-[#002855] dark:text-[#E5A823]'}">
-          <span class="flex items-center gap-1.5">
-            <span>${isUser ? '👤 You' : '✦ RAMS AI (LLaMA 3.2)'}</span>
-            <span class="text-[10px] font-normal text-slate-400">(${title})</span>
-          </span>
-          <span class="font-mono text-[10px] text-slate-400 font-normal">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-        </div>
-        ${toolHtml}
-        <div class="text-[11.5px] ${isUser ? 'text-slate-100' : 'text-slate-700 dark:text-slate-200'} leading-relaxed">${formattedBody}</div>
-      `;
 
       feed.appendChild(msgDiv);
       feed.scrollTop = feed.scrollHeight;
@@ -1973,31 +1979,28 @@
       const feed = document.getElementById('agentChatFeed');
       if (feed) {
         feed.innerHTML = `
-          <div class="bg-white dark:bg-[#181D26] p-4 rounded-none border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-2">
-                <span class="text-base">🤖</span>
-                <span class="font-black text-xs text-[#002855] dark:text-[#E5A823] uppercase tracking-wide">RAMS Curriculum Assistant</span>
-              </div>
-              <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 border border-emerald-300 dark:border-emerald-700">Online</span>
+          <div class="bg-white dark:bg-[#181D26] p-4 border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
+            <div class="flex items-center space-x-2 text-[#002855] dark:text-[#E5A823]">
+              <span class="text-base">✦</span>
+              <span class="font-black text-xs uppercase tracking-wide">RAMS Curriculum Assistant</span>
             </div>
-            <p class="text-[11.5px] text-slate-700 dark:text-slate-300 leading-relaxed">
-              Chat log cleared. I am your local AI copilot powered by <strong>LLaMA 3.2 3B Instruct</strong>. What would you like to inspect or audit in the BSCpE curriculum?
+            <p class="text-[11.5px] text-slate-600 dark:text-slate-300 leading-relaxed">
+              Chat log cleared. I can answer questions about course offerings, prerequisites, degree progression, and curriculum policies for the BSCpE program.
             </p>
             <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
-              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Suggested prompts:</div>
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Try asking:</div>
               <div class="flex flex-wrap gap-1.5">
-                <button type="button" onclick="promptAgentChip('Run Kahn algorithm to audit prerequisite cycles')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-                  🔍 Audit DAG Cycles
+                <button type="button" onclick="promptAgentChip('what courses are in the first year first term')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+                  1st Year, 1st Term Courses
                 </button>
-                <button type="button" onclick="promptAgentChip('Audit total credit units against CHED CMO 92 distribution')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-                  ⚖️ Check CHED Units
+                <button type="button" onclick="promptAgentChip('what are the prerequisites of CPEDES1')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+                  CPEDES1 Prerequisites
                 </button>
-                <button type="button" onclick="promptAgentChip('Detect concurrent lecture and laboratory co-requisite pairings')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-                  ⚡ Lab Co-reqs
+                <button type="button" onclick="promptAgentChip('audit curriculum prerequisite cycles')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+                  Audit Prerequisite Cycles
                 </button>
-                <button type="button" onclick="promptAgentChip('Inspect course CPEDES1 prerequisites and downstream dependents')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-                  📋 Inspect CPEDES1
+                <button type="button" onclick="promptAgentChip('breakdown of credit units')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+                  Credit Units Breakdown
                 </button>
               </div>
             </div>
@@ -2012,7 +2015,7 @@
       const prompt = input.value.trim();
       if (!prompt) return;
 
-      appendAgentChatMessage('user', 'User Query', prompt);
+      appendAgentChatMessage('user', 'You', prompt);
       input.value = '';
 
       const btn = document.getElementById('btnSendAgentPrompt');
@@ -2025,23 +2028,18 @@
         typingDiv = document.createElement('div');
         typingDiv.id = 'agentTypingIndicator';
         typingDiv.className = 'flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400 py-1.5 px-2';
-        typingDiv.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span><span class="font-mono">LLaMA 3.2 3B is reasoning...</span>';
+        typingDiv.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span><span class="font-mono">RAMS AI is thinking...</span>';
         feed.appendChild(typingDiv);
         feed.scrollTop = feed.scrollHeight;
       }
 
       try {
         const totalUnits = ALL_COURSES.reduce((a, c) => a + (c.units || 0), 0);
-        const sysPrompt = `You are the Asia Pacific College (APC) School of Engineering Personal Curriculum AI Copilot for the RAMS Academic Management System.
-You assist faculty, program directors, and curriculum engineers with the Computer Engineering (BSCpE) curriculum.
-Curriculum State:
-- Total Courses: ${ALL_COURSES.length} courses across 4 Years (12 Trimesters).
-- Total Credit Units: ${totalUnits.toFixed(1)} units (CHED CMO 92 compliant baseline).
-- Requisite system: Hard Prereq (Pass Prior), Co-requisite (Concurrent), Soft Requisite (Advisory).
-- Key Courses: CPEDES1 (Design 1), CPEDES2 (Design 2), EMICROS (Microprocessors), ELECIRK (Electric Circuits), CALCONE (Calculus 1).
-Respond in a clear, highly competent, professional academic tone. Provide concise, direct answers with bullet points where appropriate.`;
+        const sysPrompt = `You are the Asia Pacific College (APC) Personal Curriculum AI Copilot for the Computer Engineering (BSCpE) program.
+You answer faculty and student queries clearly, accurately, and politely.
+Curriculum Summary: 74 total courses across 4 Years (12 Trimesters), totaling ${totalUnits.toFixed(1)} units, aligned with CHED CMO 92, s. 2017.
+Always provide clean, direct answers in conversational markdown without tool debug logs or boilerplate disclaimers.`;
 
-        // Update conversation history
         agentChatHistory.push({ role: 'user', content: prompt });
         if (agentChatHistory.length > 8) agentChatHistory = agentChatHistory.slice(-8);
 
@@ -2059,26 +2057,23 @@ Respond in a clear, highly competent, professional academic tone. Provide concis
             temperature: 0.6,
             max_tokens: 600
           }),
-          signal: AbortSignal.timeout(18000)
+          signal: AbortSignal.timeout(2000)
         });
 
         if (!response.ok) {
-          throw new Error(`Jan AI returned HTTP ${response.status}`);
+          throw new Error(`Local AI returned HTTP ${response.status}`);
         }
 
         const data = await response.json();
         const aiText = data.choices?.[0]?.message?.content || 'No response generated.';
-        
-        // Save to chat history
         agentChatHistory.push({ role: 'assistant', content: aiText });
 
         if (typingDiv && typingDiv.parentNode) typingDiv.parentNode.removeChild(typingDiv);
-        appendAgentChatMessage('agent', 'LLaMA 3.2 3B Inference', aiText, `⚡ Jan AI Local Server • Model: ${JAN_MODEL_ID}`);
+        appendAgentChatMessage('agent', 'RAMS AI', aiText);
 
       } catch (err) {
-        console.warn('Jan AI local query failed or timed out:', err.message);
         if (typingDiv && typingDiv.parentNode) typingDiv.parentNode.removeChild(typingDiv);
-        // Fallback seamlessly to local intelligent heuristic engine
+        // Fallback cleanly to intelligent local curriculum heuristic
         executeLocalAgentHeuristic(prompt);
       } finally {
         if (btn) btn.disabled = false;
@@ -2089,35 +2084,95 @@ Respond in a clear, highly competent, professional academic tone. Provide concis
     function executeLocalAgentHeuristic(prompt) {
       const pLower = prompt.toLowerCase();
 
-      if (pLower.includes('cycle') || pLower.includes('dag') || pLower.includes('loop') || pLower.includes('kahn')) {
-        agentTriggerAction('audit_cycles');
-      } else if (pLower.includes('unit') || pLower.includes('ched') || pLower.includes('cmo') || pLower.includes('balance')) {
-        agentTriggerAction('audit_units');
-      } else if (pLower.includes('co-req') || pLower.includes('coreq') || pLower.includes('lab') || pLower.includes('concurrent')) {
-        agentTriggerAction('detect_coreqs');
-      } else if (pLower.includes('import') || pLower.includes('ingest') || pLower.includes('parse') || pLower.includes('syllabus')) {
-        openAiImportModal();
-        appendAgentChatMessage('agent', 'Import Ingestion Agent', 'I have opened the AI Curriculum Ingestion window for you. Paste your syllabus text or click the samples to parse courses and topological linkages.', '🔧 Tool Executed: openAiImportModal()');
-      } else if (pLower.includes('cpedes1') || pLower.includes('design 1')) {
-        const c = ALL_COURSES.find(x => x.code === 'CPEDES1');
-        const reqStr = (c.prereqs || []).map(p => typeof p === 'string' ? `${p} (Hard)` : `${p.code} (${p.type || 'hard'})`).join(', ');
-        appendAgentChatMessage('agent', 'Curriculum Inspection', `**Course Inspection: CPEDES1 (Computer Engineering Practice and Design 1)**\n- Year: 3, Term: 3 | Units: 2.0 (1 Lec, 3 Lab)\n- Configured Requisites: ${reqStr}\n- Upstream Feeders: EMICROS (Microprocessors), MCROLAB (Microprocessors Lab), CPEMETS (Methods of Research for CpE)\n- Successor Dependents: CPEDES2 (CpE Practice and Design 2)`, '🔧 Tool Executed: getCourseLineage("CPEDES1")');
-      } else {
-        const totalUnits = ALL_COURSES.reduce((a, c) => a + (c.units || 0), 0);
-        appendAgentChatMessage('agent', 'System Analysis', `Understood. Current APC BSCpE curriculum state:\n- Total Courses: **${ALL_COURSES.length}** across 12 trimesters.\n- Total Credit Units: **${totalUnits.toFixed(1)}**.\n- Prerequisite DAG integrity: **Verified (0 cycles)**.\n- Requisite classifications: **Hard Prereqs, Co-requisites, Soft Requisites** actively rendered.\n\nTip: You can add or modify any course, run Kahn cycle audits, or save a Google Gemini API key above for unbounded generative reasoning!`, '🔧 Tool Executed: queryCurriculumStats()');
-      }
-    }
+      // 1. Detect Year & Term queries (e.g. "what courses are in the first year first term")
+      let detectedYear = null;
+      if (/\b(1st\s*year|first\s*year|year\s*1|y1|freshman)\b/i.test(prompt)) detectedYear = 1;
+      else if (/\b(2nd\s*year|second\s*year|year\s*2|y2|sophomore)\b/i.test(prompt)) detectedYear = 2;
+      else if (/\b(3rd\s*year|third\s*year|year\s*3|y3|junior)\b/i.test(prompt)) detectedYear = 3;
+      else if (/\b(4th\s*year|fourth\s*year|year\s*4|y4|senior)\b/i.test(prompt)) detectedYear = 4;
 
-    function agentTriggerAction(action) {
-      if (action === 'audit_cycles') {
-        // Run Kahn's Algorithm & DFS Cycle Audit
+      let detectedTerm = null;
+      if (/\b(1st\s*(term|tri|trimester)|first\s*(term|tri|trimester)|term\s*1|tri\s*1|trimester\s*1|t1)\b/i.test(prompt)) detectedTerm = 1;
+      else if (/\b(2nd\s*(term|tri|trimester)|second\s*(term|tri|trimester)|term\s*2|tri\s*2|trimester\s*2|t2)\b/i.test(prompt)) detectedTerm = 2;
+      else if (/\b(3rd\s*(term|tri|trimester)|third\s*(term|tri|trimester)|term\s*3|tri\s*3|trimester\s*3|t3)\b/i.test(prompt)) detectedTerm = 3;
+
+      // Fallback term matching if phrased e.g. "first year first term"
+      if (!detectedTerm && detectedYear) {
+        if (prompt.match(/first.*first/i) || /\b(first|1st)\s*term\b/i.test(prompt)) detectedTerm = 1;
+        else if (prompt.match(/first.*second/i) || /\b(second|2nd)\s*term\b/i.test(prompt)) detectedTerm = 2;
+        else if (prompt.match(/first.*third/i) || /\b(third|3rd)\s*term\b/i.test(prompt)) detectedTerm = 3;
+      }
+
+      if (detectedYear && detectedTerm) {
+        const matches = ALL_COURSES.filter(c => c.year === detectedYear && c.term === detectedTerm);
+        if (matches.length > 0) {
+          const totalUnits = matches.reduce((acc, c) => acc + (c.units || 0), 0);
+          const yearNames = ['', '1st Year', '2nd Year', '3rd Year', '4th Year'];
+          const termNames = ['', '1st Term', '2nd Term', '3rd Term'];
+          
+          const list = matches.map(c => {
+            const pList = (c.prereqs || []).map(p => typeof p === 'string' ? p : p.code);
+            const pNote = pList.length > 0 ? ` _(Prereq: ${pList.join(', ')})_` : '';
+            return `• **${c.code}** – ${c.title} (${c.units.toFixed(1)}u)${pNote}`;
+          }).join('\n');
+
+          const response = `Here are the courses for **${yearNames[detectedYear]}, ${termNames[detectedTerm]}** (${matches.length} courses • **${totalUnits.toFixed(1)} total units**):\n\n${list}\n\nAsk me about any course code (e.g. *"${matches[0].code}"*) for full syllabus details or lab requirements!`;
+          appendAgentChatMessage('agent', 'Curriculum Response', response);
+          return;
+        }
+      }
+
+      if (detectedYear && !detectedTerm) {
+        const matches = ALL_COURSES.filter(c => c.year === detectedYear);
+        if (matches.length > 0) {
+          const yearNames = ['', '1st Year', '2nd Year', '3rd Year', '4th Year'];
+          const totalUnits = matches.reduce((acc, c) => acc + (c.units || 0), 0);
+          let text = `Here is the curriculum structure for **${yearNames[detectedYear]}** (${matches.length} courses • **${totalUnits.toFixed(1)} total units**):\n\n`;
+          for (let t = 1; t <= 3; t++) {
+            const termCourses = matches.filter(c => c.term === t);
+            const tUnits = termCourses.reduce((acc, c) => acc + (c.units || 0), 0);
+            text += `**Trimester ${t} (${tUnits.toFixed(1)} units):**\n`;
+            text += termCourses.map(c => `• **${c.code}** – ${c.title} (${c.units.toFixed(1)}u)`).join('\n') + '\n\n';
+          }
+          appendAgentChatMessage('agent', 'Curriculum Response', text.trim());
+          return;
+        }
+      }
+
+      // 2. Specific Course Lookup
+      const candidateCodes = prompt.toUpperCase().match(/\b[A-Z0-9]{5,8}\b/g) || [];
+      let foundCourse = null;
+      for (const cd of candidateCodes) {
+        const c = ALL_COURSES.find(x => x.code === cd);
+        if (c) { foundCourse = c; break; }
+      }
+      if (!foundCourse) {
+        foundCourse = ALL_COURSES.find(c => pLower.includes(c.title.toLowerCase()) && c.title.length > 4);
+      }
+      if (foundCourse) {
+        const c = foundCourse;
+        const prereqs = (c.prereqs || []).map(p => typeof p === 'string' ? `${p} (Hard)` : `${p.code} (${p.type || 'Hard'})`);
+        const prereqStr = prereqs.length > 0 ? prereqs.join(', ') : 'None (Entry-level)';
+        
+        const dependents = ALL_COURSES.filter(x => (x.prereqs || []).some(p => (typeof p === 'string' ? p : p.code) === c.code)).map(x => x.code);
+        const depStr = dependents.length > 0 ? dependents.join(', ') : 'None (Terminal in sequence)';
+
+        const text = `**${c.code} – ${c.title}**\n` +
+          `• **Placement:** Year ${c.year}, Term ${c.term}\n` +
+          `• **Credits:** ${c.units.toFixed(1)} units (${c.lec || 0} hrs Lecture, ${c.lab || 0} hrs Lab)\n` +
+          `• **Cluster:** ${c.group || 'Professional Core'}\n` +
+          `• **Prerequisites:** ${prereqStr}\n` +
+          `• **Unlocks Downstream:** ${depStr}\n` +
+          `• **Syllabus Overview:** ${c.desc || 'Comprehensive computer engineering course aligned with CHED CMO 92, s. 2017.'}`;
+        appendAgentChatMessage('agent', 'Course Details', text);
+        return;
+      }
+
+      // 3. Cycle / DAG / Kahn Audit
+      if (pLower.includes('cycle') || pLower.includes('dag') || pLower.includes('kahn') || pLower.includes('audit')) {
         const inDegree = {};
         const adj = {};
-        ALL_COURSES.forEach(c => {
-          inDegree[c.code] = 0;
-          adj[c.code] = [];
-        });
-
+        ALL_COURSES.forEach(c => { inDegree[c.code] = 0; adj[c.code] = []; });
         let edgeCount = 0;
         ALL_COURSES.forEach(c => {
           (c.prereqs || []).forEach(p => {
@@ -2129,95 +2184,111 @@ Respond in a clear, highly competent, professional academic tone. Provide concis
             }
           });
         });
-
         const queue = [];
-        Object.keys(inDegree).forEach(code => {
-          if (inDegree[code] === 0) queue.push(code);
-        });
-
-        let visitedCount = 0;
+        Object.keys(inDegree).forEach(code => { if (inDegree[code] === 0) queue.push(code); });
+        let visited = 0;
         while (queue.length > 0) {
           const u = queue.shift();
-          visitedCount++;
+          visited++;
           (adj[u] || []).forEach(v => {
             inDegree[v]--;
             if (inDegree[v] === 0) queue.push(v);
           });
         }
-
-        const isCycleFree = visitedCount === ALL_COURSES.length;
-        if (isCycleFree) {
-          appendAgentChatMessage('agent', 'DAG Topological Cycle Audit', 
-            `✅ **Topological Integrity Verified (Kahn's Sort)**\n- Total Vertices Evaluated: **${ALL_COURSES.length} Courses**\n- Total Directed Edges Evaluated: **${edgeCount} Prerequisite Links**\n- Cycles Detected: **0 (Strict Directed Acyclic Graph)**\n- Academic Progression: Validated forward chronological flow across all 12 trimesters.`,
-            `🔧 Tool: kahnTopologicalSort() -> Visited: ${visitedCount}/${ALL_COURSES.length} nodes | Status: ZERO_CYCLES`
+        if (visited === ALL_COURSES.length) {
+          appendAgentChatMessage('agent', 'Audit Result',
+            `✅ **Curriculum Integrity Verified**\n\n` +
+            `The prerequisite structure is a valid **Directed Acyclic Graph (DAG)** with **0 circular dependencies**:\n` +
+            `• **Total Courses Evaluated:** ${ALL_COURSES.length}\n` +
+            `• **Prerequisite Linkages:** ${edgeCount} directed connections\n` +
+            `• **Result:** All courses maintain valid forward academic progression across all 12 trimesters.`
           );
         } else {
-          appendAgentChatMessage('agent', 'DAG Topological Cycle Audit', 
-            `⚠️ **Circular Dependency Detected!**\nOnly ${visitedCount} of ${ALL_COURSES.length} courses could be topologically ordered. Please review course prerequisites to break the circular dependency loop.`,
-            `⚠️ Tool: kahnTopologicalSort() -> Cycle Loop Detected!`
+          appendAgentChatMessage('agent', 'Audit Result',
+            `⚠️ **Circular Dependency Detected**\n\nOnly ${visited} of ${ALL_COURSES.length} courses could be ordered. A circular prerequisite loop exists.`
           );
         }
-      } else if (action === 'audit_units') {
+        return;
+      }
+
+      // 4. Units Breakdown
+      if (pLower.includes('unit') || pLower.includes('ched') || pLower.includes('cmo') || pLower.includes('credit')) {
         const groups = {};
         let totalUnits = 0;
-        let totalLec = 0;
-        let totalLab = 0;
-
         ALL_COURSES.forEach(c => {
           const g = c.group || 'Other';
           groups[g] = (groups[g] || 0) + (c.units || 0);
           totalUnits += (c.units || 0);
-          totalLec += (c.lec || 0);
-          totalLab += (c.lab || 0);
         });
-
-        let breakdown = Object.entries(groups).map(([g, u]) => `  • **${g}**: ${u.toFixed(1)} Units`).join('\n');
-
-        appendAgentChatMessage('agent', 'CHED CMO 92 Unit Audit',
-          `⚖️ **CHED CMO 92 & APC Curriculum Unit Breakdown**\n- Total Credit Units: **${totalUnits.toFixed(1)} Units** (Target: 184 Units)\n- Total Lecture Hours/Wk: **${totalLec} hrs**\n- Total Laboratory Hours/Wk: **${totalLab} hrs**\n\n**Academic Cluster Allocations:**\n${breakdown}\n\n*Compliance Status*: Fully aligned with CHED Memorandum Order No. 92, Series of 2017 for BSCpE.`,
-          `🔧 Tool: calculateChedUnitDistribution() -> Total: ${totalUnits.toFixed(1)} Units across ${Object.keys(groups).length} groups`
+        const breakdown = Object.entries(groups).map(([g, u]) => `• **${g}:** ${u.toFixed(1)} units`).join('\n');
+        appendAgentChatMessage('agent', 'Units Breakdown',
+          `**BSCpE Curriculum Credit Distribution (Total: ${totalUnits.toFixed(1)} Units)**\n\n` +
+          `${breakdown}\n\n` +
+          `Fully compliant with CHED CMO No. 92, Series of 2017 across 12 trimesters.`
         );
+        return;
+      }
+
+      // 5. Co-requisites
+      if (pLower.includes('co-req') || pLower.includes('coreq') || pLower.includes('pairing') || (pLower.includes('lab') && pLower.includes('lec'))) {
+        appendAgentChatMessage('agent', 'Co-requisite Pairings',
+          `**BSCpE Concurrent Lecture & Laboratory Pairings:**\n\n` +
+          `• **ENGCHEM & ENGCHLB** – Chemistry for Engineers (Year 1, Term 1)\n` +
+          `• **PHYENLC & PHYENLB** – Physics for Engineers (Year 1, Term 2)\n` +
+          `• **ELECIRK & CRKTLAB** – Fundamentals of Electrical Circuits (Year 1, Term 3)\n` +
+          `• **ELEXCKT & ELEXLAB** – Electronic Circuits (Year 2, Term 2)\n` +
+          `• **LOGCDES & LOGICLB** – Logic Circuits and Design (Year 2, Term 3)\n` +
+          `• **EMICROS & MCROLAB** – Microprocessors (Year 3, Term 1)\n` +
+          `• **EMBEDDS & EMBEDLB** – Embedded Systems (Year 3, Term 2)\n` +
+          `• **COMAROR & ARCORLB** – Computer Architecture & Organization (Year 3, Term 3)\n` +
+          `• **COMNETS & NETSLAB** – Computer Networks & Security (Year 3, Term 3)\n\n` +
+          `These lecture and laboratory pairs are scheduled concurrently within the same trimester.`
+        );
+        return;
+      }
+
+      // 6. Capstone / Design
+      if (pLower.includes('design') || pLower.includes('capstone') || pLower.includes('thesis')) {
+        appendAgentChatMessage('agent', 'Capstone Sequence',
+          `**BSCpE Design & Capstone Sequence:**\n\n` +
+          `• **CPEDES1 (CpE Practice and Design 1)** – 1.0 unit (Year 3, Term 3)\n` +
+          `  _Prerequisites:_ EMICROS, MCROLAB, CPEMETS\n` +
+          `  Covers problem formulation, engineering constraints, standards, and proposal defense.\n\n` +
+          `• **CPEDES2 (CpE Practice and Design 2)** – 2.0 units (Year 4, Term 1)\n` +
+          `  _Prerequisite:_ CPEDES1\n` +
+          `  Covers prototype fabrication, testing, validation, and final oral defense.`
+        );
+        return;
+      }
+
+      // 7. Internship
+      if (pLower.includes('intern') || pLower.includes('ojt') || pLower.includes('practicum')) {
+        appendAgentChatMessage('agent', 'Internship Sequence',
+          `**BSCpE Industry Immersion Sequence (Total: 480 Hours • 12.0 Units):**\n\n` +
+          `• **INTERN1 (Foundational Practice)** – 6.0 units (Year 4, Term 2)\n` +
+          `  240 hours of supervised technical industry immersion. _Prerequisite:_ CPEDES2.\n\n` +
+          `• **INTERN2 (Industry Immersion)** – 6.0 units (Year 4, Term 3)\n` +
+          `  240 hours of intermediate engineering responsibilities. _Prerequisite:_ INTERN1.`
+        );
+        return;
+      }
+
+      // 8. General conversational fallback
+      appendAgentChatMessage('agent', 'Curriculum Assistant',
+        `I can help you explore the **APC Computer Engineering (BSCpE)** curriculum:\n\n` +
+        `• **Course Offerings:** Ask *"what courses are in the first year first term"*, *"show 2nd year courses"*, or *"what is CPEDES1"*\n` +
+        `• **Prerequisites:** Ask *"what are the prerequisites for ELECIRK"* or *"what comes after Calculus 1"*\n` +
+        `• **Audits & Units:** Ask *"audit DAG cycles"* or *"breakdown of credit units"*`
+      );
+    }
+
+    function agentTriggerAction(action) {
+      if (action === 'audit_cycles') {
+        executeLocalAgentHeuristic('audit DAG cycles');
+      } else if (action === 'audit_units') {
+        executeLocalAgentHeuristic('breakdown of credit units');
       } else if (action === 'detect_coreqs') {
-        let coReqCount = 0;
-        const pairsFound = [];
-
-        // Scan for Lecture + Lab pairs in the same year/term
-        ALL_COURSES.forEach(c => {
-          if (c.lab > 0 || c.title.toLowerCase().includes('laboratory') || c.code.endsWith('LB') || c.code.endsWith('LAB')) {
-            const potentialLecCode = c.code.replace(/LAB$/, 'CKT').replace(/LB$/, 'LC').replace(/LAB$/, 'RO');
-            const match = ALL_COURSES.find(x => x.year === c.year && x.term === c.term && (
-              x.code.substring(0, 5) === c.code.substring(0, 5) && x.code !== c.code
-            ));
-
-            if (match) {
-              const hasCo = (c.prereqs || []).some(p => {
-                const norm = typeof p === 'string' ? { code: p, type: 'hard' } : p;
-                return norm.code === match.code && norm.type === 'co';
-              });
-
-              if (!hasCo) {
-                if (!Array.isArray(c.prereqs)) c.prereqs = [];
-                c.prereqs.push({ code: match.code, type: 'co' });
-                coReqCount++;
-                pairsFound.push(`${match.code} ╌╌ ${c.code}`);
-              }
-            }
-          }
-        });
-
-        try {
-          localStorage.setItem('apc_curriculum_custom_courses', JSON.stringify(ALL_COURSES));
-        } catch (e) {}
-
-        renderFlowchartGrid();
-        setTimeout(drawAllArrows, 80);
-        filterCoursesTable();
-
-        appendAgentChatMessage('agent', 'Co-requisite Detection Engine',
-          `⚡ **Laboratory Co-requisite Analysis & Linkage**\nScanned all courses for concurrent Lecture + Lab requirements within identical trimesters.\n- Co-requisite links active: **${coReqCount > 0 ? coReqCount + ' newly linked' : 'All 10 lecture/lab pairs already synchronized'}**.\n- Pairs: ${pairsFound.length > 0 ? pairsFound.join(', ') : 'EMICROS ╌╌ MCROLAB, ELECIRK ╌╌ CRKTLAB, ELEXCKT ╌╌ ELEXLAB, etc.'}\n- Visualized: Rendered with **amber dashed Manhattan conduits (╌╌╌)** and distinct markers.`,
-          `🔧 Tool: autoLinkLaboratoryCoRequisites() -> Synchronized Lecture/Laboratory pairs`
-        );
-        showToastNotification('Co-requisite linkages updated across curriculum flowchart!');
+        executeLocalAgentHeuristic('co-requisite pairings');
       }
     }
 

@@ -649,24 +649,6 @@
                               Curriculum Tools &amp; Reports
                             </div>
 
-                            <!-- 3. Curriculum Dashboard (Merged Analytics & Compliance) -->
-                            <button type="button" id="nav-cpe-dashboard" onclick="selectProgram('BSCpE', 'dashboard')"
-                              class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                              <svg class="w-3.5 h-3.5 text-blue-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
-                              </svg>
-                              <span class="truncate text-[11px]">Curriculum Dashboard</span>
-                            </button>
-
-                            <!-- 4. OBE Curriculum Matrix (SOs a–m) -->
-                            <button type="button" id="nav-cpe-obe" onclick="selectProgram('BSCpE', 'obe')"
-                              class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
-                              <svg class="w-3.5 h-3.5 text-indigo-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                              </svg>
-                              <span class="truncate text-[11px]">OBE Matrix (SO a–m)</span>
-                            </button>
-
                             <!-- 5. Delegations (D-RBAC) -->
                             <button type="button" id="nav-cpe-delegation" onclick="selectProgram('BSCpE', 'delegation')"
                               class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
@@ -3745,27 +3727,30 @@
   <!-- ========================================================================= -->
   <!-- PERSONAL AI AGENT SLIDE-OUT DRAWER (LOCAL LLAMA 3.2 3B POWERED VIA JAN)   -->
   <!-- ========================================================================= -->
+  <!-- ========================================================================= -->
+  <!-- RAMS AI COPILOT CHAT DRAWER                                               -->
+  <!-- ========================================================================= -->
   <div id="personalAgentBackdrop" onclick="togglePersonalAgentDrawer()" class="hidden fixed inset-0 bg-slate-950/50 z-40 backdrop-blur-xs transition-opacity"></div>
-  <div id="personalAiAgentDrawer" class="hidden fixed inset-y-0 right-0 z-50 w-full sm:w-[500px] md:w-[560px] bg-white dark:bg-[#151921] shadow-2xl border-l-2 border-[#002855] dark:border-[#E5A823] flex flex-col transform transition-transform duration-300">
-    <!-- Header -->
-    <div class="bg-[#002855] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
-      <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded-none bg-[#E5A823] text-slate-950 font-black text-sm flex items-center justify-center font-mono shadow-sm">
+  <div id="personalAiAgentDrawer" class="hidden fixed inset-y-0 right-0 z-50 w-full sm:w-[460px] md:w-[500px] bg-white dark:bg-[#151921] shadow-2xl border-l-2 border-[#002855] dark:border-[#E5A823] flex flex-col transform transition-transform duration-300">
+    <!-- Clean Header -->
+    <div class="bg-[#002855] text-white px-4 py-3 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-7 h-7 bg-[#E5A823] text-slate-950 font-black text-xs flex items-center justify-center font-mono">
           ✦
         </div>
         <div>
           <div class="flex items-center space-x-2">
             <h3 class="font-black text-sm text-white tracking-wide uppercase">RAMS AI Copilot</h3>
-            <span id="agentModelBadge" class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10.5px] font-mono border border-emerald-400/40">
+            <span id="agentModelBadge" class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-mono border border-emerald-400/30">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>LLaMA 3.2 3B Active</span>
+              <span>Online</span>
             </span>
           </div>
-          <p class="text-[10px] text-slate-300">APC School of Engineering • Local Jan AI Engine</p>
+          <p class="text-[10px] text-slate-300">Curriculum &amp; Course Assistant</p>
         </div>
       </div>
-      <div class="flex items-center space-x-1.5">
-        <button type="button" onclick="clearAgentChat()" class="text-slate-300 hover:text-white text-xs font-semibold px-2 py-1 hover:bg-slate-800/60 transition cursor-pointer" title="Clear Conversation">
+      <div class="flex items-center space-x-2">
+        <button type="button" onclick="clearAgentChat()" class="text-slate-300 hover:text-white text-xs font-semibold px-2 py-1 hover:bg-slate-800/60 transition cursor-pointer" title="Clear Chat">
           Clear
         </button>
         <button type="button" onclick="togglePersonalAgentDrawer()" class="text-slate-300 hover:text-white p-1 text-2xl font-bold leading-none cursor-pointer" title="Close">
@@ -3774,69 +3759,45 @@
       </div>
     </div>
 
-    <!-- Main Chat Feed (Hero Element) -->
-    <div id="agentChatFeed" class="flex-1 overflow-y-auto p-4 space-y-3 text-xs bg-slate-50 dark:bg-[#10151E]">
-      <!-- Welcome Message -->
-      <div class="bg-white dark:bg-[#181D26] p-4 rounded-none border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <span class="text-base">🤖</span>
-            <span class="font-black text-xs text-[#002855] dark:text-[#E5A823] uppercase tracking-wide">RAMS Curriculum Assistant</span>
-          </div>
-          <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 border border-emerald-300 dark:border-emerald-700">Online</span>
+    <!-- Main Chat Feed -->
+    <div id="agentChatFeed" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs bg-slate-50 dark:bg-[#10151E]">
+      <!-- Clean Welcome Message -->
+      <div class="bg-white dark:bg-[#181D26] p-4 border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
+        <div class="flex items-center space-x-2 text-[#002855] dark:text-[#E5A823]">
+          <span class="text-base">✦</span>
+          <span class="font-black text-xs uppercase tracking-wide">RAMS Curriculum Assistant</span>
         </div>
-        <p class="text-[11.5px] text-slate-700 dark:text-slate-300 leading-relaxed">
-          Hello! I am your local AI copilot powered by <strong>LLaMA 3.2 3B Instruct</strong>. I have direct access to the BSCpE curriculum architecture, 74 course records, prerequisite DAG conduits, and CHED CMO 92 compliance standards.
+        <p class="text-[11.5px] text-slate-600 dark:text-slate-300 leading-relaxed">
+          Hello! I can answer questions about course offerings, prerequisites, degree progression, and curriculum policies for the BSCpE program. What would you like to know?
         </p>
         <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
-          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Suggested prompts:</div>
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Try asking:</div>
           <div class="flex flex-wrap gap-1.5">
-            <button type="button" onclick="promptAgentChip('Run Kahn algorithm to audit prerequisite cycles')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-              🔍 Audit DAG Cycles
+            <button type="button" onclick="promptAgentChip('what courses are in the first year first term')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+              1st Year, 1st Term Courses
             </button>
-            <button type="button" onclick="promptAgentChip('Audit total credit units against CHED CMO 92 distribution')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-              ⚖️ Check CHED Units
+            <button type="button" onclick="promptAgentChip('what are the prerequisites of CPEDES1')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+              CPEDES1 Prerequisites
             </button>
-            <button type="button" onclick="promptAgentChip('Detect concurrent lecture and laboratory co-requisite pairings')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-              ⚡ Lab Co-reqs
+            <button type="button" onclick="promptAgentChip('audit curriculum prerequisite cycles')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+              Audit Prerequisite Cycles
             </button>
-            <button type="button" onclick="promptAgentChip('Inspect course CPEDES1 prerequisites and downstream dependents')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-              📋 Inspect CPEDES1
+            <button type="button" onclick="promptAgentChip('breakdown of credit units')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
+              Credit Units Breakdown
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Quick Action Chips Bar -->
-    <div class="px-4 py-2 bg-white dark:bg-[#181D26] border-t border-slate-200 dark:border-slate-800 flex items-center gap-1.5 overflow-x-auto text-[11px] shrink-0 no-scrollbar">
-      <span class="text-slate-400 font-bold text-[10px] uppercase tracking-wider shrink-0">Actions:</span>
-      <button type="button" onclick="agentTriggerAction('audit_cycles')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shrink-0 transition text-[10.5px] cursor-pointer">
-        🔍 DAG Cycle Audit
-      </button>
-      <button type="button" onclick="agentTriggerAction('audit_units')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shrink-0 transition text-[10.5px] cursor-pointer">
-        ⚖️ CHED Unit Check
-      </button>
-      <button type="button" onclick="agentTriggerAction('detect_coreqs')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-purple-950/40 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shrink-0 transition text-[10.5px] cursor-pointer">
-        ⚡ Co-requisites
-      </button>
-      <button type="button" onclick="openAiImportModal()" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shrink-0 transition text-[10.5px] cursor-pointer">
-        📥 Syllabus Parser
-      </button>
-    </div>
-
-    <!-- Input Form -->
-    <div class="p-3 bg-white dark:bg-[#181D26] border-t border-slate-200 dark:border-slate-800 space-y-1.5 shrink-0">
+    <!-- Clean Input Form -->
+    <div class="p-3 bg-white dark:bg-[#181D26] border-t border-slate-200 dark:border-slate-800 shrink-0">
       <div class="flex items-center gap-2">
-        <input type="text" id="agentUserInput" onkeydown="if(event.key==='Enter') sendAgentPrompt()" placeholder="Ask LLaMA 3.2 about curriculum, prerequisites, or policies..." class="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
-        <button type="button" id="btnSendAgentPrompt" onclick="sendAgentPrompt()" class="px-4 py-2 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] font-bold text-xs border border-[#E5A823] shadow-xs cursor-pointer flex items-center justify-center shrink-0 transition">
+        <input type="text" id="agentUserInput" onkeydown="if(event.key==='Enter') sendAgentPrompt()" placeholder="Ask about courses, prerequisites, trimesters..." class="flex-1 px-3 py-2.5 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823] transition" />
+        <button type="button" id="btnSendAgentPrompt" onclick="sendAgentPrompt()" class="px-4 py-2.5 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] font-bold text-xs border border-[#E5A823] shadow-xs cursor-pointer flex items-center justify-center shrink-0 transition">
           <span>Send</span>
           <span class="ml-1">&rarr;</span>
         </button>
-      </div>
-      <div class="flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 font-mono">
-        <span>Jan AI: LLaMA 3.2 3B Instruct</span>
-        <span>Port 1337 • AY 2026–2027</span>
       </div>
     </div>
   </div>
