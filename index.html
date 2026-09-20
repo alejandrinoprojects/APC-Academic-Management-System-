@@ -1262,49 +1262,8 @@
             </svg>
           </div>
 
-          <!-- Curriculum Workspace Quick-Action Toolbar & Partner Links -->
-          <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-xs space-y-3.5">
-            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
-              <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
-                <span class="text-amber-500">🛠️</span>
-                <span>Curriculum Authoring &amp; Review Tools</span>
-              </div>
-              <div class="flex items-center gap-2 text-xs">
-                <span class="text-slate-400 text-[11px]">Academic Consoles:</span>
-                <button type="button" onclick="selectProgram('BSCpE', 'syllabus')" class="px-2.5 py-1 bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300 border border-sky-200 dark:border-sky-800 font-bold text-[10px] hover:bg-sky-100 dark:hover:bg-sky-900 hover:border-sky-400 dark:hover:border-sky-600 hover:shadow-xs hover:-translate-y-0.5 transition-all duration-150 cursor-pointer">
-                  📘 Syllabus Management
-                </button>
-                <button type="button" onclick="selectProgram('BSCpE', 'course')" class="px-2.5 py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold text-[10px] hover:bg-emerald-100 dark:hover:bg-emerald-900 hover:border-emerald-400 dark:hover:border-emerald-600 hover:shadow-xs hover:-translate-y-0.5 transition-all duration-150 cursor-pointer">
-                  📗 Course Management
-                </button>
-              </div>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-              <button type="button" onclick="selectProgram('BSCpE', 'flowchart')" class="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-600 hover:border-[#002855] dark:hover:border-[#E5A823] text-left transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md hover:-translate-y-1">
-                <div class="text-lg mb-1 group-hover:scale-110 transition-transform duration-150">📊</div>
-                <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-[#E5A823]">Curriculum Flowchart</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">DAG Prerequisite Network</div>
-              </button>
-              <button type="button" onclick="selectProgram('BSCpE', 'spreadsheet')" class="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-600 hover:border-[#002855] dark:hover:border-[#E5A823] text-left transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md hover:-translate-y-1">
-                <div class="text-lg mb-1 group-hover:scale-110 transition-transform duration-150">📑</div>
-                <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-[#E5A823]">Curriculum Spreadsheet</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Catalog &amp; Mass Cell Editor</div>
-              </button>
-              <button type="button" onclick="selectProgram('BSCpE', 'dashboard')" class="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-600 hover:border-[#002855] dark:hover:border-[#E5A823] text-left transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md hover:-translate-y-1">
-                <div class="text-lg mb-1 group-hover:scale-110 transition-transform duration-150">⚖️</div>
-                <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-[#E5A823]">Curriculum Dashboard</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">CHED CMO 92 &amp; Analytics</div>
-              </button>
-              <button type="button" onclick="selectProgram('BSCpE', 'obe')" class="p-3.5 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700/90 border border-slate-300 dark:border-slate-600 hover:border-[#002855] dark:hover:border-[#E5A823] text-left transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md hover:-translate-y-1">
-                <div class="text-lg mb-1 group-hover:scale-110 transition-transform duration-150">🎯</div>
-                <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-[#E5A823]">OBE Matrix</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Student Outcomes a–m</div>
-              </button>
-            </div>
-          </div>
-
           <!-- Section Label: By Academic Year Breakdown (with generous whitespace & separation) -->
-          <div class="pt-8 pb-4 mt-8 border-t border-slate-200 dark:border-slate-800">
+          <div class="pt-2 pb-4 mt-6">
             <div class="flex items-center justify-between">
               <div class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <span class="w-2.5 h-2.5 bg-[#E5A823] shrink-0"></span>
@@ -1780,37 +1739,12 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400">Sequence layout across 12 trimesters with real-time arrow connectors. Hover or click any course to trace prerequisite flow.</p>
               </div>
 
-              <!-- Top Right Controls: Year Filter, Navigation & Toggles -->
+              <!-- Top Right Controls: Navigation -->
               <div class="flex flex-wrap items-center gap-2 select-none">
                 <!-- Back to Curriculum Management Hub -->
                 <button type="button" onclick="navigateView('curriculum-home')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer" title="Return to Curriculum Management Hub">
                   <svg class="w-3.5 h-3.5 text-[#002855] dark:text-[#E5A823]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                   <span>Back to Hub</span>
-                </button>
-
-                <!-- Year Filter Tabs -->
-                <div class="inline-flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
-                  <span class="px-2 py-1 text-[10px] text-slate-500 uppercase">View:</span>
-                  <button type="button" id="flowYearBtn-all" onclick="setFlowchartYearFilter('all')" class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-bold transition cursor-pointer shadow-xs border border-[#002855]" title="All 4 Academic Years (Full 12-Term Matrix)">All</button>
-                  <button type="button" id="flowYearBtn-1" onclick="setFlowchartYearFilter(1)" class="px-2.5 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition cursor-pointer" title="Year 1 Only (Terms 1–3)">Y1</button>
-                  <button type="button" id="flowYearBtn-2" onclick="setFlowchartYearFilter(2)" class="px-2.5 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition cursor-pointer" title="Year 2 Only (Terms 4–6)">Y2</button>
-                  <button type="button" id="flowYearBtn-3" onclick="setFlowchartYearFilter(3)" class="px-2.5 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition cursor-pointer" title="Year 3 Only (Terms 7–9)">Y3</button>
-                  <button type="button" id="flowYearBtn-4" onclick="setFlowchartYearFilter(4)" class="px-2.5 py-1 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition cursor-pointer" title="Year 4 Only (Terms 10–12)">Y4</button>
-                </div>
-
-                <!-- Arrows Toggle -->
-                <button type="button" id="btnToggleAllArrows" onclick="toggleShowAllArrows()" class="px-3 py-1.5 bg-[#002855] text-[#E5A823] border border-[#002855] font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-xs" title="Toggle between all visible arrows or trace-on-hover mode">
-                  <span id="allArrowsLabel">All Arrows: ON</span>
-                </button>
-
-                <!-- Requisite Filter Mode -->
-                <button type="button" id="btnToggleRequisiteMode" onclick="switchRequisiteMode()" class="px-3 py-1.5 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer" title="Toggle between Direct prerequisites only and full dependency chains">
-                  <span id="requisiteModeLabel">Direct Only</span>
-                </button>
-
-                <!-- Reset Highlight Button -->
-                <button type="button" onclick="clearFlowchartHighlight()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold transition cursor-pointer" title="Clear selection and reset highlights">
-                  <span>↺ Reset</span>
                 </button>
               </div>
             </div>
