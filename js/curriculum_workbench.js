@@ -390,6 +390,10 @@
       }
 
       updateNavHistoryButtons();
+
+      if (window.spaRouter && typeof window.spaRouter.onNavStep === 'function') {
+        window.spaRouter.onNavStep(entry);
+      }
     }
 
     function updateNavHistoryButtons() {
@@ -444,6 +448,20 @@
       updateNavHistoryButtons();
     }
 
+    function syncNavHistoryFromPopState(routeState) {
+      if (!routeState) return;
+      const targetSig = `${routeState.type || ''}|${routeState.schoolId || ''}|${routeState.progCode || ''}|${routeState.targetView || ''}|${routeState.regDocIdx || ''}`;
+      const foundIdx = navHistory.findIndex(entry => {
+        const entrySig = `${entry.type || ''}|${entry.schoolId || ''}|${entry.progCode || ''}|${entry.targetView || ''}|${entry.regDocIdx || ''}`;
+        return entrySig === targetSig;
+      });
+      if (foundIdx !== -1) {
+        navHistoryIndex = foundIdx;
+      }
+      updateNavHistoryButtons();
+    }
+    window.syncNavHistoryFromPopState = syncNavHistoryFromPopState;
+
     function executeNavState(state) {
       if (!state) return;
       isNavigatingHistory = true;
@@ -467,6 +485,9 @@
         if (state.pathText) {
           const pathPill = document.getElementById('topBarPathPill');
           if (pathPill) pathPill.innerText = state.pathText;
+        }
+        if (window.spaRouter && typeof window.spaRouter.updateBrowserUrl === 'function') {
+          window.spaRouter.updateBrowserUrl(state, true);
         }
       } finally {
         isNavigatingHistory = false;
@@ -1308,6 +1329,9 @@
       const screen = document.getElementById('loginLandingScreen');
       if (screen) {
         screen.classList.remove('hidden');
+      }
+      if (window.spaRouter && typeof window.spaRouter.updateBrowserUrl === 'function') {
+        window.spaRouter.updateBrowserUrl({ type: 'admin', targetView: 'home', isRoot: true }, true);
       }
       showToast('Signed out of APC RAMS Curriculum Suite.');
     }
@@ -2190,6 +2214,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     function switchRegistrarDocTab(tabIdx) {
       currentRegistrarTab = tabIdx;
+      window.currentRegistrarTab = tabIdx;
+      if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
+        window.spaRouter.updateParam('sheet', tabIdx);
+      }
       
       // Ensure documents are mounted if not yet mounted
       if (typeof mountRegistrarDocs === 'function') {
@@ -2752,6 +2780,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
       // Expand year accordion in sidebar after navigation settles
       setTimeout(() => _expandSidebarYear(prog, yearNum, 'flowchart'), 60);
+      if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
+        window.spaRouter.updateParam('year', yearNum);
+      }
     }
     window.openFlowchartForYear = openFlowchartForYear;
 
@@ -2771,6 +2802,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
       // Expand year accordion in sidebar after navigation settles
       setTimeout(() => _expandSidebarYear(prog, yearNum, 'spreadsheet'), 60);
+      if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
+        window.spaRouter.updateParam('year', yearNum);
+      }
     }
     window.openSpreadsheetForYear = openSpreadsheetForYear;
 
@@ -2890,6 +2924,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       sheetTermFilter = document.getElementById('sheetTermFilter')?.value || 'all';
       sheetGroupFilter = document.getElementById('sheetGroupFilter')?.value || 'all';
       renderSpreadsheetGrid();
+      if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
+        window.spaRouter.updateParam('year', sheetYearFilter);
+      }
     }
 
     let excelGridTotalRows = 120;
@@ -3789,13 +3826,23 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.populateCategoryDropdowns = populateCategoryDropdowns;
     window.refreshAllCategoryViews = refreshAllCategoryViews;
     window.getCategoryMeta = getCategoryMeta;
+    window.selectProgram = selectProgram;
+    window.goToSchoolExd = goToSchoolExd;
+    window.renderAdminOverview = renderAdminOverview;
+    window.navigateView = navigateView;
+    window.switchRole = switchRole;
+    window.executeNavState = executeNavState;
+    window.currentRegistrarTab = currentRegistrarTab;
+    window.navHistoryBack = navHistoryBack;
+    window.navHistoryForward = navHistoryForward;
 
-    // Initialize categories and legend on load
+    // Initialize categories, legend, and auth check on load
     try {
       renderFlowchartLegend();
       populateCategoryDropdowns();
+      checkInitialAuthState();
     } catch (e) {
-      console.warn('Initial category setup warning:', e);
+      console.warn('Initial setup warning:', e);
     }
 
 

@@ -2,6 +2,11 @@
 <html lang="en" class="h-full bg-slate-100">
 <head>
   <meta charset="UTF-8">
+  <script>
+    if (window.location.protocol !== 'file:') {
+      document.write('<base href="/">');
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APC School of Engineering — Centralized Curriculum Management System</title>
   <!-- Tailwind CSS via CDN -->
@@ -8071,5 +8076,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
   <!-- APC Top Bar Interactive Breadcrumbs & Quick Navigation Command Palette -->
   <script src="js/top_bar_nav.js"></script>
+  <!-- APC SPA HTML5 History Dynamic URL Router & Deep Linking Engine -->
+  <script src="js/spa_router.js"></script>
 </body>
 </html>

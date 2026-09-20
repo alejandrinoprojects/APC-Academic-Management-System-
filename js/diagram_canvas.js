@@ -711,6 +711,10 @@
       const yLabel = (flowchartActiveYear === 'all') ? 'All 4 Academic Years' : `Year ${flowchartActiveYear}`;
       window.showToast(`Flowchart: Showing ${yLabel}`);
     }
+
+    if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
+      window.spaRouter.updateParam('year', flowchartActiveYear);
+    }
   }
 
   function diagramScrollToYear(yearNum) {
