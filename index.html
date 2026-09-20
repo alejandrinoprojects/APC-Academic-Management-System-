@@ -4135,45 +4135,57 @@
                 <div id="exdDegreeProgramsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                   <!-- ─── PROGRAM CARD 1: COMPUTER ENGINEERING (BSCpE) ─── -->
-                  <div onclick="selectProgram('BSCpE', 'homePdProgramView')" class="program-card bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-xs flex flex-col justify-between overflow-hidden relative cursor-pointer hover:border-[#002855] hover:shadow-md transition-all group">
-                    <!-- Top Navy Banner with Emblem -->
-                    <div class="relative bg-[#002855] text-white p-4 border-b border-[#001733] flex items-center justify-between">
-                      <div class="space-y-0.5">
-                        <div class="inline-flex items-center gap-1.5 px-1.5 py-0.2 bg-black/40 text-[#E5A823] text-[9px] font-mono font-bold border border-[#E5A823]/30">
-                          <span>BSCpE</span>
-                          <span>&bull;</span>
-                          <span>ACTIVE BASELINE</span>
-                        </div>
-                        <h3 class="text-sm font-black uppercase tracking-tight text-white group-hover:text-amber-300 transition-colors">
-                          Computer Engineering
-                        </h3>
-                      </div>
-                      <div class="w-10 h-10 bg-blue-950/80 border border-[#E5A823]/40 text-[#E5A823] flex items-center justify-center text-base shrink-0 font-mono font-bold">
-                        ⚡
+                  <div onclick="selectProgram('BSCpE', 'homePdProgramView')" class="program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all group">
+                    <!-- Decorative Thematic Top Banner: Circuit Microchip -->
+                    <div class="relative h-28 bg-[#101826] overflow-hidden flex flex-col items-center justify-center text-center p-3">
+                      <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                        <polygon points="0,0 130,0 80,120 0,120" fill="#1b2a47" fill-opacity="0.8"/>
+                        <polygon points="170,0 300,0 300,120 220,120" fill="#16233b" fill-opacity="0.8"/>
+                        <line x1="10" y1="20" x2="90" y2="20" stroke="#38BDF8" stroke-width="1.5"/>
+                        <line x1="90" y1="20" x2="110" y2="40" stroke="#38BDF8" stroke-width="1.5"/>
+                        <circle cx="10" cy="20" r="3" fill="#38BDF8"/>
+                        <circle cx="110" cy="40" r="2.5" fill="#38BDF8"/>
+                        <line x1="60" y1="30" x2="120" y2="30" stroke="#38BDF8" stroke-width="1.5"/>
+                        <line x1="120" y1="30" x2="150" y2="60" stroke="#38BDF8" stroke-width="1.5"/>
+                        <circle cx="60" cy="30" r="3" fill="#38BDF8"/>
+                        <line x1="180" y1="90" x2="240" y2="90" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="240" y1="90" x2="260" y2="70" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="260" y1="70" x2="290" y2="70" stroke="#FF6B00" stroke-width="1.5"/>
+                        <circle cx="240" cy="90" r="3" fill="#FF6B00"/>
+                        <circle cx="290" cy="70" r="2.5" fill="#FF6B00"/>
+                        <rect x="135" y="45" width="30" height="30" rx="2" fill="#1b2a47" stroke="#38BDF8" stroke-width="1.5"/>
+                        <rect x="142" y="52" width="16" height="16" fill="#0b1728"/>
+                      </svg>
+                      <div class="w-8 h-8 rounded-sm bg-sky-500/15 border border-sky-500/40 flex items-center justify-center text-[#38BDF8] text-xs font-mono font-bold mb-1 shadow-sm">&lt;/&gt;</div>
+                      <div class="relative z-10 leading-tight">
+                        <span class="block text-[10px] font-black text-slate-300 tracking-widest uppercase drop-shadow-md">BACHELOR OF SCIENCE IN</span>
+                        <span class="block text-sm sm:text-base font-black text-[#FF6B00] group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">COMPUTER ENGINEERING</span>
                       </div>
                     </div>
+                    <!-- Horizontal Colored Separator Stripe -->
+                    <div class="h-0.5 bg-[#FF6B00] w-full"></div>
 
                     <!-- Card Body -->
                     <div class="p-4 text-slate-800 dark:text-slate-200 space-y-3 flex-1 flex flex-col justify-between">
                       <div class="space-y-3">
                         <!-- Director Info Box -->
-                        <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-2.5 space-y-0.5">
+                        <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2.5 space-y-0.5">
                           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Program Director</span>
-                          <span id="exdProgDirector_BSCpE" class="text-xs font-bold text-[#002855] dark:text-sky-300 block">Engr. Sergio R. Peruda Jr.</span>
+                          <span id="exdProgDirector_BSCpE" class="text-xs font-bold text-slate-900 dark:text-sky-300 block">Engr. Sergio R. Peruda Jr.</span>
                         </div>
 
                         <!-- Active Curriculums -->
                         <div class="space-y-1.5">
                           <div class="flex items-center justify-between">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Curriculum Editions</span>
-                            <span class="text-[10px] text-slate-400 font-mono">74 Courses &bull; 184u</span>
+                            <span class="text-[10px] text-amber-500 dark:text-amber-400 font-mono">74 Courses &bull; 184u</span>
                           </div>
                           <div class="space-y-1 text-xs font-mono">
-                            <div onclick="event.stopPropagation(); selectProgram('BSCpE', 'curriculum-home')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-slate-800/40 hover:bg-amber-50 dark:hover:bg-amber-950/30 border border-slate-200 dark:border-slate-700 transition">
+                            <div onclick="event.stopPropagation(); selectProgram('BSCpE', 'curriculum-home')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-[#10151E] hover:bg-amber-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 transition">
                               <span class="font-semibold text-slate-800 dark:text-slate-200">AY 2026–2030</span>
                               <span class="text-[9px] font-bold px-1.5 py-0.2 bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800">Active Baseline</span>
                             </div>
-                            <div onclick="event.stopPropagation(); selectProgram('BSCpE', 'curriculum-home')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-slate-800/40 hover:bg-amber-50 dark:hover:bg-amber-950/30 border border-slate-200 dark:border-slate-700 transition">
+                            <div onclick="event.stopPropagation(); selectProgram('BSCpE', 'curriculum-home')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-[#10151E] hover:bg-amber-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 transition">
                               <span class="text-slate-600 dark:text-slate-400">AY 2025–2029</span>
                               <span class="text-[9px] font-bold px-1.5 py-0.2 bg-slate-200 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">Previous</span>
                             </div>
@@ -4182,54 +4194,67 @@
                       </div>
 
                       <!-- Bottom Actions -->
-                      <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-end">
-                        <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSCpE')" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSCpE Program &amp; Director">
-                          ✎
-                        </button>
+                      <div class="space-y-3 pt-2">
+                        <div class="border-t border-slate-200 dark:border-slate-700/60 pt-2 flex items-center justify-end">
+                          <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSCpE')" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSCpE Program &amp; Director">
+                            ✎
+                          </button>
+                        </div>
+                        <div class="h-2 bg-[#FF6B00] w-full -mb-4 -mx-4"></div>
                       </div>
                     </div>
                   </div>
 
                   <!-- ─── PROGRAM CARD 2: CIVIL ENGINEERING (BSCE) ─── -->
-                  <div onclick="selectProgram('BSCE', 'homePdProgramView')" class="program-card bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-xs flex flex-col justify-between overflow-hidden relative cursor-pointer hover:border-[#002855] hover:shadow-md transition-all group">
-                    <!-- Top Navy Banner with Emblem -->
-                    <div class="relative bg-[#002855] text-white p-4 border-b border-[#001733] flex items-center justify-between">
-                      <div class="space-y-0.5">
-                        <div class="inline-flex items-center gap-1.5 px-1.5 py-0.2 bg-black/40 text-[#E5A823] text-[9px] font-mono font-bold border border-[#E5A823]/30">
-                          <span>BSCE</span>
-                          <span>&bull;</span>
-                          <span>CIVIL CORE</span>
-                        </div>
-                        <h3 class="text-sm font-black uppercase tracking-tight text-white group-hover:text-amber-300 transition-colors">
-                          Civil Engineering
-                        </h3>
-                      </div>
-                      <div class="w-10 h-10 bg-blue-950/80 border border-[#E5A823]/40 text-[#E5A823] flex items-center justify-center text-base shrink-0 font-mono font-bold">
-                        🏗️
+                  <div onclick="selectProgram('BSCE', 'homePdProgramView')" class="program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all group">
+                    <!-- Decorative Thematic Top Banner: Structural Truss -->
+                    <div class="relative h-28 bg-[#0f1b26] overflow-hidden flex flex-col items-center justify-center text-center p-3">
+                      <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                        <polygon points="0,0 150,0 75,120 0,120" fill="#152433" fill-opacity="0.8"/>
+                        <polygon points="120,0 300,0 300,120 200,120" fill="#1d3042" fill-opacity="0.8"/>
+                        <line x1="0" y1="120" x2="300" y2="120" stroke="#FF6B00" stroke-width="2"/>
+                        <line x1="0" y1="60" x2="300" y2="60" stroke="#FF6B00" stroke-width="1.5" stroke-dasharray="4 2"/>
+                        <line x1="0" y1="10" x2="300" y2="10" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.5"/>
+                        <line x1="20" y1="120" x2="60" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="60" y1="60" x2="100" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="100" y1="120" x2="140" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="140" y1="60" x2="180" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="180" y1="120" x2="220" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                        <line x1="220" y1="60" x2="260" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
+                        <circle cx="60" cy="60" r="3" fill="#FF6B00"/>
+                        <circle cx="140" cy="60" r="3" fill="#FF6B00"/>
+                        <circle cx="220" cy="60" r="3" fill="#FF6B00"/>
+                      </svg>
+                      <div class="w-8 h-8 rounded-sm bg-orange-500/15 border border-orange-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">🏗️</div>
+                      <div class="relative z-10 leading-tight">
+                        <span class="block text-[10px] font-black text-slate-300 tracking-widest uppercase drop-shadow-md">BACHELOR OF SCIENCE IN</span>
+                        <span class="block text-sm sm:text-base font-black text-[#FF6B00] group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">CIVIL ENGINEERING</span>
                       </div>
                     </div>
+                    <!-- Horizontal Colored Separator Stripe -->
+                    <div class="h-0.5 bg-[#FF6B00] w-full"></div>
 
                     <!-- Card Body -->
                     <div class="p-4 text-slate-800 dark:text-slate-200 space-y-3 flex-1 flex flex-col justify-between">
                       <div class="space-y-3">
                         <!-- Director Info Box -->
-                        <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-2.5 space-y-0.5">
+                        <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2.5 space-y-0.5">
                           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Program Director</span>
-                          <span id="exdProgDirector_BSCE" class="text-xs font-bold text-[#002855] dark:text-sky-300 block">Engr. Ronald V. Santos</span>
+                          <span id="exdProgDirector_BSCE" class="text-xs font-bold text-slate-900 dark:text-sky-300 block">Engr. Ronald V. Santos</span>
                         </div>
 
                         <!-- Active Curriculums -->
                         <div class="space-y-1.5">
                           <div class="flex items-center justify-between">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Curriculum Editions</span>
-                            <span class="text-[10px] text-slate-400 font-mono">Structural &bull; Geo</span>
+                            <span class="text-[10px] text-amber-500 dark:text-amber-400 font-mono">Structural &bull; Geo</span>
                           </div>
                           <div class="space-y-1 text-xs font-mono">
-                            <div onclick="event.stopPropagation(); selectProgram('BSCE', 'flowchart')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-slate-800/40 hover:bg-amber-50 dark:hover:bg-amber-950/30 border border-slate-200 dark:border-slate-700 transition">
+                            <div onclick="event.stopPropagation(); selectProgram('BSCE', 'flowchart')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-[#10151E] hover:bg-amber-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 transition">
                               <span class="font-semibold text-slate-800 dark:text-slate-200">AY 2026–2030</span>
                               <span class="text-[9px] font-bold px-1.5 py-0.2 bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800">Active Baseline</span>
                             </div>
-                            <div onclick="event.stopPropagation(); selectProgram('BSCE', 'flowchart')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-slate-800/40 hover:bg-amber-50 dark:hover:bg-amber-950/30 border border-slate-200 dark:border-slate-700 transition">
+                            <div onclick="event.stopPropagation(); selectProgram('BSCE', 'flowchart')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-[#10151E] hover:bg-amber-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 transition">
                               <span class="text-slate-600 dark:text-slate-400">AY 2025–2029</span>
                               <span class="text-[9px] font-bold px-1.5 py-0.2 bg-slate-200 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">Previous</span>
                             </div>
@@ -4238,54 +4263,61 @@
                       </div>
 
                       <!-- Bottom Actions -->
-                      <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-end">
-                        <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSCE')" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSCE Program &amp; Director">
-                          ✎
-                        </button>
+                      <div class="space-y-3 pt-2">
+                        <div class="border-t border-slate-200 dark:border-slate-700/60 pt-2 flex items-center justify-end">
+                          <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSCE')" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSCE Program &amp; Director">
+                            ✎
+                          </button>
+                        </div>
+                        <div class="h-2 bg-[#FF6B00] w-full -mb-4 -mx-4"></div>
                       </div>
                     </div>
                   </div>
 
                   <!-- ─── PROGRAM CARD 3: ELECTRONICS ENGINEERING (BSECE) ─── -->
-                  <div onclick="selectProgram('BSECE', 'homePdProgramView')" class="program-card bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-xs flex flex-col justify-between overflow-hidden relative cursor-pointer hover:border-[#002855] hover:shadow-md transition-all group">
-                    <!-- Top Navy Banner with Emblem -->
-                    <div class="relative bg-[#002855] text-white p-4 border-b border-[#001733] flex items-center justify-between">
-                      <div class="space-y-0.5">
-                        <div class="inline-flex items-center gap-1.5 px-1.5 py-0.2 bg-black/40 text-[#E5A823] text-[9px] font-mono font-bold border border-[#E5A823]/30">
-                          <span>BSECE</span>
-                          <span>&bull;</span>
-                          <span>COMM &bull; VLSI</span>
-                        </div>
-                        <h3 class="text-sm font-black uppercase tracking-tight text-white group-hover:text-amber-300 transition-colors">
-                          Electronics Engineering
-                        </h3>
-                      </div>
-                      <div class="w-10 h-10 bg-blue-950/80 border border-[#E5A823]/40 text-[#E5A823] flex items-center justify-center text-base shrink-0 font-mono font-bold">
-                        📡
+                  <div onclick="selectProgram('BSECE', 'homePdProgramView')" class="program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all group">
+                    <!-- Decorative Thematic Top Banner: Electronic Waveforms -->
+                    <div class="relative h-28 bg-[#161226] overflow-hidden flex flex-col items-center justify-center text-center p-3">
+                      <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                        <polygon points="0,0 120,0 80,120 0,120" fill="#1e1833" fill-opacity="0.8"/>
+                        <polygon points="180,0 300,0 300,120 150,120" fill="#141024" fill-opacity="0.8"/>
+                        <path d="M0 60 Q 35 15, 70 60 T 140 60 T 210 60 T 280 60" stroke="#FF6B00" stroke-width="2" fill="none"/>
+                        <path d="M0 75 Q 35 45, 70 75 T 140 75 T 210 75 T 280 75" stroke="#A855F7" stroke-width="1.5" stroke-opacity="0.7" fill="none"/>
+                        <circle cx="70" cy="60" r="3.5" fill="#FF6B00"/>
+                        <circle cx="140" cy="60" r="3.5" fill="#FF6B00"/>
+                        <circle cx="210" cy="60" r="3.5" fill="#FF6B00"/>
+                        <circle cx="280" cy="60" r="3.5" fill="#FF6B00"/>
+                      </svg>
+                      <div class="w-8 h-8 rounded-sm bg-orange-500/15 border border-orange-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">📡</div>
+                      <div class="relative z-10 leading-tight">
+                        <span class="block text-[10px] font-black text-slate-300 tracking-widest uppercase drop-shadow-md">BACHELOR OF SCIENCE IN</span>
+                        <span class="block text-sm sm:text-base font-black text-[#FF6B00] group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">ELECTRONICS ENGINEERING</span>
                       </div>
                     </div>
+                    <!-- Horizontal Colored Separator Stripe -->
+                    <div class="h-0.5 bg-[#FF6B00] w-full"></div>
 
                     <!-- Card Body -->
                     <div class="p-4 text-slate-800 dark:text-slate-200 space-y-3 flex-1 flex flex-col justify-between">
                       <div class="space-y-3">
                         <!-- Director Info Box -->
-                        <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 p-2.5 space-y-0.5">
+                        <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2.5 space-y-0.5">
                           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Program Director</span>
-                          <span id="exdProgDirector_BSECE" class="text-xs font-bold text-[#002855] dark:text-sky-300 block">Engr. Melissa C. David</span>
+                          <span id="exdProgDirector_BSECE" class="text-xs font-bold text-slate-900 dark:text-sky-300 block">Engr. Melissa C. David</span>
                         </div>
 
                         <!-- Active Curriculums -->
                         <div class="space-y-1.5">
                           <div class="flex items-center justify-between">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Curriculum Editions</span>
-                            <span class="text-[10px] text-slate-400 font-mono">RF &bull; Microelectronics</span>
+                            <span class="text-[10px] text-amber-500 dark:text-amber-400 font-mono">RF &bull; Microelectronics</span>
                           </div>
                           <div class="space-y-1 text-xs font-mono">
-                            <div onclick="event.stopPropagation(); selectProgram('BSECE', 'flowchart')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-slate-800/40 hover:bg-amber-50 dark:hover:bg-amber-950/30 border border-slate-200 dark:border-slate-700 transition">
+                            <div onclick="event.stopPropagation(); selectProgram('BSECE', 'flowchart')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-[#10151E] hover:bg-amber-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 transition">
                               <span class="font-semibold text-slate-800 dark:text-slate-200">AY 2026–2030</span>
                               <span class="text-[9px] font-bold px-1.5 py-0.2 bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800">Active Baseline</span>
                             </div>
-                            <div onclick="event.stopPropagation(); selectProgram('BSECE', 'flowchart')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-slate-800/40 hover:bg-amber-50 dark:hover:bg-amber-950/30 border border-slate-200 dark:border-slate-700 transition">
+                            <div onclick="event.stopPropagation(); selectProgram('BSECE', 'flowchart')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-[#10151E] hover:bg-amber-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 transition">
                               <span class="text-slate-600 dark:text-slate-400">AY 2025–2029</span>
                               <span class="text-[9px] font-bold px-1.5 py-0.2 bg-slate-200 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">Previous</span>
                             </div>
@@ -4294,10 +4326,13 @@
                       </div>
 
                       <!-- Bottom Actions -->
-                      <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-end">
-                        <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSECE')" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSECE Program &amp; Director">
-                          ✎
-                        </button>
+                      <div class="space-y-3 pt-2">
+                        <div class="border-t border-slate-200 dark:border-slate-700/60 pt-2 flex items-center justify-end">
+                          <button type="button" onclick="event.stopPropagation(); openEditProgramModal('BSECE')" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit BSECE Program &amp; Director">
+                            ✎
+                          </button>
+                        </div>
+                        <div class="h-2 bg-[#FF6B00] w-full -mb-4 -mx-4"></div>
                       </div>
                     </div>
                   </div>

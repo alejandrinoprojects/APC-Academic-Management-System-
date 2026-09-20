@@ -869,6 +869,270 @@
           </div>`;
       }
 
+    function getProgramBannerConfig(progCode, progName, schoolColor = '#FF6B00') {
+      const code = String(progCode || '').trim();
+      const name = String(progName || '').trim();
+
+      let subTitle = 'BACHELOR OF SCIENCE IN';
+      let title = name.toUpperCase();
+      if (title.startsWith('BACHELOR OF SCIENCE IN ')) {
+        subTitle = 'BACHELOR OF SCIENCE IN';
+        title = title.replace('BACHELOR OF SCIENCE IN ', '');
+      } else if (title.startsWith('BACHELOR OF MULTIMEDIA ARTS')) {
+        subTitle = 'BACHELOR OF';
+        title = 'MULTIMEDIA ARTS';
+      } else if (title.startsWith('BACHELOR OF ')) {
+        subTitle = 'BACHELOR OF';
+        title = title.replace('BACHELOR OF ', '');
+      }
+
+      switch (code) {
+        case 'BSCpE':
+          return {
+            subTitle,
+            title: title || 'COMPUTER ENGINEERING',
+            accentColor: '#FF6B00',
+            bgClass: 'bg-[#101826]',
+            titleColor: 'text-[#FF6B00]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-sky-500/15 border border-sky-500/40 flex items-center justify-center text-[#38BDF8] text-xs font-mono font-bold mb-1 shadow-sm">&lt;/&gt;</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 130,0 80,120 0,120" fill="#1b2a47" fill-opacity="0.8"/>
+                <polygon points="170,0 300,0 300,120 220,120" fill="#16233b" fill-opacity="0.8"/>
+                <line x1="10" y1="20" x2="90" y2="20" stroke="#38BDF8" stroke-width="1.5"/>
+                <line x1="90" y1="20" x2="110" y2="40" stroke="#38BDF8" stroke-width="1.5"/>
+                <circle cx="10" cy="20" r="3" fill="#38BDF8"/>
+                <circle cx="110" cy="40" r="2.5" fill="#38BDF8"/>
+                <line x1="60" y1="30" x2="120" y2="30" stroke="#38BDF8" stroke-width="1.5"/>
+                <line x1="120" y1="30" x2="150" y2="60" stroke="#38BDF8" stroke-width="1.5"/>
+                <circle cx="60" cy="30" r="3" fill="#38BDF8"/>
+                <line x1="180" y1="90" x2="240" y2="90" stroke="#FF6B00" stroke-width="1.5"/>
+                <line x1="240" y1="90" x2="260" y2="70" stroke="#FF6B00" stroke-width="1.5"/>
+                <line x1="260" y1="70" x2="290" y2="70" stroke="#FF6B00" stroke-width="1.5"/>
+                <circle cx="240" cy="90" r="3" fill="#FF6B00"/>
+                <circle cx="290" cy="70" r="2.5" fill="#FF6B00"/>
+                <rect x="135" y="45" width="30" height="30" rx="2" fill="#1b2a47" stroke="#38BDF8" stroke-width="1.5"/>
+                <rect x="142" y="52" width="16" height="16" fill="#0b1728"/>
+              </svg>`
+          };
+
+        case 'BSCE':
+          return {
+            subTitle,
+            title: title || 'CIVIL ENGINEERING',
+            accentColor: '#FF6B00',
+            bgClass: 'bg-[#0f1b26]',
+            titleColor: 'text-[#FF6B00]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-orange-500/15 border border-orange-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">🏗️</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 150,0 75,120 0,120" fill="#152433" fill-opacity="0.8"/>
+                <polygon points="120,0 300,0 300,120 200,120" fill="#1d3042" fill-opacity="0.8"/>
+                <line x1="0" y1="120" x2="300" y2="120" stroke="#FF6B00" stroke-width="2"/>
+                <line x1="0" y1="60" x2="300" y2="60" stroke="#FF6B00" stroke-width="1.5" stroke-dasharray="4 2"/>
+                <line x1="0" y1="10" x2="300" y2="10" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.5"/>
+                <line x1="20" y1="120" x2="60" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                <line x1="60" y1="60" x2="100" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
+                <line x1="100" y1="120" x2="140" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                <line x1="140" y1="60" x2="180" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
+                <line x1="180" y1="120" x2="220" y2="60" stroke="#FF6B00" stroke-width="1.5"/>
+                <line x1="220" y1="60" x2="260" y2="120" stroke="#FF6B00" stroke-width="1.5"/>
+                <circle cx="60" cy="60" r="3" fill="#FF6B00"/>
+                <circle cx="140" cy="60" r="3" fill="#FF6B00"/>
+                <circle cx="220" cy="60" r="3" fill="#FF6B00"/>
+              </svg>`
+          };
+
+        case 'BSECE':
+          return {
+            subTitle,
+            title: title || 'ELECTRONICS ENGINEERING',
+            accentColor: '#FF6B00',
+            bgClass: 'bg-[#161226]',
+            titleColor: 'text-[#FF6B00]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-orange-500/15 border border-orange-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">📡</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 120,0 80,120 0,120" fill="#1e1833" fill-opacity="0.8"/>
+                <polygon points="180,0 300,0 300,120 150,120" fill="#141024" fill-opacity="0.8"/>
+                <path d="M0 60 Q 35 15, 70 60 T 140 60 T 210 60 T 280 60" stroke="#FF6B00" stroke-width="2" fill="none"/>
+                <path d="M0 75 Q 35 45, 70 75 T 140 75 T 210 75 T 280 75" stroke="#A855F7" stroke-width="1.5" stroke-opacity="0.7" fill="none"/>
+                <circle cx="70" cy="60" r="3.5" fill="#FF6B00"/>
+                <circle cx="140" cy="60" r="3.5" fill="#FF6B00"/>
+                <circle cx="210" cy="60" r="3.5" fill="#FF6B00"/>
+                <circle cx="280" cy="60" r="3.5" fill="#FF6B00"/>
+              </svg>`
+          };
+
+        case 'BSCS':
+          return {
+            subTitle,
+            title: title || 'COMPUTER SCIENCE',
+            accentColor: '#00A4EF',
+            bgClass: 'bg-[#08182b]',
+            titleColor: 'text-[#00A4EF]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-sky-500/15 border border-sky-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">💻</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 140,0 90,120 0,120" fill="#082032" fill-opacity="0.8"/>
+                <polygon points="160,0 300,0 300,120 210,120" fill="#0e2a47" fill-opacity="0.8"/>
+                <line x1="30" y1="40" x2="100" y2="25" stroke="#00A4EF" stroke-width="1.5"/>
+                <line x1="100" y1="25" x2="150" y2="70" stroke="#00A4EF" stroke-width="1.5"/>
+                <line x1="150" y1="70" x2="220" y2="40" stroke="#00A4EF" stroke-width="1.5"/>
+                <line x1="220" y1="40" x2="270" y2="85" stroke="#00A4EF" stroke-width="1.5"/>
+                <circle cx="30" cy="40" r="3.5" fill="#00A4EF"/>
+                <circle cx="100" cy="25" r="4" fill="#38BDF8"/>
+                <circle cx="150" cy="70" r="4.5" fill="#E5A823"/>
+                <circle cx="220" cy="40" r="4" fill="#38BDF8"/>
+                <circle cx="270" cy="85" r="3.5" fill="#00A4EF"/>
+              </svg>`
+          };
+
+        case 'BSIT':
+          return {
+            subTitle,
+            title: title || 'INFORMATION TECHNOLOGY',
+            accentColor: '#00A4EF',
+            bgClass: 'bg-[#08182b]',
+            titleColor: 'text-[#00A4EF]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-sky-500/15 border border-sky-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">🌐</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 120,0 70,120 0,120" fill="#0a1e36" fill-opacity="0.8"/>
+                <polygon points="180,0 300,0 300,120 160,120" fill="#06182c" fill-opacity="0.8"/>
+                <rect x="50" y="30" width="45" height="15" rx="2" stroke="#00A4EF" stroke-width="1.5" fill="#092240"/>
+                <rect x="50" y="55" width="45" height="15" rx="2" stroke="#00A4EF" stroke-width="1.5" fill="#092240"/>
+                <line x1="95" y1="37" x2="160" y2="37" stroke="#38BDF8" stroke-width="1.5"/>
+                <line x1="160" y1="37" x2="190" y2="65" stroke="#38BDF8" stroke-width="1.5"/>
+                <circle cx="190" cy="65" r="4" fill="#E5A823"/>
+                <line x1="190" y1="65" x2="250" y2="65" stroke="#00A4EF" stroke-width="1.5"/>
+                <circle cx="250" cy="65" r="3" fill="#00A4EF"/>
+              </svg>`
+          };
+
+        case 'BMMA':
+          return {
+            subTitle,
+            title: title || 'MULTIMEDIA ARTS',
+            accentColor: '#EF4444',
+            bgClass: 'bg-[#220d13]',
+            titleColor: 'text-[#EF4444]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-red-500/15 border border-red-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">🎨</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 140,0 80,120 0,120" fill="#2d1016" fill-opacity="0.8"/>
+                <polygon points="160,0 300,0 300,120 200,120" fill="#1f090e" fill-opacity="0.8"/>
+                <path d="M20 100 C 60 20, 140 120, 200 30 S 280 80, 290 20" stroke="#EF4444" stroke-width="2" fill="none"/>
+                <polygon points="120,20 160,45 135,80 95,55" stroke="#F59E0B" stroke-width="1.5" fill="#EF4444" fill-opacity="0.2"/>
+              </svg>`
+          };
+
+        case 'BSPsych':
+          return {
+            subTitle,
+            title: title || 'PSYCHOLOGY',
+            accentColor: '#EC4899',
+            bgClass: 'bg-[#220e24]',
+            titleColor: 'text-[#EC4899]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-pink-500/15 border border-pink-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">🧠</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 130,0 75,120 0,120" fill="#29122b" fill-opacity="0.8"/>
+                <polygon points="170,0 300,0 300,120 215,120" fill="#1b0a1d" fill-opacity="0.8"/>
+                <path d="M30 60 Q 90 20, 150 60 T 270 60" stroke="#EC4899" stroke-width="2" fill="none"/>
+                <line x1="70" y1="40" x2="120" y2="80" stroke="#A855F7" stroke-width="1.5"/>
+                <circle cx="70" cy="40" r="3.5" fill="#EC4899"/>
+                <circle cx="120" cy="80" r="3" fill="#A855F7"/>
+                <circle cx="150" cy="60" r="4.5" fill="#F472B6"/>
+                <circle cx="210" cy="40" r="3.5" fill="#A855F7"/>
+              </svg>`
+          };
+
+        case 'BSBA':
+          return {
+            subTitle,
+            title: title || 'BUSINESS ADMINISTRATION',
+            accentColor: '#10B981',
+            bgClass: 'bg-[#0b2118]',
+            titleColor: 'text-[#10B981]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">📈</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 140,0 80,120 0,120" fill="#0f261d" fill-opacity="0.8"/>
+                <polygon points="160,0 300,0 300,120 220,120" fill="#091c14" fill-opacity="0.8"/>
+                <polyline points="20,95 80,75 140,85 200,45 270,25" stroke="#10B981" stroke-width="2.5" fill="none"/>
+                <polygon points="20,95 80,75 140,85 200,45 270,25 270,110 20,110" fill="#10B981" fill-opacity="0.1"/>
+                <circle cx="80" cy="75" r="3" fill="#10B981"/>
+                <circle cx="140" cy="85" r="3" fill="#10B981"/>
+                <circle cx="200" cy="45" r="3.5" fill="#34D399"/>
+                <circle cx="270" cy="25" r="4" fill="#E5A823"/>
+              </svg>`
+          };
+
+        case 'BSA':
+          return {
+            subTitle,
+            title: title || 'ACCOUNTANCY',
+            accentColor: '#0D9488',
+            bgClass: 'bg-[#091f21]',
+            titleColor: 'text-[#0D9488]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-teal-500/15 border border-teal-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">⚖️</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 130,0 75,120 0,120" fill="#0c2424" fill-opacity="0.8"/>
+                <polygon points="170,0 300,0 300,120 215,120" fill="#081c1c" fill-opacity="0.8"/>
+                <line x1="30" y1="35" x2="270" y2="35" stroke="#0D9488" stroke-width="1.5"/>
+                <line x1="30" y1="65" x2="270" y2="65" stroke="#0D9488" stroke-width="1"/>
+                <line x1="30" y1="95" x2="270" y2="95" stroke="#0D9488" stroke-width="1"/>
+                <line x1="150" y1="20" x2="150" y2="105" stroke="#14B8A6" stroke-width="1.5"/>
+                <line x1="210" y1="20" x2="210" y2="105" stroke="#0D9488" stroke-width="1"/>
+                <circle cx="150" cy="35" r="3.5" fill="#E5A823"/>
+              </svg>`
+          };
+
+        case 'BSArch':
+          return {
+            subTitle,
+            title: title || 'ARCHITECTURE',
+            accentColor: '#D97706',
+            bgClass: 'bg-[#24170d]',
+            titleColor: 'text-[#D97706]',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-sm mb-1 shadow-sm">📐</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 140,0 80,120 0,120" fill="#2b1a0e" fill-opacity="0.8"/>
+                <polygon points="160,0 300,0 300,120 220,120" fill="#1c1008" fill-opacity="0.8"/>
+                <line x1="20" y1="100" x2="80" y2="30" stroke="#D97706" stroke-width="1.5"/>
+                <line x1="80" y1="30" x2="140" y2="100" stroke="#D97706" stroke-width="1.5"/>
+                <line x1="140" y1="100" x2="200" y2="30" stroke="#D97706" stroke-width="1.5"/>
+                <line x1="200" y1="30" x2="260" y2="100" stroke="#D97706" stroke-width="1.5"/>
+                <line x1="0" y1="65" x2="300" y2="65" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3 3"/>
+                <circle cx="80" cy="30" r="3" fill="#F59E0B"/>
+                <circle cx="200" cy="30" r="3" fill="#F59E0B"/>
+              </svg>`
+          };
+
+        default:
+          return {
+            subTitle,
+            title: title || code,
+            accentColor: schoolColor || '#FF6B00',
+            bgClass: 'bg-[#101826]',
+            titleColor: 'text-amber-400',
+            iconHtml: `<div class="w-8 h-8 rounded-sm bg-[#10151E] border border-slate-700 flex items-center justify-center text-xs font-mono font-bold mb-1 shadow-sm" style="color: ${schoolColor};">${code.slice(0, 5)}</div>`,
+            svgHtml: `
+              <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
+                <polygon points="0,0 130,0 80,120 0,120" fill="#1b2a47"/>
+                <polygon points="170,0 300,0 300,120 220,120" fill="#16233b"/>
+                <circle cx="60" cy="30" r="3" fill="${schoolColor}"/>
+                <circle cx="240" cy="90" r="3" fill="${schoolColor}"/>
+                <line x1="60" y1="30" x2="240" y2="90" stroke="${schoolColor}" stroke-width="1" stroke-opacity="0.4"/>
+              </svg>`
+          };
+      }
+    }
+    window.getProgramBannerConfig = getProgramBannerConfig;
+
       // Populate degree program cards dynamically for all schools
       const grid = document.getElementById('exdDegreeProgramsGrid');
       if (grid) {
@@ -876,53 +1140,52 @@
         const programsList = Array.isArray(school.programs) ? school.programs : [];
         programsList.forEach(p => {
           const prog = typeof p === 'object' ? p : getProgramInfo(p);
+          const banner = getProgramBannerConfig(prog.code, prog.name, schoolColor);
           const card = document.createElement('div');
-          card.className = 'program-card bg-[#181D26] border border-slate-700/80 shadow-xl flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-2xl transition-all';
+          card.className = 'program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all';
           card.onclick = function() { selectProgram(prog.code, 'homePdProgramView'); };
           card.innerHTML = `
             <div>
-              <div class="relative h-28 bg-[#101826] overflow-hidden flex flex-col items-center justify-center text-center p-3">
-                <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
-                  <polygon points="0,0 120,0 80,120 0,120" fill="#1b2a47"/>
-                  <polygon points="180,0 300,0 300,120 150,120" fill="#16233b"/>
-                  <circle cx="60" cy="30" r="3" fill="${schoolColor}"/>
-                  <circle cx="240" cy="90" r="3" fill="${schoolColor}"/>
-                </svg>
-                <div class="w-8 h-8 rounded-sm bg-[#10151E] border border-slate-700 flex items-center justify-center text-xs font-mono mb-1" style="color: ${schoolColor};">
-                  ${prog.code}
-                </div>
+              <!-- Decorative Thematic Top Banner -->
+              <div class="relative h-28 ${banner.bgClass} overflow-hidden flex flex-col items-center justify-center text-center p-3">
+                ${banner.svgHtml}
+                <!-- Vector Badge / Icon -->
+                ${banner.iconHtml}
+                <!-- Title Typography -->
                 <div class="relative z-10 leading-tight">
-                  <span class="block text-sm font-black text-white group-hover:text-amber-300 tracking-wider uppercase drop-shadow-md transition-colors">${prog.name}</span>
+                  <span class="block text-[10px] font-black text-slate-300 tracking-widest uppercase drop-shadow-md">${banner.subTitle}</span>
+                  <span class="block text-sm sm:text-base font-black ${banner.titleColor} group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">${banner.title}</span>
                 </div>
               </div>
-              <div class="h-0.5 w-full" style="background-color: ${schoolColor};"></div>
+              <!-- Horizontal Colored Separator Stripe -->
+              <div class="h-0.5 w-full" style="background-color: ${banner.accentColor};"></div>
 
-              <div class="p-4 space-y-3 text-slate-200">
+              <div class="p-4 space-y-3 text-slate-800 dark:text-slate-200">
                 <div>
-                  <label class="block text-xs font-bold text-slate-400 mb-1">Program Director:</label>
-                  <div class="bg-[#10151E] border border-slate-700/70 p-2 text-xs text-white font-medium">${prog.director || (typeof getProgramDirector === 'function' ? getProgramDirector(prog.code) : school.director)}</div>
+                  <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">Program Director:</label>
+                  <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 text-xs text-slate-900 dark:text-white font-medium">${prog.director || (typeof getProgramDirector === 'function' ? getProgramDirector(prog.code) : school.director)}</div>
                 </div>
                 <div>
                   <div class="flex items-center justify-between mb-1">
-                    <label class="block text-xs font-bold text-slate-400">Active Curriculums</label>
-                    <span class="text-[10px] text-amber-400 font-mono">Click to Manage</span>
+                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400">Active Curriculums</label>
+                    <span class="text-[10px] text-amber-500 dark:text-amber-400 font-mono">Click to Manage</span>
                   </div>
-                  <div class="bg-[#10151E] border border-slate-700/70 p-2 text-xs text-slate-300 space-y-1 font-mono">
-                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-300 hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
+                  <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 text-xs text-slate-700 dark:text-slate-300 space-y-1 font-mono">
+                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
                       <span>Curriculum AY: 2026 - 2030</span>
-                      <span class="text-[9px] text-emerald-400 font-bold uppercase bg-emerald-950/60 px-1.5 border border-emerald-700/60">1st Year</span>
+                      <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">1st Year</span>
                     </div>
-                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-300 hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
+                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
                       <span>Curriculum AY: 2025 - 2029</span>
-                      <span class="text-[9px] text-emerald-400 font-bold uppercase bg-emerald-950/60 px-1.5 border border-emerald-700/60">2nd Year</span>
+                      <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">2nd Year</span>
                     </div>
-                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-300 hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
+                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
                       <span>Curriculum AY: 2024 - 2028</span>
-                      <span class="text-[9px] text-emerald-400 font-bold uppercase bg-emerald-950/60 px-1.5 border border-emerald-700/60">3rd Year</span>
+                      <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">3rd Year</span>
                     </div>
-                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-300 hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
+                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
                       <span>Curriculum AY: 2023 - 2027</span>
-                      <span class="text-[9px] text-emerald-400 font-bold uppercase bg-emerald-950/60 px-1.5 border border-emerald-700/60">4th Year</span>
+                      <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">4th Year</span>
                     </div>
                   </div>
                 </div>
@@ -930,12 +1193,12 @@
             </div>
 
             <div class="p-4 pt-0 space-y-3">
-              <div class="pt-2 border-t border-slate-700/60 flex items-center justify-end">
-                <button type="button" onclick="event.stopPropagation(); (typeof openEditProgramModal === 'function' ? openEditProgramModal('${prog.code}') : showToast('Edit ${prog.code} Program Director'))" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-amber-400 hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit ${prog.code} Program &amp; Director">
+              <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-end">
+                <button type="button" onclick="event.stopPropagation(); (typeof openEditProgramModal === 'function' ? openEditProgramModal('${prog.code}') : showToast('Edit ${prog.code} Program Director'))" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit ${prog.code} Program &amp; Director">
                   ✎
                 </button>
               </div>
-              <div class="h-2 w-full -mb-4 -mx-4" style="background-color: ${schoolColor};"></div>
+              <div class="h-2 w-full -mb-4 -mx-4" style="background-color: ${banner.accentColor};"></div>
             </div>
           `;
           grid.appendChild(card);
