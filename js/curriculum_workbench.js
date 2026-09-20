@@ -1242,10 +1242,12 @@
       const selector = document.getElementById('roleSelector');
       const sbName = document.getElementById('sidebarUserName');
       const sbEmail = document.getElementById('sidebarUserEmail');
+      const sbAvatar = document.getElementById('sidebarUserAvatar');
       if (selector && selector.value !== role) selector.value = role;
 
       if (role === 'admin' || role === 'a') {
         if (avatar) avatar.innerText = 'SA';
+        if (sbAvatar) sbAvatar.innerText = 'SA';
         if (name) name.innerText = 'System Administrator';
         if (roleText) roleText.innerText = 'Institutional Superuser (Tier 4)';
         if (sbName) sbName.innerText = 'System Administrator';
@@ -1258,6 +1260,7 @@
         showToast('Active Role: System Administrator (Tier 4 &bull; Full Institutional Authority)');
       } else if (role === 'exd' || role === 'x') {
         if (avatar) avatar.innerText = 'ED';
+        if (sbAvatar) sbAvatar.innerText = 'ED';
         if (name) name.innerText = 'Executive Director';
         if (roleText) roleText.innerText = 'Executive Director &bull; SoE (Tier 3)';
         if (sbName) sbName.innerText = 'Executive Director';
@@ -1270,6 +1273,7 @@
         showToast('Active Role: Executive Director (Tier 3 &bull; School of Engineering)');
       } else if (role === 'pd' || role === 'p') {
         if (avatar) avatar.innerText = 'PD';
+        if (sbAvatar) sbAvatar.innerText = 'PD';
         if (name) name.innerText = 'Program Director';
         if (roleText) roleText.innerText = 'Program Director &bull; BSCpE (Tier 2)';
         if (sbName) sbName.innerText = 'Program Director';
@@ -1282,6 +1286,7 @@
         showToast('Active Role: Program Director (Tier 2 &bull; BS Computer Engineering)');
       } else if (role === 'faculty' || role === 'f') {
         if (avatar) avatar.innerText = 'FC';
+        if (sbAvatar) sbAvatar.innerText = 'FM';
         if (name) name.innerText = 'Faculty Member';
         if (roleText) roleText.innerText = 'Hardware Cluster (Tier 1)';
         if (sbName) sbName.innerText = 'Faculty Member';
@@ -1373,8 +1378,10 @@
 
       const hName = document.getElementById('sidebarUserName');
       const hEmail = document.getElementById('sidebarUserEmail');
+      const sbAvatar = document.getElementById('sidebarUserAvatar');
       if (hName) hName.innerText = name;
       if (hEmail) hEmail.innerText = email;
+      if (sbAvatar) sbAvatar.innerText = avatar;
 
       const roleSel = document.getElementById('roleSelector');
       if (roleSel && roleKey) {
