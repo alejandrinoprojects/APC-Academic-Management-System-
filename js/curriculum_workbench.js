@@ -2831,7 +2831,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // Hide all application views
-      const allViews = ['home', 'curriculum-home', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
+      const allViews = ['home', 'curriculum-home', 'past-curriculums', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
       
       allViews.forEach(v => {
         const el = document.getElementById('view-' + v);
@@ -2888,6 +2888,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (topPill) {
         if (viewId === 'home') topPill.innerText = 'Schools';
         else if (viewId === 'curriculum-home') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Management';
+        else if (viewId === 'past-curriculums') topPill.innerText = 'Schools > SoE > BSCpE > Historical Editions Archive';
         else if (viewId === 'flowchart') topPill.innerText = 'Schools > SoE > BSCpE > Flowchart';
         else if (viewId === 'spreadsheet') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Spreadsheet';
         else if (viewId === 'dashboard') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Dashboard';
@@ -3582,6 +3583,54 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       selectProgram(prog, 'registrar', 6);
     }
     window.openComparativeCurriculumModal = openComparativeCurriculumModal;
+
+    // Past Curriculum Launchers
+    function openPastFlowchart(editionId) {
+      const prog = currentSelectedProgram || 'BSCpE';
+      if (typeof switchFlowchartViewMode === 'function') {
+        switchFlowchartViewMode('diagram');
+      }
+      navigateView('flowchart');
+      const topPill = document.getElementById('topBarPathPill');
+      if (topPill) {
+        topPill.innerText = `Schools > SoE > ${prog} > Historical Flowchart (${editionId})`;
+      }
+      if (typeof showToastNotification === 'function') {
+        showToastNotification(`Loaded Historical Flowchart (${editionId})`);
+      }
+    }
+    window.openPastFlowchart = openPastFlowchart;
+
+    function openPastSpreadsheet(editionId) {
+      const prog = currentSelectedProgram || 'BSCpE';
+      spreadsheetReturnSourceView = 'past-curriculums';
+      navigateView('spreadsheet');
+      const returnText = document.getElementById('spreadsheetReturnText');
+      if (returnText) {
+        returnText.textContent = 'Back to Historical Editions';
+      }
+      const topPill = document.getElementById('topBarPathPill');
+      if (topPill) {
+        topPill.innerText = `Schools > SoE > ${prog} > Historical Spreadsheet (${editionId})`;
+      }
+      if (typeof showToastNotification === 'function') {
+        showToastNotification(`Loaded Historical Spreadsheet (${editionId})`);
+      }
+    }
+    window.openPastSpreadsheet = openPastSpreadsheet;
+
+    function openPastDocs(editionId) {
+      const prog = currentSelectedProgram || 'BSCpE';
+      selectProgram(prog, 'registrar', 6);
+      const topPill = document.getElementById('topBarPathPill');
+      if (topPill) {
+        topPill.innerText = `Schools > SoE > ${prog} > Historical Official Docs (${editionId})`;
+      }
+      if (typeof showToastNotification === 'function') {
+        showToastNotification(`Loaded Historical Dossier (${editionId})`);
+      }
+    }
+    window.openPastDocs = openPastDocs;
 
     function refreshAllCategoryViews() {
       renderFlowchartLegend();

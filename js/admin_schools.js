@@ -1050,6 +1050,11 @@
                   <span class="text-amber-400">🏠</span>
                   <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                 </button>
+                <button type="button" onclick="navigateView('past-curriculums')"
+                  class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                  <span class="text-amber-300">📜</span>
+                  <span class="font-semibold text-slate-300 group-hover:text-amber-300">Historical Editions</span>
+                </button>
 
                 <!-- By Year Section Header -->
                 <div class="px-2 pt-1 pb-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
