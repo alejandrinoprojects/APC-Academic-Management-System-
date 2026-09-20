@@ -99,10 +99,11 @@
         bannerGrad: 'from-[#16120e] via-[#2a1a12] to-[#0f0b08]',
         bannerIcon: '⚙️',
         director: 'SOE Executive Director',
+        archived: false,
         programs: [
-          { code: 'BSCpE', name: 'Bachelor of Science in Computer Engineering' },
-          { code: 'BSCE', name: 'Bachelor of Science in Civil Engineering' },
-          { code: 'BSECE', name: 'Bachelor of Science in Electronics Engineering' }
+          { code: 'BSCpE', name: 'Bachelor of Science in Computer Engineering', archived: false },
+          { code: 'BSCE', name: 'Bachelor of Science in Civil Engineering', archived: true },
+          { code: 'BSECE', name: 'Bachelor of Science in Electronics Engineering', archived: true }
         ]
       },
       {
@@ -115,9 +116,10 @@
         bannerGrad: 'from-[#071324] via-[#0d2242] to-[#050d1a]',
         bannerIcon: '💻',
         director: 'SoCIT Executive Director',
+        archived: true,
         programs: [
-          { code: 'BSCS', name: 'Bachelor of Science in Computer Science' },
-          { code: 'BSIT', name: 'Bachelor of Science in Information Technology' }
+          { code: 'BSCS', name: 'Bachelor of Science in Computer Science', archived: true },
+          { code: 'BSIT', name: 'Bachelor of Science in Information Technology', archived: true }
         ]
       },
       {
@@ -130,9 +132,10 @@
         bannerGrad: 'from-[#1f0a0d] via-[#331117] to-[#140608]',
         bannerIcon: '🎨',
         director: 'SoMA Executive Director',
+        archived: true,
         programs: [
-          { code: 'BMMA', name: 'Bachelor of Multimedia Arts' },
-          { code: 'BSPsych', name: 'Bachelor of Science in Psychology' }
+          { code: 'BMMA', name: 'Bachelor of Multimedia Arts', archived: true },
+          { code: 'BSPsych', name: 'Bachelor of Science in Psychology', archived: true }
         ]
       },
       {
@@ -145,9 +148,10 @@
         bannerGrad: 'from-[#1c1809] via-[#2e260e] to-[#120f06]',
         bannerIcon: '📊',
         director: 'SoM Executive Director',
+        archived: true,
         programs: [
-          { code: 'BSBA', name: 'Bachelor of Science in Business Management' },
-          { code: 'BSA', name: 'Bachelor of Science in Accountancy' }
+          { code: 'BSBA', name: 'Bachelor of Science in Business Management', archived: true },
+          { code: 'BSA', name: 'Bachelor of Science in Accountancy', archived: true }
         ]
       },
       {
@@ -160,8 +164,9 @@
         bannerGrad: 'from-[#150d22] via-[#241538] to-[#0d0816]',
         bannerIcon: '📐',
         director: 'SoA Executive Director',
+        archived: true,
         programs: [
-          { code: 'BSArch', name: 'Bachelor of Science in Architecture' }
+          { code: 'BSArch', name: 'Bachelor of Science in Architecture', archived: true }
         ]
       }
     ];
@@ -244,19 +249,37 @@
       `;
 
       function getSchoolProgramsHtml(programs) {
-        let html = '';
+        let activeHtml = '';
+        let archivedCodes = [];
         for (let pi = 0; pi < programs.length; pi++) {
           const item = programs[pi];
           const prog = typeof item === 'object' ? item : getProgramInfo(item);
-          html += '<a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram(\'' + prog.code + '\', \'homePdProgramView\')" class="text-slate-300 hover:text-[#E5A823] hover:underline transition flex items-center gap-1.5 group cursor-pointer truncate" title="Go to ' + prog.name + ' (' + prog.code + ')">' +
-            '<span class="text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span> ' +
-            '<span class="truncate underline decoration-slate-600 underline-offset-2 hover:decoration-amber-400">' + prog.name + '</span>' +
-          '</a>';
+          const isProgArchived = item.archived || (prog.code !== 'BSCpE');
+          if (isProgArchived) {
+            archivedCodes.push(prog.code);
+          } else {
+            activeHtml += '<a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram(\'' + prog.code + '\', \'homePdProgramView\')" class="text-slate-200 hover:text-[#E5A823] hover:underline transition flex items-center justify-between group cursor-pointer" title="Go to ' + prog.name + ' (' + prog.code + ')">' +
+              '<span class="flex items-center gap-1.5 truncate">' +
+                '<span class="text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span> ' +
+                '<span class="truncate font-bold text-white">' + prog.name + '</span>' +
+              '</span>' +
+              '<span class="text-[9px] font-mono px-1.5 py-0.2 bg-emerald-950 text-emerald-300 border border-emerald-800 shrink-0">Active</span>' +
+            '</a>';
+          }
         }
-        return html;
+        if (archivedCodes.length > 0) {
+          activeHtml += '<div class="pt-1.5 mt-1 border-t border-slate-800/80 space-y-1">' +
+            '<span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Archived Programs:</span>' +
+            '<div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-mono">' +
+              archivedCodes.map(c => '<span class="line-through opacity-70">' + c + '</span>').join('<span>&bull;</span>') +
+              '<span class="text-[9px] text-amber-500/80 bg-amber-500/10 px-1 border border-amber-500/20 ml-auto">Dev Freeze</span>' +
+            '</div>' +
+          '</div>';
+        }
+        return activeHtml;
       }
 
-      container.innerHTML = visibleSchools.map((s, idx) => {
+      function renderSingleSchoolCard(s, idx, isArchived) {
         const theme = schoolThemes[s.id] || schoolThemes.soe;
         const bannerStyle = s.bannerImage 
           ? `style="background-image: url('${s.bannerImage}'); background-size: cover; background-position: center;"` 
@@ -329,10 +352,41 @@
           </div>
         </div>
         `;
-      }).join('') + addSchoolCardHtml;
+      }
 
-// All schools rendered in one view
+      const activeSchools = visibleSchools.filter(s => !s.archived);
+      const archivedSchools = visibleSchools.filter(s => s.archived);
+
+      const activeHtml = activeSchools.map((s, idx) => renderSingleSchoolCard(s, idx, false)).join('');
+      const archivedHtml = archivedSchools.map((s, idx) => renderSingleSchoolCard(s, activeSchools.length + idx, true)).join('');
+      const archivedSection = archivedSchools.length > 0 ? `
+        <div class="col-span-full pt-4">
+          <button type="button" onclick="toggleArchivedSchoolsGrid()" class="w-full flex items-center justify-between p-3 bg-[#131822] hover:bg-[#18202d] border border-slate-700/80 transition cursor-pointer text-left group">
+            <span class="flex items-center gap-2">
+              <span id="archivedSchoolsGridChev" class="text-xs text-slate-400 group-hover:text-white transition-transform duration-150">▶</span>
+              <span class="text-xs font-bold text-slate-300 group-hover:text-white uppercase tracking-wider">📦 Archived Schools &amp; Colleges (${archivedSchools.length})</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 bg-slate-800 text-slate-400 border border-slate-700">Development Freeze</span>
+            </span>
+            <span class="text-[10px] text-slate-500 group-hover:text-slate-300">Click to expand / inspect</span>
+          </button>
+          <div id="archivedSchoolsGridWrapper" class="hidden mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 opacity-75 hover:opacity-100 transition-opacity">
+            ${archivedHtml}
+          </div>
+        </div>
+      ` : '';
+
+      container.innerHTML = activeHtml + archivedSection + addSchoolCardHtml;
     }
+
+    function toggleArchivedSchoolsGrid() {
+      const wrapper = document.getElementById('archivedSchoolsGridWrapper');
+      const chev = document.getElementById('archivedSchoolsGridChev');
+      if (wrapper) {
+        const isHidden = wrapper.classList.toggle('hidden');
+        if (chev) chev.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(90deg)';
+      }
+    }
+    window.toggleArchivedSchoolsGrid = toggleArchivedSchoolsGrid;
 
     function nextSchoolSlide() {
       currentSchoolSlide = (currentSchoolSlide + 1) % ACADEMIC_SCHOOLS_DATA.length;

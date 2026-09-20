@@ -1195,11 +1195,23 @@
       if (grid) {
         grid.innerHTML = '';
         const programsList = Array.isArray(school.programs) ? school.programs : [];
+        const activeProgs = [];
+        const archivedProgs = [];
+
         programsList.forEach(p => {
           const prog = typeof p === 'object' ? p : getProgramInfo(p);
+          const isArchived = prog.archived === true || (school.id === 'soe' && prog.code !== 'BSCpE');
+          if (isArchived) {
+            archivedProgs.push(prog);
+          } else {
+            activeProgs.push(prog);
+          }
+        });
+
+        function buildProgramCard(prog, isArchived) {
           const banner = getProgramBannerConfig(prog.code, prog.name, schoolColor);
           const card = document.createElement('div');
-          card.className = 'program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all';
+          card.className = `program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all ${isArchived ? 'opacity-85 hover:opacity-100' : ''}`;
           card.onclick = function() { selectProgram(prog.code, 'homePdProgramView'); };
           card.innerHTML = `
             <div>
@@ -1213,6 +1225,7 @@
                   <span class="block text-[10px] font-black text-slate-300 tracking-widest uppercase drop-shadow-md">${banner.subTitle}</span>
                   <span class="block text-sm sm:text-base font-black ${banner.titleColor} group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">${banner.title}</span>
                 </div>
+                ${isArchived ? '<span class="absolute top-2 right-2 text-[9px] font-mono px-1.5 py-0.5 bg-slate-900/90 text-amber-400 border border-amber-500/40 rounded z-20">Dev Freeze</span>' : ''}
               </div>
               <!-- Horizontal Colored Separator Stripe -->
               <div class="h-0.5 w-full" style="background-color: ${banner.accentColor};"></div>
@@ -1258,10 +1271,43 @@
               <div class="h-2 w-full -mb-4 -mx-4" style="background-color: ${banner.accentColor};"></div>
             </div>
           `;
-          grid.appendChild(card);
+          return card;
+        }
+
+        activeProgs.forEach(prog => {
+          grid.appendChild(buildProgramCard(prog, false));
         });
+
+        if (archivedProgs.length > 0) {
+          const archSection = document.createElement('div');
+          archSection.className = 'col-span-full pt-2';
+          archSection.innerHTML = `
+            <button type="button" onclick="toggleArchivedExdProgs()" class="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 font-bold uppercase tracking-wider py-1 cursor-pointer group">
+              <span id="archivedExdProgsChev" class="text-[10px] transition-transform duration-150">▶</span>
+              <span>Archived Degree Programs (${archivedProgs.length})</span>
+              <span class="text-[9px] px-1.5 py-0.2 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono">Dev Freeze</span>
+            </button>
+            <div id="archivedExdProgsWrapper" class="hidden mt-3 grid grid-cols-1 md:grid-cols-2 gap-6 opacity-75 hover:opacity-100 transition-opacity">
+            </div>
+          `;
+          const archWrapper = archSection.querySelector('#archivedExdProgsWrapper');
+          archivedProgs.forEach(prog => {
+            archWrapper.appendChild(buildProgramCard(prog, true));
+          });
+          grid.appendChild(archSection);
+        }
       }
     }
+
+    function toggleArchivedExdProgs() {
+      const w = document.getElementById('archivedExdProgsWrapper');
+      const c = document.getElementById('archivedExdProgsChev');
+      if (w) {
+        const hidden = w.classList.toggle('hidden');
+        if (c) c.style.transform = hidden ? 'rotate(0deg)' : 'rotate(90deg)';
+      }
+    }
+    window.toggleArchivedExdProgs = toggleArchivedExdProgs;
 
     function renderProgramOverview(progCode = 'BSCpE') {
       currentSelectedProgram = progCode;
@@ -1511,40 +1557,44 @@
     // ROLE-BASED SIDEBAR FOLDER VISIBILITY (D-RBAC Tree Scoping)
     function updateSidebarHierarchy(specifiedRole) {
       const role = specifiedRole || (document.getElementById('roleSelector') ? document.getElementById('roleSelector').value : 'admin');
-      const rootSchools   = document.getElementById('node-schools-root');
-      const schoolSoe     = document.getElementById('node-school-soe');
-      const schoolSocit   = document.getElementById('node-school-socit');
-      const schoolSoma    = document.getElementById('node-school-soma');
-      const schoolSom     = document.getElementById('node-school-som');
-      const schoolSoa     = document.getElementById('node-school-soa');
-      const progCpe       = document.getElementById('node-prog-cpe');
-      const progCe        = document.getElementById('node-prog-ce');
-      const progEce       = document.getElementById('node-prog-ece');
-      const progCs        = document.getElementById('node-prog-cs');
-      const progIt        = document.getElementById('node-prog-it');
+      const rootSchools     = document.getElementById('node-schools-root');
+      const schoolSoe       = document.getElementById('node-school-soe');
+      const schoolSocit     = document.getElementById('node-school-socit');
+      const schoolSoma      = document.getElementById('node-school-soma');
+      const schoolSom       = document.getElementById('node-school-som');
+      const schoolSoa       = document.getElementById('node-school-soa');
+      const progCpe         = document.getElementById('node-prog-cpe');
+      const progCe          = document.getElementById('node-prog-ce');
+      const progEce         = document.getElementById('node-prog-ece');
+      const progCs          = document.getElementById('node-prog-cs');
+      const progIt          = document.getElementById('node-prog-it');
+      const archSchoolsRoot = document.getElementById('node-archived-schools-root');
+      const archSoeProgs    = document.getElementById('node-archived-soe-progs');
 
-            const pathPill = document.getElementById('topBarPathPill');
+      const pathPill = document.getElementById('topBarPathPill');
       if (role === 'admin' || role === 'a') {
         if (pathPill) pathPill.innerText = 'Schools';
-        // System Administrator → sees ALL folders
-        [rootSchools, schoolSoe, schoolSocit, schoolSoma, schoolSom, schoolSoa, progCpe, progCe, progEce, progCs, progIt].forEach(el => {
+        // System Administrator → sees SoE, active BSCpE, and archived drawers for dev inspection
+        [rootSchools, schoolSoe, progCpe, archSchoolsRoot, archSoeProgs, progCe, progEce, schoolSocit, schoolSoma, schoolSom, schoolSoa, progCs, progIt].forEach(el => {
           if (el) el.classList.remove('hidden');
         });
       } else if (role === 'exd' || role === 'x') {
         if (pathPill) pathPill.innerText = 'Programs';
-        // Executive Director → ONLY School of Engineering folders
+        // Executive Director → ONLY School of Engineering
         if (rootSchools) rootSchools.classList.remove('hidden');
         if (schoolSoe)   schoolSoe.classList.remove('hidden');
-        [schoolSocit, schoolSoma, schoolSom, schoolSoa].forEach(el => { if (el) el.classList.add('hidden'); });
-        [progCpe, progCe, progEce].forEach(el => { if (el) el.classList.remove('hidden'); });
-        [progCs, progIt].forEach(el => { if (el) el.classList.add('hidden'); });
-      } else if (role === 'pd' || role === 'p' || role === 'faculty' || role === 'f') {
-        // Program Director / Faculty → ONLY Computer Engineering folder
-        if (rootSchools) rootSchools.classList.remove('hidden');
-        if (schoolSoe)   schoolSoe.classList.remove('hidden');
-        [schoolSocit, schoolSoma, schoolSom, schoolSoa].forEach(el => { if (el) el.classList.add('hidden'); });
         if (progCpe)     progCpe.classList.remove('hidden');
-        [progCe, progEce, progCs, progIt].forEach(el => { if (el) el.classList.add('hidden'); });
+        if (archSoeProgs) archSoeProgs.classList.remove('hidden');
+        if (archSchoolsRoot) archSchoolsRoot.classList.add('hidden');
+        [schoolSocit, schoolSoma, schoolSom, schoolSoa, progCs, progIt].forEach(el => { if (el) el.classList.add('hidden'); });
+      } else if (role === 'pd' || role === 'p' || role === 'faculty' || role === 'f') {
+        // Program Director / Faculty → ONLY active Computer Engineering
+        if (rootSchools) rootSchools.classList.remove('hidden');
+        if (schoolSoe)   schoolSoe.classList.remove('hidden');
+        if (progCpe)     progCpe.classList.remove('hidden');
+        if (archSchoolsRoot) archSchoolsRoot.classList.add('hidden');
+        if (archSoeProgs)    archSoeProgs.classList.add('hidden');
+        [schoolSocit, schoolSoma, schoolSom, schoolSoa, progCe, progEce, progCs, progIt].forEach(el => { if (el) el.classList.add('hidden'); });
       }
     }
 

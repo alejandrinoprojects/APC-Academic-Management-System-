@@ -264,20 +264,12 @@
     const isPdDown = (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f');
 
     const catalog = [
-      // Academic Schools — filtered by role
-      ...(isAdmin ? [{ category: 'Schools', title: 'Institutional Schools Overview', subtitle: 'Tier 4 Governance • All Academic Schools', icon: '🏛️', action: () => window.renderAdminOverview() }] : []),
-      ...(isExdUp ? [{ category: 'Schools', title: 'School of Engineering (SoE)', subtitle: 'Tier 3 Executive Directorate • BSCpE, BSCE, BSECE', icon: '🏫', action: () => window.goToSchoolExd('soe') }] : []),
-      ...(isAdmin ? [{ category: 'Schools', title: 'School of Computing & IT (SoCIT)', subtitle: 'Tier 3 Executive Directorate • BSCS, BSIT', icon: '💻', action: () => window.goToSchoolExd('socit') }] : []),
-      ...(isAdmin ? [{ category: 'Schools', title: 'School of Multimedia Arts (SoMA)', subtitle: 'Tier 3 Executive Directorate • BMMA, BSPsych', icon: '🎨', action: () => window.goToSchoolExd('soma') }] : []),
-      ...(isAdmin ? [{ category: 'Schools', title: 'School of Management (SoM)', subtitle: 'Tier 3 Executive Directorate • BSBA, BSA', icon: '📊', action: () => window.goToSchoolExd('som') }] : []),
-      ...(isAdmin ? [{ category: 'Schools', title: 'School of Architecture (SoA)', subtitle: 'Tier 3 Executive Directorate • BSArch', icon: '📐', action: () => window.goToSchoolExd('soa') }] : []),
+      // Academic Schools — active School of Engineering & institutional overview
+      ...(isAdmin ? [{ category: 'Schools', title: 'Institutional Schools Overview', subtitle: 'Governance • Academic Schools Management', icon: '🏛️', action: () => window.renderAdminOverview() }] : []),
+      ...(isExdUp ? [{ category: 'Schools', title: 'School of Engineering (SoE)', subtitle: 'Executive Directorate • School of Engineering', icon: '🏫', action: () => window.goToSchoolExd('soe') }] : []),
 
-      // Academic Degree Programs
+      // Academic Degree Programs — active BSCpE for development focus
       { category: 'Programs', title: 'BS Computer Engineering (BSCpE)', subtitle: 'Program Director Workbench • Curriculum 2026-2030', icon: '🎓', action: () => window.selectProgram('BSCpE', 'homePdProgramView') },
-      { category: 'Programs', title: 'BS Civil Engineering (BSCE)', subtitle: 'Program Director Workbench • School of Engineering', icon: '🏗️', action: () => window.selectProgram('BSCE', 'homePdProgramView') },
-      { category: 'Programs', title: 'BS Electronics Engineering (BSECE)', subtitle: 'Program Director Workbench • School of Engineering', icon: '📡', action: () => window.selectProgram('BSECE', 'homePdProgramView') },
-      { category: 'Programs', title: 'BS Computer Science (BSCS)', subtitle: 'Program Director Workbench • School of Computing', icon: '💻', action: () => window.selectProgram('BSCS', 'homePdProgramView') },
-      { category: 'Programs', title: 'BS Information Technology (BSIT)', subtitle: 'Program Director Workbench • School of Computing', icon: '🌐', action: () => window.selectProgram('BSIT', 'homePdProgramView') },
 
       // Workbench Tools & Views
       { category: 'Views', title: 'Curriculum DAG Flowchart Canvas', subtitle: '74-Course Directed Acyclic Graph • Swimlane Routing', icon: '🗺️', action: () => window.selectProgram('BSCpE', 'flowchart') },
