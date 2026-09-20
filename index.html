@@ -618,7 +618,6 @@
                             </svg>
                             <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Syllabus Management</span>
                           </span>
-                          <span class="text-[8px] font-mono px-1 py-0.2 bg-sky-400/10 text-sky-400 border border-sky-400/30 shrink-0">GROUP B</span>
                         </button>
 
                         <div id="cpeSyllabusCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
@@ -640,7 +639,7 @@
                         </div>
                       </div>
 
-                      <!-- 3. Course Management (Partner System Folder - Group C) -->
+                      <!-- 3. Course Management -->
                       <div id="node-cpe-course">
                         <button type="button" id="nav-cpe-course" onclick="toggleFolderAccordion('cpeCourseCont', 'cpeCourseChev'); selectProgram('BSCpE', 'course')"
                           class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
@@ -653,7 +652,6 @@
                             </svg>
                             <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Course Management</span>
                           </span>
-                          <span class="text-[8px] font-mono px-1 py-0.2 bg-emerald-400/10 text-emerald-400 border border-emerald-400/30 shrink-0">GROUP C</span>
                         </button>
 
                         <div id="cpeCourseCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
@@ -1090,20 +1088,28 @@
                         Central coordination portal for degree sequence authoring, course syllabi, and term offerings.
                       </p>
                     </div>
+
+                    <!-- Return to School of Engineering (Visible for Sys Admin & EXD) -->
+                    <div class="flex flex-wrap items-center gap-2">
+                      <button type="button" id="pdReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3.5 py-2 bg-black/40 hover:bg-black/60 border border-amber-400/50 hover:border-amber-300 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-sm group" title="Return to School of Engineering Overview">
+                        <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
+                        <span>School of Engineering</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <!-- ========================================================================= -->
-              <!-- 2. SUBSYSTEM CARDS (Connecting the 3 Partner Thesis Groups)                -->
+              <!-- 2. SUBSYSTEM CARDS                                                        -->
               <!-- ========================================================================= -->
               <div class="space-y-3">
                 <div class="px-1 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                  Academic Subsystems &amp; Partner Thesis Consoles
+                  Academic Subsystems
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                  <!-- ─── CARD 1: CURRICULUM MANAGEMENT (GROUP A) ─── -->
+                  <!-- ─── CARD 1: CURRICULUM MANAGEMENT ─── -->
                   <div onclick="navigateView('curriculum-home')"
                     class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
@@ -1121,7 +1127,6 @@
                             </p>
                           </div>
                         </div>
-                        <span class="px-2 py-0.5 text-[9px] font-mono bg-[#002855] text-[#E5A823] font-bold shrink-0">GROUP A &bull; ACTIVE</span>
                       </div>
                     </div>
 
@@ -1145,7 +1150,7 @@
                     </div>
                   </div>
 
-                  <!-- ─── CARD 2: SYLLABUS MANAGEMENT (GROUP B) ─── -->
+                  <!-- ─── CARD 2: SYLLABUS MANAGEMENT ─── -->
                   <div onclick="selectProgram('BSCpE', 'syllabus')"
                     class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
@@ -1163,7 +1168,6 @@
                             </p>
                           </div>
                         </div>
-                        <span class="px-2 py-0.5 text-[9px] font-mono bg-sky-50 dark:bg-sky-950 text-sky-800 dark:text-sky-300 border border-sky-200 dark:border-sky-800 font-bold shrink-0">GROUP B</span>
                       </div>
                     </div>
 
@@ -1177,7 +1181,7 @@
                     </div>
                   </div>
 
-                  <!-- ─── CARD 3: COURSE MANAGEMENT (GROUP C) ─── -->
+                  <!-- ─── CARD 3: COURSE MANAGEMENT ─── -->
                   <div onclick="selectProgram('BSCpE', 'course')"
                     class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
                     <div class="p-6 space-y-4">
@@ -1195,7 +1199,6 @@
                             </p>
                           </div>
                         </div>
-                        <span class="px-2 py-0.5 text-[9px] font-mono bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold shrink-0">GROUP C</span>
                       </div>
                     </div>
 
@@ -1379,16 +1382,20 @@
             <div class="flex-1 bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-xs p-4 flex flex-col justify-between">
               <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
                 <div class="space-y-0.5">
-                  <div class="inline-flex items-center gap-2 px-2 py-0.5 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-[#002855] dark:text-sky-300 text-[9px] font-mono font-black uppercase tracking-widest">
-                    <span>GROUP A DEDICATED WORKSPACE</span>
-                    <span>&bull;</span>
+                  <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-[#002855] dark:text-sky-300 text-[9px] font-mono font-black uppercase tracking-widest">
                     <span>CURRICULUM ARCHITECTURE</span>
+                    <span>&bull;</span>
+                    <span>ACTIVE WORKSPACE</span>
                   </div>
                   <h3 id="curricHomeProgramTitle" class="text-sm font-black uppercase text-slate-900 dark:text-white tracking-tight">
                     Bachelor of Science in <span class="text-[#E5A823]">Computer Engineering</span>
                   </h3>
                 </div>
                 <div class="flex items-center gap-2">
+                  <button type="button" id="curricHomeReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer" title="Return to School of Engineering Overview">
+                    <span>&larr;</span>
+                    <span>School of Engineering</span>
+                  </button>
                   <button type="button" onclick="goToProgramPd('BSCpE')" class="px-3 py-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs flex items-center gap-1.5 transition cursor-pointer border border-[#001733] shadow-xs" title="Return to Multi-Subsystem PD Workbench">
                     <span>&larr;</span>
                     <span>PD Multi-Subsystem Workbench</span>
@@ -1396,7 +1403,7 @@
                 </div>
               </div>
               <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
-                Dedicated Group A workspace for authoring, reviewing, and maintaining BSCpE degree sequences, prerequisite topological DAG validation, curricular credit distributions, and official document baselines.
+                Dedicated workspace for authoring, reviewing, and maintaining BSCpE degree sequences, prerequisite topological DAG validation, curricular credit distributions, and official document baselines.
               </p>
             </div>
           </div>
@@ -1441,12 +1448,12 @@
                 Curriculum Authoring &amp; Review Tools
               </div>
               <div class="flex items-center gap-2 text-xs">
-                <span class="text-slate-400 text-[11px]">Partner Consoles:</span>
+                <span class="text-slate-400 text-[11px]">Academic Consoles:</span>
                 <button type="button" onclick="selectProgram('BSCpE', 'syllabus')" class="px-2 py-1 bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300 border border-sky-200 dark:border-sky-800 font-bold text-[10px] hover:bg-sky-100 transition cursor-pointer">
-                  📘 Syllabus Mgmt (Group B)
+                  📘 Syllabus Management
                 </button>
                 <button type="button" onclick="selectProgram('BSCpE', 'course')" class="px-2 py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold text-[10px] hover:bg-emerald-100 transition cursor-pointer">
-                  📗 Course Mgmt (Group C)
+                  📗 Course Management
                 </button>
               </div>
             </div>
@@ -1926,7 +1933,7 @@
             <div class="relative z-10 space-y-1">
               <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/40 border border-sky-400/40 text-sky-300 text-[10px] font-mono font-black uppercase tracking-widest">
                 <span class="w-1.5 h-1.5 bg-sky-400 rounded-none animate-pulse"></span>
-                <span>PARTNER SUBSYSTEM &bull; CAPSTONE GROUP B INTEGRATION</span>
+                <span>ACADEMIC SUBSYSTEM &bull; SYLLABUS MANAGEMENT</span>
               </div>
               <h2 class="text-xl sm:text-2xl font-black tracking-tight uppercase flex items-center gap-2">
                 <span>Syllabus Management</span>
@@ -1990,7 +1997,7 @@
               </div>
               <div>
                 <div class="text-[10px] text-slate-500 uppercase font-sans">Subsystem Team</div>
-                <div class="text-xs font-bold text-slate-900 dark:text-white">Group B (Syllabus)</div>
+                <div class="text-xs font-bold text-slate-900 dark:text-white">Syllabus Management Team</div>
               </div>
             </div>
           </div>
@@ -2003,65 +2010,28 @@
                 <div class="space-y-0.5">
                   <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight flex items-center gap-2">
                     <span>Course Syllabi Authoring Queue</span>
-                    <span class="px-2 py-0.5 text-[9px] font-mono bg-blue-50 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">BSCpE 2026–2030</span>
                   </h3>
-                  <p class="text-xs text-slate-500">Live course descriptor feed ingested from Curriculum Management</p>
+                  <p class="text-xs text-slate-500">74 Total BSCpE Courses &bull; AY 2026–2030 Ingestion Lineage</p>
                 </div>
-                <button type="button" onclick="navigateView('catalog')" class="text-xs text-blue-600 dark:text-sky-400 font-bold hover:underline">
-                  View Full 74 Catalog &rarr;
-                </button>
               </div>
 
-              <!-- Table -->
+              <!-- Syllabi List Table -->
               <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                   <thead>
                     <tr class="bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700 font-mono text-[11px]">
                       <th class="p-2.5">Code</th>
                       <th class="p-2.5">Course Title</th>
-                      <th class="p-2.5">Term</th>
                       <th class="p-2.5">Units</th>
-                      <th class="p-2.5">Syllabus Status</th>
-                      <th class="p-2.5 text-right">Action</th>
+                      <th class="p-2.5">Status</th>
+                      <th class="p-2.5">ILOs</th>
+                      <th class="p-2.5">Action</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                       <td class="p-2.5 font-mono font-bold text-[#002855] dark:text-sky-300">CALCONE</td>
                       <td class="p-2.5 font-semibold">Calculus 1</td>
-                      <td class="p-2.5 font-mono">Y1 T1</td>
-                      <td class="p-2.5 font-mono">3.0 u</td>
-                      <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800">Approved</span></td>
-                      <td class="p-2.5 text-right"><button type="button" onclick="openCourseEditModal('CALCONE')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-[10px] font-bold">Inspect</button></td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                      <td class="p-2.5 font-mono font-bold text-[#002855] dark:text-sky-300">DISCMAT</td>
-                      <td class="p-2.5 font-semibold">Discrete Mathematics</td>
-                      <td class="p-2.5 font-mono">Y1 T2</td>
-                      <td class="p-2.5 font-mono">3.0 u</td>
-                      <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800">Approved</span></td>
-                      <td class="p-2.5 text-right"><button type="button" onclick="openCourseEditModal('DISCMAT')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-[10px] font-bold">Inspect</button></td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                      <td class="p-2.5 font-mono font-bold text-[#002855] dark:text-sky-300">DATSTRU</td>
-                      <td class="p-2.5 font-semibold">Data Structures &amp; Algorithms</td>
-                      <td class="p-2.5 font-mono">Y1 T3</td>
-                      <td class="p-2.5 font-mono">3.0 u</td>
-                      <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800">In Review</span></td>
-                      <td class="p-2.5 text-right"><button type="button" onclick="openCourseEditModal('DATSTRU')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-[10px] font-bold">Inspect</button></td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                      <td class="p-2.5 font-mono font-bold text-[#002855] dark:text-sky-300">CPEARCH</td>
-                      <td class="p-2.5 font-semibold">Computer Engineering Architecture</td>
-                      <td class="p-2.5 font-mono">Y2 T2</td>
-                      <td class="p-2.5 font-mono">4.0 u</td>
-                      <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-300 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-800">Drafting</span></td>
-                      <td class="p-2.5 text-right"><button type="button" onclick="openCourseEditModal('CPEARCH')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-[10px] font-bold">Inspect</button></td>
-                    </tr>
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                      <td class="p-2.5 font-mono font-bold text-[#002855] dark:text-sky-300">EMBSYST</td>
-                      <td class="p-2.5 font-semibold">Embedded Systems Design</td>
-                      <td class="p-2.5 font-mono">Y3 T1</td>
                       <td class="p-2.5 font-mono">4.0 u</td>
                       <td class="p-2.5"><span class="px-2 py-0.5 text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800">In Review</span></td>
                       <td class="p-2.5 text-right"><button type="button" onclick="openCourseEditModal('EMBSYST')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-[10px] font-bold">Inspect</button></td>
@@ -2076,10 +2046,10 @@
               <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 space-y-4 shadow-xs">
                 <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2.5">
                   <span class="text-base">ℹ️</span>
-                  <h4 class="text-xs font-black uppercase text-slate-900 dark:text-white tracking-wide">Partner Group Integration</h4>
+                  <h4 class="text-xs font-black uppercase text-slate-900 dark:text-white tracking-wide">Subsystem Architecture</h4>
                 </div>
                 <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  This module is authored and maintained by <strong>Capstone Group B (Syllabus Management)</strong>.
+                  This module provides <strong>Outcomes-Based Syllabus Management &amp; ILO Mapping</strong>.
                 </p>
                 <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2 text-[11px] font-mono">
                   <div class="flex items-center justify-between">
@@ -2113,7 +2083,7 @@
             <div class="relative z-10 space-y-1">
               <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/40 border border-emerald-400/40 text-emerald-300 text-[10px] font-mono font-black uppercase tracking-widest">
                 <span class="w-1.5 h-1.5 bg-emerald-400 rounded-none animate-pulse"></span>
-                <span>PARTNER SUBSYSTEM &bull; CAPSTONE GROUP C INTEGRATION</span>
+                <span>ACADEMIC SUBSYSTEM &bull; COURSE MANAGEMENT</span>
               </div>
               <h2 class="text-xl sm:text-2xl font-black tracking-tight uppercase flex items-center gap-2">
                 <span>Course Management</span>
@@ -2140,30 +2110,30 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono">
             <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-3.5 flex items-center gap-3 shadow-xs">
               <div class="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg shrink-0">
-                🔗
+                ⚡
               </div>
               <div>
-                <div class="text-[10px] text-slate-500 uppercase font-sans">API Interop Status</div>
+                <div class="text-[10px] text-slate-500 uppercase font-sans">CMS Engine Status</div>
                 <div class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                   <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                  <span>Offerings Connected</span>
+                  <span>Active &amp; Ready</span>
                 </div>
               </div>
             </div>
 
             <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-3.5 flex items-center gap-3 shadow-xs">
               <div class="w-10 h-10 bg-[#002855] text-[#E5A823] border border-[#E5A823]/40 flex items-center justify-center text-lg shrink-0">
-                🗓️
+                📅
               </div>
               <div>
-                <div class="text-[10px] text-slate-500 uppercase font-sans">Active Academic Year</div>
-                <div class="text-xs font-bold text-slate-900 dark:text-white">AY 2026–2027 (Trimester)</div>
+                <div class="text-[10px] text-slate-500 uppercase font-sans">Current Term</div>
+                <div class="text-xs font-bold text-slate-900 dark:text-white">AY 2026-2027 T1</div>
               </div>
             </div>
 
             <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-3.5 flex items-center gap-3 shadow-xs">
-              <div class="w-10 h-10 bg-blue-50 dark:bg-blue-950/60 border border-blue-300 dark:border-blue-800 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg shrink-0">
-                👥
+              <div class="w-10 h-10 bg-blue-50 dark:bg-blue-950/60 border border-blue-300 dark:border-blue-800 text-[#002855] dark:text-sky-300 flex items-center justify-center text-lg shrink-0">
+                👨‍🏫
               </div>
               <div>
                 <div class="text-[10px] text-slate-500 uppercase font-sans">Faculty Loading</div>
@@ -2177,7 +2147,7 @@
               </div>
               <div>
                 <div class="text-[10px] text-slate-500 uppercase font-sans">Subsystem Team</div>
-                <div class="text-xs font-bold text-slate-900 dark:text-white">Group C (Course/Sched)</div>
+                <div class="text-xs font-bold text-slate-900 dark:text-white">Course Management Team</div>
               </div>
             </div>
           </div>
@@ -2260,10 +2230,10 @@
               <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 space-y-4 shadow-xs">
                 <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2.5">
                   <span class="text-base">ℹ️</span>
-                  <h4 class="text-xs font-black uppercase text-slate-900 dark:text-white tracking-wide">Partner Group Integration</h4>
+                  <h4 class="text-xs font-black uppercase text-slate-900 dark:text-white tracking-wide">Subsystem Architecture</h4>
                 </div>
                 <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  This module is authored and maintained by <strong>Capstone Group C (Course &amp; Schedule Management)</strong>.
+                  This module provides <strong>Term Course Offerings &amp; Faculty Workload Management</strong>.
                 </p>
                 <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2 text-[11px] font-mono">
                   <div class="flex items-center justify-between">
