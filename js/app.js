@@ -7557,38 +7557,26 @@ function openAddExdModal() {
       const rootSchools = document.getElementById('node-schools-root');
       const schoolSoe = document.getElementById('node-school-soe');
       const schoolSocit = document.getElementById('node-school-socit');
+      const schoolSoma = document.getElementById('node-school-soma');
+      const schoolSom = document.getElementById('node-school-som');
+      const schoolSoa = document.getElementById('node-school-soa');
       const progCpe = document.getElementById('node-prog-cpe');
       const progCe = document.getElementById('node-prog-ce');
       const progEce = document.getElementById('node-prog-ece');
       const progCs = document.getElementById('node-prog-cs');
       const progIt = document.getElementById('node-prog-it');
+      const archSchoolsRoot = document.getElementById('node-archived-schools-root');
+      const archSoeProgs = document.getElementById('node-archived-soe-progs');
 
-      if (role === 'admin') {
-        // System Administrator can see ALL folders
-        [rootSchools, schoolSoe, schoolSocit, progCpe, progCe, progEce, progCs, progIt].forEach(el => {
-          if (el) el.classList.remove('hidden');
-        });
-      } else if (role === 'exd') {
-        // Executive Director ONLY sees folders of the school he is managing (School of Engineering)
-        if (rootSchools) rootSchools.classList.remove('hidden');
-        if (schoolSoe) schoolSoe.classList.remove('hidden');
-        if (schoolSocit) schoolSocit.classList.add('hidden');
-        [progCpe, progCe, progEce].forEach(el => {
-          if (el) el.classList.remove('hidden');
-        });
-        [progCs, progIt].forEach(el => {
-          if (el) el.classList.add('hidden');
-        });
-      } else if (role === 'pd' || role === 'faculty') {
-        // Program Director (and Faculty) ONLY sees folders of the program he is managing (Computer Engineering)
-        if (rootSchools) rootSchools.classList.remove('hidden');
-        if (schoolSoe) schoolSoe.classList.remove('hidden');
-        if (schoolSocit) schoolSocit.classList.add('hidden');
-        if (progCpe) progCpe.classList.remove('hidden');
-        [progCe, progEce, progCs, progIt].forEach(el => {
-          if (el) el.classList.add('hidden');
-        });
-      }
+      // Development focus: ONLY School of Engineering and BSCpE are active
+      if (rootSchools) rootSchools.classList.remove('hidden');
+      if (schoolSoe) schoolSoe.classList.remove('hidden');
+      if (progCpe) progCpe.classList.remove('hidden');
+
+      // All other schools, programs, and archived drawers strictly hidden
+      [schoolSocit, schoolSoma, schoolSom, schoolSoa, progCe, progEce, progCs, progIt, archSchoolsRoot, archSoeProgs].forEach(el => {
+        if (el) el.classList.add('hidden');
+      });
     }
     window.updateSidebarHierarchy = updateSidebarHierarchy;
 

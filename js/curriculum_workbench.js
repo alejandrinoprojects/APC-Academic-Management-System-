@@ -579,7 +579,7 @@
 
       const schoolIds = (typeof ACADEMIC_SCHOOLS_DATA !== 'undefined' && Array.isArray(ACADEMIC_SCHOOLS_DATA)) 
         ? ACADEMIC_SCHOOLS_DATA.map(s => s.id.toLowerCase()) 
-        : ['soe', 'socit', 'soma', 'som', 'soa'];
+        : ['soe'];
 
       // If no school and no program -> Admin Institutional Home (Path: Schools)
       if (!schoolId && !progCode) {
@@ -1277,25 +1277,6 @@
         activeProgs.forEach(prog => {
           grid.appendChild(buildProgramCard(prog, false));
         });
-
-        if (archivedProgs.length > 0) {
-          const archSection = document.createElement('div');
-          archSection.className = 'col-span-full pt-2';
-          archSection.innerHTML = `
-            <button type="button" onclick="toggleArchivedExdProgs()" class="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 font-bold uppercase tracking-wider py-1 cursor-pointer group">
-              <span id="archivedExdProgsChev" class="text-[10px] transition-transform duration-150">▶</span>
-              <span>Archived Degree Programs (${archivedProgs.length})</span>
-              <span class="text-[9px] px-1.5 py-0.2 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono">Dev Freeze</span>
-            </button>
-            <div id="archivedExdProgsWrapper" class="hidden mt-3 grid grid-cols-1 md:grid-cols-2 gap-6 opacity-75 hover:opacity-100 transition-opacity">
-            </div>
-          `;
-          const archWrapper = archSection.querySelector('#archivedExdProgsWrapper');
-          archivedProgs.forEach(prog => {
-            archWrapper.appendChild(buildProgramCard(prog, true));
-          });
-          grid.appendChild(archSection);
-        }
       }
     }
 
@@ -1574,28 +1555,21 @@
       const pathPill = document.getElementById('topBarPathPill');
       if (role === 'admin' || role === 'a') {
         if (pathPill) pathPill.innerText = 'Schools';
-        // System Administrator → sees SoE, active BSCpE, and archived drawers for dev inspection
-        [rootSchools, schoolSoe, progCpe, archSchoolsRoot, archSoeProgs, progCe, progEce, schoolSocit, schoolSoma, schoolSom, schoolSoa, progCs, progIt].forEach(el => {
-          if (el) el.classList.remove('hidden');
-        });
       } else if (role === 'exd' || role === 'x') {
         if (pathPill) pathPill.innerText = 'Programs';
-        // Executive Director → ONLY School of Engineering
-        if (rootSchools) rootSchools.classList.remove('hidden');
-        if (schoolSoe)   schoolSoe.classList.remove('hidden');
-        if (progCpe)     progCpe.classList.remove('hidden');
-        if (archSoeProgs) archSoeProgs.classList.remove('hidden');
-        if (archSchoolsRoot) archSchoolsRoot.classList.add('hidden');
-        [schoolSocit, schoolSoma, schoolSom, schoolSoa, progCs, progIt].forEach(el => { if (el) el.classList.add('hidden'); });
-      } else if (role === 'pd' || role === 'p' || role === 'faculty' || role === 'f') {
-        // Program Director / Faculty → ONLY active Computer Engineering
-        if (rootSchools) rootSchools.classList.remove('hidden');
-        if (schoolSoe)   schoolSoe.classList.remove('hidden');
-        if (progCpe)     progCpe.classList.remove('hidden');
-        if (archSchoolsRoot) archSchoolsRoot.classList.add('hidden');
-        if (archSoeProgs)    archSoeProgs.classList.add('hidden');
-        [schoolSocit, schoolSoma, schoolSom, schoolSoa, progCe, progEce, progCs, progIt].forEach(el => { if (el) el.classList.add('hidden'); });
+      } else if (role === 'pd' || role === 'p') {
+        if (pathPill) pathPill.innerText = 'Program Directorate';
       }
+
+      // Development focus: ONLY School of Engineering and Computer Engineering (BSCpE) are visible
+      if (rootSchools) rootSchools.classList.remove('hidden');
+      if (schoolSoe)   schoolSoe.classList.remove('hidden');
+      if (progCpe)     progCpe.classList.remove('hidden');
+
+      // Keep all non-SoE schools, other programs, and archived drawers strictly hidden
+      [archSchoolsRoot, archSoeProgs, progCe, progEce, schoolSocit, schoolSoma, schoolSom, schoolSoa, progCs, progIt].forEach(el => {
+        if (el) el.classList.add('hidden');
+      });
     }
 
     function switchRole(role) {

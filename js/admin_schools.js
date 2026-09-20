@@ -88,24 +88,8 @@
     // =========================================================================
     // ACADEMIC SCHOOLS DATA & CAROUSEL CONTROLLER
     // =========================================================================
-    const ACADEMIC_SCHOOLS_DATA = [
-      {
-        id: 'soe',
-        name: 'ENGINEERING',
-        bannerTitle: 'SCHOOL OF',
-        color: '#FF6B00',
-        badgeBorder: 'border-[#FF6B00]',
-        badgeBg: 'from-[#FF6B00] to-[#E55A00]',
-        bannerGrad: 'from-[#16120e] via-[#2a1a12] to-[#0f0b08]',
-        bannerIcon: '⚙️',
-        director: 'SOE Executive Director',
-        archived: false,
-        programs: [
-          { code: 'BSCpE', name: 'Bachelor of Science in Computer Engineering', archived: false },
-          { code: 'BSCE', name: 'Bachelor of Science in Civil Engineering', archived: true },
-          { code: 'BSECE', name: 'Bachelor of Science in Electronics Engineering', archived: true }
-        ]
-      },
+    // Archived Schools & Programs Backup (Preserved for future unarchiving)
+    const ARCHIVED_SCHOOLS_BACKUP = [
       {
         id: 'socit',
         name: 'COMPUTING & IT',
@@ -167,6 +151,31 @@
         archived: true,
         programs: [
           { code: 'BSArch', name: 'Bachelor of Science in Architecture', archived: true }
+        ]
+      }
+    ];
+    window.ARCHIVED_SCHOOLS_BACKUP = ARCHIVED_SCHOOLS_BACKUP;
+
+    const ARCHIVED_SOE_PROGRAMS_BACKUP = [
+      { code: 'BSCE', name: 'Bachelor of Science in Civil Engineering', archived: true },
+      { code: 'BSECE', name: 'Bachelor of Science in Electronics Engineering', archived: true }
+    ];
+    window.ARCHIVED_SOE_PROGRAMS_BACKUP = ARCHIVED_SOE_PROGRAMS_BACKUP;
+
+    const ACADEMIC_SCHOOLS_DATA = [
+      {
+        id: 'soe',
+        name: 'ENGINEERING',
+        bannerTitle: 'SCHOOL OF',
+        color: '#FF6B00',
+        badgeBorder: 'border-[#FF6B00]',
+        badgeBg: 'from-[#FF6B00] to-[#E55A00]',
+        bannerGrad: 'from-[#16120e] via-[#2a1a12] to-[#0f0b08]',
+        bannerIcon: '⚙️',
+        director: 'SOE Executive Director',
+        archived: false,
+        programs: [
+          { code: 'BSCpE', name: 'Bachelor of Science in Computer Engineering', archived: false }
         ]
       }
     ];
@@ -250,14 +259,10 @@
 
       function getSchoolProgramsHtml(programs) {
         let activeHtml = '';
-        let archivedCodes = [];
         for (let pi = 0; pi < programs.length; pi++) {
           const item = programs[pi];
           const prog = typeof item === 'object' ? item : getProgramInfo(item);
-          const isProgArchived = item.archived || (prog.code !== 'BSCpE');
-          if (isProgArchived) {
-            archivedCodes.push(prog.code);
-          } else {
+          if (prog.code === 'BSCpE') {
             activeHtml += '<a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram(\'' + prog.code + '\', \'homePdProgramView\')" class="text-slate-200 hover:text-[#E5A823] hover:underline transition flex items-center justify-between group cursor-pointer" title="Go to ' + prog.name + ' (' + prog.code + ')">' +
               '<span class="flex items-center gap-1.5 truncate">' +
                 '<span class="text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span> ' +
@@ -266,15 +271,6 @@
               '<span class="text-[9px] font-mono px-1.5 py-0.2 bg-emerald-950 text-emerald-300 border border-emerald-800 shrink-0">Active</span>' +
             '</a>';
           }
-        }
-        if (archivedCodes.length > 0) {
-          activeHtml += '<div class="pt-1.5 mt-1 border-t border-slate-800/80 space-y-1">' +
-            '<span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">Archived Programs:</span>' +
-            '<div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-mono">' +
-              archivedCodes.map(c => '<span class="line-through opacity-70">' + c + '</span>').join('<span>&bull;</span>') +
-              '<span class="text-[9px] text-amber-500/80 bg-amber-500/10 px-1 border border-amber-500/20 ml-auto">Dev Freeze</span>' +
-            '</div>' +
-          '</div>';
         }
         return activeHtml;
       }
@@ -354,28 +350,10 @@
         `;
       }
 
-      const activeSchools = visibleSchools.filter(s => !s.archived);
-      const archivedSchools = visibleSchools.filter(s => s.archived);
-
+      const activeSchools = visibleSchools.filter(s => !s.archived && s.id === 'soe');
       const activeHtml = activeSchools.map((s, idx) => renderSingleSchoolCard(s, idx, false)).join('');
-      const archivedHtml = archivedSchools.map((s, idx) => renderSingleSchoolCard(s, activeSchools.length + idx, true)).join('');
-      const archivedSection = archivedSchools.length > 0 ? `
-        <div class="col-span-full pt-4">
-          <button type="button" onclick="toggleArchivedSchoolsGrid()" class="w-full flex items-center justify-between p-3 bg-[#131822] hover:bg-[#18202d] border border-slate-700/80 transition cursor-pointer text-left group">
-            <span class="flex items-center gap-2">
-              <span id="archivedSchoolsGridChev" class="text-xs text-slate-400 group-hover:text-white transition-transform duration-150">▶</span>
-              <span class="text-xs font-bold text-slate-300 group-hover:text-white uppercase tracking-wider">📦 Archived Schools &amp; Colleges (${archivedSchools.length})</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.2 bg-slate-800 text-slate-400 border border-slate-700">Development Freeze</span>
-            </span>
-            <span class="text-[10px] text-slate-500 group-hover:text-slate-300">Click to expand / inspect</span>
-          </button>
-          <div id="archivedSchoolsGridWrapper" class="hidden mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 opacity-75 hover:opacity-100 transition-opacity">
-            ${archivedHtml}
-          </div>
-        </div>
-      ` : '';
 
-      container.innerHTML = activeHtml + archivedSection + addSchoolCardHtml;
+      container.innerHTML = activeHtml + addSchoolCardHtml;
     }
 
     function toggleArchivedSchoolsGrid() {
@@ -1673,7 +1651,7 @@
       // Update count badge
       const badge = document.getElementById('schoolsCountBadge');
       if (badge) {
-        badge.innerText = ACADEMIC_SCHOOLS_DATA.length;
+        badge.innerText = '1 School';
       }
 
       // Preserve set of open containers
@@ -1781,7 +1759,7 @@
       // Check saved academic schools data with version gate
       try {
         const version = localStorage.getItem('schools_data_version');
-        if (version === 'v3_specific_programs_only') {
+        if (version === 'v4_dev_soe_cpe_only') {
           const savedCustom = localStorage.getItem('academic_schools_data_custom');
           if (savedCustom) {
             const parsed = JSON.parse(savedCustom);
@@ -1790,8 +1768,8 @@
             }
           }
         } else {
-          // Initialize fresh version with exact user-requested programs
-          localStorage.setItem('schools_data_version', 'v3_specific_programs_only');
+          // Initialize fresh version with only active development school (SoE BSCpE)
+          localStorage.setItem('schools_data_version', 'v4_dev_soe_cpe_only');
           localStorage.setItem('academic_schools_data_custom', JSON.stringify(ACADEMIC_SCHOOLS_DATA));
         }
       } catch (err) {
