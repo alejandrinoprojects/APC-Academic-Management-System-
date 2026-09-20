@@ -605,6 +605,44 @@
                         </div>
                       </div>
 
+                      <!-- 2. Syllabus Management Folder (Empty) -->
+                      <div id="node-cpe-syllabus">
+                        <button type="button" onclick="toggleFolderAccordion('cpeSyllabusCont', 'cpeSyllabusChev'); navigateView('syllabus')"
+                          class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                          <span class="flex items-center space-x-2 truncate">
+                            <svg id="cpeSyllabusChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                            </svg>
+                            <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                            </svg>
+                            <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Syllabus Management</span>
+                          </span>
+                        </button>
+                        <div id="cpeSyllabusCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                          <!-- Empty folder as requested -->
+                        </div>
+                      </div>
+
+                      <!-- 3. Course Management Folder (Empty) -->
+                      <div id="node-cpe-course">
+                        <button type="button" onclick="toggleFolderAccordion('cpeCourseCont', 'cpeCourseChev'); navigateView('course')"
+                          class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                          <span class="flex items-center space-x-2 truncate">
+                            <svg id="cpeCourseChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                            </svg>
+                            <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                            </svg>
+                            <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Course Management</span>
+                          </span>
+                        </button>
+                        <div id="cpeCourseCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                          <!-- Empty folder as requested -->
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -862,16 +900,11 @@
                       <line x1="0" y1="180" x2="400" y2="0" stroke="#FF6B00" stroke-width="1.5" stroke-opacity="0.3"/>
                     </svg>
                   </div>
-                  <div class="relative z-10 space-y-1 p-6">
-                    <div class="inline-block px-2 py-0.5 bg-black/40 border border-amber-500/40 text-amber-400 text-[10px] font-mono font-black uppercase tracking-widest">
-                      SCHOOL OF ENGINEERING &bull; Executive Directorate
-                    </div>
+                  <div class="relative z-10 p-6">
                     <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase flex items-center gap-2">
-                      <span>ENGINEERING</span>
-                      <span class="text-[#E5A823]">EXD</span>
-                      <span style="color: #FF6B00;">OVERVIEW</span>
+                      <span>School of Engineering</span>
+                      <span class="text-[#E5A823]">Overview</span>
                     </h2>
-                    <p class="text-xs text-slate-300 font-medium">Executive Director: Engr. Leonardo A. Samaniego Jr. &bull; Operational Baseline</p>
                   </div>
                   <div class="relative z-10 flex items-center space-x-3 pr-6">
                     <button type="button" id="exdReturnToAdminBtn" onclick="renderAdminOverview()" class="hidden px-3.5 py-2 bg-[#10151E]/90 hover:bg-[#10151E] border border-amber-500/60 hover:border-amber-400 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md group">

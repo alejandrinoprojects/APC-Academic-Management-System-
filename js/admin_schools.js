@@ -1379,6 +1379,40 @@
                 </div>
               </div>
             </div>
+
+            <!-- 2. Syllabus Management Folder (Empty) -->
+            <div id="node-cpe-syllabus">
+              <button type="button" onclick="toggleFolderAccordion('cpeSyllabusCont', 'cpeSyllabusChev'); navigateView('syllabus')"
+                class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                <span class="flex items-center space-x-2 truncate">
+                  <svg id="cpeSyllabusChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                  </svg>
+                  <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                  </svg>
+                  <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Syllabus Management</span>
+                </span>
+              </button>
+              <div id="cpeSyllabusCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3"></div>
+            </div>
+
+            <!-- 3. Course Management Folder (Empty) -->
+            <div id="node-cpe-course">
+              <button type="button" onclick="toggleFolderAccordion('cpeCourseCont', 'cpeCourseChev'); navigateView('course')"
+                class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                <span class="flex items-center space-x-2 truncate">
+                  <svg id="cpeCourseChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                  </svg>
+                  <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                  </svg>
+                  <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Course Management</span>
+                </span>
+              </button>
+              <div id="cpeCourseCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3"></div>
+            </div>
           </div>
         </div>`;
     }
@@ -1513,6 +1547,36 @@
                   </button>
                 </div>
               </div>
+            </div>
+
+            <!-- Syllabus Management Folder (Empty) -->
+            <div id="node-${progId}-syllabus">
+              <button type="button" onclick="toggleFolderAccordion('${progId}SyllabusCont', '${progId}SyllabusChev'); navigateView('syllabus')"
+                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                <svg id="${progId}SyllabusChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                </svg>
+                <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                </svg>
+                <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Syllabus Management</span>
+              </button>
+              <div id="${progId}SyllabusCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3"></div>
+            </div>
+
+            <!-- Course Management Folder (Empty) -->
+            <div id="node-${progId}-course">
+              <button type="button" onclick="toggleFolderAccordion('${progId}CourseCont', '${progId}CourseChev'); navigateView('course')"
+                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                <svg id="${progId}CourseChev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                </svg>
+                <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                </svg>
+                <span class="truncate text-[11px] font-semibold text-slate-200 group-hover:text-white">Course Management</span>
+              </button>
+              <div id="${progId}CourseCont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3"></div>
             </div>
           </div>
         </div>`;

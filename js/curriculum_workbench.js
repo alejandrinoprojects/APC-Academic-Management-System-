@@ -1173,16 +1173,11 @@
               <line x1="0" y1="180" x2="400" y2="0" stroke="${schoolColor}" stroke-width="1.5" stroke-opacity="0.3"/>
             </svg>
           </div>
-          <div class="relative z-10 space-y-1 p-6">
-            <div class="inline-block px-2 py-0.5 bg-black/40 border border-amber-500/40 text-amber-400 text-[10px] font-mono font-black uppercase tracking-widest">
-              ${schoolName} &bull; Executive Directorate
-            </div>
+          <div class="relative z-10 p-6">
             <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase flex items-center gap-2">
-              <span>${school.name}</span>
-              <span class="text-[#E5A823]">EXD</span>
-              <span style="color: ${schoolColor};">OVERVIEW</span>
+              <span>${schoolName}</span>
+              <span class="text-[#E5A823]">Overview</span>
             </h2>
-            <p class="text-xs text-slate-300 font-medium">Executive Director: ${school.director || 'Academic Leadership'} &bull; Operational Baseline</p>
           </div>
           <div class="relative z-10 flex items-center space-x-3 pr-6">
             ${allSchoolsBtnHtml}
