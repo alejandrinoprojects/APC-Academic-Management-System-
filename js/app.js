@@ -2356,8 +2356,6 @@ let currentSelectedCode = null;
           card.classList.add('feeder-highlight');
         } else if (activeDependents.includes(id)) {
           card.classList.add('dependent-highlight');
-        } else {
-          card.classList.add('dimmed');
         }
       });
 

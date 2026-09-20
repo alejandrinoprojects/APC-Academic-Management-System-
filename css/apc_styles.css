@@ -62,8 +62,8 @@
       box-shadow: 0 8px 16px -4px rgba(22, 163, 74, 0.3);
     }
     .course-card.dimmed {
-      opacity: 0.22 !important;
-      filter: grayscale(80%);
+      opacity: 1 !important;
+      filter: none !important;
     }
 
     /* Animated SVG Arrow Lines */

@@ -629,8 +629,6 @@
         card.classList.add('feeder-highlight');
       } else if (dependentSet.has(code)) {
         card.classList.add('dependent-highlight');
-      } else {
-        card.classList.add('dimmed');
       }
     });
 
