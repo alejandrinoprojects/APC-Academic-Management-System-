@@ -1300,8 +1300,12 @@
 
     function handleMicrosoftSSOLogin(roleKey = 'admin') {
       const screen = document.getElementById('loginLandingScreen');
-      sessionStorage.setItem('rams_authenticated', 'true');
-      sessionStorage.setItem('rams_user_role', roleKey);
+      window.ramsAuthenticated = true;
+      window.ramsUserRole = roleKey;
+      try {
+        sessionStorage.removeItem('rams_authenticated');
+        sessionStorage.removeItem('rams_user_role');
+      } catch (e) {}
 
       if (screen) {
         screen.classList.add('hidden');
@@ -1331,8 +1335,12 @@
     }
 
     function logoutApp() {
-      sessionStorage.removeItem('rams_authenticated');
-      sessionStorage.removeItem('rams_user_role');
+      window.ramsAuthenticated = false;
+      window.ramsUserRole = null;
+      try {
+        sessionStorage.removeItem('rams_authenticated');
+        sessionStorage.removeItem('rams_user_role');
+      } catch (e) {}
       const screen = document.getElementById('loginLandingScreen');
       if (screen) {
         screen.classList.remove('hidden');
@@ -1412,15 +1420,15 @@
     }
 
     function checkInitialAuthState() {
-      const isAuth = sessionStorage.getItem('rams_authenticated');
+      // Session storage is disabled: always start unauthenticated on fresh load
+      window.ramsAuthenticated = false;
+      window.ramsUserRole = null;
+      try {
+        sessionStorage.removeItem('rams_authenticated');
+        sessionStorage.removeItem('rams_user_role');
+      } catch (e) {}
       const screen = document.getElementById('loginLandingScreen');
-      const role = sessionStorage.getItem('rams_user_role') || 'admin';
-      if (isAuth === 'true') {
-        if (screen) screen.classList.add('hidden');
-        switchRole(role);
-      } else {
-        if (screen) screen.classList.remove('hidden');
-      }
+      if (screen) screen.classList.remove('hidden');
     }
 
     // Keyboard shortcuts on login screen (a, x, p, f)

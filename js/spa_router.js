@@ -264,7 +264,7 @@
     isPopStateNavigating = true;
     try {
       const loginScreen = document.getElementById('loginLandingScreen');
-      const isAuth = sessionStorage.getItem('rams_authenticated');
+      const isAuth = Boolean(window.ramsAuthenticated);
 
       // If state is root '/', show login screen
       if (routeState.isRoot) {
@@ -273,7 +273,7 @@
       }
 
       // If user is not authenticated, keep login screen visible and save route
-      if (isAuth !== 'true') {
+      if (!isAuth) {
         if (loginScreen) loginScreen.classList.remove('hidden');
         window._pendingRouteAfterLogin = routeState;
         return;
@@ -379,26 +379,24 @@
     if (isInitialized) return;
     isInitialized = true;
 
+    // Session storage disabled: purge any stale credentials
+    try {
+      sessionStorage.removeItem('rams_authenticated');
+      sessionStorage.removeItem('rams_user_role');
+    } catch (e) {}
+    window.ramsAuthenticated = false;
+
     const route = parseCurrentLocation();
     const loginScreen = document.getElementById('loginLandingScreen');
-    const isAuth = sessionStorage.getItem('rams_authenticated');
 
-    // 1. Root path '/' always shows login landing screen
-    if (route.isRoot) {
-      if (loginScreen) loginScreen.classList.remove('hidden');
-      return;
-    }
+    // Always ensure login screen is visible on initial load / reload
+    if (loginScreen) loginScreen.classList.remove('hidden');
 
-    // 2. Subpaths (e.g. /schools, /cpe/flowchart):
-    if (isAuth === 'true') {
-      if (loginScreen) loginScreen.classList.add('hidden');
-      const role = sessionStorage.getItem('rams_user_role') || 'admin';
-      if (typeof window.switchRole === 'function') window.switchRole(role);
-      setTimeout(() => applyRouteState(route, true), 30);
-    } else {
-      // User is not yet logged in: keep login screen visible and save target route
-      if (loginScreen) loginScreen.classList.remove('hidden');
+    if (!route.isRoot) {
+      // Direct deep link accessed: save target route to fulfill upon login
       window._pendingRouteAfterLogin = route;
+    } else {
+      window._pendingRouteAfterLogin = null;
     }
   }
 
