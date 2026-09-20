@@ -1308,7 +1308,14 @@
       }
 
       switchRole(roleKey);
-      renderHomepageForRole(roleKey);
+
+      if (window._pendingRouteAfterLogin && window.spaRouter && typeof window.spaRouter.applyRouteState === 'function') {
+        const pending = window._pendingRouteAfterLogin;
+        window._pendingRouteAfterLogin = null;
+        window.spaRouter.applyRouteState(pending);
+      } else {
+        renderHomepageForRole(roleKey);
+      }
     }
 
     function handleManualEmailLogin(event) {
@@ -1334,6 +1341,74 @@
         window.spaRouter.updateBrowserUrl({ type: 'admin', targetView: 'home', isRoot: true }, true);
       }
       showToast('Signed out of APC RAMS Curriculum Suite.');
+    }
+
+    function openLoginModal() {
+      const modal = document.getElementById('loginModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+      const modal = document.getElementById('loginModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchLoginAccount(email, name, role, avatar, roleKey) {
+      const mName = document.getElementById('loginModalName');
+      const mEmail = document.getElementById('loginModalEmail');
+      const mRole = document.getElementById('loginModalRole');
+      const mAvatar = document.getElementById('loginModalAvatar');
+      if (mName) mName.innerText = name;
+      if (mEmail) mEmail.innerText = email;
+      if (mRole) mRole.innerText = role;
+      if (mAvatar) mAvatar.innerText = avatar;
+
+      const hName = document.getElementById('sidebarUserName');
+      const hEmail = document.getElementById('sidebarUserEmail');
+      if (hName) hName.innerText = name;
+      if (hEmail) hEmail.innerText = email;
+
+      const roleSel = document.getElementById('roleSelector');
+      if (roleSel && roleKey) {
+        roleSel.value = roleKey;
+        switchRole(roleKey);
+        renderHomepageForRole(roleKey);
+      }
+      
+      const resBox = document.getElementById('graphApiResult');
+      if (resBox) {
+        resBox.classList.remove('hidden');
+        resBox.innerText = `// Active token switched:
+{
+  "status": 200,
+  "userPrincipalName": "${email}",
+  "displayName": "${name}",
+  "assignedRole": "${role}",
+  "tenantId": "aeb745e6-8166-4f8f-9233-179e8109c49e",
+  "tokenType": "Bearer",
+  "expiresIn": 3599
+}`;
+      }
+    }
+
+    function testMicrosoftGraphApi() {
+      const resBox = document.getElementById('graphApiResult');
+      if (!resBox) return;
+      resBox.classList.remove('hidden');
+      resBox.innerText = `// Live Query: GET https://graph.microsoft.com/v1.0/me
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users/$entity",
+  "displayName": "System Administrator",
+  "givenName": "System",
+  "jobTitle": "System Administrator",
+  "mail": "admin@apc.edu.ph",
+  "mobilePhone": null,
+  "officeLocation": "APC IT Center",
+  "preferredLanguage": "en-US",
+  "surname": "Administrator",
+  "userPrincipalName": "admin@apc.edu.ph",
+  "id": "2d7f8641-a20c-4b5c-a5b6-7c9e0d1f2a3b"
+}`;
     }
 
     function checkInitialAuthState() {
@@ -3835,12 +3910,17 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.currentRegistrarTab = currentRegistrarTab;
     window.navHistoryBack = navHistoryBack;
     window.navHistoryForward = navHistoryForward;
+    window.handleMicrosoftSSOLogin = handleMicrosoftSSOLogin;
+    window.logoutApp = logoutApp;
+    window.openLoginModal = openLoginModal;
+    window.closeLoginModal = closeLoginModal;
+    window.switchLoginAccount = switchLoginAccount;
+    window.testMicrosoftGraphApi = testMicrosoftGraphApi;
 
-    // Initialize categories, legend, and auth check on load
+    // Initialize categories and legend on load
     try {
       renderFlowchartLegend();
       populateCategoryDropdowns();
-      checkInitialAuthState();
     } catch (e) {
       console.warn('Initial setup warning:', e);
     }

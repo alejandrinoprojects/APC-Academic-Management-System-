@@ -96,8 +96,15 @@
   function buildUrlForState(state) {
     if (!state) return '/';
 
+    // If login landing screen is currently visible
+    const loginScreen = document.getElementById('loginLandingScreen');
+    if (loginScreen && !loginScreen.classList.contains('hidden') && state.isRoot) {
+      return '/';
+    }
+
     // 1. Root / Institutional overview
     if (state.type === 'admin' || state.targetView === 'home') {
+      if (state.isRoot) return '/';
       return '/schools';
     }
 
@@ -256,15 +263,24 @@
 
     isPopStateNavigating = true;
     try {
-      // If direct deep link is accessed, automatically ensure session is active
+      const loginScreen = document.getElementById('loginLandingScreen');
       const isAuth = sessionStorage.getItem('rams_authenticated');
-      if (!routeState.isRoot && isAuth !== 'true') {
-        sessionStorage.setItem('rams_authenticated', 'true');
-        sessionStorage.setItem('rams_user_role', 'admin');
-        const loginScreen = document.getElementById('loginLandingScreen');
-        if (loginScreen) loginScreen.classList.add('hidden');
-        if (typeof window.switchRole === 'function') window.switchRole('admin');
+
+      // If state is root '/', show login screen
+      if (routeState.isRoot) {
+        if (loginScreen) loginScreen.classList.remove('hidden');
+        return;
       }
+
+      // If user is not authenticated, keep login screen visible and save route
+      if (isAuth !== 'true') {
+        if (loginScreen) loginScreen.classList.remove('hidden');
+        window._pendingRouteAfterLogin = routeState;
+        return;
+      }
+
+      // User is authenticated: ensure login screen is hidden
+      if (loginScreen) loginScreen.classList.add('hidden');
 
       if (routeState.type === 'admin') {
         if (typeof window.renderAdminOverview === 'function') {
@@ -364,9 +380,25 @@
     isInitialized = true;
 
     const route = parseCurrentLocation();
-    // If user accessed a specific deep path, route to it immediately
-    if (!route.isRoot) {
-      setTimeout(() => applyRouteState(route, true), 50);
+    const loginScreen = document.getElementById('loginLandingScreen');
+    const isAuth = sessionStorage.getItem('rams_authenticated');
+
+    // 1. Root path '/' always shows login landing screen
+    if (route.isRoot) {
+      if (loginScreen) loginScreen.classList.remove('hidden');
+      return;
+    }
+
+    // 2. Subpaths (e.g. /schools, /cpe/flowchart):
+    if (isAuth === 'true') {
+      if (loginScreen) loginScreen.classList.add('hidden');
+      const role = sessionStorage.getItem('rams_user_role') || 'admin';
+      if (typeof window.switchRole === 'function') window.switchRole(role);
+      setTimeout(() => applyRouteState(route, true), 30);
+    } else {
+      // User is not yet logged in: keep login screen visible and save target route
+      if (loginScreen) loginScreen.classList.remove('hidden');
+      window._pendingRouteAfterLogin = route;
     }
   }
 
