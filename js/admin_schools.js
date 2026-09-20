@@ -824,18 +824,18 @@
       }
 
       const defaultDirectors = {
-        'BSCpE': 'Engr. Sergio R. Peruda Jr.',
-        'BSCE': 'Engr. Ronald V. Santos',
-        'BSECE': 'Engr. Melissa C. David',
-        'BSCS': 'Dr. Alan Turing',
-        'BSIT': 'Prof. Tim Berners-Lee',
-        'BMMA': 'Prof. Paul Rand',
-        'BSPsych': 'Dr. Carl Rogers',
-        'BSBA': 'Prof. Peter Drucker',
-        'BSA': 'Prof. Luca Pacioli',
-        'BSArch': 'Ar. Zaha Hadid'
+        'BSCpE': 'Program Director',
+        'BSCE': 'Program Director',
+        'BSECE': 'Program Director',
+        'BSCS': 'Program Director',
+        'BSIT': 'Program Director',
+        'BMMA': 'Program Director',
+        'BSPsych': 'Program Director',
+        'BSBA': 'Program Director',
+        'BSA': 'Program Director',
+        'BSArch': 'Program Director'
       };
-      return defaultDirectors[progCode] || `${progCode} Program Director`;
+      return defaultDirectors[progCode] || 'Program Director';
     }
 
     function openEditProgramModal(progCode) {

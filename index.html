@@ -726,7 +726,7 @@
                       <div class="space-y-3">
                         <div>
                           <label class="block text-xs font-bold text-slate-300 mb-1">Executive Director:</label>
-                          <div class="bg-[#10151E] border border-slate-700/70 p-2 text-xs text-white font-medium">Leonardo A. Samaniego Jr.</div>
+                          <div class="bg-[#10151E] border border-slate-700/70 p-2 text-xs text-white font-medium">Executive Director</div>
                         </div>
                         <div>
                           <label class="block text-xs font-bold text-slate-300 mb-1">Programs Offered:</label>
@@ -865,7 +865,7 @@
                         <!-- Director Info Box -->
                         <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2.5 space-y-0.5">
                           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Program Director</span>
-                          <span id="exdProgDirector_BSCpE" class="text-xs font-bold text-slate-900 dark:text-sky-300 block">Engr. Sergio R. Peruda Jr.</span>
+                          <span id="exdProgDirector_BSCpE" class="text-xs font-bold text-slate-900 dark:text-sky-300 block">Program Director</span>
                         </div>
 
                         <!-- Active Curriculums -->
@@ -917,8 +917,8 @@
                   <div class="space-y-2">
                     <img src="assets/apc_seal.png" class="w-14 h-14 object-contain mx-auto p-0.5 border border-[#E5A823]" alt="APC Seal">
                     <div class="space-y-0.5">
-                      <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-wider">PROGRAM DIRECTOR</h4>
-                      <p id="pdHeaderDirectorName" class="text-xs font-bold text-[#002855] dark:text-sky-300">Engr. Sergio R. Peruda Jr.</p>
+                      <h4 id="pdHeaderRoleTitle" class="text-[10px] font-black text-slate-500 uppercase tracking-wider">PROGRAM DIRECTOR</h4>
+                      <p id="pdHeaderDirectorName" class="text-xs font-bold text-[#002855] dark:text-sky-300">Program Director</p>
                     </div>
                   </div>
                   <div class="w-full pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 space-y-1">
@@ -937,13 +937,13 @@
                         <span class="w-1.5 h-1.5 bg-amber-400 rounded-none animate-pulse"></span>
                         <span id="pdHeaderSchoolName">SCHOOL OF ENGINEERING</span>
                         <span>&bull;</span>
-                        <span>PROGRAM DIRECTOR WORKBENCH</span>
+                        <span id="pdHeaderWorkbenchTag">PROGRAM DIRECTOR WORKBENCH</span>
                       </div>
                       <h2 id="pdHeaderProgramTitle" class="text-xl sm:text-2xl font-black tracking-tight uppercase flex items-center gap-2 text-white">
                         <span>BACHELOR OF SCIENCE IN</span>
                         <span class="text-[#E5A823]">COMPUTER ENGINEERING</span>
                       </h2>
-                      <p class="text-xs text-blue-100 font-normal leading-relaxed">
+                      <p id="pdHeaderWorkbenchDesc" class="text-xs text-blue-100 font-normal leading-relaxed">
                         Central coordination portal for degree sequence authoring, course syllabi, and term offerings.
                       </p>
                     </div>
@@ -1187,83 +1187,121 @@
         <!-- ========================================================================= -->
         <!-- VIEW: CURRICULUM MANAGEMENT DEDICATED HOMEPAGE -->
         <!-- ========================================================================= -->
+        <!-- ========================================================================= -->
+        <!-- VIEW: CURRICULUM MANAGEMENT DEDICATED HOMEPAGE -->
+        <!-- ========================================================================= -->
         <section id="view-curriculum-home" class="hidden space-y-6">
-          <!-- Executive Program Directorate Identity Bar -->
-          <div class="flex flex-col lg:flex-row items-stretch gap-4">
-            <!-- Left: Institutional Director Identity Tile -->
-            <div class="w-full lg:w-72 bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-xs p-4 flex flex-col justify-between items-center text-center shrink-0">
-              <div class="space-y-2">
-                <img src="assets/apc_seal.png" class="w-12 h-12 object-contain mx-auto p-0.5 border border-[#E5A823]" alt="APC Seal">
-                <div class="space-y-0.5">
-                  <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-wider">PROGRAM DIRECTOR</h4>
-                  <p id="curricHomeDirectorName" class="text-xs font-bold text-[#002855] dark:text-sky-300">Engr. Sergio R. Peruda Jr.</p>
-                </div>
-              </div>
-              <div class="w-full pt-2.5 mt-2.5 border-t border-slate-200 dark:border-slate-800 space-y-1">
-                <div class="text-[10px] font-mono text-slate-500 uppercase flex items-center justify-between">
-                  <span>School:</span>
-                  <span id="curricHomeSchoolName" class="font-bold text-slate-800 dark:text-slate-200">SCHOOL OF ENGINEERING</span>
-                </div>
-              </div>
-            </div>
+          
+          <!-- Modern Institutional Executive Hero Banner -->
+          <div class="bg-gradient-to-r from-[#001733] via-[#002855] to-[#001f44] text-white p-6 sm:p-8 rounded-none border border-[#001733] shadow-lg relative overflow-hidden">
+            <!-- Subtle Institutional Ambient Glow -->
+            <div class="absolute -right-16 -top-16 w-80 h-80 bg-[#E5A823]/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-            <!-- Right: Directorate Governance & Authority Callout -->
-            <div class="flex-1 bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-xs p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div class="space-y-1">
-                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-[#002855] dark:text-sky-300 text-[9px] font-mono font-black uppercase tracking-widest">
-                  <span>CURRICULUM ARCHITECTURE</span>
-                  <span>&bull;</span>
-                  <span>ACTIVE WORKSPACE</span>
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <!-- Left: Institutional Identity & Degree Info -->
+              <div class="space-y-3 max-w-3xl">
+                <!-- Metadata Strip -->
+                <div class="flex flex-wrap items-center gap-2">
+                  <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-black/40 border border-[#E5A823]/40 text-[#E5A823] text-[10px] font-mono font-black uppercase tracking-wider shadow-xs">
+                    <img src="assets/apc_seal.png" class="w-3.5 h-3.5 object-contain" alt="APC Seal">
+                    <span id="curricHomeSchoolName">SCHOOL OF ENGINEERING</span>
+                  </div>
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 border border-white/20 text-slate-200 text-[10px] font-mono font-bold uppercase">
+                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-none animate-pulse"></span>
+                    <span id="curricHomeProgramTag">BSCpE AY 2026–2030</span>
+                  </div>
+                  <span class="px-2 py-1 bg-blue-900/60 border border-blue-700/60 text-blue-200 text-[10px] font-mono font-bold">
+                    CHED CMO No. 92, s. 2017 Compliant
+                  </span>
                 </div>
-                <h3 id="curricHomeProgramTitle" class="text-sm font-black uppercase text-slate-900 dark:text-white tracking-tight">
-                  Bachelor of Science in <span class="text-[#E5A823]">Computer Engineering</span>
-                </h3>
+
+                <!-- Degree Title & Subtitle -->
+                <div>
+                  <h2 id="curricHomeProgramTitle" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase text-white">
+                    Bachelor of Science in <span class="text-[#E5A823]">Computer Engineering</span>
+                  </h2>
+                  <h3 id="curricHomeHeading" class="hidden">Curriculum Management Homepage</h3>
+                  <p class="text-xs sm:text-sm text-slate-300 font-medium mt-1">
+                    Outcomes-Based Education (OBE) Master Curriculum &bull; 4-Year Active Baseline Cohort
+                  </p>
+                </div>
+
+                <!-- Director & Governance Meta Line -->
+                <div class="flex flex-wrap items-center gap-4 text-xs text-slate-300 pt-2 border-t border-white/10">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-slate-400 text-[11px]">Program Director:</span>
+                    <span id="curricHomeDirectorName" class="font-bold text-[#E5A823]">Program Director</span>
+                  </div>
+                  <span class="text-slate-500">&bull;</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-slate-400 text-[11px]">Sequence:</span>
+                    <span class="font-bold text-emerald-400">12 Trimesters</span>
+                  </div>
+                  <span class="text-slate-500">&bull;</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-slate-400 text-[11px]">Accreditation:</span>
+                    <span class="font-bold text-slate-200">PACUCOA Level IV</span>
+                  </div>
+                </div>
               </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <button type="button" id="curricHomeReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-1.5 transition-all duration-150 cursor-pointer hover:shadow-xs hover:-translate-y-0.5" title="Return to School of Engineering Overview">
+
+              <!-- Right: Navigation Button -->
+              <div class="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-3 shrink-0">
+                <button type="button" id="curricHomeReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-xs" title="Return to School of Engineering Overview">
                   <span>&larr;</span>
                   <span>School of Engineering</span>
                 </button>
-                <button type="button" onclick="goToProgramPd('BSCpE')" class="px-3.5 py-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs flex items-center gap-1.5 transition-all duration-150 cursor-pointer border border-[#001733] shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0" title="Return to Multi-Subsystem PD Workbench">
-                  <span>&larr;</span>
-                  <span>PD Multi-Subsystem Workbench</span>
+                <button type="button" onclick="goToProgramPd('BSCpE')" class="px-4 py-2.5 bg-[#E5A823] hover:bg-[#d4971a] text-[#002855] font-black text-xs flex items-center gap-2 transition-all cursor-pointer border border-[#E5A823] shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0" title="Return to Multi-Subsystem PD Workbench">
+                  <svg class="w-4 h-4 text-[#002855]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                  <span id="curricHomeWorkbenchBtnText">PD Workbench</span>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Institutional Panoramic Banner -->
-          <div class="bg-[#002855] text-white p-6 sm:p-7 rounded-none border border-[#001733] shadow-md flex flex-wrap items-center justify-between gap-4 relative overflow-hidden">
-            <div class="relative z-10 space-y-2">
-              <span id="curricHomeProgramTag" class="hidden"></span>
-              <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/40 border border-[#E5A823]/40 text-[#E5A823] text-[10px] font-mono font-black uppercase tracking-widest">
-                <span class="w-1.5 h-1.5 bg-[#E5A823] rounded-none animate-pulse"></span>
-                <span>BS COMPUTER ENGINEERING (BSCpE)</span>
-                <span>&bull;</span>
-                <span>CURRICULUM 2026–2030</span>
+          <!-- Modern 4-Tile Metric Ribbon -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-4 shadow-xs flex items-center gap-3.5">
+              <div class="w-10 h-10 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-[#002855] dark:text-[#E5A823] flex items-center justify-center font-black text-sm shrink-0 font-mono">
+                U
               </div>
-              <h2 id="curricHomeHeading" class="text-2xl sm:text-3xl font-black tracking-tight uppercase flex items-center gap-2.5">
-                <span>Curriculum Management</span>
-                <span class="text-[#E5A823]">Homepage</span>
-              </h2>
-            </div>
-            <div class="relative z-10 flex items-center gap-2.5">
-              <div class="px-3.5 py-2 bg-blue-950/80 border border-blue-800 text-blue-200 text-xs font-mono shadow-xs">
-                <span class="text-slate-400">Total:</span> <span class="text-[#E5A823] font-bold">184.0 Units</span>
-              </div>
-              <div class="px-3.5 py-2 bg-blue-950/80 border border-blue-800 text-blue-200 text-xs font-mono shadow-xs">
-                <span class="text-slate-400">Courses:</span> <span class="text-[#E5A823] font-bold">74 Subjects</span>
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Program Load</div>
+                <div class="text-lg font-black text-slate-900 dark:text-white font-mono">184.0 <span class="text-xs font-sans font-semibold text-slate-500">Units</span></div>
               </div>
             </div>
-            <!-- Decorative Vector Background -->
-            <svg class="absolute right-0 top-0 h-full w-96 object-cover pointer-events-none opacity-20" viewBox="0 0 400 150" fill="none">
-              <polygon points="100,0 400,0 400,150 20,150" fill="#E5A823" />
-              <circle cx="280" cy="75" r="45" stroke="#ffffff" stroke-width="2" />
-            </svg>
+            <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-4 shadow-xs flex items-center gap-3.5">
+              <div class="w-10 h-10 bg-amber-50 dark:bg-amber-950/70 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-[#E5A823] flex items-center justify-center font-black text-sm shrink-0 font-mono">
+                #
+              </div>
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Curriculum Courses</div>
+                <div class="text-lg font-black text-slate-900 dark:text-white font-mono">74 <span class="text-xs font-sans font-semibold text-slate-500">Subjects</span></div>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-4 shadow-xs flex items-center gap-3.5">
+              <div class="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-black text-sm shrink-0 font-mono">
+                T
+              </div>
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Trimester Cadence</div>
+                <div class="text-lg font-black text-slate-900 dark:text-white font-mono">12 <span class="text-xs font-sans font-semibold text-slate-500">Terms (4 Yrs)</span></div>
+              </div>
+            </div>
+            <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-4 shadow-xs flex items-center gap-3.5">
+              <div class="w-10 h-10 bg-purple-50 dark:bg-purple-950/70 border border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-400 flex items-center justify-center font-black text-sm shrink-0 font-mono">
+                SO
+              </div>
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">OBE Competencies</div>
+                <div class="text-lg font-black text-slate-900 dark:text-white font-mono">13 <span class="text-xs font-sans font-semibold text-slate-500">Outcomes (a–m)</span></div>
+              </div>
+            </div>
           </div>
 
-          <!-- Section Label: By Academic Year Breakdown (with generous whitespace & separation) -->
-          <div class="pt-2 pb-4 mt-6">
+          <!-- Section Label: By Academic Year Breakdown -->
+          <div class="pt-2 pb-1 border-b border-slate-200 dark:border-slate-800">
             <div class="flex items-center justify-between">
               <div class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <span class="w-2.5 h-2.5 bg-[#E5A823] shrink-0"></span>
@@ -1273,236 +1311,242 @@
             </div>
           </div>
 
-          <!-- Primary Curriculum Management Cards Grid (4 Active Years, Past Curriculums, and Create New) -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Primary Curriculum Management Cards Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             
             <!-- Card 1: 1st Year (AY 2026–2027) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-[#002855] dark:hover:border-[#E5A823] hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-[#002855] text-[#E5A823] flex items-center justify-center font-bold text-sm border border-[#E5A823]/40 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                    Y1
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y1</span>
+                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2026–2027</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 border border-blue-200 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-800">
-                    AY 2026–2027
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold font-mono">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-none animate-pulse"></span>
+                    Active
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-[#002855] dark:text-blue-200 uppercase tracking-tight group-hover:text-blue-600 dark:group-hover:text-amber-400 transition-colors">
+                  <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
                     1st Year Curriculum
                   </h3>
-                  <p class="text-xs text-slate-500 font-semibold">General Engineering &amp; Foundation</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">General Engineering &amp; Foundation</p>
                 </div>
-                <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800 text-center font-mono">
+                <div class="grid grid-cols-3 gap-2 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center font-mono">
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Terms</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">1, 2, 3</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Terms</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">1, 2, 3</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Units</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">52.0 u</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Units</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">52.0 u</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Courses</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">22 Subj</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Courses</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">22 Subj</div>
                   </div>
                 </div>
               </div>
-              <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openFlowchartForYear(1)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
-                  <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
-                  <span>Curriculum Flowchart (Year 1)</span>
+              <div class="pt-4 grid grid-cols-2 gap-2">
+                <button type="button" onclick="openFlowchartForYear(1)" class="w-full py-2 px-2.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Year 1 Flowchart">
+                  <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                  <span class="truncate">Flowchart</span>
                 </button>
-                <button type="button" onclick="openSpreadsheetForYear(1)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
-                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  <span>Curriculum Spreadsheet (Year 1)</span>
+                <button type="button" onclick="openSpreadsheetForYear(1)" class="w-full py-2 px-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Year 1 Spreadsheet">
+                  <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span class="truncate">Spreadsheet</span>
                 </button>
               </div>
             </div>
 
             <!-- Card 2: 2nd Year (AY 2027–2028) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-[#002855] dark:hover:border-teal-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-teal-900 text-white flex items-center justify-center font-bold text-sm border border-teal-700 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                    Y2
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y2</span>
+                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2027–2028</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-teal-50 text-teal-800 border border-teal-200 dark:bg-teal-950/70 dark:text-teal-300 dark:border-teal-800">
-                    AY 2027–2028
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                    Cohort
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-teal-950 dark:text-teal-200 uppercase tracking-tight group-hover:text-teal-600 dark:group-hover:text-teal-300 transition-colors">
+                  <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
                     2nd Year Curriculum
                   </h3>
-                  <p class="text-xs text-slate-500 font-semibold">Intermediate Hardware &amp; Software Core</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Intermediate Hardware &amp; Software Core</p>
                 </div>
-                <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800 text-center font-mono">
+                <div class="grid grid-cols-3 gap-2 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center font-mono">
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Terms</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">4, 5, 6</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Terms</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">4, 5, 6</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Units</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">52.0 u</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Units</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">52.0 u</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Courses</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">21 Subj</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Courses</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">21 Subj</div>
                   </div>
                 </div>
               </div>
-              <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openFlowchartForYear(2)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
-                  <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
-                  <span>Curriculum Flowchart (Year 2)</span>
+              <div class="pt-4 grid grid-cols-2 gap-2">
+                <button type="button" onclick="openFlowchartForYear(2)" class="w-full py-2 px-2.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Year 2 Flowchart">
+                  <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                  <span class="truncate">Flowchart</span>
                 </button>
-                <button type="button" onclick="openSpreadsheetForYear(2)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
-                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  <span>Curriculum Spreadsheet (Year 2)</span>
+                <button type="button" onclick="openSpreadsheetForYear(2)" class="w-full py-2 px-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Year 2 Spreadsheet">
+                  <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span class="truncate">Spreadsheet</span>
                 </button>
               </div>
             </div>
 
             <!-- Card 3: 3rd Year (AY 2028–2029) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-[#002855] dark:hover:border-indigo-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-indigo-900 text-white flex items-center justify-center font-bold text-sm border border-indigo-700 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                    Y3
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y3</span>
+                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2028–2029</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-indigo-50 text-indigo-800 border border-indigo-200 dark:bg-indigo-950/70 dark:text-indigo-300 dark:border-indigo-800">
-                    AY 2028–2029
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                    Cohort
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-indigo-950 dark:text-indigo-200 uppercase tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors">
+                  <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
                     3rd Year Curriculum
                   </h3>
-                  <p class="text-xs text-slate-500 font-semibold">Systems Specialization &amp; Design</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Systems Specialization &amp; Design</p>
                 </div>
-                <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800 text-center font-mono">
+                <div class="grid grid-cols-3 gap-2 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center font-mono">
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Terms</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">7, 8, 9</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Terms</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">7, 8, 9</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Units</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">51.0 u</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Units</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">51.0 u</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Courses</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">22 Subj</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Courses</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">22 Subj</div>
                   </div>
                 </div>
               </div>
-              <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openFlowchartForYear(3)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
-                  <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
-                  <span>Curriculum Flowchart (Year 3)</span>
+              <div class="pt-4 grid grid-cols-2 gap-2">
+                <button type="button" onclick="openFlowchartForYear(3)" class="w-full py-2 px-2.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Year 3 Flowchart">
+                  <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                  <span class="truncate">Flowchart</span>
                 </button>
-                <button type="button" onclick="openSpreadsheetForYear(3)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
-                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  <span>Curriculum Spreadsheet (Year 3)</span>
+                <button type="button" onclick="openSpreadsheetForYear(3)" class="w-full py-2 px-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Year 3 Spreadsheet">
+                  <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span class="truncate">Spreadsheet</span>
                 </button>
               </div>
             </div>
 
             <!-- Card 4: 4th Year (AY 2029–2030) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-[#002855] dark:hover:border-amber-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-amber-600 text-white flex items-center justify-center font-bold text-sm border border-amber-700 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                    Y4
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y4</span>
+                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2029–2030</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800">
-                    AY 2029–2030
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                    Graduating
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-amber-950 dark:text-amber-200 uppercase tracking-tight group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
+                  <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
                     4th Year Curriculum
                   </h3>
-                  <p class="text-xs text-slate-500 font-semibold">Capstone Design &amp; Practicum</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Capstone Design &amp; Practicum</p>
                 </div>
-                <div class="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 dark:border-slate-800 text-center font-mono">
+                <div class="grid grid-cols-3 gap-2 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center font-mono">
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Terms</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">10, 11, 12</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Terms</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">10, 11, 12</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Units</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">29.0 u</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Units</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">29.0 u</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Courses</div>
-                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">9 Subj</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Courses</div>
+                    <div class="text-xs font-black text-slate-800 dark:text-slate-200">9 Subj</div>
                   </div>
                 </div>
               </div>
-              <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openFlowchartForYear(4)" class="w-full px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-900 dark:bg-sky-950/50 dark:hover:bg-sky-900/60 dark:text-sky-200 border border-sky-300 dark:border-sky-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
-                  <svg class="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
-                  <span>Curriculum Flowchart (Year 4)</span>
+              <div class="pt-4 grid grid-cols-2 gap-2">
+                <button type="button" onclick="openFlowchartForYear(4)" class="w-full py-2 px-2.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Year 4 Flowchart">
+                  <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                  <span class="truncate">Flowchart</span>
                 </button>
-                <button type="button" onclick="openSpreadsheetForYear(4)" class="w-full px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
-                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  <span>Curriculum Spreadsheet (Year 4)</span>
+                <button type="button" onclick="openSpreadsheetForYear(4)" class="w-full py-2 px-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Year 4 Spreadsheet">
+                  <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                  <span class="truncate">Spreadsheet</span>
                 </button>
               </div>
             </div>
 
-            <!-- Card 5: Past Curriculums -->
-            <div class="bg-slate-50 dark:bg-slate-900/60 border border-dashed border-slate-300 dark:border-slate-700 p-6 flex flex-col justify-between shadow-xs hover:border-slate-500 dark:hover:border-slate-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
+            <!-- Card 5: Past Curriculums Archive -->
+            <div class="bg-slate-50/70 dark:bg-slate-900/40 border border-slate-200/90 dark:border-slate-800 p-5 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group border-t-4 border-t-slate-400 dark:border-t-slate-600">
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
-                  <div class="w-10 h-10 bg-slate-700 text-white flex items-center justify-center font-bold text-sm border border-slate-600 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                    PAST
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-slate-700 text-white font-black text-xs font-mono">PAST</span>
+                    <span class="text-xs font-mono font-bold text-slate-500">AY 2018–2025</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-slate-200 text-slate-800 border border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
-                    Archived
+                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                    Archived (4 Cycles)
                   </span>
                 </div>
                 <div>
-                  <h3 class="text-base font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
-                    Past Curriculums
+                  <h3 class="text-base font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
+                    Historical Editions
                   </h3>
-                  <p class="text-xs text-slate-500 font-semibold">Superseded &amp; Historical Editions</p>
-                  <p class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">
-                    Access historical AY 2018–2025 curriculums, legacy course crosswalks, and migration equivalencies.
-                  </p>
+                  <p class="text-xs text-slate-500 font-medium">Superseded Curriculums &amp; Crosswalks</p>
                 </div>
-                <div class="grid grid-cols-2 gap-2 py-2 border-y border-slate-200 dark:border-slate-800 text-center font-mono">
+                <div class="grid grid-cols-2 gap-2 py-2.5 bg-white/80 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 text-center font-mono">
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Revisions</div>
-                    <div class="text-xs font-bold text-slate-700 dark:text-slate-300">4 Cycles</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Revisions</div>
+                    <div class="text-xs font-black text-slate-700 dark:text-slate-300">4 Cycles</div>
                   </div>
                   <div>
-                    <div class="text-[10px] text-slate-400 font-sans uppercase">Spans</div>
-                    <div class="text-xs font-bold text-slate-700 dark:text-slate-300">2018–2025</div>
+                    <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Span</div>
+                    <div class="text-xs font-black text-slate-700 dark:text-slate-300">2018–2025</div>
                   </div>
                 </div>
               </div>
-              <div class="pt-4 flex flex-col gap-2">
-                <button type="button" onclick="openComparativeCurriculumModal()" class="w-full px-3 py-2 bg-white hover:bg-slate-100 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-xs font-semibold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
+              <div class="pt-4 grid grid-cols-2 gap-2">
+                <button type="button" onclick="openComparativeCurriculumModal()" class="w-full py-2 px-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Comparative Summary">
                   <span>📊</span>
-                  <span>Comparative Summary</span>
+                  <span class="truncate">Comparison</span>
                 </button>
-                <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full px-3 py-2 bg-white hover:bg-slate-100 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 text-xs font-semibold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0">
+                <button type="button" onclick="selectProgram('BSCpE', 'registrar', 2)" class="w-full py-2 px-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="Open Prospectus Archive">
                   <span>📑</span>
-                  <span>Curriculum Prospectus Archive</span>
+                  <span class="truncate">Prospectus</span>
                 </button>
               </div>
             </div>
 
-            <!-- Card 6: Create New Curriculum -->
-            <div onclick="openCreateCurriculumModal()" class="bg-gradient-to-br from-slate-50 to-amber-50/30 dark:from-[#131923] dark:to-amber-950/20 border-2 border-dashed border-[#E5A823]/70 hover:border-[#E5A823] p-6 flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1 hover:bg-amber-50/50 dark:hover:bg-amber-950/30 transition-all duration-200 cursor-pointer group min-h-[260px]">
-              <div class="w-14 h-14 bg-[#E5A823]/15 group-hover:bg-[#E5A823] border border-[#E5A823]/60 text-slate-800 dark:text-amber-300 group-hover:text-slate-950 flex items-center justify-center text-3xl font-bold transition-all duration-200 shadow-xs group-hover:scale-110">
+            <!-- Card 6: Author New Curriculum -->
+            <div id="authorNewCurriculumCard" onclick="openCreateCurriculumModal()" class="bg-gradient-to-br from-slate-50 to-amber-50/30 dark:from-[#131923] dark:to-amber-950/20 border-2 border-dashed border-[#E5A823]/60 hover:border-[#E5A823] p-5 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer group min-h-[220px]">
+              <div class="w-12 h-12 bg-[#E5A823]/15 group-hover:bg-[#E5A823] border border-[#E5A823]/60 text-[#002855] group-hover:text-slate-950 flex items-center justify-center text-2xl font-black transition-all duration-200 shadow-xs group-hover:scale-110">
                 +
               </div>
-              <h3 class="mt-4 text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#E5A823] transition-colors">
-                Create New Curriculum
+              <h3 class="mt-3 text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
+                Author New Revision
               </h3>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 max-w-xs">
+                Initialize an upcoming cohort cycle, clone active baseline, or configure new CMO crosswalks.
+              </p>
             </div>
 
           </div>
@@ -1510,10 +1554,10 @@
           <!-- ========================================================================= -->
           <!-- STUDENT OUTCOMES (SO-A TO SO-M) TAXONOMY & DEFINITIONS REFERENCE GUIDE    -->
           <!-- ========================================================================= -->
-          <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-xs space-y-4">
-            <div class="flex flex-wrap items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3 gap-2">
-              <div class="flex items-center space-x-2.5">
-                <div class="w-8 h-8 bg-[#002855] text-[#E5A823] flex items-center justify-center font-bold text-sm border border-[#E5A823]/40 shadow-xs">
+          <details class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 shadow-sm group">
+            <summary class="p-5 flex flex-wrap items-center justify-between border-b border-slate-200 dark:border-slate-700 gap-3 cursor-pointer select-none hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition">
+              <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-[#002855] text-[#E5A823] flex items-center justify-center font-black text-sm border border-[#E5A823]/40 shadow-xs">
                   SO
                 </div>
                 <div>
@@ -1523,17 +1567,23 @@
                   <p class="text-[11px] text-slate-500 dark:text-slate-400">CHED CMO No. 92, Series of 2017 &bull; Minimum Graduate Competencies for Computer Engineering</p>
                 </div>
               </div>
-              <div class="flex items-center gap-1.5 text-[11px] font-mono">
-                <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border border-slate-300 dark:border-slate-600">[-] None</span>
-                <span class="px-2 py-0.5 bg-amber-50 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-800">[I] Introductory</span>
-                <span class="px-2 py-0.5 bg-blue-50 text-blue-900 dark:bg-blue-950/60 dark:text-blue-300 font-bold border border-blue-300 dark:border-blue-800">[E] Enabling</span>
-                <span class="px-2 py-0.5 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300 font-bold border border-emerald-300 dark:border-emerald-800">[D] Demonstrative</span>
+              <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-1.5 text-[10px] font-mono">
+                  <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold border border-slate-200 dark:border-slate-700">[-] None</span>
+                  <span class="px-2 py-0.5 bg-amber-50 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300 font-bold border border-amber-200 dark:border-amber-800">[I] Introductory</span>
+                  <span class="px-2 py-0.5 bg-blue-50 text-blue-900 dark:bg-blue-950/60 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800">[E] Enabling</span>
+                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-300 font-bold border border-emerald-200 dark:border-emerald-800">[D] Demonstrative</span>
+                </div>
+                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                  <span>Framework</span>
+                  <svg class="w-3.5 h-3.5 text-slate-500 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </span>
               </div>
-            </div>
+            </summary>
 
             <!-- Outcomes Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+            <div class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs bg-slate-50/40 dark:bg-slate-900/30">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-A</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Math &amp; Science</span>
@@ -1542,7 +1592,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Apply knowledge of mathematics and science to solve complex computer engineering problems.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-B</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Experimentation</span>
@@ -1551,7 +1601,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Design and conduct experiments, as well as analyze and interpret empirical engineering data.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-C</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Engineering Design</span>
@@ -1560,7 +1610,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Design a system, component, or process to meet desired needs within realistic constraints.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-D</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Multidisciplinary</span>
@@ -1569,7 +1619,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Function effectively as an individual, and as a member or leader in diverse teams.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-E</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Problem Analysis</span>
@@ -1578,7 +1628,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Identify, formulate, and solve complex computer engineering problems.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-F</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Ethics</span>
@@ -1587,7 +1637,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Understand professional, social, and ethical responsibility in engineering practice.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-G</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Communication</span>
@@ -1596,7 +1646,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Communicate effectively on complex engineering activities with diverse communities.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-H</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Societal Impact</span>
@@ -1605,7 +1655,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Understand the impact of engineering solutions in global, environmental, and societal contexts.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-I</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Lifelong Learning</span>
@@ -1614,7 +1664,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Recognize the need for, and engage in lifelong learning and continuous professional development.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-J</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Contemporary</span>
@@ -1623,7 +1673,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Know and understand contemporary technological, industrial, and socioeconomic issues in computer engineering.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-K</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Modern Tools</span>
@@ -1632,7 +1682,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Use techniques, skills, and modern engineering tools necessary for computer engineering practice.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-white font-mono font-bold text-[11px]">SO-L</span>
                   <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Management</span>
@@ -1641,7 +1691,7 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Apply knowledge of engineering and management principles to manage projects in multidisciplinary environments.</p>
               </div>
 
-              <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1 md:col-span-2 lg:col-span-3">
+              <div class="p-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1 md:col-span-2 lg:col-span-3">
                 <div class="flex items-center justify-between">
                   <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[11px] border border-[#E5A823]/40">SO-M</span>
                   <span class="text-[10px] font-bold text-[#002855] dark:text-[#E5A823] uppercase">Program Specific (CMO 92)</span>
@@ -1650,59 +1700,39 @@
                 <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Apply specialized knowledge in computer engineering disciplines such as embedded systems, computer architecture, digital hardware design, cybersecurity, artificial intelligence, and cloud network infrastructure.</p>
               </div>
             </div>
-          </div>
+          </details>
 
           <!-- ========================================================================= -->
-          <!-- FACULTY MEMBERS WORKING UNDER PROGRAM DIRECTOR (CURRICULUM DELEGATION)     -->
+          <!-- FACULTY CLUSTER DELEGATIONS QUICK ACCESS BANNER                           -->
           <!-- ========================================================================= -->
-          <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-xs space-y-3">
-            <div class="flex flex-wrap items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3 gap-2">
+          <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-[#002855] dark:text-[#E5A823] flex items-center justify-center font-black text-lg shrink-0">
+                👥
+              </div>
               <div>
-                <h4 class="font-black text-xs text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2">
-                  <span class="text-base">👥</span>
-                  <span>Faculty Members</span>
+                <h4 class="font-extrabold text-xs text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2">
+                  <span>Faculty Members &amp; Subject Cluster Delegations</span>
+                  <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-mono font-bold">D-RBAC</span>
                 </h4>
-              </div>
-              <div>
-                <button type="button" onclick="openAssignTaskModal('Hardware & Embedded Systems', 'Faculty Member')" class="px-3 py-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs transition cursor-pointer shadow-xs">
-                  + Assign Task
-                </button>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Curriculum review assignments, registered faculty accounts, and scoped cluster authoring permissions are managed under the Delegations Suite.</p>
               </div>
             </div>
-
-            <div class="space-y-2 text-xs">
-              <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-3 flex flex-wrap items-center justify-between gap-3">
-                <div class="space-y-1">
-                  <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Course Title</div>
-                  <div class="font-bold text-slate-900 dark:text-white text-sm">Hardware &amp; Embedded Systems</div>
-                  <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">Faculty Member</div>
-                </div>
-                <div>
-                  <button type="button" onclick="openAssignTaskModal('Hardware & Embedded Systems', 'Hardware Cluster Lead')" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
-                    Assign Task
-                  </button>
-                </div>
-              </div>
-
-              <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-3 flex flex-wrap items-center justify-between gap-3">
-                <div class="space-y-1">
-                  <div class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Course Title</div>
-                  <div class="font-bold text-slate-900 dark:text-white text-sm">Computer Networks &amp; Security</div>
-                  <div class="text-xs text-slate-600 dark:text-slate-300 font-medium">Faculty Member</div>
-                </div>
-                <div>
-                  <button type="button" onclick="openAssignTaskModal('Computer Networks & Security', 'Networks Cluster Lead')" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
-                    Assign Task
-                  </button>
-                </div>
-              </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="navigateView('delegation')" class="px-4 py-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-bold text-xs transition cursor-pointer shadow-xs border border-[#E5A823] flex items-center gap-1.5">
+                <span>Manage Faculty &amp; Delegations</span>
+                <span>&rarr;</span>
+              </button>
             </div>
           </div>
 
-          <!-- Quick Return to Program Director Workbench -->
-          <div class="flex items-center justify-between p-4 bg-slate-100 dark:bg-[#181D26] border border-slate-300 dark:border-slate-700 text-xs">
-            <span class="text-slate-600 dark:text-slate-400 font-medium">Asia Pacific College &bull; Academic Management System &bull; Curriculum Architecture</span>
-            <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="font-bold text-[#002855] dark:text-[#E5A823] hover:underline flex items-center gap-1 cursor-pointer">
+          <!-- Institutional Footer Banner -->
+          <div class="flex flex-wrap items-center justify-between p-4 bg-slate-50 dark:bg-[#131923] border border-slate-200 dark:border-slate-800 text-xs gap-3">
+            <div class="flex items-center gap-2 text-slate-600 dark:text-slate-400 font-medium">
+              <span class="w-2 h-2 bg-[#E5A823] inline-block"></span>
+              <span>Asia Pacific College &bull; Academic Management System &bull; Curriculum Architecture</span>
+            </div>
+            <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="font-bold text-[#002855] dark:text-[#E5A823] hover:underline flex items-center gap-1.5 cursor-pointer">
               <span>&larr;</span>
               <span>Back to Program Director Workbench</span>
             </button>
@@ -1941,10 +1971,10 @@
 
               <!-- Quick Action Button Strip (Left-Aligned) -->
               <div class="flex flex-wrap items-center gap-2">
-                <button type="button" onclick="sheetAddNewCourseRow()" class="px-3 py-1.5 bg-[#047857] hover:bg-[#065f46] text-white text-xs font-bold uppercase rounded-none transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Add a new custom course row to the spreadsheet">
+                <button type="button" id="btnSheetAddRow" onclick="sheetAddNewCourseRow()" class="px-3 py-1.5 bg-[#047857] hover:bg-[#065f46] text-white text-xs font-bold uppercase rounded-none transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Add a new custom course row to the spreadsheet">
                   <span>+ ADD ROW</span>
                 </button>
-                <button type="button" onclick="openCourseEditModal('')" class="px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs font-bold uppercase rounded-none transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Add or edit course using detailed dialog modal">
+                <button type="button" id="btnSheetAddCourseModal" onclick="openCourseEditModal('')" class="px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs font-bold uppercase rounded-none transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Add or edit course using detailed dialog modal">
                   <span>➕ ADD COURSE (MODAL)</span>
                 </button>
                 <button type="button" onclick="sheetSaveAllChanges()" id="sheetSaveBtn" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#f59e0b] text-xs font-bold uppercase rounded-none transition flex items-center gap-1.5 shadow-xs border border-[#f59e0b]/30 cursor-pointer" title="Commit all cell modifications to memory & persistent localStorage">
@@ -2534,7 +2564,7 @@
                     <td class="py-3.5 px-4 font-mono font-bold text-slate-700">BSCpE-2021-BASE</td>
                     <td class="py-3.5 px-4">AY 2021–2025</td>
                     <td class="py-3.5 px-4">170 Units</td>
-                    <td class="py-3.5 px-4">Engr. E. Yong</td>
+                    <td class="py-3.5 px-4">Faculty Member 1</td>
                     <td class="py-3.5 px-4">
                       <span class="px-2.5 py-1 rounded-none bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-200">
                         APPROVED BASELINE
@@ -2675,60 +2705,150 @@
         <!-- =================================================================== -->
         <!-- VIEW 5: FACULTY SCOPED CLUSTER DELEGATIONS (D-RBAC) -->
         <!-- =================================================================== -->
-        <section id="view-delegation" class="hidden space-y-4">
-          <div class="bg-white rounded-none border border-slate-200 p-5 shadow-sm space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-3">
+        <section id="view-delegation" class="hidden space-y-5">
+          <!-- Main Delegations & Faculty Administration Card -->
+          <div class="bg-white dark:bg-[#131923] rounded-none border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-6">
+            
+            <!-- Suite Header -->
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
               <div>
-                <h2 class="font-extrabold text-slate-900 text-lg tracking-tight">Collaborative Task Delegation (D-RBAC)</h2>
-                <p class="text-xs text-slate-500">Program Director assigns specific subject clusters to faculty members for time-bound review.</p>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] text-[10px] font-mono font-bold uppercase tracking-wider">D-RBAC</span>
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Governance &amp; Faculty Administration</span>
+                </div>
+                <h2 class="font-extrabold text-slate-900 dark:text-white text-xl tracking-tight">Collaborative Task &amp; Faculty Cluster Delegation</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Assign faculty members across academic schools, configure Entra ID accounts, and delegate time-bound subject cluster review authority.</p>
               </div>
-              <button onclick="showToast('New Cluster Delegation Created')" class="px-3.5 py-2 bg-apc-navy hover:bg-apc-blue text-white text-xs font-bold rounded-none shadow transition">
-                + Create Delegation Assignment
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" id="btnOpenAddFacultyModal" onclick="openAddFacultyModal()" class="px-3.5 py-2 bg-[#047857] hover:bg-[#065f46] text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                  <span>+</span>
+                  <span>Add Faculty Member</span>
+                </button>
+                <button type="button" id="btnOpenAssignTaskModal" onclick="openAssignTaskModal('Hardware &amp; Embedded Systems', 'Faculty Member')" class="px-3.5 py-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] text-xs font-bold rounded-none shadow-xs border border-[#E5A823] transition flex items-center gap-1.5 cursor-pointer">
+                  <span>+</span>
+                  <span>Delegate Cluster / Assign Task</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- SECTION 1: ACTIVE CURRICULUM CLUSTER DELEGATIONS -->
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-extrabold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                    <span>👥 Active Curriculum Cluster Delegations</span>
+                    <span class="px-2 py-0.5 bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-mono font-bold">2 Clusters Active</span>
+                  </h3>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400">Scoped course cluster leads with time-bound syllabus continuous quality review tokens.</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <!-- Cluster 1 Card -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4.5 space-y-3 shadow-xs">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="space-y-1">
+                      <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] text-[9px] font-mono font-bold uppercase">Cluster 1</span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Hardware &amp; Systems</span>
+                      </div>
+                      <h4 class="font-bold text-slate-900 dark:text-white text-sm">Hardware &amp; Embedded Systems</h4>
+                      <p class="text-[11px] text-slate-500 font-mono">Scope: LOGCDES, EMICROS, EMBEDDS, COMAROR</p>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-none bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-bold shrink-0 border border-blue-200 dark:border-blue-800">
+                      PENDING SUBMISSION
+                    </span>
+                  </div>
+
+                  <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span>
+                      <span class="font-medium text-slate-700 dark:text-slate-300">Lead: Faculty Member 2</span>
+                      <span class="text-slate-400">&bull;</span>
+                      <span class="text-slate-500 font-mono">Expires: Nov 01, 2026</span>
+                    </div>
+                    <button type="button" id="btnReassignCluster1" onclick="openAssignTaskModal('Hardware &amp; Embedded Systems', 'Faculty Member 2')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
+                      Reassign Lead
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Cluster 2 Card -->
+                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4.5 space-y-3 shadow-xs">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="space-y-1">
+                      <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] text-[9px] font-mono font-bold uppercase">Cluster 2</span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Networking &amp; Comms</span>
+                      </div>
+                      <h4 class="font-bold text-slate-900 dark:text-white text-sm">Computer Networks &amp; Security</h4>
+                      <p class="text-[11px] text-slate-500 font-mono">Scope: DATCOMS, COMNETS, NETSLAB</p>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-none bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold shrink-0 border border-emerald-200 dark:border-emerald-800">
+                      ACTIVE (In Review)
+                    </span>
+                  </div>
+
+                  <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span>
+                      <span class="font-medium text-slate-700 dark:text-slate-300">Lead: Faculty Member 1</span>
+                      <span class="text-slate-400">&bull;</span>
+                      <span class="text-slate-500 font-mono">Expires: Oct 15, 2026</span>
+                    </div>
+                    <button type="button" id="btnReassignCluster2" onclick="openAssignTaskModal('Computer Networks &amp; Security', 'Faculty Member 1')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
+                      Reassign Lead
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 2: REGISTERED FACULTY DIRECTORY & SCHOOL ASSIGNMENTS -->
+            <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 class="font-extrabold text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                    <span>📋 Registered Faculty Directory &amp; School Assignment</span>
+                    <span class="text-xs font-normal text-slate-500 dark:text-slate-400">(Linked with Microsoft Entra ID)</span>
+                  </h3>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400">Institutional roster of faculty members assigned to academic schools with verified institutional accounts.</p>
+                </div>
+                <div class="flex items-center gap-2 text-[11px] font-mono text-slate-500">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                  <span>OAuth 2.0 Directory Sync Active</span>
+                </div>
+              </div>
+
+              <!-- Faculty Table Container -->
+              <div class="border border-slate-200 dark:border-slate-700 overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-700 dark:text-slate-200">
+                  <thead class="bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider select-none">
+                    <tr>
+                      <th class="py-3 px-3">Faculty Member</th>
+                      <th class="py-3 px-3">Assigned School</th>
+                      <th class="py-3 px-3">Rank / Position</th>
+                      <th class="py-3 px-3">Subject Cluster &amp; Scope</th>
+                      <th class="py-3 px-3">Account Status</th>
+                      <th class="py-3 px-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="facultyDirectoryTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                    <!-- Populated dynamically via renderFacultyDirectory() -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Footer Return Strip -->
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+              <span class="text-slate-500 dark:text-slate-400">Asia Pacific College &bull; Academic Management System &bull; Delegated Access Control</span>
+              <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="font-bold text-[#002855] dark:text-[#E5A823] hover:underline flex items-center gap-1.5 cursor-pointer">
+                <span>&larr;</span>
+                <span>Return to Program Director Workbench</span>
               </button>
             </div>
 
-            <table class="w-full text-left text-xs text-slate-700">
-              <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-                <tr>
-                  <th class="py-3 px-3">Subject Cluster</th>
-                  <th class="py-3 px-3">Assigned Faculty</th>
-                  <th class="py-3 px-3">Course Scope</th>
-                  <th class="py-3 px-3">Expiration Date</th>
-                  <th class="py-3 px-3">Status</th>
-                  <th class="py-3 px-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 font-medium">
-                <tr class="hover:bg-slate-50 transition">
-                  <td class="py-3 px-3 font-bold text-apc-navy">Computer Networks & Security</td>
-                  <td class="py-3 px-3">Engr. D. Yong</td>
-                  <td class="py-3 px-3">DATCOMS, COMNETS, NETSLAB</td>
-                  <td class="py-3 px-3 text-slate-500">Oct 15, 2026</td>
-                  <td class="py-3 px-3">
-                    <span class="px-2 py-0.5 rounded-none bg-emerald-100 text-emerald-800 text-[11px] font-bold">
-                      ACTIVE (In Review)
-                    </span>
-                  </td>
-                  <td class="py-3 px-3 text-right">
-                    <button onclick="switchRole('faculty')" class="text-blue-600 hover:text-blue-800 font-bold text-xs">Simulate Faculty View ➔</button>
-                  </td>
-                </tr>
-                <tr class="hover:bg-slate-50 transition">
-                  <td class="py-3 px-3 font-bold text-apc-navy">Hardware & Embedded Systems</td>
-                  <td class="py-3 px-3">Engr. M. Reyna</td>
-                  <td class="py-3 px-3">LOGCDES, EMICROS, EMBEDDS, COMAROR</td>
-                  <td class="py-3 px-3 text-slate-500">Nov 01, 2026</td>
-                  <td class="py-3 px-3">
-                    <span class="px-2 py-0.5 rounded-none bg-blue-100 text-blue-800 text-[11px] font-bold">
-                      PENDING SUBMISSION
-                    </span>
-                  </td>
-                  <td class="py-3 px-3 text-right">
-                    <button class="text-slate-500 hover:text-slate-800 text-xs">Manage Token</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </section>
 
@@ -3042,6 +3162,18 @@
           <span class="px-2 py-0.5 rounded-none font-mono font-bold bg-emerald-200 text-emerald-900 text-[11px]">0 CYCLES</span>
         </div>
 
+        <!-- Faculty Cluster Scope / Read-Only Warning Banner -->
+        <div id="editCourseFacultyNotice" class="hidden p-3 rounded-none bg-amber-50 border border-amber-300 text-amber-900 flex items-center justify-between shadow-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-base">🔒</span>
+            <div>
+              <span id="editCourseFacultyNoticeTitle" class="font-bold block leading-tight">View-Only Course Mode</span>
+              <span id="editCourseFacultyNoticeDesc" class="text-[11px] text-amber-800">This course is outside your assigned subject clusters. Editing is restricted to delegated cluster leads.</span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded-none font-mono font-bold bg-amber-200 text-amber-950 text-[10px] uppercase">READ-ONLY</span>
+        </div>
+
         <!-- Section 1: Course Identity & Academic Group -->
         <div class="bg-slate-50 p-4 rounded-none border border-slate-300 space-y-3">
           <div class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5 text-apc-navy">
@@ -3288,110 +3420,122 @@
           </div>
         </div>
 
-        <!-- Microsoft Entra ID Tenant & Client Credentials -->
-        <div class="border border-slate-200 p-3 bg-white space-y-1.5 text-xs">
-          <div class="flex items-center justify-between text-slate-500 font-medium">
-            <span>Microsoft Entra Tenant ID:</span>
-            <span class="font-mono text-slate-800 font-bold">aeb745e6-8166-4f8f-9233-179e8109c49e</span>
-          </div>
-          <div class="flex items-center justify-between text-slate-500 font-medium">
-            <span>Azure Application Client ID:</span>
-            <span class="font-mono text-slate-800 font-bold">3f57ee06-1289-41e3-a2d6-baf640bde39f</span>
-          </div>
-          <div class="flex items-center justify-between text-slate-500 font-medium">
-            <span>Authentication Authority:</span>
-            <span class="font-mono text-slate-800">login.microsoftonline.com/apc.edu.ph</span>
-          </div>
-          <div class="flex items-center justify-between text-slate-500 font-medium">
-            <span>Scopes Granted:</span>
-            <span class="font-mono text-slate-800">User.Read, Directory.Read.All, Curriculum.Manage</span>
-          </div>
-        </div>
-
-        <!-- Display Theme & Visual Preference (Settings) -->
-        <div class="border border-slate-200 p-3 bg-slate-50 flex items-center justify-between">
-          <div>
-            <div class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-              <span>🎨</span>
-              <span>Interface Theme</span>
-            </div>
-            <p class="text-[11px] text-slate-500">Switch between APC Institutional Light and Obsidian Gold Dark Mode</p>
-          </div>
-          <button type="button" id="themeToggleBtn" onclick="toggleApcTheme()"
-            class="theme-toggle-btn h-8 px-3 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 transition flex items-center gap-1.5 font-mono text-xs font-bold shadow-xs cursor-pointer select-none"
-            title="Switch Theme (Light / Dark)">
-            <span class="theme-icon text-sm leading-none">🌙</span>
-            <span class="theme-text text-[11px] uppercase tracking-wider">Dark</span>
-          </button>
-        </div>
-
-        <!-- Role / Account Switcher for Defense & Multi-User Testing -->
+        <!-- Role / Account Switcher for Direct Role Navigation -->
         <div>
-          <label class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-700 mb-2">
-            Switch Simulated Account / User Persona:
+          <label class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2.5">
+            Select Role to Launch Homepage:
           </label>
-          <div class="grid grid-cols-1 gap-1.5">
-            <button onclick="switchLoginAccount('admin@apc.edu.ph', 'System Administrator', 'System Administrator', 'SA', 'admin')" class="w-full p-2.5 text-left border border-[#002855] bg-blue-50/60 hover:bg-blue-100/80 flex items-center justify-between transition">
-              <span class="flex items-center space-x-2.5">
-                <span class="w-7 h-7 rounded-none bg-[#002855] text-[#E5A823] font-bold text-xs flex items-center justify-center">SA</span>
+          <div class="grid grid-cols-1 gap-2.5">
+            
+            <!-- 1. System Administrator -->
+            <button type="button" onclick="switchLoginAccount('admin@apc.edu.ph', 'System Administrator', 'System Administrator', 'SA', 'admin')"
+              class="w-full p-3.5 text-left border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/90 hover:border-[#002855] dark:hover:border-[#E5A823] hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-between group cursor-pointer shadow-xs">
+              <span class="flex items-center space-x-3.5">
+                <span class="w-10 h-10 rounded-none bg-rose-900/10 dark:bg-rose-950 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 font-black text-sm flex items-center justify-center shrink-0">
+                  SA
+                </span>
                 <span>
-                  <span class="block text-xs font-bold text-slate-900">System Administrator</span>
-                  <span class="block text-[11px] text-slate-500 font-mono">admin@apc.edu.ph &bull; System Administrator (Full Control)</span>
+                  <span class="flex items-center gap-2">
+                    <span class="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition">System Administrator</span>
+                    <span class="px-1.5 py-0.2 bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-[9px] font-mono font-bold">Tier 4</span>
+                  </span>
+                  <span class="block text-[11px] text-slate-500 font-mono">admin@apc.edu.ph</span>
+                  <span class="block text-[10.5px] text-slate-400 mt-0.5">Homepage: Admin Institutional Overview &bull; All Academic Schools</span>
                 </span>
               </span>
-              <span class="text-[11px] font-bold text-blue-900">&check; Current</span>
+              <span class="text-right shrink-0">
+                <span class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 group-hover:bg-[#002855] group-hover:text-[#E5A823] font-bold text-xs transition flex items-center gap-1.5 shadow-xs">
+                  <span>Enter</span>
+                  <span>&rarr;</span>
+                </span>
+              </span>
             </button>
 
-            <button onclick="switchLoginAccount('programdirector@apc.edu.ph', 'Program Director', 'Program Director (BSCpE)', 'PD', 'pd')" class="w-full p-2.5 text-left border border-slate-300 hover:bg-slate-50 flex items-center justify-between transition">
-              <span class="flex items-center space-x-2.5">
-                <span class="w-7 h-7 rounded-none bg-slate-700 text-white font-bold text-xs flex items-center justify-center">SP</span>
+            <!-- 2. Executive Director -->
+            <button type="button" onclick="switchLoginAccount('exdirector@apc.edu.ph', 'Executive Director', 'Executive Director', 'ED', 'exd')"
+              class="w-full p-3.5 text-left border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/90 hover:border-[#002855] dark:hover:border-[#E5A823] hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-between group cursor-pointer shadow-xs">
+              <span class="flex items-center space-x-3.5">
+                <span class="w-10 h-10 rounded-none bg-emerald-900/10 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 font-black text-sm flex items-center justify-center shrink-0">
+                  ED
+                </span>
                 <span>
-                  <span class="block text-xs font-bold text-slate-900">Program Director</span>
-                  <span class="block text-[11px] text-slate-500 font-mono">programdirector@apc.edu.ph &bull; Program Director (Full Authoring)</span>
+                  <span class="flex items-center gap-2">
+                    <span class="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition">Executive Director</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[9px] font-mono font-bold">Tier 3</span>
+                  </span>
+                  <span class="block text-[11px] text-slate-500 font-mono">exdirector@apc.edu.ph</span>
+                  <span class="block text-[10.5px] text-slate-400 mt-0.5">Homepage: School of Engineering (SoE) Executive Overview</span>
                 </span>
               </span>
-              <span class="text-[11px] font-semibold text-slate-500">Switch &rarr;</span>
+              <span class="text-right shrink-0">
+                <span class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 group-hover:bg-[#002855] group-hover:text-[#E5A823] font-bold text-xs transition flex items-center gap-1.5 shadow-xs">
+                  <span>Enter</span>
+                  <span>&rarr;</span>
+                </span>
+              </span>
             </button>
 
-            <button onclick="switchLoginAccount('exdirector@apc.edu.ph', 'Executive Director', 'Executive Director', 'ED', 'exd')" class="w-full p-2.5 text-left border border-slate-300 hover:bg-slate-50 flex items-center justify-between transition">
-              <span class="flex items-center space-x-2.5">
-                <span class="w-7 h-7 rounded-none bg-slate-700 text-white font-bold text-xs flex items-center justify-center">ED</span>
+            <!-- 3. Program Director -->
+            <button type="button" onclick="switchLoginAccount('programdirector@apc.edu.ph', 'Program Director', 'Program Director (BSCpE)', 'PD', 'pd')"
+              class="w-full p-3.5 text-left border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/90 hover:border-[#002855] dark:hover:border-[#E5A823] hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-between group cursor-pointer shadow-xs">
+              <span class="flex items-center space-x-3.5">
+                <span class="w-10 h-10 rounded-none bg-blue-900/10 dark:bg-blue-950 border border-blue-300 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-black text-sm flex items-center justify-center shrink-0">
+                  PD
+                </span>
                 <span>
-                  <span class="block text-xs font-bold text-slate-900">Executive Director</span>
-                  <span class="block text-[11px] text-slate-500 font-mono">exdirector@apc.edu.ph &bull; Audit & Accreditation Sign-Off</span>
+                  <span class="flex items-center gap-2">
+                    <span class="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition">Program Director</span>
+                    <span class="px-1.5 py-0.2 bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 text-[9px] font-mono font-bold">Tier 2</span>
+                  </span>
+                  <span class="block text-[11px] text-slate-500 font-mono">programdirector@apc.edu.ph</span>
+                  <span class="block text-[10.5px] text-slate-400 mt-0.5">Homepage: BSCpE Program Director Academic Workbench</span>
                 </span>
               </span>
-              <span class="text-[11px] font-semibold text-slate-500">Switch &rarr;</span>
+              <span class="text-right shrink-0">
+                <span class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 group-hover:bg-[#002855] group-hover:text-[#E5A823] font-bold text-xs transition flex items-center gap-1.5 shadow-xs">
+                  <span>Enter</span>
+                  <span>&rarr;</span>
+                </span>
+              </span>
             </button>
 
-            <button onclick="switchLoginAccount('faculty@apc.edu.ph', 'Faculty Member', 'Faculty Member (Hardware & Embedded)', 'FM', 'faculty')" class="w-full p-2.5 text-left border border-slate-300 hover:bg-slate-50 flex items-center justify-between transition">
-              <span class="flex items-center space-x-2.5">
-                <span class="w-7 h-7 rounded-none bg-slate-700 text-white font-bold text-xs flex items-center justify-center">DR</span>
+            <!-- 4. Faculty Member -->
+            <button type="button" onclick="switchLoginAccount('faculty@apc.edu.ph', 'Faculty Member 1', 'Faculty Member (Hardware &amp; Embedded)', 'FM', 'faculty')"
+              class="w-full p-3.5 text-left border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/90 hover:border-[#002855] dark:hover:border-[#E5A823] hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-between group cursor-pointer shadow-xs">
+              <span class="flex items-center space-x-3.5">
+                <span class="w-10 h-10 rounded-none bg-purple-900/10 dark:bg-purple-950 border border-purple-300 dark:border-purple-800 text-purple-700 dark:text-purple-300 font-black text-sm flex items-center justify-center shrink-0">
+                  FM
+                </span>
                 <span>
-                  <span class="block text-xs font-bold text-slate-900">Faculty Member</span>
-                  <span class="block text-[11px] text-slate-500 font-mono">faculty@apc.edu.ph &bull; Faculty Member (Scoped Cluster)</span>
+                  <span class="flex items-center gap-2">
+                    <span class="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition">Faculty Member</span>
+                    <span class="px-1.5 py-0.2 bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 text-[9px] font-mono font-bold">Tier 1</span>
+                  </span>
+                  <span class="block text-[11px] text-slate-500 font-mono">faculty@apc.edu.ph</span>
+                  <span class="block text-[10.5px] text-slate-400 mt-0.5">Homepage: BSCpE Workbench (Scoped Cluster Contributor Permissions)</span>
                 </span>
               </span>
-              <span class="text-[11px] font-semibold text-slate-500">Switch &rarr;</span>
+              <span class="text-right shrink-0">
+                <span class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 group-hover:bg-[#002855] group-hover:text-[#E5A823] font-bold text-xs transition flex items-center gap-1.5 shadow-xs">
+                  <span>Enter</span>
+                  <span>&rarr;</span>
+                </span>
+              </span>
             </button>
+
           </div>
-        </div>
-
-        <!-- Microsoft Graph API Live Verification Log Output -->
-        <div id="graphApiResult" class="hidden p-3 bg-slate-900 text-emerald-400 font-mono text-[11px] rounded-none overflow-x-auto">
-          // Microsoft Graph API verification output
         </div>
 
       </div>
 
-      <!-- Modal Footer Actions -->
-      <div class="bg-slate-100 px-6 py-3 border-t border-slate-200 flex items-center justify-between">
-        <button onclick="testMicrosoftGraphApi()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold rounded-none border border-slate-400 transition flex items-center gap-1.5">
-          <span>⚡</span>
-          <span>Test Microsoft Graph API</span>
-        </button>
-        <button onclick="closeLoginModal()" class="px-4 py-1.5 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] text-xs font-bold rounded-none border border-[#E5A823] transition">
-          Done / Close
+      <!-- Modal Footer -->
+      <div class="bg-slate-100 dark:bg-slate-800/70 px-6 py-3.5 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+        <span class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Asia Pacific College Single Sign-On Active</span>
+        </span>
+        <button type="button" onclick="closeLoginModal()" class="px-4 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition cursor-pointer">
+          Close
         </button>
       </div>
 
@@ -3472,6 +3616,109 @@
               <span>&rarr;</span>
             </button>
           </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ADD FACULTY MEMBER & SCHOOL ASSIGNMENT                             -->
+  <!-- ========================================================================= -->
+  <div id="modalAddFaculty" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+      <!-- Modal Header -->
+      <div class="bg-[#002855] px-5 py-3.5 flex items-center justify-between border-b border-[#E5A823]">
+        <div class="flex items-center space-x-2.5">
+          <span class="text-[#E5A823] font-bold text-base">👤</span>
+          <div>
+            <h3 class="font-black text-sm tracking-wider text-white uppercase">Add Faculty Member</h3>
+            <p class="text-[11px] text-slate-300">Register faculty, assign Academic School, Entra ID account, &amp; cluster</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeAddFacultyModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <!-- Form Body -->
+      <form id="addFacultyForm" onsubmit="submitAddFaculty(event)" class="p-5 space-y-4 text-xs">
+        
+        <!-- Field 1: Academic School -->
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+            Academic School <span class="text-rose-500">*</span>
+          </label>
+          <select id="addFacultySchool" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
+            <option value="soe" selected>School of Engineering (SoE)</option>
+            <option value="socit">School of Computing and Information Technologies (SoCIT)</option>
+            <option value="som">School of Management (SoM)</option>
+            <option value="soad">School of Architecture and Design (SoAD)</option>
+          </select>
+          <p class="text-[10.5px] text-slate-400 mt-0.5">Determines faculty affiliation and departmental governance structure.</p>
+        </div>
+
+        <!-- Field 2: Faculty Full Name -->
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+            Faculty Full Name <span class="text-rose-500">*</span>
+          </label>
+          <input type="text" id="addFacultyName" placeholder="e.g. Faculty Member 3" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
+        </div>
+
+        <!-- Field 3: Entra ID Account / Email -->
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+            Entra ID Account / Official Email <span class="text-rose-500">*</span>
+          </label>
+          <input type="email" id="addFacultyAccount" placeholder="e.g. faculty3@apc.edu.ph" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-mono focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
+          <p class="text-[10.5px] text-slate-400 mt-0.5">Used for federated Microsoft Entra ID single sign-on authentication.</p>
+        </div>
+
+        <!-- Field 4: Academic Rank / Designation & Cluster -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+              Academic Rank
+            </label>
+            <select id="addFacultyRank" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
+              <option value="Assistant Professor" selected>Assistant Professor</option>
+              <option value="Associate Professor">Associate Professor</option>
+              <option value="Professor">Full Professor</option>
+              <option value="Senior Lecturer">Senior Lecturer</option>
+              <option value="Faculty Contributor">Faculty Contributor</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+              Assigned Cluster
+            </label>
+            <select id="addFacultyCluster" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
+              <option value="Hardware & Embedded Systems" selected>Hardware &amp; Embedded Systems</option>
+              <option value="Computer Networks & Security">Computer Networks &amp; Security</option>
+              <option value="Software Systems & AI">Software Systems &amp; AI</option>
+              <option value="Signal Processing & Comms">Signal Processing &amp; Comms</option>
+              <option value="General Engineering">General Engineering</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Field 5: Course Codes Scope (Optional) -->
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+            Assigned Course Codes (Comma-separated)
+          </label>
+          <input type="text" id="addFacultyCourses" placeholder="e.g. LOGCDES, EMICROS, EMBEDDS, COMAROR" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-mono uppercase focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
+          <p class="text-[10.5px] text-slate-400 mt-0.5">Courses outside this cluster will be read-only in curriculum authoring tools.</p>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+          <button type="button" onclick="closeAddFacultyModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-[#047857] hover:bg-[#065f46] text-white font-bold text-xs rounded-none shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+            <span>+</span>
+            <span>Register Faculty Member</span>
+          </button>
         </div>
       </form>
     </div>
@@ -3958,7 +4205,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         </div>
         <div>
           <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Director</label>
-          <input type="text" id="editProgDirector" placeholder="e.g. Engr. Sergio R. Peruda Jr." required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+          <input type="text" id="editProgDirector" placeholder="e.g. Program Director" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
           <p class="text-[10px] text-slate-400 mt-1">Changing the director updates the card display, executive overview, and PD Workbench headers.</p>
         </div>
 
@@ -3990,7 +4237,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         </div>
         <div>
           <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Executive Director Name</label>
-          <input type="text" id="newSchoolDirector" placeholder="e.g. Dr. Alejandro Cruz" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+          <input type="text" id="newSchoolDirector" placeholder="e.g. Executive Director" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
         </div>
         <div>
           <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Programs Offered (Comma separated)</label>

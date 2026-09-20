@@ -1219,7 +1219,7 @@ let currentSelectedCode = null;
           homeScope.innerText = 'Assigned Cluster: Hardware & Embedded Systems · Reporting to: Program Director';
           homeScope.className = 'text-purple-900 font-bold';
         }
-        if (facultyView) facultyView.classList.remove('hidden');
+        if (pdView) pdView.classList.remove('hidden');
       }
     }
 

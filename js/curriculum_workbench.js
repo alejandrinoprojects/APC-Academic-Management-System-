@@ -1346,20 +1346,19 @@
         ? PROGRAM_TO_SCHOOL_MAP[progCode] 
         : { schoolShort: 'SoE', schoolId: 'soe', schoolName: 'School of Engineering', name: progCode };
       
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+
       const director = (typeof getProgramDirector === 'function') 
         ? getProgramDirector(progCode) 
-        : ({
-            'BSCpE': 'Engr. Sergio R. Peruda Jr.',
-            'BSCE': 'Engr. Ronald V. Santos',
-            'BSECE': 'Engr. Melissa C. David',
-            'BSCS': 'Dr. Alan Turing',
-            'BSIT': 'Prof. Tim Berners-Lee'
-          }[progCode] || `${progCode} Program Director`);
+        : 'Program Director';
 
+      const pdRoleTitle = document.getElementById('pdHeaderRoleTitle');
       const pdDirName = document.getElementById('pdHeaderDirectorName');
-      if (pdDirName) pdDirName.innerText = director;
+      if (pdRoleTitle) pdRoleTitle.innerText = isFaculty ? 'FACULTY MEMBER' : 'PROGRAM DIRECTOR';
+      if (pdDirName) pdDirName.innerText = isFaculty ? 'Faculty Member 1' : director;
+
       const cDirName = document.getElementById('curricHomeDirectorName');
-      if (cDirName) cDirName.innerText = director;
+      if (cDirName) cDirName.innerText = isFaculty ? 'Faculty Member 1' : director;
 
       const pdSchoolName = document.getElementById('pdHeaderSchoolName');
       if (pdSchoolName) pdSchoolName.innerText = (progInfo.schoolName || 'SCHOOL OF ENGINEERING').toUpperCase();
@@ -1375,38 +1374,93 @@
       if (pdProgTitle) pdProgTitle.innerHTML = titleHtml;
       if (cProgTitle) cProgTitle.innerHTML = titleHtml;
 
+      const pdWorkbenchTag = document.getElementById('pdHeaderWorkbenchTag');
+      if (pdWorkbenchTag) {
+        pdWorkbenchTag.innerText = isFaculty ? 'FACULTY ACADEMIC WORKBENCH' : 'PROGRAM DIRECTOR WORKBENCH';
+      }
+      const pdWorkbenchDesc = document.getElementById('pdHeaderWorkbenchDesc');
+      if (pdWorkbenchDesc) {
+        pdWorkbenchDesc.innerText = isFaculty
+          ? 'Faculty academic portal for assigned subject clusters, syllabus continuous quality review, and curriculum viewing.'
+          : 'Central coordination portal for degree sequence authoring, course syllabi, and term offerings.';
+      }
+
       const topPill = document.getElementById('topBarPathPill');
-      if (topPill) topPill.innerText = `Schools > ${progInfo.schoolShort} > ${progCode} > PD Workbench`;
+      if (topPill) topPill.innerText = `Schools > ${progInfo.schoolShort} > ${progCode} > ${isFaculty ? 'Faculty Workbench' : 'PD Workbench'}`;
 
       syncSidebarToCurrentPath(progInfo.schoolId, progCode, 'workbench');
 
       // Apply RBAC return-button visibility each time the workbench renders
       if (typeof updateRoleGatedButtons === 'function') updateRoleGatedButtons(currentActiveRole);
+
+      // Apply role-based curriculum restrictions
+      applyRolePermissions();
     }
 
+    function applyRolePermissions() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+
+      // 1. Author New Revision Card
+      const authorCard = document.getElementById('authorNewCurriculumCard');
+      if (authorCard) {
+        if (isFaculty) {
+          authorCard.classList.add('opacity-50', 'cursor-not-allowed');
+          authorCard.setAttribute('title', 'Curriculum revision authoring is restricted to Program Directors.');
+          const h3 = authorCard.querySelector('h3');
+          if (h3) h3.innerHTML = 'Author New Revision <span class="text-[10px] text-rose-400 font-mono font-bold block">(Locked: PD Only)</span>';
+        } else {
+          authorCard.classList.remove('opacity-50', 'cursor-not-allowed');
+          authorCard.setAttribute('title', 'Author a new curriculum revision');
+          const h3 = authorCard.querySelector('h3');
+          if (h3) h3.innerText = 'Author New Revision';
+        }
+      }
+
+      // 2. Cluster Delegation Buttons (Restricted to PD/Admin)
+      ['btnDelegateClusterTop', 'btnReassignCluster1', 'btnReassignCluster2', 'btnOpenAddFacultyModal', 'btnOpenAssignTaskModal'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          if (isFaculty) {
+            btn.classList.add('hidden');
+          } else {
+            btn.classList.remove('hidden');
+          }
+        }
+      });
+
+      // 3. Spreadsheet Add Row & Add Course Modal Buttons (Restricted to PD/Admin)
+      ['btnSheetAddRow', 'btnSheetAddCourseModal'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          if (isFaculty) {
+            btn.classList.add('hidden');
+          } else {
+            btn.classList.remove('hidden');
+          }
+        }
+      });
+
+      // 4. Workbench Button text on Curriculum Home
+      const wbBtnText = document.getElementById('curricHomeWorkbenchBtnText');
+      if (wbBtnText) {
+        wbBtnText.innerText = isFaculty ? 'Faculty Workbench' : 'PD Workbench';
+      }
+
+      // 5. Refresh Spreadsheet Grid if rendered to reflect lock states
+      if (document.getElementById('spreadsheetTable') && typeof renderSpreadsheetGrid === 'function') {
+        renderSpreadsheetGrid();
+      }
+    }
+    window.applyRolePermissions = applyRolePermissions;
+
     function renderFacultyOverview() {
-      navigateView('home');
-
-      const adminView = document.getElementById('homeAdminInstitutionalView');
-      const exdView = document.getElementById('homeExdProgramsView');
-      const pdView = document.getElementById('homePdProgramView');
-      const facView = document.getElementById('homeFacultyWorkerView');
-
-      if (adminView) adminView.classList.add('hidden');
-      if (exdView) exdView.classList.add('hidden');
-      if (pdView) pdView.classList.add('hidden');
-      if (facView) facView.classList.remove('hidden');
-
-      const pill = document.getElementById('homeRolePill');
-      const title = document.getElementById('homeSectionTitle');
-      const scope = document.getElementById('homeScopeText');
-      if (pill) pill.innerText = 'FACULTY WORKSTATION';
-      if (title) title.innerText = 'Faculty Academic Workbench &bull; Course Cluster Contributor';
-      if (scope) scope.innerText = 'Hardware & Embedded Systems Cluster (Under BSCpE PD)';
+      // User specification: Faculty has the same homepage as PD
+      renderProgramOverview('BSCpE');
     }
 
     function renderHomepageForRole(roleKey) {
       currentActiveRole = roleKey;
+      window.currentActiveRole = roleKey;
       navigateView('home');
       if (roleKey === 'admin' || roleKey === 'a') {
         syncSidebarToCurrentPath(null, null, null);
@@ -1416,10 +1470,11 @@
       } else if (roleKey === 'pd' || roleKey === 'p') {
         renderProgramOverview('BSCpE');
       } else if (roleKey === 'faculty' || roleKey === 'f') {
-        renderFacultyOverview();
+        renderProgramOverview('BSCpE'); // Same homepage as PD!
       } else {
         renderAdminOverview();
       }
+      applyRolePermissions();
     }
 
     let toastTimeout;
@@ -1836,26 +1891,37 @@
       if (hEmail) hEmail.innerText = email;
       if (sbAvatar) sbAvatar.innerText = avatar;
 
+      // Close login modal immediately
+      closeLoginModal();
+
+      // Set active role state
+      currentActiveRole = roleKey;
+      window.currentActiveRole = roleKey;
+
       const roleSel = document.getElementById('roleSelector');
       if (roleSel && roleKey) {
         roleSel.value = roleKey;
-        switchRole(roleKey);
-        renderHomepageForRole(roleKey);
       }
-      
-      const resBox = document.getElementById('graphApiResult');
-      if (resBox) {
-        resBox.classList.remove('hidden');
-        resBox.innerText = `// Active token switched:
-{
-  "status": 200,
-  "userPrincipalName": "${email}",
-  "displayName": "${name}",
-  "assignedRole": "${role}",
-  "tenantId": "aeb745e6-8166-4f8f-9233-179e8109c49e",
-  "tokenType": "Bearer",
-  "expiresIn": 3599
-}`;
+
+      switchRole(roleKey);
+
+      // Route directly to the role's dedicated homepage
+      if (roleKey === 'admin' || roleKey === 'a') {
+        syncSidebarToCurrentPath(null, null, null);
+        renderAdminOverview();
+      } else if (roleKey === 'exd' || roleKey === 'x') {
+        renderSchoolOverview('SoE');
+      } else if (roleKey === 'pd' || roleKey === 'p') {
+        renderProgramOverview('BSCpE');
+      } else if (roleKey === 'faculty' || roleKey === 'f') {
+        renderProgramOverview('BSCpE');
+      } else {
+        renderAdminOverview();
+      }
+
+      applyRolePermissions();
+      if (typeof showToast === 'function') {
+        showToast(`Signed in as ${name} (${role})`);
       }
     }
 
@@ -2648,6 +2714,13 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
 
     window.openCreateCurriculumModal = function() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        if (typeof showToast === 'function') {
+          showToast('⛔ Access Restricted: Authoring new curriculum revisions is reserved for Program Directors.');
+        }
+        return;
+      }
       const modal = document.getElementById('createCurriculumModal');
       if (modal) modal.classList.remove('hidden');
     };
@@ -2786,6 +2859,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           if (!anyVisible) {
             renderHomepageForRole(currentActiveRole || 'admin');
           }
+        }
+        if (viewId === 'delegation' && typeof renderFacultyDirectory === 'function') {
+          renderFacultyDirectory();
         }
       }
 
@@ -3714,13 +3790,21 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function onSheetCellChange(courseOriginalIndex, field, value) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      const c = ALL_COURSES[courseOriginalIndex];
+      if (!c) return;
+
+      if (isFaculty && !isCourseAssignedToFaculty(c.code)) {
+        if (typeof showToast === 'function') showToast(`⛔ Access Restricted: ${c.code} is outside your assigned cluster.`);
+        renderSpreadsheetGrid();
+        return;
+      }
+
       if (field === 'group' && value === '__CREATE_NEW__') {
         openCategoryManagerModal();
         renderSpreadsheetGrid();
         return;
       }
-      const c = ALL_COURSES[courseOriginalIndex];
-      if (!c) return;
 
       if (field === 'code') {
         c.code = value.trim().toUpperCase();
@@ -3762,8 +3846,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function cycleSheetSOLevel(courseOriginalIndex, soIndex) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
       const c = ALL_COURSES[courseOriginalIndex];
       if (!c || !c.sos) return;
+
+      if (isFaculty && !isCourseAssignedToFaculty(c.code)) {
+        if (typeof showToast === 'function') showToast(`⛔ Access Restricted: ${c.code} is outside your assigned cluster.`);
+        return;
+      }
 
       const levels = ['-', 'I', 'E', 'D'];
       const cur = c.sos[soIndex] || '-';
@@ -3810,6 +3900,184 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         opts += '<option value="' + cat.name + '"' + isSel + '>' + cat.name + '</option>';
       }
       return opts;
+    }
+
+    // =========================================================================
+    // FACULTY SCOPED CLUSTER ASSIGNMENTS & DIRECTORY REGISTRY (D-RBAC)
+    // =========================================================================
+    const FACULTY_ASSIGNED_COURSES = new Set([
+      'LOGCDES', 'LOGICLB', 'EMICROS', 'MCROLAB', 'EMBEDDS', 'EMBEDLB',
+      'COMAROR', 'ARCORLB', 'CPEDES1', 'DATCOMS', 'COMNETS', 'NETSLAB'
+    ]);
+
+    function isCourseAssignedToFaculty(code) {
+      if (!code) return false;
+      const upper = code.trim().toUpperCase();
+      if (FACULTY_ASSIGNED_COURSES.has(upper)) return true;
+
+      if (window.FACULTY_MEMBERS && Array.isArray(window.FACULTY_MEMBERS)) {
+        for (const f of window.FACULTY_MEMBERS) {
+          if (Array.isArray(f.courses) && f.courses.some(c => c.toUpperCase() === upper)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    const FACULTY_SCHOOL_LABELS = {
+      soe: 'School of Engineering (SoE)',
+      socit: 'School of Computing & Info Tech (SoCIT)',
+      som: 'School of Management (SoM)',
+      soad: 'School of Architecture & Design (SoAD)'
+    };
+
+    const DEFAULT_FACULTY_MEMBERS = [
+      {
+        id: 'fac-1',
+        name: 'Faculty Member 1',
+        email: 'faculty1@apc.edu.ph',
+        school: 'soe',
+        rank: 'Assistant Professor',
+        cluster: 'Hardware & Embedded Systems',
+        courses: ['LOGCDES', 'LOGICLB', 'EMICROS', 'MCROLAB', 'EMBEDDS', 'EMBEDLB', 'COMAROR', 'ARCORLB', 'CPEDES1', 'DATCOMS', 'COMNETS', 'NETSLAB'],
+        status: 'Active'
+      },
+      {
+        id: 'fac-2',
+        name: 'Faculty Member 2',
+        email: 'faculty2@apc.edu.ph',
+        school: 'soe',
+        rank: 'Associate Professor',
+        cluster: 'Computer Networks & Security',
+        courses: ['DATCOMS', 'COMNETS', 'NETSLAB', 'CYBSEC1', 'NETSEC1'],
+        status: 'Active'
+      }
+    ];
+
+    let loadedFaculty = null;
+    try {
+      loadedFaculty = JSON.parse(localStorage.getItem('apc_faculty_directory'));
+    } catch (e) {}
+
+    window.FACULTY_MEMBERS = (Array.isArray(loadedFaculty) && loadedFaculty.length > 0) ? loadedFaculty : DEFAULT_FACULTY_MEMBERS;
+
+    function renderFacultyDirectory() {
+      const tbody = document.getElementById('facultyDirectoryTableBody');
+      if (!tbody) return;
+
+      if (!window.FACULTY_MEMBERS || window.FACULTY_MEMBERS.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-400 dark:text-slate-500 italic">No registered faculty members found in directory.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = window.FACULTY_MEMBERS.map((f, idx) => {
+        const schoolName = FACULTY_SCHOOL_LABELS[f.school] || f.school?.toUpperCase() || 'SoE';
+        const coursesList = Array.isArray(f.courses) ? f.courses.join(', ') : (f.courses || '');
+        const courseCount = Array.isArray(f.courses) ? f.courses.length : 0;
+        const initial = (f.name || 'F').charAt(0).toUpperCase();
+
+        return `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+            <td class="py-3 px-3">
+              <div class="flex items-center space-x-2.5">
+                <div class="w-7 h-7 rounded-none bg-[#002855] dark:bg-[#E5A823] text-white dark:text-[#002855] flex items-center justify-center font-bold text-xs">
+                  ${initial}
+                </div>
+                <div>
+                  <div class="font-bold text-slate-900 dark:text-white leading-tight">${f.name}</div>
+                  <div class="font-mono text-[10.5px] text-slate-500 dark:text-slate-400">${f.email}</div>
+                </div>
+              </div>
+            </td>
+            <td class="py-3 px-3">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-none font-bold text-[10.5px] bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                ${schoolName}
+              </span>
+            </td>
+            <td class="py-3 px-3 text-slate-700 dark:text-slate-300 font-medium">
+              ${f.rank || 'Faculty Member'}
+            </td>
+            <td class="py-3 px-3">
+              <div class="font-bold text-slate-900 dark:text-white text-xs">${f.cluster || 'General Engineering'}</div>
+              <div class="text-[10.5px] font-mono text-slate-500 dark:text-slate-400 truncate max-w-xs" title="${coursesList}">
+                ${courseCount > 0 ? `${coursesList} (${courseCount} courses)` : coursesList}
+              </div>
+            </td>
+            <td class="py-3 px-3">
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-none text-[10.5px] font-mono font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Entra ID Verified</span>
+              </span>
+            </td>
+            <td class="py-3 px-3 text-right">
+              <button type="button" onclick="openAssignTaskModal('${f.cluster || ''}', '${f.name}')" class="px-2.5 py-1 bg-slate-100 hover:bg-[#002855] dark:bg-slate-800 dark:hover:bg-[#E5A823] text-slate-700 hover:text-white dark:text-slate-300 dark:hover:text-[#002855] font-bold text-[11px] rounded-none border border-slate-300 dark:border-slate-700 transition cursor-pointer">
+                Delegate Task
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openAddFacultyModal() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        if (typeof showToastNotification === 'function') showToastNotification('⛔ Access Restricted: Faculty registration is restricted to Program Directors.');
+        else if (typeof showToast === 'function') showToast('⛔ Access Restricted: Faculty registration is restricted to Program Directors.');
+        return;
+      }
+      const modal = document.getElementById('modalAddFaculty');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeAddFacultyModal() {
+      const modal = document.getElementById('modalAddFaculty');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function submitAddFaculty(e) {
+      if (e) e.preventDefault();
+      const school = document.getElementById('addFacultySchool')?.value || 'soe';
+      const name = document.getElementById('addFacultyName')?.value.trim();
+      const account = document.getElementById('addFacultyAccount')?.value.trim();
+      const rank = document.getElementById('addFacultyRank')?.value || 'Assistant Professor';
+      const cluster = document.getElementById('addFacultyCluster')?.value || 'Hardware & Embedded Systems';
+      const coursesRaw = document.getElementById('addFacultyCourses')?.value.trim() || '';
+
+      if (!name || !account) {
+        if (typeof showToastNotification === 'function') showToastNotification('Please enter faculty full name and Entra ID account.');
+        else if (typeof showToast === 'function') showToast('Please enter faculty full name and Entra ID account.');
+        return;
+      }
+
+      const courses = coursesRaw ? coursesRaw.split(',').map(c => c.trim().toUpperCase()).filter(Boolean) : [];
+
+      const newFaculty = {
+        id: 'fac-' + Date.now(),
+        name,
+        email: account,
+        school,
+        rank,
+        cluster,
+        courses: courses.length > 0 ? courses : ['All courses in ' + cluster],
+        status: 'Active'
+      };
+
+      window.FACULTY_MEMBERS.push(newFaculty);
+      try {
+        localStorage.setItem('apc_faculty_directory', JSON.stringify(window.FACULTY_MEMBERS));
+      } catch (err) {}
+
+      closeAddFacultyModal();
+      renderFacultyDirectory();
+      
+      const msg = `Registered ${name} to ${school.toUpperCase()} successfully.`;
+      if (typeof showToastNotification === 'function') showToastNotification(msg);
+      else if (typeof showToast === 'function') showToast(msg);
+
+      const form = document.getElementById('addFacultyForm');
+      if (form) form.reset();
     }
 
     function renderSpreadsheetGrid() {
@@ -3876,25 +4144,30 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const prereqStr = (c.prereqs || []).map(p => (typeof p === 'object' && p !== null && p.code) ? p.code : String(p)).join(', ');
         const coreqStr = Array.isArray(c.coreqs) ? c.coreqs.join(', ') : '';
 
+        const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+        const isAssigned = !isFaculty || isCourseAssignedToFaculty(c.code);
+        const disAttr = !isAssigned ? 'disabled readonly' : '';
+        const disClass = !isAssigned ? 'opacity-60 cursor-not-allowed' : '';
+
         html += `<tr class="${bg} hover:bg-amber-50/40 dark:hover:bg-slate-800 transition border-b border-slate-200 dark:border-slate-700/60">
           <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-500 border-r border-slate-200 dark:border-slate-700/60 text-[11px]">${displayRow}</td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-            <input type="text" value="${c.code || ''}" onfocus="selectExcelCell('A${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'code', this.value)" class="w-full px-1.5 py-0.5 font-mono font-bold text-xs text-[#002855] dark:text-blue-300 uppercase bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+            <input type="text" value="${c.code || ''}" ${disAttr} onfocus="selectExcelCell('A${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'code', this.value)" class="w-full px-1.5 py-0.5 font-mono font-bold text-xs text-[#002855] dark:text-blue-300 uppercase bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-            <input type="text" value="${(c.title || '').replace(/"/g, '&quot;')}" onfocus="selectExcelCell('B${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'title', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+            <input type="text" value="${(c.title || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="selectExcelCell('B${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'title', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <input type="number" step="0.5" min="0" max="12" value="${c.units || 0}" onfocus="selectExcelCell('C${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'units', this.value)" class="w-full text-center px-1 py-0.5 font-mono font-bold text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+            <input type="number" step="0.5" min="0" max="12" value="${c.units || 0}" ${disAttr} onfocus="selectExcelCell('C${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'units', this.value)" class="w-full text-center px-1 py-0.5 font-mono font-bold text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <input type="number" step="1" min="0" max="15" value="${c.lec || 0}" onfocus="selectExcelCell('D${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'lec', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+            <input type="number" step="1" min="0" max="15" value="${c.lec || 0}" ${disAttr} onfocus="selectExcelCell('D${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'lec', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <input type="number" step="1" min="0" max="15" value="${c.lab || 0}" onfocus="selectExcelCell('E${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'lab', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+            <input type="number" step="1" min="0" max="15" value="${c.lab || 0}" ${disAttr} onfocus="selectExcelCell('E${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'lab', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <select onfocus="selectExcelCell('F${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'year', this.value)" class="w-full text-center px-1 py-0.5 font-bold text-xs text-slate-700 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
+            <select ${disAttr} onfocus="selectExcelCell('F${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'year', this.value)" class="w-full text-center px-1 py-0.5 font-bold text-xs text-slate-700 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
               <option value="1" ${c.year === 1 ? 'selected' : ''}>Y1</option>
               <option value="2" ${c.year === 2 ? 'selected' : ''}>Y2</option>
               <option value="3" ${c.year === 3 ? 'selected' : ''}>Y3</option>
@@ -3902,7 +4175,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             </select>
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <select onfocus="selectExcelCell('G${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'term', this.value)" class="w-full text-center px-1 py-0.5 font-bold text-xs text-slate-700 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
+            <select ${disAttr} onfocus="selectExcelCell('G${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'term', this.value)" class="w-full text-center px-1 py-0.5 font-bold text-xs text-slate-700 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
               <option value="1" ${c.term === 1 ? 'selected' : ''}>T1</option>
               <option value="2" ${c.term === 2 ? 'selected' : ''}>T2</option>
               <option value="3" ${c.term === 3 ? 'selected' : ''}>T3</option>
@@ -3912,15 +4185,15 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (showGeneral) {
           html += `
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-              <input type="text" value="${prereqStr}" onfocus="selectExcelCell('H${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'prereqs', this.value)" placeholder="None" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+              <input type="text" value="${prereqStr}" ${disAttr} onfocus="selectExcelCell('H${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'prereqs', this.value)" placeholder="None" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-              <input type="text" value="${coreqStr}" onfocus="selectExcelCell('H2_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'coreqs', this.value)" placeholder="None" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none">
+              <input type="text" value="${coreqStr}" ${disAttr} onfocus="selectExcelCell('H2_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'coreqs', this.value)" placeholder="None" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-              <select onfocus="selectExcelCell('I${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'group', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
+              <select ${disAttr} onfocus="selectExcelCell('I${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'group', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
                 ${getCategoryOptionsHtml(c.group)}
-                <option value="__CREATE_NEW__" class="font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-slate-800">+ Create New Category...</option>
+                ${!isFaculty ? '<option value="__CREATE_NEW__" class="font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-slate-800">+ Create New Category...</option>' : ''}
               </select>
             </td>`;
         }
@@ -3931,25 +4204,33 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           }
           soLetters.forEach((letter, sIdx) => {
             const val = c.sos[sIdx] || '-';
+            const soClick = isAssigned ? `onclick="cycleSheetSOLevel(${idx}, ${sIdx})"` : '';
+            const soTitle = isAssigned ? `Click to cycle: - ➔ I ➔ E ➔ D (SO-${letter})` : `Read-Only: ${c.code} is outside your assigned cluster`;
+            const soCursor = isAssigned ? '' : 'cursor-not-allowed opacity-60';
             html += `
               <td class="py-1 px-0.5 text-center border-r border-slate-200 dark:border-slate-700/60">
-                <button type="button" id="soBtn_${idx}_${sIdx}" onclick="cycleSheetSOLevel(${idx}, ${sIdx})" class="${getSOBadgeClass(val)}" title="Click to cycle: - ➔ I ➔ E ➔ D (SO-${letter})">
+                <button type="button" id="soBtn_${idx}_${sIdx}" ${soClick} class="${getSOBadgeClass(val)} ${soCursor}" title="${soTitle}">
                   ${val === '-' ? '·' : val}
                 </button>
               </td>`;
           });
         }
 
+        const actionCell = isFaculty
+          ? `<span class="p-1 text-slate-400 dark:text-slate-500 font-mono text-xs cursor-not-allowed select-none" title="${isAssigned ? 'Course deletion is reserved for Program Director' : 'Course outside assigned cluster (Read-Only)'}">🔒</span>`
+          : `<button type="button" onclick="sheetDeleteCourseRow(${idx})" class="p-1 text-slate-400 hover:text-rose-600 transition cursor-pointer" title="Delete Course">🗑</button>`;
+
         html += `
           <td class="py-1 px-1 text-center">
-            <button type="button" onclick="sheetDeleteCourseRow(${idx})" class="p-1 text-slate-400 hover:text-rose-600 transition cursor-pointer" title="Delete Course">🗑</button>
+            ${actionCell}
           </td>
         </tr>`;
       });
 
-      // 2. Render Empty Excel Rows for Master/General view
+      // 2. Render Empty Excel Rows for Master/General view (Restricted for Faculty)
       let totalToRender = rows.length;
-      if (showGeneral && !showObe) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (showGeneral && !showObe && !isFaculty) {
         const renderedCount = rows.length;
         totalToRender = Math.max(excelGridTotalRows, renderedCount + 20);
         for (let r = renderedCount + 1; r <= totalToRender; r++) {
@@ -4046,6 +4327,13 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function sheetAddNewCourseRow() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        if (typeof showToastNotification === 'function') showToastNotification('⛔ Access Restricted: Adding courses is restricted to Program Directors.');
+        else if (typeof showToast === 'function') showToast('⛔ Access Restricted: Adding courses is restricted to Program Directors.');
+        return;
+      }
+
       const defaultCode = `CPE${Math.floor(100 + Math.random() * 900)}`;
       const newCourse = {
         row: ALL_COURSES.length + 1,
@@ -4074,6 +4362,13 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function sheetDeleteCourseRow(courseIdx) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        if (typeof showToastNotification === 'function') showToastNotification('⛔ Access Restricted: Deleting courses is restricted to Program Directors.');
+        else if (typeof showToast === 'function') showToast('⛔ Access Restricted: Deleting courses is restricted to Program Directors.');
+        return;
+      }
+
       const c = ALL_COURSES[courseIdx];
       if (!c) return;
 
@@ -4332,11 +4627,606 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (typeof renderObeMatrix === 'function') renderObeMatrix();
       if (typeof calculateCompliance === 'function') calculateCompliance();
       renderSpreadsheetGrid();
-      showToastNotification('? Successfully restored official APC 74-course baseline.');
+      showToastNotification('✓ Successfully restored official APC 74-course baseline.');
+    }
+
+    // =========================================================================
+    // COURSE DATA EDITOR MODAL CONTROLLERS (DAG INTEGRITY & ROLE SCOPING)
+    // =========================================================================
+    let editingCourseCodeOriginal = null;
+    let editModalPrereqs = [];
+    let editModalCoreqs = [];
+    let editModalSos = ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
+
+    function openCourseEditModal(courseCode = '') {
+      const modal = document.getElementById('courseEditModal');
+      if (!modal) return;
+
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+
+      if (isFaculty && !courseCode) {
+        const msg = '⛔ Access Restricted: Faculty members cannot create new curriculum courses.';
+        if (typeof showToastNotification === 'function') showToastNotification(msg);
+        else if (typeof showToast === 'function') showToast(msg);
+        return;
+      }
+
+      editingCourseCodeOriginal = courseCode ? courseCode.trim() : null;
+      const isNew = !editingCourseCodeOriginal;
+      const isAssigned = !isFaculty || (editingCourseCodeOriginal && isCourseAssignedToFaculty(editingCourseCodeOriginal));
+
+      const titleEl = document.getElementById('editModalTitle');
+      if (titleEl) titleEl.innerText = isNew ? 'Create New Curricular Course' : `Edit Course: ${editingCourseCodeOriginal}`;
+      
+      const modeBadge = document.getElementById('editModalModeBadge');
+      if (modeBadge) modeBadge.innerText = isNew ? 'Creating New Course' : (isAssigned ? 'Editing Active Node' : 'View-Only Mode');
+
+      const codeIcon = document.getElementById('editModalCodeIcon');
+      if (codeIcon) codeIcon.innerText = isNew ? 'NEW' : editingCourseCodeOriginal.substring(0, 4);
+
+      const deleteBtn = document.getElementById('btnDeleteCourse');
+      if (deleteBtn) {
+        deleteBtn.style.display = (isNew || isFaculty) ? 'none' : 'inline-flex';
+      }
+
+      const saveBtn = document.getElementById('btnSaveCourseData');
+      if (saveBtn) {
+        saveBtn.style.display = (!isFaculty || isAssigned) ? 'inline-flex' : 'none';
+      }
+
+      const facNotice = document.getElementById('editCourseFacultyNotice');
+      if (facNotice) {
+        if (isFaculty && !isAssigned) {
+          facNotice.classList.remove('hidden');
+          const noticeTitle = document.getElementById('editCourseFacultyNoticeTitle');
+          if (noticeTitle) noticeTitle.innerText = 'View-Only Course Mode (Faculty Scoped)';
+          const noticeDesc = document.getElementById('editCourseFacultyNoticeDesc');
+          if (noticeDesc) noticeDesc.innerText = `Course ${editingCourseCodeOriginal} is outside your assigned subject cluster. Editing is restricted to cluster leads.`;
+        } else {
+          facNotice.classList.add('hidden');
+        }
+      }
+
+      let course = null;
+      if (!isNew) {
+        course = ALL_COURSES.find(c => c.code === editingCourseCodeOriginal);
+      }
+
+      const codeInput = document.getElementById('editCourseCodeInput');
+      const titleInput = document.getElementById('editCourseTitleInput');
+      const groupSelect = document.getElementById('editCourseGroupSelect');
+      const yearSelect = document.getElementById('editCourseYearSelect');
+      const termSelect = document.getElementById('editCourseTermSelect');
+      const rowSelect = document.getElementById('editCourseRowSelect');
+      const lecInput = document.getElementById('editCourseLecInput');
+      const labInput = document.getElementById('editCourseLabInput');
+      const unitsInput = document.getElementById('editCourseUnitsInput');
+      const descTextarea = document.getElementById('editCourseDescTextarea');
+      const autoCalcCheck = document.getElementById('editAutoCalcUnitsCheckbox');
+      const addPrereqSel = document.getElementById('editAddPrereqSelect');
+      const addPrereqType = document.getElementById('editAddPrereqType');
+      const coreqInp = document.getElementById('coreqInput');
+
+      const inputsDisabled = (isFaculty && !isAssigned);
+
+      if (codeInput) {
+        codeInput.value = course ? course.code : '';
+        codeInput.disabled = !isNew || inputsDisabled;
+      }
+      if (titleInput) {
+        titleInput.value = course ? course.title : '';
+        titleInput.disabled = inputsDisabled;
+      }
+      if (groupSelect) {
+        groupSelect.value = course ? course.group : 'Professional Core';
+        groupSelect.disabled = inputsDisabled;
+      }
+      if (yearSelect) {
+        yearSelect.value = course ? course.year : 1;
+        yearSelect.disabled = inputsDisabled;
+      }
+      if (termSelect) {
+        termSelect.value = course ? course.term : 1;
+        termSelect.disabled = inputsDisabled;
+      }
+      if (rowSelect) {
+        rowSelect.value = course ? course.row : 1;
+        rowSelect.disabled = inputsDisabled;
+      }
+      if (lecInput) {
+        lecInput.value = course ? course.lec : 3;
+        lecInput.disabled = inputsDisabled;
+      }
+      if (labInput) {
+        labInput.value = course ? course.lab : 0;
+        labInput.disabled = inputsDisabled;
+      }
+      if (unitsInput) {
+        unitsInput.value = course ? course.units : 3.0;
+        unitsInput.disabled = inputsDisabled;
+      }
+      if (descTextarea) {
+        descTextarea.value = course ? (course.desc || '') : '';
+        descTextarea.disabled = inputsDisabled;
+      }
+      if (autoCalcCheck) autoCalcCheck.disabled = inputsDisabled;
+      if (addPrereqSel) addPrereqSel.disabled = inputsDisabled;
+      if (addPrereqType) addPrereqType.disabled = inputsDisabled;
+      if (coreqInp) coreqInp.disabled = inputsDisabled;
+
+      editModalPrereqs = course ? [...(course.prereqs || [])] : [];
+      editModalCoreqs = course && Array.isArray(course.coreqs) ? [...course.coreqs] : [];
+      editModalSos = course && course.sos ? [...course.sos] : ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
+
+      calculateEditUnits();
+      renderPrereqsChips();
+      renderCoreqTags();
+      populatePrereqSelectOptions();
+      renderSoChips();
+      validateEditModalDag();
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCourseEditModal() {
+      const modal = document.getElementById('courseEditModal');
+      if (modal) modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function calculateEditUnits() {
+      const autoCalcEl = document.getElementById('editAutoCalcUnitsCheckbox');
+      const autoCalc = autoCalcEl ? autoCalcEl.checked : true;
+      const lec = parseFloat(document.getElementById('editCourseLecInput')?.value) || 0;
+      const lab = parseFloat(document.getElementById('editCourseLabInput')?.value) || 0;
+      
+      let calcUnits = lec;
+      if (lab > 0) {
+        if (lab >= 18) calcUnits += 6.0;
+        else if (lab >= 6) calcUnits += 2.0;
+        else if (lab >= 3) calcUnits += 1.0;
+        else calcUnits += 1.0;
+      }
+
+      if (autoCalc) {
+        const uInp = document.getElementById('editCourseUnitsInput');
+        if (uInp) uInp.value = calcUnits.toFixed(1);
+      }
+
+      const hint = document.getElementById('editUnitsCalculationHint');
+      if (hint) {
+        hint.innerText = `= ${calcUnits.toFixed(1)} Credit Units (${lec} Lec + ${lab} Lab)`;
+      }
+    }
+
+    function handleAutoCalcUnitsChange() {
+      calculateEditUnits();
+    }
+
+    function updateGridColPlacement() {
+      const year = parseInt(document.getElementById('editCourseYearSelect')?.value) || 1;
+      const term = parseInt(document.getElementById('editCourseTermSelect')?.value) || 1;
+    }
+
+    function renderPrereqsChips() {
+      const container = document.getElementById('editPrereqsChipsContainer');
+      if (!container) return;
+
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      const isAssigned = !isFaculty || (editingCourseCodeOriginal && isCourseAssignedToFaculty(editingCourseCodeOriginal));
+
+      if (!editModalPrereqs || editModalPrereqs.length === 0) {
+        container.innerHTML = '<span class="text-slate-400 text-xs italic">No prerequisites (Entry level course)</span>';
+        return;
+      }
+
+      container.innerHTML = editModalPrereqs.map((p, idx) => {
+        const norm = typeof p === 'string' ? { code: p, type: 'hard' } : { code: p.code, type: p.type || 'hard' };
+        let badgeStyle = 'bg-slate-100 text-slate-800 border-slate-300';
+        let pill = '<span class="text-[11px] px-1.5 py-0.5 rounded-none bg-slate-200 text-slate-700 font-sans font-black">HARD</span>';
+        
+        if (norm.type === 'co') {
+          badgeStyle = 'bg-amber-50 text-amber-900 border-amber-400';
+          pill = '<span class="text-[11px] px-1.5 py-0.5 rounded-none bg-amber-400 text-slate-950 font-sans font-black">CO-REQ</span>';
+        } else if (norm.type === 'soft') {
+          badgeStyle = 'bg-purple-50 text-purple-900 border-purple-300';
+          pill = '<span class="text-[11px] px-1.5 py-0.5 rounded-none bg-purple-300 text-purple-950 font-sans font-black">SOFT</span>';
+        }
+
+        const removeBtn = (!isFaculty || isAssigned)
+          ? `<button type="button" onclick="removePrereqChip(${idx})" class="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-rose-600 hover:bg-rose-100/60 font-bold ml-1 text-base leading-none transition" title="Remove prerequisite">&times;</button>`
+          : '';
+
+        return `
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none ${badgeStyle} border font-mono font-bold text-xs shadow-xs">
+            <span>${norm.code}</span>
+            ${pill}
+            ${removeBtn}
+          </span>
+        `;
+      }).join('');
+    }
+
+    function removePrereqChip(idx) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty && editingCourseCodeOriginal && !isCourseAssignedToFaculty(editingCourseCodeOriginal)) return;
+      editModalPrereqs.splice(idx, 1);
+      renderPrereqsChips();
+      validateEditModalDag();
+    }
+
+    function clearAllPrereqs() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty && editingCourseCodeOriginal && !isCourseAssignedToFaculty(editingCourseCodeOriginal)) return;
+      editModalPrereqs = [];
+      renderPrereqsChips();
+      validateEditModalDag();
+    }
+
+    function addPrereqFromSelect() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty && editingCourseCodeOriginal && !isCourseAssignedToFaculty(editingCourseCodeOriginal)) return;
+
+      const sel = document.getElementById('editAddPrereqSelect');
+      const typeSel = document.getElementById('editAddPrereqType');
+      const val = sel ? sel.value : '';
+      const type = typeSel ? typeSel.value : 'hard';
+      if (!val) return;
+
+      const currentCode = (document.getElementById('editCourseCodeInput')?.value || '').trim().toUpperCase();
+
+      if (val === currentCode) {
+        alert('Circular dependency detected: a course cannot be its own prerequisite.');
+        return;
+      }
+
+      const existingIdx = editModalPrereqs.findIndex(p => (typeof p === 'string' ? p : p.code) === val);
+      if (existingIdx === -1) {
+        editModalPrereqs.push({ code: val, type: type });
+      } else {
+        editModalPrereqs[existingIdx] = { code: val, type: type };
+      }
+      renderPrereqsChips();
+      populatePrereqSelectOptions();
+      validateEditModalDag();
+    }
+
+    function populatePrereqSelectOptions() {
+      const sel = document.getElementById('editAddPrereqSelect');
+      if (!sel) return;
+
+      const currentCode = (document.getElementById('editCourseCodeInput')?.value || '').trim().toUpperCase();
+      sel.innerHTML = '<option value="">-- Select an existing course to add as prerequisite --</option>';
+
+      const sorted = [...ALL_COURSES].sort((a, b) => (a.year * 10 + a.term) - (b.year * 10 + b.term) || a.code.localeCompare(b.code));
+
+      sorted.forEach(c => {
+        const isAlreadyPrereq = editModalPrereqs.some(p => (typeof p === 'string' ? p : p.code) === c.code);
+        if (c.code !== currentCode && !isAlreadyPrereq) {
+          const opt = document.createElement('option');
+          opt.value = c.code;
+          opt.textContent = `${c.code} - ${c.title} (Yr ${c.year}, T${c.term} • ${c.units}u)`;
+          sel.appendChild(opt);
+        }
+      });
+    }
+
+    function renderCoreqTags() {
+      const container = document.getElementById('editModalCoreqTags');
+      if (!container) return;
+
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      const isAssigned = !isFaculty || (editingCourseCodeOriginal && isCourseAssignedToFaculty(editingCourseCodeOriginal));
+
+      if (!editModalCoreqs || editModalCoreqs.length === 0) {
+        container.innerHTML = '<span class="text-slate-400 text-xs italic">No co-requisites assigned</span>';
+        return;
+      }
+      container.innerHTML = editModalCoreqs.map((code, idx) => {
+        const removeBtn = (!isFaculty || isAssigned)
+          ? `<button type="button" onclick="removeCoreqTag(${idx})" class="w-5 h-5 flex items-center justify-center text-amber-700 hover:text-rose-600 font-bold ml-1 text-base leading-none transition" title="Remove co-requisite">&times;</button>`
+          : '';
+        return `
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-amber-50 text-amber-900 border border-amber-300 font-mono font-bold text-xs shadow-xs">
+            <span>${code}</span>
+            <span class="text-[10px] px-1 py-0.2 rounded-none bg-amber-200 text-amber-900 font-sans font-black">CO-REQ</span>
+            ${removeBtn}
+          </span>
+        `;
+      }).join('');
+    }
+
+    function addCoreqTag() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty && editingCourseCodeOriginal && !isCourseAssignedToFaculty(editingCourseCodeOriginal)) return;
+
+      const input = document.getElementById('coreqInput');
+      if (!input) return;
+      const val = input.value.trim().toUpperCase();
+      if (!val) return;
+      const currentCode = (document.getElementById('editCourseCodeInput')?.value || '').trim().toUpperCase();
+      if (val === currentCode) {
+        alert('A course cannot be its own co-requisite.');
+        input.value = '';
+        return;
+      }
+      if (!editModalCoreqs.includes(val)) {
+        editModalCoreqs.push(val);
+        renderCoreqTags();
+      }
+      input.value = '';
+    }
+
+    function removeCoreqTag(idx) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty && editingCourseCodeOriginal && !isCourseAssignedToFaculty(editingCourseCodeOriginal)) return;
+      editModalCoreqs.splice(idx, 1);
+      renderCoreqTags();
+    }
+
+    function clearAllCoreqs() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty && editingCourseCodeOriginal && !isCourseAssignedToFaculty(editingCourseCodeOriginal)) return;
+      editModalCoreqs = [];
+      renderCoreqTags();
+    }
+
+    function handleCoreqInputKey(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addCoreqTag();
+      }
+    }
+
+    function renderSoChips() {
+      const container = document.getElementById('editSoGridContainer');
+      if (!container) return;
+
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      const isAssigned = !isFaculty || (editingCourseCodeOriginal && isCourseAssignedToFaculty(editingCourseCodeOriginal));
+
+      const soLabels = ['a','b','c','d','e','f','g','h','i','j','k','l','m'];
+      const soNames = [
+        'Eng Knowledge', 'Experiments', 'Design', 'Teamwork', 
+        'Problem Analysis', 'Ethics', 'Communication', 'Impact', 
+        'Lifelong Learn', 'Contemporary', 'Modern Tools', 'Project Mgmt', 'Specialized R&D'
+      ];
+
+      container.innerHTML = soLabels.map((so, idx) => {
+        const val = editModalSos[idx] || '-';
+        let badgeClass = 'bg-slate-100 text-slate-600 border-slate-300';
+        if (val === 'I') badgeClass = 'bg-emerald-100 text-emerald-900 border-emerald-400 font-black';
+        if (val === 'E') badgeClass = 'bg-amber-100 text-amber-900 border-amber-400 font-black';
+        if (val === 'D') badgeClass = 'bg-indigo-100 text-indigo-900 border-indigo-400 font-black';
+
+        const clickAttr = isAssigned ? `onclick="cycleSoVal(${idx})"` : 'disabled';
+        const cursorClass = isAssigned ? 'cursor-pointer hover:shadow-sm' : 'cursor-not-allowed opacity-70';
+
+        return `
+          <button type="button" ${clickAttr} class="p-2 rounded-none border text-center transition flex flex-col items-center justify-between ${cursorClass} ${badgeClass}">
+            <div class="text-[11px] font-mono font-bold text-slate-500">SO-${so.toUpperCase()}</div>
+            <div class="text-sm font-mono font-black my-0.5">${val}</div>
+            <div class="text-[11px] text-slate-500 truncate w-full" title="${soNames[idx]}">${soNames[idx]}</div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function cycleSoVal(idx) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty && editingCourseCodeOriginal && !isCourseAssignedToFaculty(editingCourseCodeOriginal)) return;
+
+      const current = editModalSos[idx];
+      const cycle = { '-': 'I', 'I': 'E', 'E': 'D', 'D': '-' };
+      editModalSos[idx] = cycle[current] || '-';
+      renderSoChips();
+    }
+
+    function validateEditModalDag() {
+      const targetCode = (document.getElementById('editCourseCodeInput')?.value || '').trim().toUpperCase();
+      const banner = document.getElementById('editDagStatusBanner');
+      const title = document.getElementById('editDagStatusTitle');
+      const sub = document.getElementById('editDagStatusSubtitle');
+      const icon = document.getElementById('editDagStatusIcon');
+      const saveBtn = document.getElementById('btnSaveCourseData');
+
+      const adj = {};
+      ALL_COURSES.forEach(c => {
+        adj[c.code] = (c.prereqs || []).map(p => (typeof p === 'string' ? p : p.code));
+      });
+      adj[targetCode] = editModalPrereqs.map(p => (typeof p === 'string' ? p : p.code));
+
+      const visited = new Set();
+      const recStack = new Set();
+      let hasCycle = false;
+      let cyclePath = [];
+
+      function dfs(node, path) {
+        visited.add(node);
+        recStack.add(node);
+        path.push(node);
+
+        const neighbors = adj[node] || [];
+        for (const next of neighbors) {
+          if (!visited.has(next)) {
+            if (dfs(next, path)) return true;
+          } else if (recStack.has(next)) {
+            cyclePath = [...path, next];
+            return true;
+          }
+        }
+
+        recStack.delete(node);
+        path.pop();
+        return false;
+      }
+
+      for (const node of Object.keys(adj)) {
+        if (!visited.has(node)) {
+          if (dfs(node, [])) {
+            hasCycle = true;
+            break;
+          }
+        }
+      }
+
+      if (hasCycle) {
+        if (banner) {
+          banner.className = 'p-3 rounded-none bg-rose-50 border-2 border-rose-400 text-rose-900 flex items-center justify-between shadow-xs';
+          if (icon) icon.innerText = '⚠️';
+          if (title) title.innerText = 'Circular Prerequisite Cycle Detected!';
+          if (sub) sub.innerText = `Loop found: ${cyclePath.join(' → ')}. Resolve the loop before saving.`;
+        }
+        if (saveBtn) saveBtn.disabled = true;
+        return false;
+      } else {
+        if (banner) {
+          banner.className = 'p-3 rounded-none bg-emerald-50 border border-emerald-300 text-emerald-900 flex items-center justify-between shadow-xs';
+          if (icon) icon.innerText = '✓';
+          if (title) title.innerText = 'DAG Topological Integrity Verified';
+          if (sub) sub.innerText = 'No circular prerequisites detected. Flowchart directed acyclic graph is clean.';
+        }
+        if (saveBtn) saveBtn.disabled = false;
+        return true;
+      }
+    }
+
+    function saveCourseDataFromModal() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      const code = document.getElementById('editCourseCodeInput')?.value.trim().toUpperCase() || '';
+      const title = document.getElementById('editCourseTitleInput')?.value.trim() || '';
+      const group = document.getElementById('editCourseGroupSelect')?.value || 'Professional Core';
+      const year = parseInt(document.getElementById('editCourseYearSelect')?.value) || 1;
+      const term = parseInt(document.getElementById('editCourseTermSelect')?.value) || 1;
+      const row = parseInt(document.getElementById('editCourseRowSelect')?.value) || 1;
+      const lec = parseFloat(document.getElementById('editCourseLecInput')?.value) || 0;
+      const lab = parseFloat(document.getElementById('editCourseLabInput')?.value) || 0;
+      const units = parseFloat(document.getElementById('editCourseUnitsInput')?.value) || (lec + (lab > 0 ? 1 : 0));
+      const desc = document.getElementById('editCourseDescTextarea')?.value.trim() || '';
+
+      if (!code) {
+        alert('Course Code is required.');
+        return;
+      }
+      if (!title) {
+        alert('Course Title is required.');
+        return;
+      }
+
+      if (isFaculty) {
+        if (!editingCourseCodeOriginal || !isCourseAssignedToFaculty(editingCourseCodeOriginal)) {
+          alert('Access Restricted: You cannot modify courses outside your assigned cluster.');
+          return;
+        }
+      }
+
+      if (!validateEditModalDag()) {
+        alert('Cannot save: Course contains a circular prerequisite cycle. Please resolve the loop before saving.');
+        return;
+      }
+
+      const col = (year - 1) * 3 + term;
+      const courseObj = {
+        code,
+        title,
+        group,
+        year,
+        term,
+        col,
+        row,
+        lec,
+        lab,
+        units,
+        prereqs: [...editModalPrereqs],
+        coreqs: [...editModalCoreqs],
+        sos: [...editModalSos],
+        desc
+      };
+
+      if (editingCourseCodeOriginal) {
+        const idx = ALL_COURSES.findIndex(c => c.code === editingCourseCodeOriginal);
+        if (idx !== -1) {
+          ALL_COURSES[idx] = courseObj;
+        }
+      } else {
+        const existingIdx = ALL_COURSES.findIndex(c => c.code === code);
+        if (existingIdx !== -1) {
+          alert(`A course with code ${code} already exists. Please choose a distinct code.`);
+          return;
+        }
+        ALL_COURSES.push(courseObj);
+      }
+
+      try {
+        localStorage.setItem('apc_curriculum_custom_courses', JSON.stringify(ALL_COURSES));
+      } catch (e) {}
+
+      if (typeof renderFlowchartDiagram === 'function') renderFlowchartDiagram();
+      if (typeof drawAllArrows === 'function') setTimeout(drawAllArrows, 80);
+      if (typeof renderFlowchartTable === 'function') renderFlowchartTable();
+      if (typeof renderSpreadsheetGrid === 'function') renderSpreadsheetGrid();
+      if (typeof filterCoursesTable === 'function') filterCoursesTable();
+
+      closeCourseEditModal();
+      const msg = `Course ${code} (${title}) successfully saved!`;
+      if (typeof showToastNotification === 'function') showToastNotification(msg);
+      else if (typeof showToast === 'function') showToast(msg);
+    }
+
+    function deleteCurrentCourse() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        const msg = '⛔ Access Restricted: Deleting courses is restricted to Program Directors.';
+        if (typeof showToastNotification === 'function') showToastNotification(msg);
+        else if (typeof showToast === 'function') showToast(msg);
+        return;
+      }
+
+      if (!editingCourseCodeOriginal) return;
+
+      const dependents = ALL_COURSES.filter(c => (c.prereqs || []).some(p => (typeof p === 'string' ? p : p.code) === editingCourseCodeOriginal));
+      if (dependents.length > 0) {
+        const depCodes = dependents.map(d => d.code).join(', ');
+        const proceed = confirm(`Warning: The following courses depend on ${editingCourseCodeOriginal} as a prerequisite: ${depCodes}. If you delete this course, those prerequisites will be cleared. Do you want to proceed?`);
+        if (!proceed) return;
+
+        ALL_COURSES.forEach(c => {
+          c.prereqs = (c.prereqs || []).filter(p => (typeof p === 'string' ? p : p.code) !== editingCourseCodeOriginal);
+        });
+      } else {
+        const proceed = confirm(`Are you sure you want to delete course ${editingCourseCodeOriginal}?`);
+        if (!proceed) return;
+      }
+
+      ALL_COURSES = ALL_COURSES.filter(c => c.code !== editingCourseCodeOriginal);
+
+      try {
+        localStorage.setItem('apc_curriculum_custom_courses', JSON.stringify(ALL_COURSES));
+      } catch (e) {}
+
+      if (typeof renderFlowchartDiagram === 'function') renderFlowchartDiagram();
+      if (typeof drawAllArrows === 'function') setTimeout(drawAllArrows, 80);
+      if (typeof renderFlowchartTable === 'function') renderFlowchartTable();
+      if (typeof renderSpreadsheetGrid === 'function') renderSpreadsheetGrid();
+      if (typeof filterCoursesTable === 'function') filterCoursesTable();
+
+      closeCourseEditModal();
+      const msg = `Course ${editingCourseCodeOriginal} successfully deleted.`;
+      if (typeof showToastNotification === 'function') showToastNotification(msg);
+      else if (typeof showToast === 'function') showToast(msg);
     }
 
     // Assign Task Modal Controller
     function openAssignTaskModal(courseTitle, facultyTitle) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        const msg = '⛔ Access Restricted: Task delegation is reserved for Program Directors.';
+        if (typeof showToastNotification === 'function') showToastNotification(msg);
+        else if (typeof showToast === 'function') showToast(msg);
+        return;
+      }
+
       const modal = document.getElementById('modalAssignTask');
       if (!modal) return;
 
@@ -4470,6 +5360,34 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     // Export global functions
+    window.FACULTY_ASSIGNED_COURSES = FACULTY_ASSIGNED_COURSES;
+    window.isCourseAssignedToFaculty = isCourseAssignedToFaculty;
+    window.renderFacultyDirectory = renderFacultyDirectory;
+    window.openAddFacultyModal = openAddFacultyModal;
+    window.closeAddFacultyModal = closeAddFacultyModal;
+    window.submitAddFaculty = submitAddFaculty;
+
+    window.openCourseEditModal = openCourseEditModal;
+    window.closeCourseEditModal = closeCourseEditModal;
+    window.calculateEditUnits = calculateEditUnits;
+    window.handleAutoCalcUnitsChange = handleAutoCalcUnitsChange;
+    window.updateGridColPlacement = updateGridColPlacement;
+    window.renderPrereqsChips = renderPrereqsChips;
+    window.removePrereqChip = removePrereqChip;
+    window.clearAllPrereqs = clearAllPrereqs;
+    window.addPrereqFromSelect = addPrereqFromSelect;
+    window.populatePrereqSelectOptions = populatePrereqSelectOptions;
+    window.renderCoreqTags = renderCoreqTags;
+    window.addCoreqTag = addCoreqTag;
+    window.removeCoreqTag = removeCoreqTag;
+    window.clearAllCoreqs = clearAllCoreqs;
+    window.handleCoreqInputKey = handleCoreqInputKey;
+    window.renderSoChips = renderSoChips;
+    window.cycleSoVal = cycleSoVal;
+    window.validateEditModalDag = validateEditModalDag;
+    window.saveCourseDataFromModal = saveCourseDataFromModal;
+    window.deleteCurrentCourse = deleteCurrentCourse;
+
     window.openAssignTaskModal = openAssignTaskModal;
     window.closeAssignTaskModal = closeAssignTaskModal;
     window.submitAssignTask = submitAssignTask;
