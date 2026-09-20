@@ -272,7 +272,7 @@
       { category: 'Programs', title: 'BS Computer Engineering (BSCpE)', subtitle: 'Program Director Workbench • Curriculum 2026-2030', icon: '🎓', action: () => window.selectProgram('BSCpE', 'homePdProgramView') },
 
       // Workbench Tools & Views
-      { category: 'Views', title: 'Curriculum DAG Flowchart Canvas', subtitle: '74-Course Directed Acyclic Graph • Swimlane Routing', icon: '🗺️', action: () => window.selectProgram('BSCpE', 'flowchart') },
+      { category: 'Views', title: 'Curriculum Prerequisite Flowchart', subtitle: '74-Course Sequence Matrix • Swimlane Routing', icon: '🗺️', action: () => window.selectProgram('BSCpE', 'flowchart') },
       { category: 'Views', title: 'Master Integrated Spreadsheet', subtitle: 'Course-by-Course Trimester Curriculum Matrix', icon: '📊', action: () => window.selectProgram('BSCpE', 'spreadsheet') },
       { category: 'Views', title: 'Syllabus Management System (SMS)', subtitle: 'Course Syllabi, ILOs, CDIO Standards, Rubrics', icon: '📋', action: () => window.selectProgram('BSCpE', 'syllabus') },
       { category: 'Views', title: 'Course Management System (CMS)', subtitle: 'Directory of Courses, Prerequisites, Corequisites', icon: '📘', action: () => window.selectProgram('BSCpE', 'course') },
@@ -289,8 +289,8 @@
       // Governance & Compliance
       { category: 'Governance', title: 'CHED CMO92 Compliance Validator', subtitle: 'Institutional Standards & Accreditation Verification', icon: '⚖️', action: () => window.navigateView('compliance') },
       { category: 'Governance', title: 'Cluster Governance & Delegation', subtitle: 'Role-Based Delegation & Course Cluster Heads', icon: '🛡️', action: () => window.navigateView('delegation') },
-      { category: 'Governance', title: 'Institutional Audit Trail', subtitle: 'Cryptographic Audit Log of Curriculum Changes', icon: '📜', action: () => window.navigateView('audit') },
-      { category: 'AI Copilot', title: 'Curriculum AI Copilot Console', subtitle: 'Gemini 2.0 Flash • Kahn Topological Cycles & ABET', icon: '✦', action: () => window.togglePersonalAgentDrawer() }
+      { category: 'Governance', title: 'Institutional Audit Trail', subtitle: 'Chronological Audit Log of Curriculum Changes', icon: '📜', action: () => window.navigateView('audit') },
+      { category: 'AI Copilot', title: 'Curriculum AI Copilot Console', subtitle: 'Gemini 2.0 Flash • Prerequisite & ABET Assistance', icon: '✦', action: () => window.togglePersonalAgentDrawer() }
     ];
 
     // Append Curriculum Courses from window.ALL_COURSES

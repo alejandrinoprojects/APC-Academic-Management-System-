@@ -142,7 +142,7 @@
         systemView: 'flowchart',
         subFolder: 'Governance & Compliance',
         subFolderView: 'compliance',
-        leaf: 'Immutable Audit Trail (SHA-256)',
+        leaf: 'System Audit Trail',
         leafIcon: '🔒',
         ext: '.sha256',
         parent: 'compliance'
@@ -266,7 +266,7 @@
           bPage.innerText = 'Course Management System';
         } else if (viewId === 'flowchart') {
           bSec.innerText = 'Dynamic Flowchart Canvas';
-          bPage.innerText = 'Interactive Directed Acyclic Graph (DAG)';
+          bPage.innerText = 'Interactive Prerequisite Flowchart';
         } else if (viewId === 'catalog') {
           bSec.innerText = 'Curriculum Workbench';
           bPage.innerText = 'Course Catalog (74 Courses)';
@@ -287,7 +287,7 @@
           bPage.innerText = 'Faculty Cluster Scoping';
         } else if (viewId === 'audit') {
           bSec.innerText = 'Security';
-          bPage.innerText = 'Append-Only Audit Trail (SHA-256)';
+          bPage.innerText = 'System Audit Trail';
         }
       }
       if (viewId === 'flowchart') {
@@ -2323,15 +2323,15 @@ Always provide clean, direct answers in conversational markdown without tool deb
         }
         if (visited === ALL_COURSES.length) {
           appendAgentChatMessage('agent', 'Audit Result',
-            `✅ **Curriculum Integrity Verified**\n\n` +
-            `The prerequisite structure is a valid **Directed Acyclic Graph (DAG)** with **0 circular dependencies**:\n` +
+            `✅ **Prerequisite Flow Verified**\n\n` +
+            `All courses follow a clear, sequential path with **0 prerequisite conflicts**:\n` +
             `• **Total Courses Evaluated:** ${ALL_COURSES.length}\n` +
-            `• **Prerequisite Linkages:** ${edgeCount} directed connections\n` +
-            `• **Result:** All courses maintain valid forward academic progression across all 12 trimesters.`
+            `• **Prerequisite Linkages:** ${edgeCount} connections\n` +
+            `• **Result:** All courses maintain valid forward progression across all 12 trimesters.`
           );
         } else {
           appendAgentChatMessage('agent', 'Audit Result',
-            `⚠️ **Circular Dependency Detected**\n\nOnly ${visited} of ${ALL_COURSES.length} courses could be ordered. A circular prerequisite loop exists.`
+            `⚠️ **Circular Prerequisite Detected**\n\nOnly ${visited} of ${ALL_COURSES.length} courses could be ordered. A circular prerequisite loop exists.`
           );
         }
         return;
@@ -2404,13 +2404,13 @@ Always provide clean, direct answers in conversational markdown without tool deb
         `I can help you explore the **APC Computer Engineering (BSCpE)** curriculum:\n\n` +
         `• **Course Offerings:** Ask *"what courses are in the first year first term"*, *"show 2nd year courses"*, or *"what is CPEDES1"*\n` +
         `• **Prerequisites:** Ask *"what are the prerequisites for ELECIRK"* or *"what comes after Calculus 1"*\n` +
-        `• **Audits & Units:** Ask *"audit DAG cycles"* or *"breakdown of credit units"*`
+        `• **Audits & Units:** Ask *"check prerequisites"* or *"breakdown of credit units"*`
       );
     }
 
     function agentTriggerAction(action) {
       if (action === 'audit_cycles') {
-        executeLocalAgentHeuristic('audit DAG cycles');
+        executeLocalAgentHeuristic('check prerequisites');
       } else if (action === 'audit_units') {
         executeLocalAgentHeuristic('breakdown of credit units');
       } else if (action === 'detect_coreqs') {
@@ -3656,7 +3656,18 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const ch = document.getElementById('suiteDropdownChevron');
         if (ch) ch.style.transform = 'rotate(0deg)';
       }
+      const moreCont = document.getElementById('sheetMoreDropdownContainer');
+      const moreDd = document.getElementById('sheetMoreDropdown');
+      if (moreCont && moreDd && !moreCont.contains(e.target)) {
+        moreDd.classList.add('hidden');
+      }
     });
+
+    // Spreadsheet More Options Dropdown Toggle
+    function toggleSheetMoreDropdown() {
+      const dd = document.getElementById('sheetMoreDropdown');
+      if (dd) dd.classList.toggle('hidden');
+    }
 
     // Rehydrate saved courses from localStorage on startup
     try {
@@ -5110,7 +5121,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (banner) {
           banner.className = 'p-3 rounded-none bg-rose-50 border-2 border-rose-400 text-rose-900 flex items-center justify-between shadow-xs';
           if (icon) icon.innerText = '⚠️';
-          if (title) title.innerText = 'Circular Prerequisite Cycle Detected!';
+          if (title) title.innerText = 'Circular Prerequisite Conflict Detected!';
           if (sub) sub.innerText = `Loop found: ${cyclePath.join(' → ')}. Resolve the loop before saving.`;
         }
         if (saveBtn) saveBtn.disabled = true;
@@ -5119,8 +5130,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (banner) {
           banner.className = 'p-3 rounded-none bg-emerald-50 border border-emerald-300 text-emerald-900 flex items-center justify-between shadow-xs';
           if (icon) icon.innerText = '✓';
-          if (title) title.innerText = 'DAG Topological Integrity Verified';
-          if (sub) sub.innerText = 'No circular prerequisites detected. Flowchart directed acyclic graph is clean.';
+          if (title) title.innerText = 'Prerequisites Verified';
+          if (sub) sub.innerText = 'No circular prerequisites detected. Flowchart progression is valid.';
         }
         if (saveBtn) saveBtn.disabled = false;
         return true;
@@ -5470,6 +5481,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.closeLoginModal = closeLoginModal;
     window.switchLoginAccount = switchLoginAccount;
     window.testMicrosoftGraphApi = testMicrosoftGraphApi;
+    window.toggleSheetMoreDropdown = toggleSheetMoreDropdown;
 
     // Initialize categories and legend on load
     try {

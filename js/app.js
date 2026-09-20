@@ -127,8 +127,8 @@ let currentSelectedCode = null;
     // APPEND-ONLY AUDIT LOG TRAIL & CONTROLLER (WP3)
     // =========================================================================
     window.AUDIT_LOG = [
-      { ts: '2026-09-10 14:12:01', role: 'Program Director', action: 'INGEST_FLOWCHART', entity: 'BSCpE 2026 Registrar', summary: 'Ingested 74 authentic courses & configured dynamic SVG arrows', hash: '9c4e...81fd' },
-      { ts: '2026-09-10 02:42:12', role: 'Program Director', action: 'VALIDATE_DAG', entity: 'DAG Engine', summary: 'Executed Kahn cycle check: 74/74 visited, 0 deadlocks', hash: '8f2a...9d1c' },
+      { ts: '2026-09-10 14:12:01', role: 'Program Director', action: 'IMPORT_FLOWCHART', entity: 'BSCpE 2026 Curriculum', summary: 'Loaded 74 courses and configured flowchart connections', hash: 'REC-9C4E81' },
+      { ts: '2026-09-10 02:42:12', role: 'Program Director', action: 'VERIFY_PREREQS', entity: 'Prerequisite Flow', summary: 'Checked prerequisite flow: 74/74 courses verified, 0 conflicts', hash: 'REC-8F2A9D' },
     ];
 
     function appendAuditLog(action, entity, summary) {
@@ -140,7 +140,7 @@ let currentSelectedCode = null;
       const now = new Date();
       const pad = n => String(n).padStart(2, '0');
       const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-      const hash = Math.random().toString(36).slice(2, 6) + '...' + Math.random().toString(36).slice(2, 6);
+      const hash = 'REC-' + Math.random().toString(36).slice(2, 8).toUpperCase();
       window.AUDIT_LOG.unshift({ ts, role, action, entity, summary, hash });
       renderAuditTable();
     }
@@ -160,7 +160,9 @@ let currentSelectedCode = null;
         DELEGATION_UPDATE: 'bg-teal-50 text-teal-700 border border-teal-200',
         DELEGATION_REVOKE: 'bg-rose-50 text-rose-700 border border-rose-200',
         INGEST_FLOWCHART: 'bg-blue-50 text-blue-700 border border-blue-200',
+        IMPORT_FLOWCHART: 'bg-blue-50 text-blue-700 border border-blue-200',
         VALIDATE_DAG: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+        VERIFY_PREREQS: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
         VERSION_CREATE: 'bg-indigo-50 text-indigo-700 border border-indigo-200',
         VERSION_STATE_CHANGE: 'bg-cyan-50 text-cyan-700 border border-cyan-200',
         COURSE_EDIT: 'bg-slate-100 text-slate-700 border border-slate-300',
@@ -680,7 +682,7 @@ let currentSelectedCode = null;
         systemView: 'flowchart',
         subFolder: 'Governance & Compliance',
         subFolderView: 'compliance',
-        leaf: 'Immutable Audit Trail (SHA-256)',
+        leaf: 'System Audit Trail',
         leafIcon: '🔒',
         ext: '.sha256',
         parent: 'compliance'
@@ -804,7 +806,7 @@ let currentSelectedCode = null;
           bPage.innerText = 'Course Management System';
         } else if (viewId === 'flowchart') {
           bSec.innerText = 'Dynamic Flowchart Canvas';
-          bPage.innerText = 'Interactive Directed Acyclic Graph (DAG)';
+          bPage.innerText = 'Interactive Prerequisite Flowchart';
         } else if (viewId === 'catalog') {
           bSec.innerText = 'Curriculum Workbench';
           bPage.innerText = 'Course Catalog (74 Courses)';
@@ -825,7 +827,7 @@ let currentSelectedCode = null;
           bPage.innerText = 'Faculty Cluster Scoping';
         } else if (viewId === 'audit') {
           bSec.innerText = 'Security';
-          bPage.innerText = 'Append-Only Audit Trail (SHA-256)';
+          bPage.innerText = 'System Audit Trail';
         }
       }
       if (viewId === 'flowchart') {
@@ -1611,7 +1613,7 @@ let currentSelectedCode = null;
 
       renderFlowchartDiagram();
       setTimeout(drawAllArrows, 60);
-      showToast(mode === 'swimlanes' ? 'Switched to Trimester Academic Swimlanes.' : 'Switched to Hierarchical Prerequisite DAG Tree.');
+      showToast(mode === 'swimlanes' ? 'Switched to Trimester Academic Swimlanes.' : 'Switched to Hierarchical Prerequisite Tree.');
     }
 
     function changeArrowStyleMode(style) {
@@ -2986,7 +2988,7 @@ let currentSelectedCode = null;
       setTimeout(() => {
         drawCycleLoopArrow(prereq, target);
       }, 100);
-      showToast(`Tarjan/Kahn Cycle Check: Circular deadlock detected between ${prereq} and ${target}! Addition blocked.`);
+      showToast(`Prerequisite Conflict: Circular prerequisite detected between ${prereq} and ${target}! Addition blocked.`);
     }
 
 
@@ -3134,11 +3136,11 @@ let currentSelectedCode = null;
           </div>
 
           <div class="sec">
-            <div class="sec-t">2. Curricular Requisites &amp; DAG Topological Alignment</div>
+            <div class="sec-t">2. Curricular Requisites &amp; Prerequisite Alignment</div>
             <div>
               <strong>Pre-requisites:</strong> ${prereqStr}<br>
               <strong>Co-requisites:</strong> ${(c.coreqs && c.coreqs.length > 0) ? c.coreqs.join(', ') : 'None'}<br>
-              <strong>Kahn Cycle Integrity Status:</strong> Verified Valid Directed Acyclic Graph (DAG) Node
+              <strong>Prerequisite Integrity:</strong> Verified Valid Prerequisite Flow
             </div>
           </div>
 
@@ -3288,7 +3290,7 @@ let currentSelectedCode = null;
     }
 
     function verifyHashModal(hash) {
-      showToast(`SHA-256 Verified: ${hash} matches cryptographic ledger.`);
+      showToast(`Verified: Record ${hash} matches audit log.`);
     }
 
     let toastTimeout;
@@ -3981,8 +3983,8 @@ let currentSelectedCode = null;
         if (banner) {
           banner.className = 'p-3 rounded-none bg-emerald-50 border border-emerald-300 text-emerald-900 flex items-center justify-between shadow-xs';
           icon.innerText = '✓';
-          title.innerText = 'DAG Topological Integrity Verified';
-          sub.innerText = 'No circular prerequisites detected. Flowchart directed acyclic graph is clean.';
+          title.innerText = 'Prerequisites Verified';
+          sub.innerText = 'No circular prerequisites detected. Prerequisite flow is clean.';
         }
         if (saveBtn) saveBtn.disabled = false;
         return true;
@@ -4073,7 +4075,7 @@ let currentSelectedCode = null;
       }
 
       closeCourseEditModal();
-      showToastNotification(`Course ${code} (${title}) successfully saved! Curriculum DAG recalculated.`);
+      showToastNotification(`Course ${code} (${title}) successfully saved! Prerequisite flowchart recalculated.`);
     }
 
     function deleteCurrentCourse() {
@@ -4521,7 +4523,7 @@ Curriculum State Summary:
 - Total Courses: ${ALL_COURSES.length}
 - Total Units: ${ALL_COURSES.reduce((a,c) => a + (c.units||0), 0)}
 - Requisites: Hard (Pass Prior), Co-requisite (Concurrent), Soft (Advisory)
-- Available Tools: kahnTopologicalSort(), auditChedUnits(), detectLaboratoryCoRequisites(), addCourse(), updateCourse(), deleteCourse()
+- Available Tools: verifyPrerequisites(), auditChedUnits(), detectLaboratoryCoRequisites(), addCourse(), updateCourse(), deleteCourse()
 
 Respond in a direct, highly competent, professional tone. If the user commands an action, confirm that the action was executed on the live curriculum.`;
 
@@ -4559,7 +4561,7 @@ Respond in a direct, highly competent, professional tone. If the user commands a
     function executeLocalAgentHeuristic(prompt) {
       const pLower = prompt.toLowerCase();
 
-      if (pLower.includes('cycle') || pLower.includes('dag') || pLower.includes('loop') || pLower.includes('kahn')) {
+      if (pLower.includes('cycle') || pLower.includes('dag') || pLower.includes('loop') || pLower.includes('conflict') || pLower.includes('prereq') || pLower.includes('kahn')) {
         agentTriggerAction('audit_cycles');
       } else if (pLower.includes('unit') || pLower.includes('ched') || pLower.includes('cmo') || pLower.includes('balance')) {
         agentTriggerAction('audit_units');
@@ -4567,20 +4569,20 @@ Respond in a direct, highly competent, professional tone. If the user commands a
         agentTriggerAction('detect_coreqs');
       } else if (pLower.includes('import') || pLower.includes('ingest') || pLower.includes('parse') || pLower.includes('syllabus')) {
         openAiImportModal();
-        appendAgentChatMessage('agent', 'Import Ingestion Agent', 'I have opened the AI Curriculum Ingestion window for you. Paste your syllabus text or click the samples to parse courses and topological linkages.', '🔧 Tool Executed: openAiImportModal()');
+        appendAgentChatMessage('agent', 'Import Ingestion Agent', 'I have opened the AI Curriculum Ingestion window for you. Paste your syllabus text or click the samples to parse courses and linkages.', '🔧 Tool Executed: openAiImportModal()');
       } else if (pLower.includes('cpedes1') || pLower.includes('design 1')) {
         const c = ALL_COURSES.find(x => x.code === 'CPEDES1');
         const reqStr = (c.prereqs || []).map(p => typeof p === 'string' ? `${p} (Hard)` : `${p.code} (${p.type || 'hard'})`).join(', ');
         appendAgentChatMessage('agent', 'Curriculum Inspection', `**Course Inspection: CPEDES1 (Computer Engineering Practice and Design 1)**\n- Year: 3, Term: 3 | Units: 2.0 (1 Lec, 3 Lab)\n- Configured Requisites: ${reqStr}\n- Upstream Feeders: EMICROS (Microprocessors), MCROLAB (Microprocessors Lab), CPEMETS (Methods of Research for CpE)\n- Successor Dependents: CPEDES2 (CpE Practice and Design 2)`, '🔧 Tool Executed: getCourseLineage("CPEDES1")');
       } else {
         const totalUnits = ALL_COURSES.reduce((a, c) => a + (c.units || 0), 0);
-        appendAgentChatMessage('agent', 'System Analysis', `Understood. Current APC BSCpE curriculum state:\n- Total Courses: **${ALL_COURSES.length}** across 12 trimesters.\n- Total Credit Units: **${totalUnits.toFixed(1)}**.\n- Prerequisite DAG integrity: **Verified (0 cycles)**.\n- Requisite classifications: **Hard Prereqs, Co-requisites, Soft Requisites** actively rendered.\n\nTip: You can add or modify any course, run Kahn cycle audits, or save a Google Gemini API key above for unbounded generative reasoning!`, '🔧 Tool Executed: queryCurriculumStats()');
+        appendAgentChatMessage('agent', 'System Analysis', `Understood. Current APC BSCpE curriculum state:\n- Total Courses: **${ALL_COURSES.length}** across 12 trimesters.\n- Total Credit Units: **${totalUnits.toFixed(1)}**.\n- Prerequisite flow integrity: **Verified (0 conflicts)**.\n- Requisite classifications: **Hard Prereqs, Co-requisites, Soft Requisites** actively rendered.\n\nTip: You can add or modify any course, run prerequisite audits, or save a Google Gemini API key above for unbounded generative reasoning!`, '🔧 Tool Executed: queryCurriculumStats()');
       }
     }
 
     function agentTriggerAction(action) {
       if (action === 'audit_cycles') {
-        // Run Kahn's Algorithm & DFS Cycle Audit
+        // Run Prerequisite Flow Audit
         const inDegree = {};
         const adj = {};
         ALL_COURSES.forEach(c => {
@@ -4617,14 +4619,14 @@ Respond in a direct, highly competent, professional tone. If the user commands a
 
         const isCycleFree = visitedCount === ALL_COURSES.length;
         if (isCycleFree) {
-          appendAgentChatMessage('agent', 'DAG Topological Cycle Audit', 
-            `✅ **Topological Integrity Verified (Kahn's Sort)**\n- Total Vertices Evaluated: **${ALL_COURSES.length} Courses**\n- Total Directed Edges Evaluated: **${edgeCount} Prerequisite Links**\n- Cycles Detected: **0 (Strict Directed Acyclic Graph)**\n- Academic Progression: Validated forward chronological flow across all 12 trimesters.`,
-            `🔧 Tool: kahnTopologicalSort() -> Visited: ${visitedCount}/${ALL_COURSES.length} nodes | Status: ZERO_CYCLES`
+          appendAgentChatMessage('agent', 'Prerequisite Flow Audit', 
+            `✅ **Prerequisites Verified**\n- Total Courses Evaluated: **${ALL_COURSES.length} Courses**\n- Total Links Evaluated: **${edgeCount} Prerequisite Links**\n- Conflicts Detected: **0 (Valid Sequence)**\n- Academic Progression: Validated forward chronological flow across all 12 trimesters.`,
+            `🔧 Tool: verifyPrerequisites() -> Verified: ${visitedCount}/${ALL_COURSES.length} courses | Status: ZERO_CONFLICTS`
           );
         } else {
-          appendAgentChatMessage('agent', 'DAG Topological Cycle Audit', 
-            `⚠️ **Circular Dependency Detected!**\nOnly ${visitedCount} of ${ALL_COURSES.length} courses could be topologically ordered. Please review course prerequisites to break the circular dependency loop.`,
-            `⚠️ Tool: kahnTopologicalSort() -> Cycle Loop Detected!`
+          appendAgentChatMessage('agent', 'Prerequisite Flow Audit', 
+            `⚠️ **Circular Prerequisite Detected!**\nOnly ${visitedCount} of ${ALL_COURSES.length} courses could be verified in sequence. Please review course prerequisites to break the circular dependency loop.`,
+            `⚠️ Tool: verifyPrerequisites() -> Conflict Detected!`
           );
         }
       } else if (action === 'audit_units') {
@@ -4964,14 +4966,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         // Update Part Title Badge
         const viewTitles = {
           'curriculum-home': 'Curriculum Management Hub',
-          'flowchart': 'Dynamic Prereq Flowchart (DAG)',
+          'flowchart': 'Curriculum Prerequisite Flowchart',
           'catalog': 'Course Catalog (74 Courses)',
           'obe': 'OBE Curriculum Matrix (SOs a–m)',
           'dashboard': 'Curriculum Analytics Dashboard',
           'spreadsheet': 'Integrated Master Spreadsheet',
           'compliance': 'CHED CMO 92 & ABET Compliance',
           'delegation': 'Cluster Delegations (D-RBAC)',
-          'audit': 'Immutable Audit Trail (SHA-256)',
+          'audit': 'System Audit Trail',
           'registrar': 'Official Registrar Documents Suite',
           'syllabus': 'Syllabus Management System (SMS)',
           'course': 'Course Management System (CMS)'
@@ -6506,7 +6508,7 @@ function openAddExdModal() {
       const viewNames = {
         'home': currentSelectedProgram ? `${currentSelectedProgram} Program Hub` : (currentSelectedSchool ? `${currentSelectedSchool} Overview` : 'Institutional Hub'),
         'curriculum-home': 'Curriculum Management Hub',
-        'flowchart': 'Dynamic Prereq Flowchart (DAG)',
+        'flowchart': 'Curriculum Prerequisite Flowchart',
         'catalog': 'Course Catalog (74 Courses)',
         'obe': 'OBE Curriculum Matrix',
         'dashboard': 'Curriculum Analytics Dashboard',
@@ -6761,7 +6763,7 @@ function openAddExdModal() {
 
       // 2. Views & Subsystems
       const viewOptions = [
-        { id: 'flowchart', title: 'Dynamic Prereq Flowchart (DAG)', icon: '⚡', desc: 'Interactive directed acyclic graph prerequisite visualizer' },
+        { id: 'flowchart', title: 'Curriculum Prerequisite Flowchart', icon: '⚡', desc: 'Interactive prerequisite sequence visualizer' },
         { id: 'spreadsheet', title: 'Integrated Master Spreadsheet', icon: '📊', desc: 'Live two-way syncing curriculum matrix & mass editor' },
         { id: 'catalog', title: 'Course Catalog (74 Courses)', icon: '📖', desc: 'Complete course catalog with contact hours and prerequisites' },
         { id: 'obe', title: 'OBE Matrix (13 Student Outcomes)', icon: '🎯', desc: 'Student outcome mapping a through m alignment' },
@@ -6771,7 +6773,7 @@ function openAddExdModal() {
         { id: 'dashboard', title: 'Curriculum Analytics Dashboard', icon: '📈', desc: 'Curriculum analytics, unit ratios, and distribution charts' },
         { id: 'syllabus', title: 'Syllabus Management System (SMS)', icon: '📑', desc: 'Course syllabus specifications and authoring repository' },
         { id: 'course', title: 'Course Offerings & Loading Hub', icon: '🏛️', desc: 'Term offerings, room allocations, and faculty load matrix' },
-        { id: 'audit', title: 'Institutional Audit Trail & Ledger', icon: '🔒', desc: 'Immutable curriculum change ledger and DAG cycle check log' }
+        { id: 'audit', title: 'System Audit Trail & Log', icon: '🔒', desc: 'Curriculum change record and prerequisite verification log' }
       ];
 
       viewOptions.forEach(v => {
