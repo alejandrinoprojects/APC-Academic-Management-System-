@@ -258,14 +258,19 @@
    * Collect all searchable destinations across Schools, Programs, Views, and Courses.
    */
   function buildSearchCatalog() {
+    const _role = (typeof window.currentActiveRole !== 'undefined' ? window.currentActiveRole : null) || 'admin';
+    const isAdmin  = (_role === 'admin' || _role === 'a');
+    const isExdUp  = isAdmin || (_role === 'exd' || _role === 'x');
+    const isPdDown = (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f');
+
     const catalog = [
-      // Academic Schools
-      { category: 'Schools', title: 'Institutional Schools Overview', subtitle: 'Tier 4 Governance • All Academic Schools', icon: '🏛️', action: () => window.renderAdminOverview() },
-      { category: 'Schools', title: 'School of Engineering (SoE)', subtitle: 'Tier 3 Executive Directorate • BSCpE, BSCE, BSECE', icon: '🏫', action: () => window.goToSchoolExd('soe') },
-      { category: 'Schools', title: 'School of Computing & IT (SoCIT)', subtitle: 'Tier 3 Executive Directorate • BSCS, BSIT', icon: '💻', action: () => window.goToSchoolExd('socit') },
-      { category: 'Schools', title: 'School of Multimedia Arts (SoMA)', subtitle: 'Tier 3 Executive Directorate • BMMA, BSPsych', icon: '🎨', action: () => window.goToSchoolExd('soma') },
-      { category: 'Schools', title: 'School of Management (SoM)', subtitle: 'Tier 3 Executive Directorate • BSBA, BSA', icon: '📊', action: () => window.goToSchoolExd('som') },
-      { category: 'Schools', title: 'School of Architecture (SoA)', subtitle: 'Tier 3 Executive Directorate • BSArch', icon: '📐', action: () => window.goToSchoolExd('soa') },
+      // Academic Schools — filtered by role
+      ...(isAdmin ? [{ category: 'Schools', title: 'Institutional Schools Overview', subtitle: 'Tier 4 Governance • All Academic Schools', icon: '🏛️', action: () => window.renderAdminOverview() }] : []),
+      ...(isExdUp ? [{ category: 'Schools', title: 'School of Engineering (SoE)', subtitle: 'Tier 3 Executive Directorate • BSCpE, BSCE, BSECE', icon: '🏫', action: () => window.goToSchoolExd('soe') }] : []),
+      ...(isAdmin ? [{ category: 'Schools', title: 'School of Computing & IT (SoCIT)', subtitle: 'Tier 3 Executive Directorate • BSCS, BSIT', icon: '💻', action: () => window.goToSchoolExd('socit') }] : []),
+      ...(isAdmin ? [{ category: 'Schools', title: 'School of Multimedia Arts (SoMA)', subtitle: 'Tier 3 Executive Directorate • BMMA, BSPsych', icon: '🎨', action: () => window.goToSchoolExd('soma') }] : []),
+      ...(isAdmin ? [{ category: 'Schools', title: 'School of Management (SoM)', subtitle: 'Tier 3 Executive Directorate • BSBA, BSA', icon: '📊', action: () => window.goToSchoolExd('som') }] : []),
+      ...(isAdmin ? [{ category: 'Schools', title: 'School of Architecture (SoA)', subtitle: 'Tier 3 Executive Directorate • BSArch', icon: '📐', action: () => window.goToSchoolExd('soa') }] : []),
 
       // Academic Degree Programs
       { category: 'Programs', title: 'BS Computer Engineering (BSCpE)', subtitle: 'Program Director Workbench • Curriculum 2026-2030', icon: '🎓', action: () => window.selectProgram('BSCpE', 'homePdProgramView') },

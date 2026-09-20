@@ -506,6 +506,24 @@
     });
 
     function renderAdminOverview() {
+      // ── RBAC GUARD: Tier 4 (System Administrator) ONLY ──────────────────────
+      const _role = currentActiveRole || 'admin';
+      if (_role !== 'admin' && _role !== 'a') {
+        if (typeof showToast === 'function') {
+          showToast('⛔ Access Restricted: Institutional Overview requires System Administrator (Tier 4) authority.');
+        }
+        // Redirect to authorized homepage
+        if (_role === 'exd' || _role === 'x') {
+          renderSchoolOverview('soe');
+        } else if (_role === 'pd' || _role === 'p') {
+          renderProgramOverview(currentSelectedProgram || 'BSCpE');
+        } else {
+          renderFacultyOverview();
+        }
+        return;
+      }
+      // ── END RBAC GUARD ───────────────────────────────────────────────────────
+
       navigateView('home');
       deselectSchool();
 
@@ -753,6 +771,30 @@
 
     function goToSchoolExd(schoolId) {
       const normId = String(schoolId).toLowerCase();
+
+      // ── RBAC GUARD: Tier 3 (Executive Director) or above ONLY ───────────────
+      const _role = currentActiveRole || 'admin';
+      if (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f') {
+        if (typeof showToast === 'function') {
+          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director (Tier 3) authority.');
+        }
+        // Expand the school folder accordion so they can reach their program
+        const soeCont = document.getElementById('soeFolderCont');
+        const soeChev = document.getElementById('soeFolderChev');
+        if (soeCont && soeCont.classList.contains('hidden')) {
+          soeCont.classList.remove('hidden');
+          if (soeChev) soeChev.classList.add('rotate-90');
+        }
+        return;
+      }
+      if ((_role === 'exd' || _role === 'x') && normId !== 'soe') {
+        if (typeof showToast === 'function') {
+          showToast('⛔ Access Restricted: You only have Executive Director authority over the School of Engineering.');
+        }
+        return;
+      }
+      // ── END RBAC GUARD ───────────────────────────────────────────────────────
+
       renderSchoolOverview(normId);
 
       const school = ACADEMIC_SCHOOLS_DATA.find(s => s.id.toLowerCase() === normId) || { name: schoolId, bannerTitle: 'SCHOOL OF' };
@@ -778,6 +820,17 @@
     }
 
     function renderSchoolOverview(schoolKey = 'soe') {
+      // ── RBAC GUARD: Tier 3 (Executive Director) or above ONLY ───────────────
+      const _role = currentActiveRole || 'admin';
+      if (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f') {
+        if (typeof showToast === 'function') {
+          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director (Tier 3) authority.');
+        }
+        renderProgramOverview(currentSelectedProgram || 'BSCpE');
+        return;
+      }
+      // ── END RBAC GUARD ───────────────────────────────────────────────────────
+
       navigateView('home');
       const normKey = String(schoolKey).toLowerCase();
       currentSelectedSchool = normKey;
@@ -835,6 +888,15 @@
       }
 
       // Panoramic Banner: Clean Geometric SVG Vector Theme (Zero Photo Banners)
+      // ── "All Academic Schools" button: only rendered for admin (Tier 4) ──────
+      const isAdmin = (_role === 'admin' || _role === 'a');
+      const allSchoolsBtnHtml = isAdmin
+        ? `<button type="button" id="exdReturnToAdminBtn" onclick="renderAdminOverview()" class="px-3.5 py-2 bg-[#10151E]/90 hover:bg-[#10151E] border border-amber-500/60 hover:border-amber-400 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md group">
+              <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
+              <span>All Academic Schools</span>
+            </button>`
+        : '';
+
       const rightBanner = document.getElementById('exdRightBannerBox');
       if (rightBanner) {
         rightBanner.innerHTML = `
@@ -859,15 +921,13 @@
             <p class="text-xs text-slate-300 font-medium">Executive Director: ${school.director || 'Academic Leadership'} &bull; Operational Baseline</p>
           </div>
           <div class="relative z-10 flex items-center space-x-3 pr-6">
-            <button type="button" onclick="switchRole('admin')" class="px-3.5 py-2 bg-[#10151E]/90 hover:bg-[#10151E] border border-amber-500/60 hover:border-amber-400 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md group">
-              <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
-              <span>All Academic Schools</span>
-            </button>
+            ${allSchoolsBtnHtml}
             <div class="hidden sm:flex flex-col items-center justify-center px-2.5 py-1.5 bg-black/60 border border-white/10 backdrop-blur-xs">
               <span class="text-[9px] font-mono text-amber-400 font-bold uppercase tracking-wider">Tier 3 EXD</span>
             </div>
           </div>`;
       }
+    }
 
     function getProgramBannerConfig(progCode, progName, schoolColor = '#FF6B00') {
       const code = String(progCode || '').trim();
@@ -1257,6 +1317,9 @@
       if (topPill) topPill.innerText = `Schools > ${progInfo.schoolShort} > ${progCode} > PD Workbench`;
 
       syncSidebarToCurrentPath(progInfo.schoolId, progCode, 'workbench');
+
+      // Apply RBAC return-button visibility each time the workbench renders
+      if (typeof updateRoleGatedButtons === 'function') updateRoleGatedButtons(currentActiveRole);
     }
 
     function renderFacultyOverview() {
@@ -1557,7 +1620,82 @@
 
       // Apply role-based sidebar folder visibility
       updateSidebarHierarchy(role);
+      // Apply role-based return-button visibility
+      updateRoleGatedButtons(role);
     }
+
+    // =========================================================================
+    // RBAC-AWARE RETURN-BUTTON VISIBILITY
+    // Controls visibility of tier-escalation buttons based on the active role.
+    // =========================================================================
+    function updateRoleGatedButtons(role) {
+      const _r = role || currentActiveRole || 'admin';
+      const isAdmin  = (_r === 'admin' || _r === 'a');
+      const isExdUp  = isAdmin || (_r === 'exd' || _r === 'x');  // exd or admin
+      const isPdDown = (_r === 'pd' || _r === 'p' || _r === 'faculty' || _r === 'f');
+
+      // "← School Overview" buttons in PD Workbench header and Curriculum Home header:
+      // visible only for exd/admin (i.e., an elevated user is viewing a PD workbench)
+      ['pdReturnToSchoolBtn', 'curricHomeReturnToSchoolBtn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (isExdUp) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+
+      // "← All Academic Schools" button in School Overview header:
+      // visible only for admin (the dynamic one is rebuilt each time renderSchoolOverview runs)
+      const exdAdminBtn = document.getElementById('exdReturnToAdminBtn');
+      if (exdAdminBtn) {
+        if (isAdmin) exdAdminBtn.classList.remove('hidden');
+        else exdAdminBtn.classList.add('hidden');
+      }
+    }
+    window.updateRoleGatedButtons = updateRoleGatedButtons;
+
+    // =========================================================================
+    // RBAC-AWARE SIDEBAR CLICK HANDLERS
+    // Replace the direct onclick="renderAdminOverview()" / "goToSchoolExd()"
+    // on sidebar buttons so that pd/faculty can still expand the accordion tree
+    // to reach their degree program WITHOUT navigating to restricted views.
+    // =========================================================================
+    function handleSidebarSchoolsRootClick(contId, chevId) {
+      // Always toggle the folder accordion
+      if (typeof toggleFolderAccordion === 'function') {
+        toggleFolderAccordion(contId, chevId);
+      }
+      // Only navigate to Institutional Overview if admin
+      const _role = currentActiveRole || 'admin';
+      if (_role === 'admin' || _role === 'a') {
+        renderAdminOverview();
+      } else if (_role !== 'exd' && _role !== 'x') {
+        // pd / faculty: just expand, toast is optional (silent expand is cleaner)
+      }
+    }
+    window.handleSidebarSchoolsRootClick = handleSidebarSchoolsRootClick;
+
+    function handleSidebarSchoolClick(schoolId, contId, chevId) {
+      // Always toggle the school sub-folder accordion
+      if (typeof toggleFolderAccordion === 'function') {
+        toggleFolderAccordion(contId, chevId);
+      }
+      const _role = currentActiveRole || 'admin';
+      if (_role === 'pd' || _role === 'p' || _role === 'faculty' || _role === 'f') {
+        if (typeof showToast === 'function') {
+          showToast('⛔ Access Restricted: School Overview is reserved for Executive Director (Tier 3) authority.');
+        }
+        return; // accordion expanded above; do NOT navigate to school overview
+      }
+      if ((_role === 'exd' || _role === 'x') && String(schoolId).toLowerCase() !== 'soe') {
+        if (typeof showToast === 'function') {
+          showToast('⛔ Access Restricted: You only have Executive Director authority over the School of Engineering.');
+        }
+        return;
+      }
+      // admin / authorized exd: navigate to school overview
+      goToSchoolExd(schoolId);
+    }
+    window.handleSidebarSchoolClick = handleSidebarSchoolClick;
 
     function handleMicrosoftSSOLogin(roleKey = 'admin') {
       const screen = document.getElementById('loginLandingScreen');
