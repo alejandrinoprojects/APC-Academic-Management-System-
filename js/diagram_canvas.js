@@ -385,13 +385,15 @@
       const el = document.getElementById(`node-${c.code}`);
       if (el) {
         const rect = el.getBoundingClientRect();
-        const colIdx = (c.year - 1) * 3 + (c.term || 1);
+        const colIdx = c.col || ((c.year - 1) * 3 + (c.term || 1));
         portMap[c.code] = {
           code:    c.code,
           col:     colIdx,
           row:     c.row || 1,
           leftX:   rect.left  - innerRect.left,
           rightX:  rect.right - innerRect.left,
+          topY:    rect.top    - innerRect.top,
+          botY:    rect.bottom - innerRect.top,
           midY:    rect.top + (rect.height / 2) - innerRect.top,
           prereqs: Array.isArray(c.prereqs) ? c.prereqs : []
         };
@@ -448,44 +450,37 @@
     //
     // Strategy:
     //   colDiff = 0  → same-column co-req: small right loop
-    //   colDiff = 1  → adjacent column: tight bezier through the single gutter
-    //   colDiff > 1  → multi-column: Z-path routing through the gutter that
-    //                   sits immediately LEFT of the destination column so the
-    //                   vertical segment never crosses any intermediate card.
-    //
-    // Z-path anatomy (forward arrow, dx > 0):
-    //   M x1 y1
-    //   H gx          ← horizontal to gutter (stays at y1, within source card row)
-    //   V y2          ← vertical drop/rise inside the gutter column gap
-    //   H x2          ← horizontal into dest card (stays at y2)
-    //   (arrowhead painted at x2 y2)
-    //
-    // Corner rounding uses a tiny cubic-bezier elbow at each turn.
+    //   colDiff = 1  → adjacent column: 4-waypoint Z through single gutter
+    //   colDiff > 1  → multi-column: 6-waypoint path ABOVE the row
+    //                  (exits gutter after src → rises above cards → enters gutter before tgt)
+    //   colDiff < 0  → backward arrow: smooth arc above
 
-    const R = 6; // corner rounding radius (px)
+    const R = 6;         // corner rounding radius (px)
+    const ABOVE_LANE = 12; // px above the topmost card top edge in the arc
 
-    function elbowPath(x1, y1, gx, y2, x2) {
-      // Two 90° turns, each rounded with R px cubic-bezier elbow
-      const s1y = y1 + Math.sign(y2 - y1) * R; // start of first vertical
-      const e1y = y2 - Math.sign(y2 - y1) * R; // end of first vertical
-      // If distance is too short to round, fall back to straight Z
-      if (Math.abs(y2 - y1) < R * 2 + 1 || Math.abs(gx - x1) < R + 1 || Math.abs(x2 - gx) < R + 1) {
-        return `M ${x1.toFixed(1)} ${y1.toFixed(1)} H ${gx.toFixed(1)} V ${y2.toFixed(1)} H ${x2.toFixed(1)}`;
+    // Rounded-corner helper: approaching corner (cx,cy) from (px,py), departing to (nx,ny)
+    function roundedCorner(px, py, cx, cy, nx, ny) {
+      const d1 = Math.hypot(px - cx, py - cy);
+      const d2 = Math.hypot(nx - cx, ny - cy);
+      const rr = Math.min(R, d1 * 0.45, d2 * 0.45);
+      if (rr < 0.5) return `L ${cx.toFixed(1)} ${cy.toFixed(1)}`;
+      const a1x = cx + (px - cx) / d1 * rr, a1y = cy + (py - cy) / d1 * rr;
+      const a2x = cx + (nx - cx) / d2 * rr, a2y = cy + (ny - cy) / d2 * rr;
+      return `L ${a1x.toFixed(1)} ${a1y.toFixed(1)} Q ${cx.toFixed(1)} ${cy.toFixed(1)} ${a2x.toFixed(1)} ${a2y.toFixed(1)}`;
+    }
+
+    // Build SVG path string from an array of {x,y} waypoints with rounded corners
+    function orthoPath(pts) {
+      if (pts.length < 2) return '';
+      let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+      for (let i = 1; i < pts.length; i++) {
+        if (i < pts.length - 1) {
+          d += ' ' + roundedCorner(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y, pts[i+1].x, pts[i+1].y);
+        } else {
+          d += ` L ${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)}`;
+        }
       }
-      // Elbow 1: horizontal→vertical at (gx, y1)
-      const gx1a = gx - Math.sign(gx - x1) * R;  // approach horizontal
-      const gx1b = gx;                              // depart = corner X
-      // Elbow 2: vertical→horizontal at (gx, y2)
-      const gx2a = gx;
-      const gx2b = gx + Math.sign(x2 - gx) * R;  // depart horizontal
-      return [
-        `M ${x1.toFixed(1)} ${y1.toFixed(1)}`,
-        `H ${gx1a.toFixed(1)}`,
-        `C ${gx.toFixed(1)} ${y1.toFixed(1)}, ${gx.toFixed(1)} ${y1.toFixed(1)}, ${gx.toFixed(1)} ${s1y.toFixed(1)}`,
-        `V ${e1y.toFixed(1)}`,
-        `C ${gx2a.toFixed(1)} ${y2.toFixed(1)}, ${gx2a.toFixed(1)} ${y2.toFixed(1)}, ${gx2b.toFixed(1)} ${y2.toFixed(1)}`,
-        `H ${x2.toFixed(1)}`
-      ].join(' ');
+      return d;
     }
 
     edges.forEach(({ src, tgt, reqType }) => {
@@ -503,29 +498,44 @@
         pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${loopX.toFixed(1)} ${y1.toFixed(1)}, ${loopX.toFixed(1)} ${y2.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
 
       } else if (colDiff === 1) {
-        // Adjacent column: route through the single gutter between them
+        // Adjacent column: 4-waypoint Z through the single gutter
         const gx = gutterX[tgt.col] !== undefined ? gutterX[tgt.col] : (x1 + x2) / 2;
         if (Math.abs(y2 - y1) < 2) {
-          // Practically same row → direct horizontal
           pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
         } else {
-          pathData = elbowPath(x1, y1, gx, y2, x2);
+          pathData = orthoPath([
+            { x: x1, y: y1 },
+            { x: gx, y: y1 },
+            { x: gx, y: y2 },
+            { x: x2, y: y2 },
+          ]);
         }
 
       } else if (colDiff > 1) {
-        // Multi-column forward jump:
-        // Route vertical segment through gutter immediately LEFT of dest column.
-        // That gutter is between (tgt.col - 1) and tgt.col — never any card there.
-        const gx = gutterX[tgt.col] !== undefined
+        // Multi-column forward jump: 6-waypoint path that goes ABOVE the row.
+        // gx1 = gutter immediately AFTER source column (safe exit from src col)
+        const gx1 = gutterX[src.col + 1] !== undefined
+          ? gutterX[src.col + 1]
+          : src.rightX + 6;
+        // gx2 = gutter immediately BEFORE dest column (safe entry to tgt col)
+        const gx2 = gutterX[tgt.col] !== undefined
           ? gutterX[tgt.col]
-          : x2 - 8; // fallback: just before dest left edge
-        pathData = elbowPath(x1, y1, gx, y2, x2);
+          : tgt.leftX - 6;
+        // laneY: above BOTH card tops — no card is ever crossed horizontally
+        const laneY = Math.min(src.topY, tgt.topY) - ABOVE_LANE;
+
+        pathData = orthoPath([
+          { x: x1,  y: y1    },   // source right port
+          { x: gx1, y: y1    },   // move right to gutter after src col
+          { x: gx1, y: laneY },   // rise above the row
+          { x: gx2, y: laneY },   // travel right in open lane (above all cards)
+          { x: gx2, y: y2    },   // descend to dest row
+          { x: x2,  y: y2    },   // enter dest left port
+        ]);
 
       } else {
-        // Backward arrow (right→left): route above the grid rows via top margin
-        // Use a looping arc above both cards to avoid covering forward arrows
+        // Backward arrow (right→left): smooth arc above both cards
         const topY = Math.min(y1, y2) - 28;
-        const midX = (x1 + x2) / 2;
         pathData = `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${x1.toFixed(1)} ${topY.toFixed(1)}, ${x2.toFixed(1)} ${topY.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
       }
 
@@ -541,12 +551,12 @@
 
       if (reqType === 'co') {
         path.setAttribute('stroke', '#d97706');
-        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke-width', '2');
         path.setAttribute('stroke-dasharray', '5,4');
         path.setAttribute('marker-end', 'url(#diag-arrow-coreq)');
       } else if (reqType === 'soft') {
         path.setAttribute('stroke', '#7c3aed');
-        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke-width', '2');
         path.setAttribute('stroke-dasharray', '3,3');
         path.setAttribute('marker-end', 'url(#diag-arrow-soft)');
       } else {
@@ -556,7 +566,7 @@
         path.setAttribute('marker-end', 'url(#diag-arrow-default)');
       }
 
-      path.style.opacity = showAllArrowsEnabled ? '0.45' : '0';
+      path.style.opacity = showAllArrowsEnabled ? '0.60' : '0';
       svgGroup.appendChild(path);
     });
 
