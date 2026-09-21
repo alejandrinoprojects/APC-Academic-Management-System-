@@ -75,65 +75,65 @@
     <!-- ========================================================================= -->
   <!-- APC RAMS INSTITUTIONAL LOGIN & IDENTITY SCREEN (Microsoft Entra ID)       -->
   <!-- ========================================================================= -->
-  <div id="loginLandingScreen" class="fixed inset-0 z-50 bg-[#001731] flex flex-col justify-between overflow-hidden no-print select-none" style="background-image: url('assets/login_screen_bg.png'); background-size: cover; background-position: center;">
+  <div id="loginLandingScreen" class="fixed inset-0 z-50 bg-[#001731] flex flex-col justify-between overflow-hidden no-print select-none" style="background-image: radial-gradient(circle at 50% 30%, rgba(0, 40, 85, 0.85) 0%, rgba(0, 23, 49, 0.98) 100%), url('assets/login_screen_bg.png'); background-size: cover; background-position: center;">
     
-    <!-- Top Bar -->
-    <div class="w-full px-6 py-3.5 flex items-center justify-between border-b border-[#E5A823] shrink-0">
+    <!-- Top Institutional Bar -->
+    <div class="w-full px-6 py-4 flex items-center justify-between border-b border-[#E5A823]/80 bg-[#001731]/80 backdrop-blur-xs shrink-0">
       <div class="flex items-center space-x-3">
-        <img src="assets/apc_seal.png" class="w-10 h-10 object-contain bg-white p-0.5 border border-[#E5A823]" alt="APC Seal">
+        <img src="assets/apc_seal.png" class="w-10 h-10 object-contain bg-white p-0.5 border-2 border-[#E5A823]" alt="APC Seal">
         <div class="leading-tight">
           <div class="text-sm font-black text-white tracking-wide uppercase">Asia Pacific College</div>
-          <div class="text-[10px] text-[#E5A823] font-bold uppercase tracking-widest mt-0.5">ACADEMIC MANAGEMENT SYSTEM</div>
+          <div class="text-[10px] text-[#E5A823] font-bold uppercase tracking-widest mt-0.5">Academic Management System &bull; Central Architecture Suite</div>
         </div>
       </div>
-      <div></div>
+      <div class="hidden sm:flex items-center space-x-2 text-[11px] text-slate-300 font-medium">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Identity Gateway Online</span>
+      </div>
     </div>
 
-    <!-- Center Card Area (Matching media_1789622924268.png) -->
+    <!-- Center Card Area (Sharp Architectural Suite Design) -->
     <div class="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 my-auto">
-      <div class="login-card-rounded w-full max-w-sm sm:max-w-md bg-white border-2 border-[#FFB800] shadow-2xl p-6 sm:p-8 space-y-7 text-center relative z-10">
+      <div class="w-full max-w-sm sm:max-w-md bg-white border-2 border-[#E5A823] shadow-2xl p-7 sm:p-9 space-y-6 text-center relative z-10">
         
-        <!-- Brand Logos & Title -->
-        <div class="text-center space-y-1">
-          <img src="assets/login_apc_nu_logo.png" class="h-10 mx-auto object-contain" alt="Asia Pacific College - NU">
+        <!-- Header Branding Inside Card -->
+        <div class="text-center space-y-3 pb-2 border-b border-slate-200">
+          <img src="assets/login_apc_nu_logo.png" class="h-11 mx-auto object-contain" alt="Asia Pacific College - NU">
+          <div class="pt-1">
+            <h1 class="text-base font-black text-[#002855] tracking-tight uppercase">Central Authentication Portal</h1>
+            <p class="text-xs text-slate-600 font-medium mt-1">Sign in with your institutional Microsoft 365 account to access curriculum architecture and governance.</p>
+          </div>
         </div>
 
-        <!-- Open Space inside card (from mockup) -->
-        <div class="h-10 sm:h-14"></div>
-
         <!-- SSO One-Click Button (Microsoft 365) -->
-        <div>
+        <div class="pt-2">
           <button type="button" onclick="handleMicrosoftSSOLogin('admin')" id="btnMsalLogin"
-            class="login-btn-rounded w-full py-3 px-4 bg-[#0B2545] hover:bg-[#003875] text-white text-xs font-bold transition flex items-center justify-center space-x-3 border border-[#001733] shadow-md cursor-pointer">
+            class="w-full py-3 px-4 bg-[#002855] hover:bg-[#003875] active:bg-[#001731] text-white text-xs font-bold transition-colors flex items-center justify-center space-x-3 border-2 border-[#002855] shadow-md cursor-pointer group">
             <!-- Microsoft 4-Color Grid Icon -->
-            <svg class="w-4 h-4 shrink-0" viewBox="0 0 21 21">
+            <svg class="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" viewBox="0 0 21 21">
               <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
               <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
               <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
               <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
             </svg>
-            <span class="tracking-wide">Sign in with Microsoft 365</span>
+            <span class="tracking-wide uppercase font-black text-xs text-[#E5A823] group-hover:text-amber-300">Sign in with Microsoft 365</span>
           </button>
         </div>
 
-        <!-- Quick Tier Login (Discreet for developer/user live testing) -->
-        <div class="pt-2 border-t border-slate-100 flex items-center justify-center gap-2 text-[10px] text-slate-400">
-          <span class="uppercase tracking-wider">Test Role:</span>
-          <button type="button" onclick="handleMicrosoftSSOLogin('admin')" class="hover:text-amber-600 underline cursor-pointer">Admin</button>
-          <span>&bull;</span>
-          <button type="button" onclick="handleMicrosoftSSOLogin('exd')" class="hover:text-emerald-600 underline cursor-pointer">EXD</button>
-          <span>&bull;</span>
-          <button type="button" onclick="handleMicrosoftSSOLogin('pd')" class="hover:text-blue-600 underline cursor-pointer">PD</button>
-          <span>&bull;</span>
-          <button type="button" onclick="handleMicrosoftSSOLogin('faculty')" class="hover:text-purple-600 underline cursor-pointer">Faculty</button>
+        <!-- Security Notice -->
+        <div class="pt-2 flex items-center justify-center space-x-2 text-[11px] text-slate-500 font-medium">
+          <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          <span>Single Sign-On protected by Microsoft Entra ID</span>
         </div>
 
       </div>
     </div>
 
     <!-- Bottom Footer -->
-    <div class="w-full px-6 py-3 text-center text-[10px] sm:text-[11px] text-slate-400 shrink-0 select-none">
-      <span>Authorized Asia Pacific College Academic Systems &bull; Protected by Microsoft Azure Active Directory SSO &bull; &copy; 2026 Asia Pacific College</span>
+    <div class="w-full px-6 py-3.5 bg-[#001731]/90 border-t border-slate-800 text-center text-[10px] sm:text-[11px] text-slate-400 shrink-0 select-none">
+      <span>Authorized Asia Pacific College Academic Systems &bull; Enterprise Single Sign-On &bull; &copy; 2026 Asia Pacific College</span>
     </div>
 
   </div>
