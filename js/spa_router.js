@@ -445,11 +445,10 @@
             window._expandSidebarYear(prog, routeState.year, 'flowchart');
           }
         } else if (view === 'spreadsheet') {
-          if (typeof window.selectProgram === 'function') {
-            window.selectProgram(prog, 'spreadsheet');
-          }
           if (routeState.year && typeof window.openSpreadsheetForYear === 'function') {
             window.openSpreadsheetForYear(routeState.year);
+          } else if (typeof window.selectProgram === 'function') {
+            window.selectProgram(prog, 'spreadsheet');
           }
         } else if (view === 'registrar') {
           const sheet = routeState.regDocIdx || 1;

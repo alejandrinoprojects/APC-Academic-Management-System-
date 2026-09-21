@@ -481,7 +481,14 @@
         } else if (state.type === 'pd' || state.targetView === 'homePdProgramView' || state.targetView === 'workbench') {
           selectProgram(state.progCode, 'homePdProgramView');
         } else if (state.type === 'program' || state.progCode) {
-          selectProgram(state.progCode, state.targetView || 'flowchart', state.regDocIdx);
+          selectProgram(state.progCode, state.targetView || 'flowchart', state.regDocIdx, state.year);
+          if (state.targetView === 'flowchart' && state.year && typeof window.setFlowchartYearFilter === 'function') {
+            window.setFlowchartYearFilter(state.year);
+          } else if (state.targetView === 'spreadsheet' && state.year) {
+            const yf = document.getElementById('sheetYearFilter');
+            if (yf) yf.value = String(state.year);
+            sheetYearFilter = String(state.year);
+          }
         } else if (state.type === 'faculty') {
           renderFacultyOverview();
         } else if (state.targetView) {
@@ -3608,6 +3615,15 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       // Synchronous sidebar sync in one pass - zero timeouts, zero accordion collapse
       syncSidebarToCurrentPath(progInfo.schoolId, prog, 'flowchart', null, yearNum, 'flowchart');
 
+      recordNavigationStep({
+        type: 'program',
+        progCode: prog,
+        schoolId: progInfo.schoolId,
+        targetView: 'flowchart',
+        year: yearNum,
+        pathText: topPill ? topPill.innerText : `Schools > ${progInfo.schoolShort} > ${prog} > Flowchart (Year ${yearNum})`
+      });
+
       if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
         window.spaRouter.updateParam('year', yearNum);
       }
@@ -3657,6 +3673,15 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       // 5. Synchronous sidebar sync in one pass - zero timeouts, zero accordion collapse
       syncSidebarToCurrentPath(progInfo.schoolId, prog, 'spreadsheet', null, yearNum, 'spreadsheet');
+
+      recordNavigationStep({
+        type: 'program',
+        progCode: prog,
+        schoolId: progInfo.schoolId,
+        targetView: 'spreadsheet',
+        year: yearNum,
+        pathText: topPill ? topPill.innerText : `Schools > ${progInfo.schoolShort} > ${prog} > Curriculum Spreadsheet (Year ${yearNum})`
+      });
 
       // 6. Router parameter update
       if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
