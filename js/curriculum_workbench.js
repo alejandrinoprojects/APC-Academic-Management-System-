@@ -1921,14 +1921,6 @@
       const email = (emailInput?.value || '').trim().toLowerCase();
       const errEl = document.getElementById('loginErrorMsg');
 
-      if (!email) {
-        if (errEl) {
-          errEl.textContent = 'Please enter your email address.';
-          errEl.classList.remove('hidden');
-        }
-        return;
-      }
-
       let roleKey = 'admin';
       if (email.includes('exd') || email.includes('dean') || email.includes('director.eng')) {
         roleKey = 'exd';
