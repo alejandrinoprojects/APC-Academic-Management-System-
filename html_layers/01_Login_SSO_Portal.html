@@ -69,27 +69,36 @@
           <div class="text-[11px] font-bold text-[#002855] uppercase tracking-wider">Academic Management System</div>
         </div>
 
-        <!-- SSO One-Click Button (Microsoft 365) -->
-        <div class="pt-2">
-          <button type="button" onclick="handleMicrosoftSSOLogin('admin')" id="btnMsalLogin"
-            class="w-full py-3 px-4 bg-[#0B2545] hover:bg-[#003875] active:bg-[#001731] text-white text-xs font-bold transition-colors flex items-center justify-center space-x-3 border-2 border-[#002855] shadow-md cursor-pointer group">
-            <!-- Microsoft 4-Color Grid Icon -->
-            <svg class="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" viewBox="0 0 21 21">
-              <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
-              <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
-              <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
-              <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
-            </svg>
-            <span class="tracking-wide uppercase font-black text-xs text-[#E5A823] group-hover:text-amber-300">Sign in with Microsoft 365</span>
+        <!-- Native Credentials Login Form -->
+        <form onsubmit="handleNativeLogin(event)" class="space-y-4 text-left">
+          <div>
+            <label for="loginEmail" class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address</label>
+            <input type="email" id="loginEmail" required placeholder="user@apc.edu.ph"
+              class="w-full px-3 py-2 text-xs text-slate-800 bg-slate-50 border border-slate-300 focus:border-[#002855] focus:bg-white focus:outline-none transition-colors">
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="loginPassword" class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">Password</label>
+              <span class="text-[10px] text-slate-400">Default: any password</span>
+            </div>
+            <input type="password" id="loginPassword" required placeholder="••••••••"
+              class="w-full px-3 py-2 text-xs text-slate-800 bg-slate-50 border border-slate-300 focus:border-[#002855] focus:bg-white focus:outline-none transition-colors">
+          </div>
+
+          <div id="loginErrorMsg" class="hidden text-[11px] text-rose-600 font-semibold text-center bg-rose-50 border border-rose-200 py-1.5 px-2"></div>
+
+          <button type="submit" id="btnLoginSubmit"
+            class="w-full py-2.5 px-4 bg-[#0B2545] hover:bg-[#003875] active:bg-[#001731] text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 border-2 border-[#002855] shadow-sm cursor-pointer">
+            <span class="text-[#E5A823]">Sign In</span>
           </button>
-        </div>
+        </form>
 
         <!-- Security Notice -->
-        <div class="pt-1 flex items-center justify-center space-x-2 text-[11px] text-slate-500 font-medium">
+        <div class="pt-1 flex items-center justify-center space-x-2 text-[11px] text-slate-500 font-medium border-t border-slate-100">
           <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
           </svg>
-          <span>Protected by Microsoft 365 Single Sign-On</span>
+          <span>Authorized Academic Personnel Only</span>
         </div>
 
       </div>

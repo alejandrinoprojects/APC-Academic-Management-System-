@@ -1915,16 +1915,38 @@
       }
     }
 
-    function handleManualEmailLogin(event) {
+    function handleNativeLogin(event) {
       if (event) event.preventDefault();
-      const email = (document.getElementById('loginInputEmail')?.value || '').trim().toLowerCase();
-      let roleKey = 'admin';
-      if (email === 'x' || email.includes('xd') || email.includes('dean') || email.includes('exd')) roleKey = 'exd';
-      else if (email === 'p' || email.includes('pd') || email.includes('director')) roleKey = 'pd';
-      else if (email === 'f' || email.includes('faculty') || email.includes('prof')) roleKey = 'faculty';
-      else roleKey = 'admin';
+      const emailInput = document.getElementById('loginEmail') || document.getElementById('loginInputEmail');
+      const email = (emailInput?.value || '').trim().toLowerCase();
+      const errEl = document.getElementById('loginErrorMsg');
 
+      if (!email) {
+        if (errEl) {
+          errEl.textContent = 'Please enter your email address.';
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      let roleKey = 'admin';
+      if (email.includes('exd') || email.includes('dean') || email.includes('director.eng')) {
+        roleKey = 'exd';
+      } else if (email.includes('pd') || email.includes('cpe') || email.includes('program')) {
+        roleKey = 'pd';
+      } else if (email.includes('faculty') || email.includes('prof') || email.includes('teacher')) {
+        roleKey = 'faculty';
+      } else {
+        roleKey = 'admin';
+      }
+
+      if (errEl) errEl.classList.add('hidden');
       handleMicrosoftSSOLogin(roleKey);
+    }
+    window.handleNativeLogin = handleNativeLogin;
+
+    function handleManualEmailLogin(event) {
+      handleNativeLogin(event);
     }
 
     function logoutApp() {
