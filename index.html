@@ -806,17 +806,13 @@
                   <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                     Programs Offered and Program Directors:
                   </h2>
-                  <button type="button" onclick="openAddProgramModal(currentSelectedSchool)" class="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 shadow-xs font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
-                    <span class="text-sm leading-none">+</span>
-                    <span>Add Program</span>
-                  </button>
                 </div>
 
                 <!-- DISTINCT DEGREE PROGRAM CARDS (Matching media_1789622758918.png & media_1789629033733.png) -->
                 <div id="exdDegreeProgramsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                   <!-- ─── PROGRAM CARD 1: COMPUTER ENGINEERING (BSCpE) ─── -->
-                  <div onclick="selectProgram('BSCpE', 'homePdProgramView')" class="program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all group">
+                  <div onclick="selectProgram('BSCpE', 'homePdProgramView')" class="program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative cursor-pointer hover:border-[#E5A823] hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group">
                     <!-- Decorative Thematic Top Banner: Circuit Microchip -->
                     <div class="relative h-28 bg-[#101826] overflow-hidden flex flex-col items-center justify-center text-center p-3">
                       <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-50" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
@@ -834,10 +830,12 @@
                         <line x1="260" y1="70" x2="290" y2="70" stroke="#FF6B00" stroke-width="1.5"/>
                         <circle cx="240" cy="90" r="3" fill="#FF6B00"/>
                         <circle cx="290" cy="70" r="2.5" fill="#FF6B00"/>
-                        <rect x="135" y="45" width="30" height="30" rx="2" fill="#1b2a47" stroke="#38BDF8" stroke-width="1.5"/>
-                        <rect x="142" y="52" width="16" height="16" fill="#0b1728"/>
                       </svg>
-                      <div class="w-8 h-8 rounded-sm bg-sky-500/15 border border-sky-500/40 flex items-center justify-center text-[#38BDF8] text-xs font-mono font-bold mb-1 shadow-sm">&lt;/&gt;</div>
+                      <!-- Vector Microchip Badge -->
+                      <div class="relative z-10 w-10 h-10 rounded border border-cyan-400/40 bg-slate-900/80 flex items-center justify-center text-cyan-400 mb-1 shadow-sm">
+                        <span class="font-mono text-xs font-black">&lt;/&gt;</span>
+                      </div>
+                      <!-- Title Typography -->
                       <div class="relative z-10 leading-tight">
                         <span class="block text-[10px] font-black text-slate-300 tracking-widest uppercase drop-shadow-md">BACHELOR OF SCIENCE IN</span>
                         <span class="block text-sm sm:text-base font-black text-[#FF6B00] group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">COMPUTER ENGINEERING</span>
@@ -846,27 +844,29 @@
                     <!-- Horizontal Colored Separator Stripe -->
                     <div class="h-0.5 bg-[#FF6B00] w-full"></div>
 
-                    <!-- Card Body -->
-                    <div class="p-4 text-slate-800 dark:text-slate-200 space-y-3 flex-1 flex flex-col justify-between">
+                    <!-- Inner Body Content -->
+                    <div class="p-4 flex-1 flex flex-col justify-between space-y-4">
                       <div class="space-y-3">
-                        <!-- Director Info Box -->
-                        <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2.5 space-y-0.5">
-                          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">Program Director</span>
-                          <span id="exdProgDirector_BSCpE" class="text-xs font-bold text-slate-900 dark:text-sky-300 block">Program Director</span>
+                        <!-- Director Block -->
+                        <div>
+                          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Program Director:</label>
+                          <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 text-xs font-medium text-slate-900 dark:text-white">
+                            Program Director
+                          </div>
                         </div>
 
-                        <!-- Active Curriculums -->
-                        <div class="space-y-1.5">
-                          <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Curriculum Editions</span>
-                            <span class="text-[10px] text-amber-500 dark:text-amber-400 font-mono">74 Courses &bull; 184u</span>
+                        <!-- Active Curriculums Mini-Table -->
+                        <div>
+                          <div class="flex items-center justify-between mb-1.5">
+                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Active Curriculums</label>
+                            <span class="text-[10px] text-amber-600 font-bold uppercase tracking-wider">Click to Manage</span>
                           </div>
-                          <div class="space-y-1 text-xs font-mono">
-                            <div onclick="event.stopPropagation(); selectProgram('BSCpE', 'curriculum-home')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-[#10151E] hover:bg-amber-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 transition">
+                          <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 space-y-1.5 font-mono text-[11px]">
+                            <div class="flex items-center justify-between text-slate-900 dark:text-white">
                               <span class="font-semibold text-slate-800 dark:text-slate-200">AY 2026–2030</span>
-                              <span class="text-[9px] font-bold px-1.5 py-0.2 bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800">Active Baseline</span>
+                              <span class="text-[9px] font-bold px-1.5 py-0.2 bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800">Current</span>
                             </div>
-                            <div onclick="event.stopPropagation(); selectProgram('BSCpE', 'curriculum-home')" class="flex items-center justify-between p-1.5 bg-slate-50 dark:bg-[#10151E] hover:bg-amber-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700/70 transition">
+                            <div class="flex items-center justify-between text-slate-500 text-[10px]">
                               <span class="text-slate-600 dark:text-slate-400">AY 2025–2029</span>
                               <span class="text-[9px] font-bold px-1.5 py-0.2 bg-slate-200 text-slate-700 border border-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">Previous</span>
                             </div>
@@ -886,6 +886,18 @@
                     </div>
                   </div>
 
+                  <!-- ─── EMPTY CARD: ADD DEGREE PROGRAM ─── -->
+                  <div onclick="openAddProgramModal(currentSelectedSchool)" class="program-card min-h-[360px] bg-white dark:bg-[#181D26]/60 hover:bg-slate-50 dark:hover:bg-[#181D26] border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-[#E5A823] hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer flex flex-col items-center justify-center p-8 text-center group select-none shadow-md">
+                    <div class="w-14 h-14 rounded-full bg-slate-100 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 group-hover:border-[#E5A823] group-hover:bg-[#E5A823]/10 flex items-center justify-center text-slate-400 group-hover:text-[#E5A823] text-2xl font-light transition mb-3">
+                      +
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-white uppercase tracking-wider mb-1">
+                      Add Degree Program
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 max-w-[220px] leading-relaxed">
+                      Click to provision a new academic degree program, curriculum revision &amp; assign director
+                    </p>
+                  </div>
 
                 </div>
               </div>
@@ -1637,6 +1649,60 @@
             </div>
           </div>
 
+          <!-- ========================================================================= -->
+          <!-- SYSTEM AUDIT TRAIL EMBEDDED IN CURRICULUM MANAGEMENT HOMEPAGE             -->
+          <!-- ========================================================================= -->
+          <div class="bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div>
+                <h2 class="font-extrabold text-slate-900 dark:text-white text-lg tracking-tight flex items-center gap-2">
+                  <span>System Audit Trail</span>
+                  <span class="text-xs px-2 py-0.5 rounded-none bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-mono font-bold border border-blue-200 dark:border-blue-800">
+                    Verified
+                  </span>
+                </h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Chronological record of all curriculum updates and verifications.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/60 p-3 border border-slate-200 dark:border-slate-700/60">
+              <div class="flex flex-wrap items-center gap-2">
+                <input type="text" id="auditFilterTextCurricHome" oninput="renderAuditTable()" placeholder="Search action, target, description..." class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 outline-none focus:border-apc-navy w-64" />
+                <select id="auditFilterRoleCurricHome" onchange="renderAuditTable()" class="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 outline-none focus:border-apc-navy font-bold">
+                  <option value="">All Roles</option>
+                  <option value="Program Director">Program Director</option>
+                  <option value="System Administrator">System Administrator</option>
+                  <option value="Executive Director">Executive Director</option>
+                  <option value="Faculty 1">Faculty 1</option>
+                  <option value="Faculty Member">Faculty Member</option>
+                </select>
+                <span id="auditCountCurricHome" class="text-xs font-bold font-mono text-slate-500 ml-2"></span>
+              </div>
+              <button onclick="showToast('Exporting Audit Report...')" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 transition cursor-pointer shadow-xs">
+                Export Audit Log
+              </button>
+            </div>
+
+            <div class="overflow-x-auto border border-slate-200 dark:border-slate-700/60 rounded-none">
+              <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                <thead class="bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                  <tr>
+                    <th class="py-2.5 px-3">Date &amp; Time</th>
+                    <th class="py-2.5 px-3">User &amp; Role</th>
+                    <th class="py-2.5 px-3">Action</th>
+                    <th class="py-2.5 px-3">Target</th>
+                    <th class="py-2.5 px-3">Description</th>
+                    <th class="py-2.5 px-3 font-mono text-[11px]">Record ID</th>
+                    <th class="py-2.5 px-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="auditTableBodyCurricHome" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                  <!-- Populated dynamically via renderAuditTable() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- Institutional Footer Banner -->
           <div class="flex flex-wrap items-center justify-between p-4 bg-slate-50 dark:bg-[#131923] border border-slate-200 dark:border-slate-800 text-xs gap-3">
             <div class="flex items-center gap-2 text-slate-600 dark:text-slate-400 font-medium">
@@ -2348,10 +2414,6 @@
                     <button type="button" id="btnSheetAddRow" onclick="sheetAddNewCourseRow(); toggleSheetMoreDropdown()" class="w-full text-left px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer">
                       <span class="text-slate-500 shrink-0 leading-none font-bold">+</span>
                       <span>Add Empty Row to Bottom</span>
-                    </button>
-                    <button type="button" onclick="openBatchModal(); toggleSheetMoreDropdown()" class="w-full text-left px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer">
-                      <span class="text-slate-500 shrink-0">📊</span>
-                      <span>Batch Operations</span>
                     </button>
                     <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
                     <button type="button" onclick="resetCurriculumToBaseline(); toggleSheetMoreDropdown()" class="w-full text-left px-3 py-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 font-medium flex items-center gap-2 cursor-pointer">
@@ -3214,7 +3276,7 @@
                 <span id="auditCount" class="text-xs font-bold font-mono text-slate-500 ml-2"></span>
               </div>
               <button onclick="showToast('Exporting Audit Report...')" class="px-3.5 py-1.5 bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold rounded-none border border-slate-300 transition cursor-pointer shadow-xs">
-                Export Audit Log (.csv)
+                Export Audit Log
               </button>
             </div>
 
@@ -3265,6 +3327,10 @@
                 <button type="button" onclick="printAllRegistrarDocs()" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Print All 7 Official Sheets">
                   <span>📚</span>
                   <span>Print All 7 Sheets</span>
+                </button>
+                <button type="button" onclick="exportCurrentDocAsSpreadsheet()" class="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 border border-emerald-600 cursor-pointer" title="Export Current Document as Spreadsheet (.csv)">
+                  <span>📑</span>
+                  <span>Export Current Document as Spreadsheet</span>
                 </button>
               </div>
             </div>
@@ -4066,10 +4132,6 @@
         <div>
           <div class="flex items-center space-x-2">
             <h3 class="font-black text-sm text-white tracking-wide uppercase">RAMS AI Copilot</h3>
-            <span id="agentModelBadge" class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-mono border border-emerald-400/30">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>Online</span>
-            </span>
           </div>
           <p class="text-[10px] text-slate-300">Curriculum &amp; Course Assistant</p>
         </div>
@@ -4086,33 +4148,6 @@
 
     <!-- Main Chat Feed -->
     <div id="agentChatFeed" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs bg-slate-50 dark:bg-[#10151E]">
-      <!-- Clean Welcome Message -->
-      <div class="bg-white dark:bg-[#181D26] p-4 border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
-        <div class="flex items-center space-x-2 text-[#002855] dark:text-[#E5A823]">
-          <span class="text-base">✦</span>
-          <span class="font-black text-xs uppercase tracking-wide">RAMS Curriculum Assistant</span>
-        </div>
-        <p class="text-[11.5px] text-slate-600 dark:text-slate-300 leading-relaxed">
-          Hello! I can answer questions about course offerings, prerequisites, degree progression, and curriculum policies for the BSCpE program. What would you like to know?
-        </p>
-        <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
-          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Try asking:</div>
-          <div class="flex flex-wrap gap-1.5">
-            <button type="button" onclick="promptAgentChip('what courses are in the first year first term')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-              1st Year, 1st Term Courses
-            </button>
-            <button type="button" onclick="promptAgentChip('what are the prerequisites of CPEDES1')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-              CPEDES1 Prerequisites
-            </button>
-            <button type="button" onclick="promptAgentChip('audit curriculum prerequisite cycles')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-              Audit Prerequisite Cycles
-            </button>
-            <button type="button" onclick="promptAgentChip('breakdown of credit units')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-              Credit Units Breakdown
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Clean Input Form -->

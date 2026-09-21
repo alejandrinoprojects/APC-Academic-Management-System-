@@ -51,6 +51,19 @@
     'BSArch': 'arch'
   };
 
+  const PROGRAM_TO_SCHOOL = {
+    'BSCpE': 'soe',
+    'BSCE': 'soe',
+    'BSECE': 'soe',
+    'BSCS': 'socit',
+    'BSIT': 'socit',
+    'BMMA': 'soma',
+    'BSPsych': 'soma',
+    'BSBA': 'som',
+    'BSA': 'som',
+    'BSArch': 'soa'
+  };
+
   const VIEW_SLUGS = {
     'flowchart': 'flowchart',
     'spreadsheet': 'spreadsheet',
@@ -95,6 +108,34 @@
   let isPopStateNavigating = false;
   let isInitialized = false;
 
+  let currentModalState = null;
+
+  /**
+   * Notify router that a modal or drawer opened.
+   */
+  function onModalOpen(modalName, params = {}) {
+    if (isPopStateNavigating) return;
+    currentModalState = { modal: modalName, ...params };
+    const state = parseCurrentLocation();
+    state.modal = modalName;
+    state.modalParams = params;
+    updateBrowserUrl(state, false);
+  }
+
+  /**
+   * Notify router that a modal or drawer closed.
+   */
+  function onModalClose(modalName) {
+    if (isPopStateNavigating) return;
+    if (currentModalState && currentModalState.modal === modalName) {
+      currentModalState = null;
+      const state = parseCurrentLocation();
+      delete state.modal;
+      delete state.modalParams;
+      updateBrowserUrl(state, false);
+    }
+  }
+
   /**
    * Build clean canonical URL path for a given navigation state.
    */
@@ -107,63 +148,96 @@
       return '/';
     }
 
-    // 1. Root / Institutional overview
-    if (state.type === 'admin' || state.targetView === 'home') {
-      if (state.isRoot) return '/';
-      return '/schools';
-    }
-
-    // 2. School EXD overview (/school/soe, /school/socit, etc.)
-    if (state.type === 'school' && state.schoolId) {
-      return `/school/${String(state.schoolId).toLowerCase()}`;
-    }
-
-    // 3. Program views
-    const progCode = state.progCode || window.currentSelectedProgram || 'BSCpE';
-    const progSlug = PROGRAM_TO_SLUG[progCode] || 'cpe';
-
-    const viewId = state.targetView || 'curriculum-home';
-    const viewSlug = VIEW_TO_SLUG[viewId] || viewId;
-
-    let path = `/${progSlug}/${viewSlug}`;
-
-    // Add query parameters for sub-states
+    let basePath = '/';
     const queryParts = [];
 
-    // Flowchart year filter
-    if (viewId === 'flowchart') {
-      const year = state.year || (typeof window.getFlowchartActiveYear === 'function' ? window.getFlowchartActiveYear() : 'all');
-      if (year && year !== 'all') {
-        queryParts.push(`year=${year}`);
+    // 1. Root / Institutional overview
+    if (state.type === 'admin' || state.targetView === 'home') {
+      basePath = state.isRoot ? '/' : '/schools';
+    } else if (state.type === 'school' && state.schoolId) {
+      // 2. School EXD overview (/school/soe, /school/socit, etc.)
+      basePath = `/school/${String(state.schoolId).toLowerCase()}`;
+    } else {
+      // 3. Program views
+      const progCode = state.progCode || window.currentSelectedProgram || 'BSCpE';
+      const progSlug = PROGRAM_TO_SLUG[progCode] || 'cpe';
+      const schoolSlug = (state.schoolId || (PROGRAM_TO_SCHOOL[progCode] ? PROGRAM_TO_SCHOOL[progCode].toLowerCase() : 'soe'));
+
+      const viewId = state.targetView || 'curriculum-home';
+      const viewSlug = VIEW_TO_SLUG[viewId] || viewId;
+
+      basePath = `/${schoolSlug}/${progSlug}/${viewSlug}`;
+
+      // Flowchart year filter
+      if (viewId === 'flowchart') {
+        const year = state.year || (typeof window.getFlowchartActiveYear === 'function' ? window.getFlowchartActiveYear() : 'all');
+        if (year && year !== 'all') {
+          queryParts.push(`year=${year}`);
+        }
+      }
+      // Spreadsheet year filter
+      else if (viewId === 'spreadsheet') {
+        const yearFilter = document.getElementById('sheetYearFilter');
+        const year = state.year || (yearFilter ? yearFilter.value : 'all');
+        if (year && year !== 'all') {
+          queryParts.push(`year=${year}`);
+        }
+      }
+      // Registrar document sheet index
+      else if (viewId === 'registrar' || viewSlug === 'documents') {
+        const sheet = state.regDocIdx || window.currentRegistrarTab || 1;
+        queryParts.push(`sheet=${sheet}`);
+        const year = state.year || window.currentSidebarYear;
+        if (year && year !== 'all') {
+          queryParts.push(`year=${year}`);
+        }
+      }
+      // Historical Flowchart edition param
+      else if (viewId === 'past-flowchart') {
+        const edition = state.edition || 'BSCpE-2021';
+        queryParts.push(`edition=${edition}`);
+        if (state.year && state.year !== 'all') {
+          queryParts.push(`year=${state.year}`);
+        }
       }
     }
-    // Spreadsheet year filter
-    else if (viewId === 'spreadsheet') {
-      const yearFilter = document.getElementById('sheetYearFilter');
-      const year = state.year || (yearFilter ? yearFilter.value : 'all');
-      if (year && year !== 'all') {
-        queryParts.push(`year=${year}`);
-      }
-    }
-    // Registrar document sheet index
-    else if (viewId === 'registrar' || viewSlug === 'documents') {
-      const sheet = state.regDocIdx || window.currentRegistrarTab || 1;
-      queryParts.push(`sheet=${sheet}`);
-    }
-    // Historical Flowchart edition param
-    else if (viewId === 'past-flowchart') {
-      const edition = state.edition || 'BSCpE-2021';
-      queryParts.push(`edition=${edition}`);
-      if (state.year && state.year !== 'all') {
-        queryParts.push(`year=${state.year}`);
+
+    // Append Modal / Drawer parameters
+    const modalName = state.modal || (currentModalState ? currentModalState.modal : null);
+    const modalParams = state.modalParams || (currentModalState || {});
+
+    if (modalName) {
+      if (modalName === 'course-detail' && modalParams.course) {
+        queryParts.push(`course=${encodeURIComponent(modalParams.course)}`);
+      } else if (modalName === 'past-course-detail' && modalParams.course) {
+        queryParts.push(`past-course=${encodeURIComponent(modalParams.course)}`);
+      } else if (modalName === 'copilot') {
+        queryParts.push('drawer=copilot');
+      } else {
+        queryParts.push(`modal=${encodeURIComponent(modalName)}`);
+        if (modalParams.course) {
+          queryParts.push(`course=${encodeURIComponent(modalParams.course)}`);
+        }
+        if (modalParams.school) {
+          queryParts.push(`school=${encodeURIComponent(modalParams.school)}`);
+        }
+        if (modalParams.prog) {
+          queryParts.push(`prog=${encodeURIComponent(modalParams.prog)}`);
+        }
+        if (modalParams.pillar) {
+          queryParts.push(`pillar=${encodeURIComponent(modalParams.pillar)}`);
+        }
+        if (modalParams.hash) {
+          queryParts.push(`hash=${encodeURIComponent(modalParams.hash)}`);
+        }
       }
     }
 
     if (queryParts.length > 0) {
-      path += `?${queryParts.join('&')}`;
+      basePath += `?${queryParts.join('&')}`;
     }
 
-    return path;
+    return basePath;
   }
 
   /**
@@ -233,26 +307,74 @@
     const params = new URLSearchParams(rawSearch);
     const segments = cleanPath.split('/').filter(Boolean);
 
+    // Parse modal and drawer params
+    let modal = params.get('modal') || undefined;
+    const modalParams = {};
+
+    if (params.has('course')) {
+      modalParams.course = params.get('course');
+      if (!modal) modal = 'course-detail';
+    }
+    if (params.has('past-course')) {
+      modalParams.course = params.get('past-course');
+      if (!modal) modal = 'past-course-detail';
+    }
+    if (params.get('drawer') === 'copilot') {
+      modal = 'copilot';
+    }
+    if (params.has('school')) {
+      modalParams.school = params.get('school');
+    }
+    if (params.has('prog')) {
+      modalParams.prog = params.get('prog');
+    }
+    if (params.has('pillar')) {
+      modalParams.pillar = params.get('pillar');
+    }
+    if (params.has('hash')) {
+      modalParams.hash = params.get('hash');
+    }
+
     // Root or empty path -> landing or schools overview
     if (segments.length === 0 || segments[0] === 'schools' || segments[0] === 'home') {
-      return { type: 'admin', targetView: 'home', isRoot: segments.length === 0 };
+      return {
+        type: 'admin',
+        targetView: 'home',
+        isRoot: segments.length === 0 && !modal,
+        modal: modal,
+        modalParams: Object.keys(modalParams).length > 0 ? modalParams : undefined
+      };
     }
 
     // School route: /school/:schoolId
     if (segments[0] === 'school' && segments[1]) {
-      return { type: 'school', schoolId: segments[1].toLowerCase() };
+      return {
+        type: 'school',
+        schoolId: segments[1].toLowerCase(),
+        modal: modal,
+        modalParams: Object.keys(modalParams).length > 0 ? modalParams : undefined
+      };
     }
 
     let progCode = 'BSCpE';
+    let schoolId = undefined;
     let viewSegment = '';
 
-    // If first segment is a recognized program slug: /cpe/flowchart
-    if (PROGRAM_SLUGS[segments[0].toLowerCase()]) {
+    // Check 3-part path: /soe/cpe/flowchart
+    if (segments.length >= 2 && PROGRAM_SLUGS[segments[1].toLowerCase()]) {
+      schoolId = segments[0].toLowerCase();
+      progCode = PROGRAM_SLUGS[segments[1].toLowerCase()];
+      viewSegment = segments[2] || 'curriculum-home';
+    }
+    // Check 2-part path: /cpe/flowchart (backwards compatible)
+    else if (PROGRAM_SLUGS[segments[0].toLowerCase()]) {
       progCode = PROGRAM_SLUGS[segments[0].toLowerCase()];
+      schoolId = PROGRAM_TO_SCHOOL[progCode] || 'soe';
       viewSegment = segments[1] || 'curriculum-home';
     } else {
       // Direct view slug: /flowchart
       viewSegment = segments[0];
+      schoolId = PROGRAM_TO_SCHOOL[progCode] || 'soe';
     }
 
     const targetView = VIEW_SLUGS[viewSegment.toLowerCase()] || 'curriculum-home';
@@ -262,11 +384,14 @@
 
     return {
       type: 'program',
+      schoolId: schoolId,
       progCode: progCode,
       targetView: targetView,
       year: yearParam ? parseInt(yearParam, 10) : undefined,
       regDocIdx: sheetParam ? parseInt(sheetParam, 10) : undefined,
-      edition: editionParam || undefined
+      edition: editionParam || undefined,
+      modal: modal,
+      modalParams: Object.keys(modalParams).length > 0 ? modalParams : undefined
     };
   }
 
@@ -354,12 +479,129 @@
         window.syncNavHistoryFromPopState(routeState);
       }
 
+      // Handle Modals / Drawers Deep-Linking
+      handleRouteModals(routeState);
+
     } finally {
       isPopStateNavigating = false;
       if (!routeState.isRoot) {
         updateBrowserUrl(routeState, true);
       }
     }
+  }
+
+  /**
+   * Automatically opens or closes modals & drawers corresponding to routeState.
+   */
+  function handleRouteModals(routeState) {
+    const modalName = routeState ? routeState.modal : null;
+    const p = (routeState && routeState.modalParams) || {};
+
+    // First dismiss any currently open modals if route specifies no modal or a different one
+    if (!modalName) {
+      currentModalState = null;
+      closeAllAppModals();
+      return;
+    }
+
+    currentModalState = { modal: modalName, ...p };
+
+    setTimeout(() => {
+      try {
+        switch (modalName) {
+          case 'role-switcher':
+            if (typeof window.openLoginModal === 'function') window.openLoginModal();
+            break;
+          case 'edit-course':
+            if (typeof window.openCourseEditModal === 'function') window.openCourseEditModal(p.course || '');
+            break;
+          case 'course-detail':
+            if (p.course && typeof window.openFlowchartDrawer === 'function') window.openFlowchartDrawer(p.course);
+            break;
+          case 'past-course-detail':
+            if (p.course && typeof window.openPastFlowchartDrawer === 'function') window.openPastFlowchartDrawer(p.course);
+            break;
+          case 'categories':
+            if (typeof window.openCategoryManagerModal === 'function') window.openCategoryManagerModal();
+            break;
+          case 'ai-import':
+            if (typeof window.openAiImportModal === 'function') window.openAiImportModal();
+            break;
+          case 'add-faculty':
+            if (typeof window.openAddFacultyModal === 'function') window.openAddFacultyModal(p.prog || '');
+            break;
+          case 'assign-task':
+            if (typeof window.openAssignTaskModal === 'function') window.openAssignTaskModal(p.course || '', p.faculty || '');
+            break;
+          case 'copilot':
+            if (typeof window.openPersonalAgentDrawer === 'function') {
+              window.openPersonalAgentDrawer();
+            } else if (typeof window.togglePersonalAgentDrawer === 'function') {
+              const drawer = document.getElementById('personalAiAgentDrawer');
+              if (drawer && drawer.classList.contains('hidden')) window.togglePersonalAgentDrawer();
+            }
+            break;
+          case 'add-school':
+            if (typeof window.openAddSchoolModal === 'function') window.openAddSchoolModal();
+            break;
+          case 'edit-school':
+            if (p.school && typeof window.openEditSchoolModal === 'function') window.openEditSchoolModal(p.school);
+            break;
+          case 'add-program':
+            if (typeof window.openAddProgramModal === 'function') window.openAddProgramModal(p.school || null);
+            break;
+          case 'edit-program':
+            if (p.prog && typeof window.openEditProgramModal === 'function') window.openEditProgramModal(p.prog);
+            break;
+          case 'pillar':
+            if (p.pillar && typeof window.showPillarModal === 'function') window.showPillarModal(p.pillar);
+            break;
+          case 'audit-diff':
+            if (p.hash && typeof window.openAuditDiffModal === 'function') window.openAuditDiffModal(p.hash);
+            break;
+          case 'cycle-simulator':
+            if (typeof window.openCycleSimulatorModal === 'function') window.openCycleSimulatorModal();
+            break;
+          case 'assign-pd':
+            if (typeof window.openAddPdModal === 'function') window.openAddPdModal(p.school || '');
+            break;
+        }
+      } catch (err) {
+        console.warn('[SpaRouter] Error applying modal route state:', err);
+      }
+    }, 60);
+  }
+
+  function closeAllAppModals() {
+    try {
+      const modalIds = [
+        'loginModal',
+        'courseEditModal',
+        'flowchartDetailDrawer',
+        'pastFlowchartDetailDrawer',
+        'personalAiAgentDrawer',
+        'personalAgentBackdrop',
+        'categoryManagerModal',
+        'aiImportModal',
+        'modalAddFaculty',
+        'modalAssignTask',
+        'modalAddSchool',
+        'modalEditSchool',
+        'modalAddProgram',
+        'modalEditProgram',
+        'pillarModal',
+        'auditDiffModal',
+        'cycleModal',
+        'modalAddPd'
+      ];
+      modalIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('hidden')) {
+          el.classList.add('hidden');
+        }
+      });
+      document.body.style.overflow = '';
+    } catch (e) {}
   }
 
   /**
@@ -431,11 +673,14 @@
   // --- EXPORTS ON WINDOW ---
   window.spaRouter = {
     onNavStep: onNavStep,
+    onModalOpen: onModalOpen,
+    onModalClose: onModalClose,
     updateParam: updateParam,
     buildUrlForState: buildUrlForState,
     updateBrowserUrl: updateBrowserUrl,
     parseCurrentLocation: parseCurrentLocation,
-    applyRouteState: applyRouteState
+    applyRouteState: applyRouteState,
+    closeAllAppModals: closeAllAppModals
   };
 
 })(window);

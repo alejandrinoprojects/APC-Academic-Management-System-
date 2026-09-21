@@ -440,6 +440,9 @@
 
       const modal = document.getElementById('modalEditSchool');
       if (modal) modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('edit-school', { school: schoolId });
+      }
     }
 
     function closeEditSchoolModal() {
@@ -448,6 +451,9 @@
       currentEditingSchoolId = null;
       modalTempBanner = null;
       modalTempLogo = null;
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('edit-school');
+      }
     }
 
     function handleModalImageUpload(event, type) {
@@ -660,21 +666,33 @@
         `;
       }
       modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('pillar', { pillar: pillar });
+      }
     }
 
     function closePillarModal() {
       const modal = document.getElementById('pillarModal');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('pillar');
+      }
     }
 
     function openAddSchoolModal() {
       const modal = document.getElementById('modalAddSchool');
       if (modal) modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('add-school');
+      }
     }
 
     function closeAddSchoolModal() {
       const modal = document.getElementById('modalAddSchool');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('add-school');
+      }
     }
 
     function submitAddSchool(e) {
@@ -768,11 +786,17 @@
       if (nameInput) nameInput.value = '';
 
       modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('add-program', { school: schoolId });
+      }
     }
 
     function closeAddProgramModal() {
       const modal = document.getElementById('modalAddProgram');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('add-program');
+      }
     }
 
     function submitAddProgram(e) {
@@ -903,11 +927,17 @@
 
       const modal = document.getElementById('modalEditProgram');
       if (modal) modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('edit-program', { prog: progCode });
+      }
     }
 
     function closeEditProgramModal() {
       const modal = document.getElementById('modalEditProgram');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('edit-program');
+      }
     }
 
     function submitEditProgram(e) {
@@ -1609,7 +1639,10 @@
     window.openAddSchoolModal = openAddSchoolModal;
     window.closeAddSchoolModal = closeAddSchoolModal;
     window.submitAddSchool = submitAddSchool;
-    window.deleteCurrentSchool = deleteCurrentSchool;
+    window.openEditSchoolModal = openEditSchoolModal;
+    window.closeEditSchoolModal = closeEditSchoolModal;
+    window.showPillarModal = showPillarModal;
+    window.closePillarModal = closePillarModal;
     window.submitEditSchool = submitEditSchool;
     window.getProgramDirector = getProgramDirector;
     window.openEditProgramModal = openEditProgramModal;

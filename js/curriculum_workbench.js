@@ -1288,7 +1288,7 @@
         function buildProgramCard(prog, isArchived) {
           const banner = getProgramBannerConfig(prog.code, prog.name, schoolColor);
           const card = document.createElement('div');
-          card.className = `program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-xl transition-all`;
+          card.className = `program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-xl hover:-translate-y-1 transition-all duration-200`;
           card.onclick = function() { selectProgram(prog.code, 'homePdProgramView'); };
           card.innerHTML = `
             <div>
@@ -1304,48 +1304,55 @@
                 </div>
                 ${isArchived ? '<span class="absolute top-2 right-2 text-[9px] font-mono px-1.5 py-0.5 bg-slate-900/90 text-amber-400 border border-amber-500/40 rounded z-20">Dev Freeze</span>' : ''}
               </div>
-              <!-- Horizontal Colored Separator Stripe -->
               <div class="h-0.5 w-full" style="background-color: ${banner.accentColor};"></div>
 
-              <div class="p-4 space-y-3 text-slate-800 dark:text-slate-200">
-                <div>
-                  <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">Program Director:</label>
-                  <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 text-xs text-slate-900 dark:text-white font-medium">${prog.director || (typeof getProgramDirector === 'function' ? getProgramDirector(prog.code) : school.director)}</div>
-                </div>
-                <div>
-                  <div class="flex items-center justify-between mb-1">
-                    <label class="block text-xs font-bold text-slate-500 dark:text-slate-400">Active Curriculums</label>
-                    <span class="text-[10px] text-amber-500 dark:text-amber-400 font-mono">Click to Manage</span>
-                  </div>
-                  <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 text-xs text-slate-700 dark:text-slate-300 space-y-1 font-mono">
-                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
-                      <span>Curriculum AY: 2026 - 2030</span>
-                      <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">1st Year</span>
-                    </div>
-                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
-                      <span>Curriculum AY: 2025 - 2029</span>
-                      <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">2nd Year</span>
-                    </div>
-                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
-                      <span>Curriculum AY: 2024 - 2028</span>
-                      <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">3rd Year</span>
-                    </div>
-                    <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center">
-                      <span>Curriculum AY: 2023 - 2027</span>
-                      <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">4th Year</span>
+              <!-- Inner Body Content -->
+              <div class="p-4 flex-1 flex flex-col justify-between space-y-4">
+                <div class="space-y-3">
+                  <!-- Director Block -->
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Program Director:</label>
+                    <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 text-xs font-medium text-slate-900 dark:text-white">
+                      ${prog.director || 'Program Director'}
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
 
-            <div class="p-4 pt-0 space-y-3">
-              <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-end">
-                <button type="button" onclick="event.stopPropagation(); (typeof openEditProgramModal === 'function' ? openEditProgramModal('${prog.code}') : showToast('Edit ${prog.code} Program Director'))" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit ${prog.code} Program &amp; Director">
-                  ✎
-                </button>
+                  <!-- Active Curriculums Mini-Table -->
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Active Curriculums</label>
+                      <span class="text-[10px] text-amber-600 font-bold uppercase tracking-wider">Click to Manage</span>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 space-y-1.5 font-mono text-[11px]">
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-900 dark:text-white">
+                        <span class="font-semibold text-slate-800 dark:text-slate-200">Curriculum AY: 2026 - 2030</span>
+                        <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">1st Year</span>
+                      </div>
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-500">
+                        <span>Curriculum AY: 2025 - 2029</span>
+                        <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">2nd Year</span>
+                      </div>
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-500">
+                        <span>Curriculum AY: 2024 - 2028</span>
+                        <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">3rd Year</span>
+                      </div>
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-500">
+                        <span>Curriculum AY: 2023 - 2027</span>
+                        <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">4th Year</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="h-2 w-full -mb-4 -mx-4" style="background-color: ${banner.accentColor};"></div>
+
+              <div class="p-4 pt-0 space-y-3">
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-end">
+                  <button type="button" onclick="event.stopPropagation(); (typeof openEditProgramModal === 'function' ? openEditProgramModal('${prog.code}') : showToast('Edit ${prog.code} Program Director'))" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-amber-100 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-white flex items-center justify-center text-xs transition cursor-pointer shadow-xs" title="Edit ${prog.code} Program &amp; Director">
+                    ✎
+                  </button>
+                </div>
+                <div class="h-2 w-full -mb-4 -mx-4" style="background-color: ${banner.accentColor};"></div>
+              </div>
             </div>
           `;
           return card;
@@ -1354,6 +1361,25 @@
         activeProgs.forEach(prog => {
           grid.appendChild(buildProgramCard(prog, false));
         });
+
+        // Append empty card for adding degree program
+        const addCard = document.createElement('div');
+        addCard.className = 'program-card min-h-[360px] bg-white dark:bg-[#181D26]/60 hover:bg-slate-50 dark:hover:bg-[#181D26] border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-[#E5A823] hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer flex flex-col items-center justify-center p-8 text-center group select-none shadow-md';
+        addCard.onclick = function() {
+          if (typeof openAddProgramModal === 'function') openAddProgramModal(school.id);
+        };
+        addCard.innerHTML = `
+          <div class="w-14 h-14 rounded-full bg-slate-100 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 group-hover:border-[#E5A823] group-hover:bg-[#E5A823]/10 flex items-center justify-center text-slate-400 group-hover:text-[#E5A823] text-2xl font-light transition mb-3">
+            +
+          </div>
+          <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-white uppercase tracking-wider mb-1">
+            Add Degree Program
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 max-w-[220px] leading-relaxed">
+            Click to provision a new academic degree program, curriculum revision &amp; assign director
+          </p>
+        `;
+        grid.appendChild(addCard);
       }
     }
 
@@ -1630,6 +1656,9 @@
           const cProgTag = document.getElementById('curricHomeProgramTag');
           if (cHeading) cHeading.innerHTML = `<span>${progCode} Curriculum Management</span> <span class="text-[#E5A823]">Homepage</span>`;
           if (cProgTag) cProgTag.innerText = `${progCode} AY 2026–2030`;
+          if (typeof renderAuditTable === 'function') {
+            renderAuditTable();
+          }
         } else if (targetView === 'flowchart' || !targetView) {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Flowchart`;
         } else if (targetView === 'spreadsheet' || targetView === 'catalog') {
@@ -1660,8 +1689,10 @@
         recordNavigationStep({
           type: 'program',
           progCode: progCode,
+          schoolId: progInfo.schoolId,
           targetView: targetView || 'flowchart',
           regDocIdx: docIdx,
+          year: activeYear,
           pathText: pText
         });
       }
@@ -1916,11 +1947,17 @@
     function openLoginModal() {
       const modal = document.getElementById('loginModal');
       if (modal) modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('role-switcher');
+      }
     }
 
     function closeLoginModal() {
       const modal = document.getElementById('loginModal');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('role-switcher');
+      }
     }
 
     function switchLoginAccount(email, name, role, avatar, roleKey) {
@@ -2030,36 +2067,52 @@
 
     function togglePersonalAgentDrawer() {
       const drawer = document.getElementById('personalAiAgentDrawer');
+      if (!drawer) return;
+      if (drawer.classList.contains('hidden')) {
+        openPersonalAgentDrawer();
+      } else {
+        closePersonalAgentDrawer();
+      }
+    }
+
+    function openPersonalAgentDrawer() {
+      const drawer = document.getElementById('personalAiAgentDrawer');
       const backdrop = document.getElementById('personalAgentBackdrop');
       if (!drawer) return;
-      isAgentDrawerOpen = !isAgentDrawerOpen;
-      if (isAgentDrawerOpen) {
-        drawer.classList.remove('hidden');
-        if (backdrop) backdrop.classList.remove('hidden');
-        checkAgentJanStatus();
-        const input = document.getElementById('agentUserInput');
-        if (input) setTimeout(() => input.focus(), 120);
-      } else {
-        drawer.classList.add('hidden');
-        if (backdrop) backdrop.classList.add('hidden');
+      isAgentDrawerOpen = true;
+      drawer.classList.remove('hidden');
+      if (backdrop) backdrop.classList.remove('hidden');
+      checkAgentJanStatus();
+      const input = document.getElementById('agentUserInput');
+      if (input) setTimeout(() => input.focus(), 120);
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('copilot');
+      }
+    }
+
+    function closePersonalAgentDrawer() {
+      const drawer = document.getElementById('personalAiAgentDrawer');
+      const backdrop = document.getElementById('personalAgentBackdrop');
+      if (!drawer) return;
+      isAgentDrawerOpen = false;
+      drawer.classList.add('hidden');
+      if (backdrop) backdrop.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('copilot');
       }
     }
 
     async function checkAgentJanStatus() {
       const badge = document.getElementById('agentModelBadge');
-      if (!badge) return;
+      if (!badge) return false;
       try {
         const res = await fetch('http://127.0.0.1:1337/v1/models', { signal: AbortSignal.timeout(1500) });
         if (res.ok) {
-          badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10.5px] font-mono border border-emerald-400/40';
-          badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span><span>LLaMA 3.2 3B Active</span>';
           return true;
         }
       } catch (e) {
         // Fallback below
       }
-      badge.className = 'inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-500/20 text-amber-300 text-[10.5px] font-mono border border-amber-400/40';
-      badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Local Heuristic Engine</span>';
       return false;
     }
 
@@ -2138,34 +2191,7 @@
       agentChatHistory = [];
       const feed = document.getElementById('agentChatFeed');
       if (feed) {
-        feed.innerHTML = `
-          <div class="bg-white dark:bg-[#181D26] p-4 border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5">
-            <div class="flex items-center space-x-2 text-[#002855] dark:text-[#E5A823]">
-              <span class="text-base">✦</span>
-              <span class="font-black text-xs uppercase tracking-wide">RAMS Curriculum Assistant</span>
-            </div>
-            <p class="text-[11.5px] text-slate-600 dark:text-slate-300 leading-relaxed">
-              Chat log cleared. I can answer questions about course offerings, prerequisites, degree progression, and curriculum policies for the BSCpE program.
-            </p>
-            <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
-              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Try asking:</div>
-              <div class="flex flex-wrap gap-1.5">
-                <button type="button" onclick="promptAgentChip('what courses are in the first year first term')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-                  1st Year, 1st Term Courses
-                </button>
-                <button type="button" onclick="promptAgentChip('what are the prerequisites of CPEDES1')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-                  CPEDES1 Prerequisites
-                </button>
-                <button type="button" onclick="promptAgentChip('audit curriculum prerequisite cycles')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-                  Audit Prerequisite Cycles
-                </button>
-                <button type="button" onclick="promptAgentChip('breakdown of credit units')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-400 text-slate-700 dark:text-slate-300 text-[11px] border border-slate-200 dark:border-slate-700 transition cursor-pointer text-left">
-                  Credit Units Breakdown
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
+        feed.innerHTML = '';
       }
     }
 
@@ -2458,11 +2484,17 @@ Always provide clean, direct answers in conversational markdown without tool deb
     function openAiImportModal() {
       const modal = document.getElementById('aiImportModal');
       if (modal) modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('ai-import');
+      }
     }
 
     function closeAiImportModal() {
       const modal = document.getElementById('aiImportModal');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('ai-import');
+      }
     }
 
     function loadSampleSyllabusToImport(type) {
@@ -3281,11 +3313,17 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       renderCategoryManagerTable();
       const modal = document.getElementById('categoryManagerModal');
       if (modal) modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('categories');
+      }
     }
 
     function closeCategoryManagerModal() {
       const modal = document.getElementById('categoryManagerModal');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('categories');
+      }
     }
 
     function renderCategoryManagerTable() {
@@ -4153,11 +4191,17 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
       const modal = document.getElementById('modalAddFaculty');
       if (modal) modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('add-faculty');
+      }
     }
 
     function closeAddFacultyModal() {
       const modal = document.getElementById('modalAddFaculty');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('add-faculty');
+      }
     }
 
     function submitAddFaculty(e) {
@@ -4626,6 +4670,51 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       showToastNotification('Spreadsheet exported as CSV successfully.');
     }
 
+    function exportCurrentDocAsSpreadsheet() {
+      const activeTab = (typeof currentRegistrarTab !== 'undefined' ? currentRegistrarTab : 1);
+      const docTitle = (typeof getRegistrarDocTitle === 'function') ? getRegistrarDocTitle(activeTab) : `Sheet_${activeTab}`;
+      const cleanTitle = docTitle.replace(/[^a-zA-Z0-9_-]/g, '_');
+      const activeYear = (typeof window.currentSidebarYear !== 'undefined' && window.currentSidebarYear) ? window.currentSidebarYear : null;
+      
+      // Target container for active document
+      const activeContainer = document.getElementById(`regDocSheet_${activeTab}`);
+      const table = activeContainer ? activeContainer.querySelector('table') : null;
+
+      if (table) {
+        const rows = [];
+        const trs = table.querySelectorAll('tr');
+        trs.forEach(tr => {
+          const rowData = [];
+          tr.querySelectorAll('th, td').forEach(cell => {
+            const text = cell.innerText.trim().replace(/\r?\n+/g, ' ').replace(/"/g, '""');
+            rowData.push(`"${text}"`);
+          });
+          if (rowData.length > 0) {
+            rows.push(rowData.join(','));
+          }
+        });
+
+        if (rows.length > 0) {
+          const csvContent = "\uFEFF" + rows.join('\r\n');
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `APC_BSCpE_${cleanTitle}${activeYear ? `_Year${activeYear}` : ''}_${new Date().toISOString().slice(0,10)}.csv`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast(`Exported ${docTitle} as spreadsheet successfully.`);
+          return;
+        }
+      }
+
+      // Fallback to master course list
+      sheetExportCSV();
+    }
+    window.exportCurrentDocAsSpreadsheet = exportCurrentDocAsSpreadsheet;
+
     function sheetImportCSV(event) {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
@@ -4911,12 +5000,18 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('edit-course', { course: editingCourseCodeOriginal });
+      }
     }
 
     function closeCourseEditModal() {
       const modal = document.getElementById('courseEditModal');
       if (modal) modal.classList.add('hidden');
       document.body.style.overflow = '';
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('edit-course');
+      }
     }
 
     function calculateEditUnits() {
@@ -5395,11 +5490,17 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('assign-task', { course: courseTitle, faculty: facultyTitle });
+      }
     }
 
     function closeAssignTaskModal() {
       const modal = document.getElementById('modalAssignTask');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('assign-task');
+      }
     }
 
     function submitAssignTask(event) {
@@ -5607,6 +5708,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.switchLoginAccount = switchLoginAccount;
     window.testMicrosoftGraphApi = testMicrosoftGraphApi;
     window.toggleSheetMoreDropdown = toggleSheetMoreDropdown;
+    window.openAiImportModal = openAiImportModal;
+    window.closeAiImportModal = closeAiImportModal;
+    window.togglePersonalAgentDrawer = togglePersonalAgentDrawer;
+    window.openPersonalAgentDrawer = openPersonalAgentDrawer;
+    window.closePersonalAgentDrawer = closePersonalAgentDrawer;
 
     // Initialize categories and legend on load
     try {

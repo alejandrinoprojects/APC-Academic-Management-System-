@@ -4,8 +4,8 @@
   "description": "APC RAMS Centralized Curriculum Management & Academic Architecture Suite",
   "main": "index.html",
   "scripts": {
-    "start": "python -m http.server 8080",
-    "dev": "python -m http.server 8080",
+    "start": "python scripts/serve_spa.py 8080",
+    "dev": "python scripts/serve_spa.py 8080",
     "watch:layers": "python scripts/watch_html_layers.py",
     "sync:layers": "python scripts/sync_layers_to_site.py",
     "sync:dry-run": "python scripts/sync_layers_to_site.py --dry-run",

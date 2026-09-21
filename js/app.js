@@ -149,10 +149,10 @@ let currentSelectedCode = null;
     window.AUDIT_LOG = [
       {
         ts: '2026-09-10 14:12:01',
-        role: 'Program Director',
-        action: 'COURSE_CREATE',
+        role: 'Faculty 1',
+        action: 'SYLLABUS_UPDATE',
         entity: 'CPE314',
-        summary: 'Program Director created course "Operating Systems" at 14:12:01 for BSCpE 2026 Curriculum',
+        summary: 'Faculty 1 updated syllabus continuous quality improvement metrics & course learning outcomes for CPE314',
         diff: null,
         hash: 'REC-9C4E81'
       },
@@ -161,7 +161,7 @@ let currentSelectedCode = null;
         role: 'Program Director',
         action: 'COURSE_EDIT',
         entity: 'CPE312',
-        summary: 'Program Director edited course "Computer Architecture and Organization" (CPE312) [2 fields modified]',
+        summary: 'Program Director updated course syllabus and laboratory credits for Computer Architecture and Organization (CPE312)',
         diff: [
           { field: 'Credit Units', old: '3.0 units', new: '4.0 units' },
           { field: 'Laboratory Hours', old: '0 hrs', new: '3 hrs' }
@@ -170,24 +170,13 @@ let currentSelectedCode = null;
       },
       {
         ts: '2026-09-10 09:20:45',
-        role: 'System Administrator',
-        action: 'SCHOOL_UPDATE',
-        entity: 'SCHOOL OF ENGINEERING',
-        summary: 'Updated metadata for SCHOOL OF ENGINEERING (1 fields modified)',
-        diff: [
-          { field: 'Executive Director / Dean', old: 'Engr. J. Santos', new: 'Engr. R. De Leon, M.Eng.' }
-        ],
-        hash: 'REC-5D3C19'
-      },
-      {
-        ts: '2026-09-10 02:42:12',
-        role: 'Program Director',
-        action: 'VERIFY_PREREQS',
-        entity: 'Prerequisite Flow',
-        summary: 'Checked prerequisite flow: 74/74 courses verified, 0 conflicts',
+        role: 'Executive Director',
+        action: 'CURRICULUM_APPROVE',
+        entity: 'School of Engineering',
+        summary: 'Executive Director endorsed and approved curriculum revision package for BSCpE 2026–2030 Baseline',
         diff: null,
-        hash: 'REC-8F2A9D'
-      },
+        hash: 'REC-5D3C19'
+      }
     ];
 
     function appendAuditLog(action, entity, summary, diff = null, meta = {}) {
@@ -247,11 +236,17 @@ let currentSelectedCode = null;
       }
 
       modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('audit-diff', { hash: hash });
+      }
     }
 
     function closeAuditDiffModal() {
       const modal = document.getElementById('auditDiffModal');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('audit-diff');
+      }
     }
 
     function escapeAuditHtml(str) {
@@ -263,10 +258,10 @@ let currentSelectedCode = null;
     }
 
     function renderAuditTable() {
-      const tbody = document.getElementById('auditTableBody');
-      if (!tbody) return;
-      const filterText = (document.getElementById('auditFilterText')?.value || '').toLowerCase();
-      const filterRole = document.getElementById('auditFilterRole')?.value || '';
+      const tbodies = [
+        { tbody: document.getElementById('auditTableBody'), filterText: (document.getElementById('auditFilterText')?.value || '').toLowerCase(), filterRole: document.getElementById('auditFilterRole')?.value || '', countEl: document.getElementById('auditCount') },
+        { tbody: document.getElementById('auditTableBodyCurricHome'), filterText: (document.getElementById('auditFilterTextCurricHome')?.value || '').toLowerCase(), filterRole: document.getElementById('auditFilterRoleCurricHome')?.value || '', countEl: document.getElementById('auditCountCurricHome') }
+      ];
 
       const ACTION_COLORS = {
         SHEET_SAVE: 'bg-blue-50 text-blue-700 border border-blue-200',
@@ -285,43 +280,46 @@ let currentSelectedCode = null;
         COURSE_CREATE: 'bg-emerald-50 text-emerald-800 border border-emerald-300 font-black',
         COURSE_EDIT: 'bg-amber-50 text-amber-800 border border-amber-300 font-bold',
         SCHOOL_UPDATE: 'bg-purple-50 text-purple-700 border border-purple-200',
+        SYLLABUS_UPDATE: 'bg-sky-50 text-sky-800 border border-sky-300 font-bold',
+        CURRICULUM_APPROVE: 'bg-emerald-50 text-emerald-800 border border-emerald-300 font-black',
       };
 
-      let logs = window.AUDIT_LOG || [];
-      if (filterText) {
-        logs = logs.filter(l => (l.action || '').toLowerCase().includes(filterText) || (l.entity || '').toLowerCase().includes(filterText) || (l.summary || '').toLowerCase().includes(filterText));
-      }
-      if (filterRole) {
-        logs = logs.filter(l => l.role === filterRole);
-      }
+      tbodies.forEach(({ tbody, filterText, filterRole, countEl }) => {
+        if (!tbody) return;
+        let logs = window.AUDIT_LOG || [];
+        if (filterText) {
+          logs = logs.filter(l => (l.action || '').toLowerCase().includes(filterText) || (l.entity || '').toLowerCase().includes(filterText) || (l.summary || '').toLowerCase().includes(filterText));
+        }
+        if (filterRole) {
+          logs = logs.filter(l => l.role === filterRole || (filterRole === 'Faculty Member' && l.role === 'Faculty 1'));
+        }
+        if (countEl) countEl.textContent = `${logs.length} records`;
 
-      const count = document.getElementById('auditCount');
-      if (count) count.textContent = `${logs.length} records`;
-
-      tbody.innerHTML = logs.map(l => {
-        const hasDiff = l.diff && Array.isArray(l.diff) && l.diff.length > 0;
-        return `
-        <tr class="hover:bg-slate-50 transition">
-          <td class="py-2.5 px-3 font-mono text-slate-500 text-[11px] whitespace-nowrap">${l.ts}</td>
-          <td class="py-2.5 px-3"><span class="font-bold text-slate-900">${l.role}</span></td>
-          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-none ${ACTION_COLORS[l.action] || 'bg-slate-100 text-slate-700'} text-[11px] font-bold font-mono">${l.action}</span></td>
-          <td class="py-2.5 px-3 font-mono text-xs font-bold text-apc-navy">${l.entity}</td>
-          <td class="py-2.5 px-3 text-[11px] text-slate-700 leading-snug">${l.summary}</td>
-          <td class="py-2.5 px-3 font-mono text-[11px] text-slate-400">${l.hash}</td>
-          <td class="py-2.5 px-3 text-right whitespace-nowrap">
-            <div class="inline-flex items-center gap-2 justify-end">
-              ${hasDiff ? `
-                <button type="button" onclick="openAuditDiffModal('${l.hash}')" class="px-2 py-0.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[11px] rounded-none cursor-pointer flex items-center gap-1 shadow-xs" title="Inspect previous vs new values">
-                  <span>🔍</span>
-                  <span>Inspect Values</span>
-                </button>
-              ` : ''}
-              <button type="button" onclick="verifyHashModal('${l.hash}')" class="text-blue-600 hover:underline font-bold text-[11px] cursor-pointer">Verify</button>
-            </div>
-          </td>
-        </tr>
-      `;
-      }).join('') || '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">No audit trail records found matching criteria.</td></tr>';
+        tbody.innerHTML = logs.map(l => {
+          const hasDiff = l.diff && Array.isArray(l.diff) && l.diff.length > 0;
+          return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-2.5 px-3 font-mono text-slate-500 text-[11px] whitespace-nowrap">${l.ts}</td>
+            <td class="py-2.5 px-3"><span class="font-bold text-slate-900">${l.role}</span></td>
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-none ${ACTION_COLORS[l.action] || 'bg-slate-100 text-slate-700'} text-[11px] font-bold font-mono">${l.action}</span></td>
+            <td class="py-2.5 px-3 font-mono text-xs font-bold text-apc-navy">${l.entity}</td>
+            <td class="py-2.5 px-3 text-[11px] text-slate-700 leading-snug">${l.summary}</td>
+            <td class="py-2.5 px-3 font-mono text-[11px] text-slate-400">${l.hash}</td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap">
+              <div class="inline-flex items-center gap-2 justify-end">
+                ${hasDiff ? `
+                  <button type="button" onclick="openAuditDiffModal('${l.hash}')" class="px-2 py-0.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[11px] rounded-none cursor-pointer flex items-center gap-1 shadow-xs" title="Inspect previous vs new values">
+                    <span>🔍</span>
+                    <span>Inspect Values</span>
+                  </button>
+                ` : ''}
+                <button type="button" onclick="verifyHashModal('${l.hash}')" class="text-blue-600 hover:underline font-bold text-[11px] cursor-pointer">Verify</button>
+              </div>
+            </td>
+          </tr>
+        `;
+        }).join('') || '<tr><td colspan="7" class="py-8 text-center text-slate-400 text-xs">No audit trail records found matching criteria.</td></tr>';
+      });
     }
 
     // =========================================================================
@@ -3117,10 +3115,16 @@ let currentSelectedCode = null;
       if (modal) modal.classList.remove('hidden');
       const alertBox = document.getElementById('cycleSimulationAlert');
       if (alertBox) alertBox.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('cycle-simulator');
+      }
     }
     function closeCycleSimulatorModal() {
       const modal = document.getElementById('cycleModal');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('cycle-simulator');
+      }
     }
     function runCycleSimulationCheck() {
       const target = document.getElementById('simTargetCourse').value;
@@ -6490,10 +6494,16 @@ function openAddExdModal() {
       }
       const m = document.getElementById('modalAddPd');
       if (m) m.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('assign-pd', { school: schoolName });
+      }
     }
     function closeAddPdModal() {
       const m = document.getElementById('modalAddPd');
       if (m) m.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('assign-pd');
+      }
     }
     function submitAddPd(e) {
       e.preventDefault();
@@ -7726,11 +7736,17 @@ function openAddExdModal() {
       const modal = document.getElementById('modalAddPd');
       if (!modal) return;
       modal.classList.remove('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('assign-pd', { school: school || '' });
+      }
     }
 
     function closeAddPdModal() {
       const modal = document.getElementById('modalAddPd');
       if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('assign-pd');
+      }
     }
 
     function openAssignPdForProgram(programCode) {
@@ -7816,3 +7832,10 @@ function openAddExdModal() {
         updateSidebarHierarchy(curRole);
       }
     });
+
+    window.openAuditDiffModal = openAuditDiffModal;
+    window.closeAuditDiffModal = closeAuditDiffModal;
+    window.openCycleSimulatorModal = openCycleSimulatorModal;
+    window.closeCycleSimulatorModal = closeCycleSimulatorModal;
+    window.openAddPdModal = openAddPdModal;
+    window.closeAddPdModal = closeAddPdModal;

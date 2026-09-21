@@ -757,11 +757,17 @@
     }
 
     drawer.classList.remove('hidden');
+    if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+      window.spaRouter.onModalOpen('course-detail', { course: code });
+    }
   }
 
   function closeDetailDrawer() {
     const drawer = document.getElementById('flowchartDetailDrawer');
     if (drawer) drawer.classList.add('hidden');
+    if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+      window.spaRouter.onModalClose('course-detail');
+    }
   }
 
   // =========================================================================

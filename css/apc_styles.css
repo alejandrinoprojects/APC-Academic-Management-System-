@@ -1498,3 +1498,12 @@
       color: #ffffff !important;
     }
 
+    /* Float Hover Effects for Academic School Cards & Degree Program Cards */
+    .school-card, .program-card {
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease !important;
+    }
+    .school-card:hover, .program-card:hover {
+      transform: translateY(-4px) !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+    }
+

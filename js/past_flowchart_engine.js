@@ -928,11 +928,17 @@
     }
 
     drawer.classList.remove('hidden');
+    if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+      window.spaRouter.onModalOpen('past-course-detail', { course: code });
+    }
   }
 
   function closePastFlowchartDrawer() {
     const drawer = document.getElementById('pastFlowchartDetailDrawer');
     if (drawer) drawer.classList.add('hidden');
+    if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+      window.spaRouter.onModalClose('past-course-detail');
+    }
   }
 
   // =========================================================================
