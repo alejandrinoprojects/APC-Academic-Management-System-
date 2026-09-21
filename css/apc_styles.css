@@ -39,13 +39,17 @@
     .course-card {
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .course-card.active-selected {
+    /* Light Mode Course Card Highlights */
+    html:not(.dark) .course-card.active-selected,
+    html:not(.dark) .flow-course-card.active-selected {
       outline: 3px solid #f59e0b;
+      background-color: #ffffff !important;
       transform: scale(1.04);
       z-index: 30 !important;
       box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.25);
     }
-    .course-card.feeder-highlight {
+    html:not(.dark) .course-card.feeder-highlight,
+    html:not(.dark) .flow-course-card.feeder-highlight {
       outline: 3px solid #2563eb;
       background-color: #eff6ff !important;
       color: #1e3a8a !important;
@@ -53,7 +57,8 @@
       z-index: 25 !important;
       box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.3);
     }
-    .course-card.dependent-highlight {
+    html:not(.dark) .course-card.dependent-highlight,
+    html:not(.dark) .flow-course-card.dependent-highlight {
       outline: 3px solid #16a34a;
       background-color: #f0fdf4 !important;
       color: #14532d !important;
@@ -61,7 +66,90 @@
       z-index: 25 !important;
       box-shadow: 0 8px 16px -4px rgba(22, 163, 74, 0.3);
     }
-    .course-card.dimmed {
+
+    /* Dark Mode High-Contrast Highlights (Visually Appealing Obsidian Gold & Radiant Cyber Neon) */
+    .dark .course-card.active-selected,
+    .dark .flow-course-card.active-selected {
+      outline: 3px solid #E5A823 !important;
+      background-color: #1d2738 !important;
+      color: #ffffff !important;
+      transform: scale(1.04);
+      z-index: 30 !important;
+      box-shadow: 0 0 0 1px rgba(229, 168, 35, 0.5), 0 12px 28px -4px rgba(229, 168, 35, 0.35) !important;
+    }
+    .dark .course-card.active-selected span.text-\[\#002855\],
+    .dark .flow-course-card.active-selected span.text-\[\#002855\] {
+      color: #fde047 !important;
+    }
+    .dark .course-card.active-selected .text-slate-800,
+    .dark .flow-course-card.active-selected .text-slate-800 {
+      color: #ffffff !important;
+    }
+    .dark .course-card.active-selected .bg-slate-100,
+    .dark .flow-course-card.active-selected .bg-slate-100 {
+      background-color: #2e2410 !important;
+      color: #fde047 !important;
+      border-color: #e5a823 !important;
+    }
+
+    .dark .course-card.feeder-highlight,
+    .dark .flow-course-card.feeder-highlight {
+      outline: 3px solid #38bdf8 !important;
+      background-color: #0b1f38 !important;
+      color: #e0f2fe !important;
+      transform: scale(1.02);
+      z-index: 25 !important;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4), 0 8px 24px -4px rgba(56, 189, 248, 0.35) !important;
+    }
+    .dark .course-card.feeder-highlight span.text-\[\#002855\],
+    .dark .flow-course-card.feeder-highlight span.text-\[\#002855\] {
+      color: #38bdf8 !important;
+    }
+    .dark .course-card.feeder-highlight .text-slate-800,
+    .dark .flow-course-card.feeder-highlight .text-slate-800 {
+      color: #f0f9ff !important;
+    }
+    .dark .course-card.feeder-highlight .bg-slate-100,
+    .dark .flow-course-card.feeder-highlight .bg-slate-100 {
+      background-color: #0c2d4d !important;
+      color: #bae6fd !important;
+      border-color: #0284c7 !important;
+    }
+    .dark .course-card.feeder-highlight .border-slate-200,
+    .dark .flow-course-card.feeder-highlight .border-slate-200 {
+      border-color: #164e63 !important;
+    }
+
+    .dark .course-card.dependent-highlight,
+    .dark .flow-course-card.dependent-highlight {
+      outline: 3px solid #4ade80 !important;
+      background-color: #092818 !important;
+      color: #dcfce7 !important;
+      transform: scale(1.02);
+      z-index: 25 !important;
+      box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.4), 0 8px 24px -4px rgba(74, 222, 128, 0.35) !important;
+    }
+    .dark .course-card.dependent-highlight span.text-\[\#002855\],
+    .dark .flow-course-card.dependent-highlight span.text-\[\#002855\] {
+      color: #4ade80 !important;
+    }
+    .dark .course-card.dependent-highlight .text-slate-800,
+    .dark .flow-course-card.dependent-highlight .text-slate-800 {
+      color: #f0fdf4 !important;
+    }
+    .dark .course-card.dependent-highlight .bg-slate-100,
+    .dark .flow-course-card.dependent-highlight .bg-slate-100 {
+      background-color: #0e3a24 !important;
+      color: #bbf7d0 !important;
+      border-color: #16a34a !important;
+    }
+    .dark .course-card.dependent-highlight .border-slate-200,
+    .dark .flow-course-card.dependent-highlight .border-slate-200 {
+      border-color: #064e3b !important;
+    }
+
+    .course-card.dimmed,
+    .flow-course-card.dimmed {
       opacity: 1 !important;
       filter: none !important;
     }
@@ -928,36 +1016,91 @@
       background-color: #080c13 !important;
       background-image: radial-gradient(#243247 1.2px, transparent 1.2px) !important;
     }
-    .dark .diagram-node.course-card {
-      background-color: #131b28 !important;
+    .dark .diagram-node.course-card,
+    .dark .flow-course-card,
+    .dark .course-card {
+      background-color: #111722 !important;
       border-color: #222f42 !important;
       color: #f8fafc !important;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4) !important;
     }
-    .dark .diagram-node .text-blue-950 {
+    .dark .diagram-node:hover,
+    .dark .flow-course-card:hover,
+    .dark .course-card:hover {
+      border-color: #e5a823 !important;
+      box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.6) !important;
+    }
+    .dark .diagram-node .text-blue-950,
+    .dark .flow-course-card .text-\[\#002855\],
+    .dark .course-card .text-\[\#002855\] {
       color: #93c5fd !important;
     }
-    .dark .diagram-node .text-slate-800 {
+    .dark .diagram-node .text-slate-800,
+    .dark .flow-course-card .text-slate-800,
+    .dark .course-card .text-slate-800 {
       color: #f1f5f9 !important;
     }
-    .dark .diagram-node .bg-slate-100 {
-      background-color: #0e141f !important;
-      border-color: #222f42 !important;
+    .dark .diagram-node .bg-slate-100,
+    .dark .flow-course-card .bg-slate-100,
+    .dark .course-card .bg-slate-100 {
+      background-color: #182232 !important;
+      border-color: #2a3b54 !important;
       color: #cbd5e1 !important;
     }
-    .dark .diagram-node.active-selected {
+    .dark .diagram-node.active-selected,
+    .dark .flow-course-card.active-selected,
+    .dark .course-card.active-selected {
       outline: 3px solid #e5a823 !important;
-      background-color: #1c2738 !important;
+      background-color: #1d2738 !important;
+      color: #ffffff !important;
     }
-    .dark .diagram-node.feeder-highlight {
-      outline: 3px solid #3b82f6 !important;
-      background-color: #172554 !important;
-      color: #bfdbfe !important;
+    .dark .diagram-node.feeder-highlight,
+    .dark .flow-course-card.feeder-highlight,
+    .dark .course-card.feeder-highlight {
+      outline: 3px solid #38bdf8 !important;
+      background-color: #0b1f38 !important;
+      color: #e0f2fe !important;
     }
-    .dark .diagram-node.dependent-highlight {
-      outline: 3px solid #22c55e !important;
-      background-color: #14532d !important;
-      color: #bbf7d0 !important;
+    .dark .diagram-node.dependent-highlight,
+    .dark .flow-course-card.dependent-highlight,
+    .dark .course-card.dependent-highlight {
+      outline: 3px solid #4ade80 !important;
+      background-color: #092818 !important;
+      color: #dcfce7 !important;
+    }
+
+    /* Dark Mode Port Dots Glow */
+    .dark .feeder-highlight .port-right {
+      opacity: 1 !important;
+      background: #38bdf8 !important;
+      box-shadow: 0 0 10px #38bdf8 !important;
+    }
+    .dark .active-selected .port-left {
+      opacity: 1 !important;
+      background: #38bdf8 !important;
+      box-shadow: 0 0 10px #38bdf8 !important;
+    }
+    .dark .active-selected .port-right {
+      opacity: 1 !important;
+      background: #4ade80 !important;
+      box-shadow: 0 0 10px #4ade80 !important;
+    }
+    .dark .dependent-highlight .port-left {
+      opacity: 1 !important;
+      background: #4ade80 !important;
+      box-shadow: 0 0 10px #4ade80 !important;
+    }
+
+    /* Dark Mode Connected Arrows */
+    .dark .dag-arrow.feeder-arrow {
+      stroke: #38bdf8 !important;
+      stroke-width: 3.5px !important;
+      filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.7));
+    }
+    .dark .dag-arrow.dependent-arrow {
+      stroke: #4ade80 !important;
+      stroke-width: 3.5px !important;
+      filter: drop-shadow(0 0 4px rgba(74, 222, 128, 0.7));
     }
 
     /* Canvas Controls & Floating HUD */

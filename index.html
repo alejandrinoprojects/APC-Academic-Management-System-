@@ -563,15 +563,24 @@
           </div>
         </div>
 
-        <!-- Settings Button with Gear SVG Icon (Role Clearance & Display Theme) -->
-        <button type="button" onclick="openLoginModal()" 
-          class="w-8 h-8 rounded bg-[#1E2430] hover:bg-[#283142] border border-[#E5A823]/70 hover:border-[#E5A823] text-amber-400 hover:text-amber-300 flex items-center justify-center cursor-pointer transition shadow-xs group shrink-0" 
-          title="Settings, Role Clearance & Display Theme">
-          <svg class="w-4 h-4 transition-transform group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
-        </button>
+        <div class="flex items-center space-x-1.5 shrink-0">
+          <!-- Quick Theme Toggle Button -->
+          <button type="button" onclick="toggleTheme()" 
+            class="theme-toggle-btn w-8 h-8 rounded-none bg-[#1E2430] hover:bg-[#283142] border border-[#E5A823]/70 hover:border-[#E5A823] text-amber-400 hover:text-amber-300 flex items-center justify-center cursor-pointer transition shadow-xs group shrink-0" 
+            title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
+            <span class="theme-icon text-sm">🌙</span>
+          </button>
+
+          <!-- Settings Button with Gear SVG Icon (Role Clearance & Display Theme) -->
+          <button type="button" onclick="openLoginModal()" 
+            class="w-8 h-8 rounded-none bg-[#1E2430] hover:bg-[#283142] border border-[#E5A823]/70 hover:border-[#E5A823] text-amber-400 hover:text-amber-300 flex items-center justify-center cursor-pointer transition shadow-xs group shrink-0" 
+            title="Settings, Role Clearance & Display Theme">
+            <svg class="w-4 h-4 transition-transform group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </button>
+        </div>
       </div>
     </aside>
 
@@ -3775,7 +3784,7 @@
   <!-- MICROSOFT ENTRA ID / APC LOGIN MODAL (Curriculum System Responsibility) -->
   <!-- ========================================================================= -->
   <div id="loginModal" class="fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center hidden backdrop-blur-xs p-4 no-print">
-    <div class="bg-white border-2 border-[#002855] w-full max-w-lg shadow-2xl rounded-none overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col">
+    <div class="bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] w-full max-w-lg shadow-2xl rounded-none overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col">
       <!-- Modal Header -->
       <div class="bg-[#002855] text-white px-6 py-4 flex items-center justify-between border-b-2 border-[#E5A823]">
         <div class="flex items-center space-x-3">
@@ -3792,7 +3801,7 @@
       <div class="p-6 space-y-5">
         
         <!-- Active Session Card (Hardcoded System Administrator) -->
-        <div class="p-4 bg-slate-50 border border-slate-300 relative">
+        <div class="p-4 bg-slate-50 dark:bg-[#131B28] border border-slate-300 dark:border-[#222F42] relative">
           <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[11px] font-mono font-bold px-2 py-0.5 uppercase">
             Active Session
           </div>
@@ -3801,17 +3810,34 @@
               <span id="loginModalAvatar">SA</span>
             </div>
             <div class="leading-tight">
-              <h4 id="loginModalName" class="font-extrabold text-sm text-slate-900">System Administrator</h4>
-              <p id="loginModalEmail" class="text-xs text-slate-600 font-mono">admin@apc.edu.ph</p>
+              <h4 id="loginModalName" class="font-extrabold text-sm text-slate-900 dark:text-white">System Administrator</h4>
+              <p id="loginModalEmail" class="text-xs text-slate-600 dark:text-slate-400 font-mono">admin@apc.edu.ph</p>
               <div class="flex items-center space-x-2 mt-1.5">
                 <span id="loginModalRole" class="px-2 py-0.5 bg-[#002855] text-[#E5A823] text-[11px] font-bold font-mono">System Administrator</span>
-                <span class="text-[10.5px] text-emerald-700 font-bold flex items-center gap-1">
+                <span class="text-[10.5px] text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1">
                   <span class="w-1.5 h-1.5 rounded-none bg-emerald-500 animate-pulse"></span>
                   <span>OAuth 2.0 Valid</span>
                 </span>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Display Theme Mode Preference -->
+        <div class="p-3.5 bg-slate-50 dark:bg-[#131B28] border border-slate-300 dark:border-[#222F42] flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 bg-slate-200 dark:bg-[#1C2638] border border-slate-300 dark:border-[#2C3B52] flex items-center justify-center text-base">
+              🌓
+            </div>
+            <div>
+              <div class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wide">Display Theme Mode</div>
+              <div class="text-[11px] text-slate-500 dark:text-slate-400">Toggle between Institutional Light and Obsidian Gold Dark Mode</div>
+            </div>
+          </div>
+          <button type="button" onclick="toggleTheme()" class="theme-toggle-btn px-3.5 py-2 bg-white dark:bg-[#002855] border-2 border-[#E5A823] text-slate-900 dark:text-[#E5A823] hover:bg-amber-50 dark:hover:bg-[#003875] font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-xs transition">
+            <span class="theme-icon text-sm">🌙</span>
+            <span class="theme-text">Dark Mode</span>
+          </button>
         </div>
 
         <!-- Role / Account Switcher for Direct Role Navigation -->
