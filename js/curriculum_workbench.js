@@ -1530,6 +1530,10 @@
       if (wbBtnText) {
         wbBtnText.innerText = isFaculty ? 'Faculty Workbench' : 'PD Workbench';
       }
+      const footerWbText = document.getElementById('curricHomeFooterWorkbenchText');
+      if (footerWbText) {
+        footerWbText.innerText = isFaculty ? 'Back to Faculty Workbench' : 'Back to Program Director Workbench';
+      }
 
       // 5. Refresh Spreadsheet Grid if rendered to reflect lock states
       if (document.getElementById('spreadsheetTable') && typeof renderSpreadsheetGrid === 'function') {
@@ -2977,6 +2981,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         }
         if (viewId === 'delegation' && typeof renderFacultyDirectory === 'function') {
           renderFacultyDirectory();
+        }
+        if (viewId === 'curriculum-home' && typeof renderAuditTable === 'function') {
+          renderAuditTable();
         }
       }
 

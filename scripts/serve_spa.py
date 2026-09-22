@@ -10,6 +10,10 @@ not_found_handling = "single-page-application" configuration.
 import os
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+try:
+    from http.server import ThreadingHTTPServer as ServerClass
+except ImportError:
+    from http.server import HTTPServer as ServerClass
 
 PORT = 8080
 if len(sys.argv) > 1:
@@ -66,7 +70,7 @@ class SpaRequestHandler(SimpleHTTPRequestHandler):
 def run(port=PORT):
     server_address = ('', port)
     try:
-        httpd = HTTPServer(server_address, SpaRequestHandler)
+        httpd = ServerClass(server_address, SpaRequestHandler)
         print("=" * 70)
         print(f"APC RAMS SPA SERVER running at http://localhost:{port}/")
         print(f"Root: {ROOT_DIR}")

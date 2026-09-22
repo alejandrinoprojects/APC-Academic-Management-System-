@@ -5277,7 +5277,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (typeof renderVersionTable === 'function') renderVersionTable();
       } else if (viewId === 'delegation') {
         if (typeof renderDelegationCards === 'function') renderDelegationCards();
-      } else if (viewId === 'audit') {
+      } else if (viewId === 'audit' || viewId === 'curriculum-home') {
         if (typeof renderAuditTable === 'function') renderAuditTable();
       } else if (viewId === 'registrar') {
         const tab = typeof currentRegistrarTab !== 'undefined' ? currentRegistrarTab : 1;
