@@ -9,31 +9,8 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APC School of Engineering — Centralized Curriculum Management System</title>
-  <!-- Tailwind CSS via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Universal System Font: Segoe UI -->
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Segoe UI"', '-apple-system', 'BlinkMacSystemFont', 'Roboto', '"Helvetica Neue"', 'sans-serif'],
-            mono: ['"Segoe UI"', 'ui-sans-serif', 'sans-serif'],
-          },
-          colors: {
-            apc: {
-              blue: '#0B2545',
-              navy: '#13315C',
-              gold: '#D4AF37',
-              accent: '#F39C12',
-              surface: '#F8F9FA',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Precompiled Production Tailwind CSS -->
+  <link rel="stylesheet" href="css/tailwind.min.css">
   <script>
     window.currentSidebarYear = null;
     window.setSidebarYear = function(year) {
@@ -3506,13 +3483,11 @@
 
   <!-- ========================================================================= -->
   <!-- JAVASCRIPT CONTROLLERS & GRAPH ENGINE -->
+  <!-- Note: registrar_docs.js and past_flowchart_engine.js are code-split & loaded dynamically on-demand -->
   <!-- ========================================================================= -->
   <script src="js/admin_schools.js"></script>
-  <script src="js/registrar_excel_data.js"></script>
-  <script src="js/registrar_docs.js"></script>
   <script src="js/curriculum_workbench.js"></script>
   <script src="js/diagram_canvas.js"></script>
-  <script src="js/past_flowchart_engine.js"></script>
   <script src="js/flowchart_table.js"></script>
 
   <!-- ========================================================================= -->

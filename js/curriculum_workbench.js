@@ -3083,15 +3083,25 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
       
       // Ensure documents are mounted if not yet mounted
-      if (typeof mountRegistrarDocs === 'function') {
-        mountRegistrarDocs();
-      } else if (window.REGISTRAR_DOCS) {
-        for (let i = 1; i <= 7; i++) {
-          const el = document.getElementById('regDocView_' + i);
-          if (el && window.REGISTRAR_DOCS[i] && !el.innerHTML.trim()) {
-            el.innerHTML = window.REGISTRAR_DOCS[i];
+      function mountDocs() {
+        if (typeof mountRegistrarDocs === 'function') {
+          mountRegistrarDocs();
+        } else if (window.REGISTRAR_DOCS) {
+          for (let i = 1; i <= 7; i++) {
+            const el = document.getElementById('regDocView_' + i);
+            if (el && window.REGISTRAR_DOCS[i] && !el.innerHTML.trim()) {
+              el.innerHTML = window.REGISTRAR_DOCS[i];
+            }
           }
         }
+      }
+
+      if (!window.REGISTRAR_DOCS && typeof window.loadScriptOnce === 'function') {
+        window.loadScriptOnce('js/registrar_docs.js').then(mountDocs).catch(err => {
+          console.error('[Registrar] Failed to lazy load registrar_docs.js:', err);
+        });
+      } else {
+        mountDocs();
       }
 
       // Update Toolbar Tabs
@@ -3302,34 +3312,13 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     function exportRegistrarWorkbookXlsx() {
       try {
-        if (!window.OFFICIAL_REGISTRAR_EXCEL_B64) {
-          if (typeof showToastNotification === 'function') {
-            showToastNotification('Error: Registrar Excel dataset not loaded.');
-          } else {
-            alert('Error: Registrar Excel dataset not loaded.');
-          }
-          return;
-        }
-
-        // Convert base64 data to Blob
-        const byteCharacters = atob(window.OFFICIAL_REGISTRAR_EXCEL_B64);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-          byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { 
-          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-        });
-
-        const link = document.createElement('a');
         const filename = 'Proposed BS CpE Curriculum 2026 Final Registrars Copy.xlsx';
-        link.href = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = 'assets/Proposed_BS_CpE_Curriculum_2026_Final_Registrars_Copy.xlsx';
         link.download = filename;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
 
         if (typeof showToastNotification === 'function') {
           showToastNotification('Downloaded: ' + filename + ' (All 7 Official Sheets)');
@@ -3794,9 +3783,18 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const prog = currentSelectedProgram || 'BSCpE';
       if (!editionId) editionId = 'BSCpE-2021';
       
-      // Render historical edition data into dedicated historical flowchart page
-      if (typeof renderPastFlowchart === 'function') {
-        renderPastFlowchart(editionId, 'all');
+      function render() {
+        if (typeof renderPastFlowchart === 'function') {
+          renderPastFlowchart(editionId, 'all');
+        }
+      }
+
+      if (typeof renderPastFlowchart !== 'function' && typeof window.loadScriptOnce === 'function') {
+        window.loadScriptOnce('js/past_flowchart_engine.js').then(render).catch(err => {
+          console.error('[PastFlowchart] Failed to lazy load past_flowchart_engine.js:', err);
+        });
+      } else {
+        render();
       }
 
       navigateView('past-flowchart');

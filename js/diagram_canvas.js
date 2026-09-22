@@ -345,17 +345,7 @@
       return;
     }
 
-    svg.setAttribute('width', innerRect.width);
-    svg.setAttribute('height', innerRect.height);
-    svg.style.width = innerRect.width + 'px';
-    svg.style.height = innerRect.height + 'px';
-
-    svgGroup.innerHTML = '';
-
-    // ── Build gutter X-position map ──────────────────────────────────────────
-    // For every column index, find the midpoint of the gap between col(N-1) right
-    // edge and col(N) left edge. Route vertical segments through that gap.
-    // We read actual td positions from the first tbody row.
+    // ── 1. READ PHASE: Gather all DOM layout measurements FIRST ──────────────
     const gutterX = {};  // colIndex → X midpoint of gap BEFORE that column
     const colLeftX = {}; // colIndex → left edge of column (left port offset)
     const colRightX = {};// colIndex → right edge of column (right port offset)
@@ -379,7 +369,7 @@
       }
     }
 
-    // ── Precompute node port coordinates ─────────────────────────────────────
+    // Precompute node port coordinates
     const portMap = {};
     courses.forEach(c => {
       const el = document.getElementById(`node-${c.code}`);
@@ -399,6 +389,14 @@
         };
       }
     });
+
+    // ── 2. WRITE PHASE: Update SVG dimensions & clear paths AFTER reads ──────
+    svg.setAttribute('width', innerRect.width);
+    svg.setAttribute('height', innerRect.height);
+    svg.style.width = innerRect.width + 'px';
+    svg.style.height = innerRect.height + 'px';
+
+    svgGroup.innerHTML = '';
 
     // ── Transitive prereq check (unchanged) ──────────────────────────────────
     function isTransitivePrereq(fromCode, tgtPrereqs) {

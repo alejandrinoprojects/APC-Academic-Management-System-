@@ -13,6 +13,50 @@
 (function(window) {
   'use strict';
 
+  // --- ASYNCHRONOUS ROUTE SCRIPT LOADER (In-Flight Promise Cache) ---
+  const _scriptPromises = window._scriptPromises || new Map();
+  window._scriptPromises = _scriptPromises;
+
+  function loadScriptOnce(src) {
+    if (_scriptPromises.has(src)) {
+      return _scriptPromises.get(src);
+    }
+
+    const promise = new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`);
+
+      if (existing) {
+        if (existing.dataset.loaded === 'true') {
+          resolve();
+          return;
+        }
+
+        existing.addEventListener('load', resolve, { once: true });
+        existing.addEventListener('error', reject, { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = src;
+
+      script.onload = () => {
+        script.dataset.loaded = 'true';
+        resolve();
+      };
+
+      script.onerror = (err) => {
+        _scriptPromises.delete(src);
+        reject(err);
+      };
+
+      document.body.appendChild(script);
+    });
+
+    _scriptPromises.set(src, promise);
+    return promise;
+  }
+  window.loadScriptOnce = loadScriptOnce;
+
   const STORAGE_KEY = 'apc_theme';
   const THEME_LIGHT = 'light';
   const THEME_DARK = 'dark';

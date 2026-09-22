@@ -14,6 +14,49 @@
 (function(window) {
   'use strict';
 
+  // --- ASYNCHRONOUS ROUTE SCRIPT LOADER (In-Flight Promise Cache) ---
+  const _scriptPromises = new Map();
+
+  function loadScriptOnce(src) {
+    if (_scriptPromises.has(src)) {
+      return _scriptPromises.get(src);
+    }
+
+    const promise = new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`);
+
+      if (existing) {
+        if (existing.dataset.loaded === 'true') {
+          resolve();
+          return;
+        }
+
+        existing.addEventListener('load', resolve, { once: true });
+        existing.addEventListener('error', reject, { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = src;
+
+      script.onload = () => {
+        script.dataset.loaded = 'true';
+        resolve();
+      };
+
+      script.onerror = (err) => {
+        _scriptPromises.delete(src);
+        reject(err);
+      };
+
+      document.body.appendChild(script);
+    });
+
+    _scriptPromises.set(src, promise);
+    return promise;
+  }
+  window.loadScriptOnce = loadScriptOnce;
+
   // --- PROGRAM & VIEW MAPPINGS ---
   const PROGRAM_SLUGS = {
     'cpe': 'BSCpE',
@@ -452,16 +495,32 @@
           }
         } else if (view === 'registrar') {
           const sheet = routeState.regDocIdx || 1;
-          if (typeof window.selectProgram === 'function') {
-            window.selectProgram(prog, 'registrar', sheet);
-          }
+          loadScriptOnce('js/registrar_docs.js').then(() => {
+            if (typeof window.selectProgram === 'function') {
+              window.selectProgram(prog, 'registrar', sheet);
+            }
+          }).catch(err => {
+            console.error('[SPARouter] Failed to load registrar_docs.js:', err);
+          });
         } else if (view === 'past-flowchart') {
-          if (typeof window.openPastFlowchart === 'function') {
-            window.openPastFlowchart(routeState.edition || 'BSCpE-2021');
-          }
-          if (routeState.year && typeof window.setPastFlowchartYear === 'function') {
-            window.setPastFlowchartYear(routeState.year);
-          }
+          loadScriptOnce('js/past_flowchart_engine.js').then(() => {
+            if (typeof window.openPastFlowchart === 'function') {
+              window.openPastFlowchart(routeState.edition || 'BSCpE-2021');
+            }
+            if (routeState.year && typeof window.setPastFlowchartYear === 'function') {
+              window.setPastFlowchartYear(routeState.year);
+            }
+          }).catch(err => {
+            console.error('[SPARouter] Failed to load past_flowchart_engine.js:', err);
+          });
+        } else if (view === 'past-curriculums') {
+          loadScriptOnce('js/past_flowchart_engine.js').then(() => {
+            if (typeof window.selectProgram === 'function') {
+              window.selectProgram(prog, 'past-curriculums');
+            }
+          }).catch(err => {
+            console.error('[SPARouter] Failed to load past_flowchart_engine.js:', err);
+          });
         } else if (view === 'homePdProgramView') {
           if (typeof window.selectProgram === 'function') {
             window.selectProgram(prog, 'homePdProgramView');
