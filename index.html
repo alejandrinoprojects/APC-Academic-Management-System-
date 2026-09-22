@@ -721,28 +721,28 @@
                         </div>
                       </div>
                     </div>
-                    <div class="p-4 pt-2 text-slate-200 space-y-3 flex-1 flex flex-col justify-between">
+                    <div class="p-4 pt-2 text-slate-800 dark:text-slate-200 space-y-3 flex-1 flex flex-col justify-between">
                       <div class="space-y-3">
                         <div>
-                          <label class="block text-xs font-bold text-slate-300 mb-1">Executive Director:</label>
-                          <div class="bg-[#10151E] border border-slate-700/70 p-2 text-xs text-white font-medium">Executive Director</div>
+                          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Executive Director:</label>
+                          <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 text-xs text-slate-900 dark:text-white font-medium">SOE Executive Director</div>
                         </div>
                         <div>
-                          <label class="block text-xs font-bold text-slate-300 mb-1">Programs Offered:</label>
-                          <div class="bg-[#10151E] border border-slate-700/70 p-2.5 text-xs text-slate-300 space-y-2 font-sans">
-                            <a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram('BSCpE', 'homePdProgramView')" class="text-slate-200 hover:text-[#E5A823] hover:underline transition flex items-center justify-between group cursor-pointer" title="Go to Bachelor of Science in Computer Engineering (BSCpE)">
+                          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Programs Offered:</label>
+                          <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2.5 text-xs text-slate-700 dark:text-slate-300 space-y-2 font-sans">
+                            <a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram('BSCpE', 'homePdProgramView')" class="text-slate-900 dark:text-slate-200 hover:text-[#002855] dark:hover:text-[#E5A823] hover:underline transition flex items-center justify-between group cursor-pointer" title="Go to Bachelor of Science in Computer Engineering (BSCpE)">
                               <span class="flex items-center gap-1.5 truncate">
-                                <span class="text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span>
-                                <span class="truncate font-bold text-white">Bachelor of Science in Computer Engineering</span>
+                                <span class="text-amber-500 dark:text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span>
+                                <span class="truncate font-bold text-slate-900 dark:text-white">Bachelor of Science in Computer Engineering</span>
                               </span>
-                              <span class="text-[9px] font-mono px-1.5 py-0.2 bg-emerald-950 text-emerald-300 border border-emerald-800 shrink-0">Active</span>
+                              <span class="text-[9px] font-mono px-1.5 py-0.2 bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800 shrink-0">Active</span>
                             </a>
                           </div>
                         </div>
                       </div>
                       <div class="space-y-3 pt-2">
                         <div class="flex justify-end items-center">
-                          <button type="button" onclick="event.stopPropagation(); openEditSchoolModal('soe')" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-slate-300 hover:text-white flex items-center justify-center text-sm transition cursor-pointer shadow-xs" title="Edit School of Engineering (Programs, Director, Assets)">✎</button>
+                          <button type="button" onclick="event.stopPropagation(); openEditSchoolModal('soe')" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center text-sm transition cursor-pointer shadow-xs" title="Edit School of Engineering (Programs, Director, Assets)">✎</button>
                         </div>
                         <div class="h-1.5 bg-[#FF6B00] w-full -mb-4 -mx-4"></div>
                       </div>
@@ -849,7 +849,7 @@
                       </div>
                       <!-- Title Typography -->
                       <div class="relative z-10 leading-tight">
-                        <span class="block text-[10px] font-black text-slate-300 tracking-widest uppercase drop-shadow-md">BACHELOR OF SCIENCE IN</span>
+                        <span class="block text-[10px] font-black text-slate-700 dark:text-slate-300 tracking-widest uppercase drop-shadow-md">BACHELOR OF SCIENCE IN</span>
                         <span class="block text-sm sm:text-base font-black text-[#FF6B00] group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">COMPUTER ENGINEERING</span>
                       </div>
                     </div>
@@ -1016,33 +1016,83 @@
 
                   <!-- ─── CARD 2: SYLLABUS MANAGEMENT ─── -->
                   <div onclick="selectProgram('BSCpE', 'syllabus')"
-                    class="pd-subsystem-card flex flex-col justify-center overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer p-6">
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-center gap-3.5">
-                        <div class="w-11 h-11 bg-sky-50 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-800 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl shrink-0 shadow-xs">
-                          📘
+                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
+                    <div class="p-6 space-y-4">
+                      <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-3.5">
+                          <div class="w-11 h-11 bg-sky-50 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-800 text-sky-600 dark:text-sky-400 flex items-center justify-center text-xl shrink-0 shadow-xs">
+                            📘
+                          </div>
+                          <div class="space-y-1">
+                            <h4 class="text-base font-black text-[#002855] dark:text-sky-200 group-hover:text-sky-600 transition-colors uppercase tracking-tight">
+                              Syllabus Management
+                            </h4>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                              Syllabi authoring, institutional learning outcomes mapping, and CHED compliance tracking.
+                            </p>
+                          </div>
                         </div>
-                        <h4 class="text-base font-black text-[#002855] dark:text-sky-200 group-hover:text-sky-600 transition-colors uppercase tracking-tight">
-                          Syllabus Management
-                        </h4>
                       </div>
-                      <span class="text-slate-400 group-hover:text-sky-600 font-bold text-sm transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </div>
+
+                    <!-- Subsystem Action Suite -->
+                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
+                      <button type="button" onclick="selectProgram('BSCpE', 'syllabus')"
+                        class="w-full py-2.5 px-4 bg-sky-800 hover:bg-sky-900 text-white text-xs font-black uppercase tracking-wider transition border border-sky-950 shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                        <span>📘</span>
+                        <span>Syllabus Workspace &rarr;</span>
+                      </button>
+                      <div class="flex items-center gap-2">
+                        <button type="button" onclick="selectProgram('BSCpE', 'syllabus')"
+                          class="flex-1 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer">
+                          <span>Syllabus Bank</span>
+                        </button>
+                        <button type="button" onclick="selectProgram('BSCpE', 'registrar', 5)"
+                          class="flex-1 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer">
+                          <span>OBE Map</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
 
                   <!-- ─── CARD 3: COURSE MANAGEMENT ─── -->
                   <div onclick="selectProgram('BSCpE', 'course')"
-                    class="pd-subsystem-card flex flex-col justify-center overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer p-6">
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-center gap-3.5">
-                        <div class="w-11 h-11 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0 shadow-xs">
-                          📗
+                    class="pd-subsystem-card flex flex-col justify-between overflow-hidden relative group bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 shadow-sm hover:border-[#002855] hover:shadow-md transition-all cursor-pointer">
+                    <div class="p-6 space-y-4">
+                      <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-3.5">
+                          <div class="w-11 h-11 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0 shadow-xs">
+                            📗
+                          </div>
+                          <div class="space-y-1">
+                            <h4 class="text-base font-black text-[#002855] dark:text-emerald-200 group-hover:text-emerald-600 transition-colors uppercase tracking-tight">
+                              Course Management
+                            </h4>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                              Course specifications, credit units, prerequisites configuration, and laboratory equipment.
+                            </p>
+                          </div>
                         </div>
-                        <h4 class="text-base font-black text-[#002855] dark:text-emerald-200 group-hover:text-emerald-600 transition-colors uppercase tracking-tight">
-                          Course Management
-                        </h4>
                       </div>
-                      <span class="text-slate-400 group-hover:text-emerald-600 font-bold text-sm transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </div>
+
+                    <!-- Subsystem Action Suite -->
+                    <div class="p-6 pt-0 space-y-2.5" onclick="event.stopPropagation()">
+                      <button type="button" onclick="selectProgram('BSCpE', 'course')"
+                        class="w-full py-2.5 px-4 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-black uppercase tracking-wider transition border border-emerald-950 shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                        <span>📗</span>
+                        <span>Course Workspace &rarr;</span>
+                      </button>
+                      <div class="flex items-center gap-2">
+                        <button type="button" onclick="selectProgram('BSCpE', 'registrar', 3)"
+                          class="flex-1 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer">
+                          <span>Course Catalog</span>
+                        </button>
+                        <button type="button" onclick="selectProgram('BSCpE', 'flowchart')"
+                          class="flex-1 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer">
+                          <span>Prerequisites</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
 

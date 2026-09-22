@@ -1306,7 +1306,7 @@
                 ${banner.iconHtml}
                 <!-- Title Typography -->
                 <div class="relative z-10 leading-tight">
-                  <span class="block text-[10px] font-black text-slate-300 tracking-widest uppercase drop-shadow-md">${banner.subTitle}</span>
+                  <span class="block text-[10px] font-black text-slate-700 dark:text-slate-300 tracking-widest uppercase drop-shadow-md">${banner.subTitle}</span>
                   <span class="block text-sm sm:text-base font-black ${banner.titleColor} group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">${banner.title}</span>
                 </div>
                 ${isArchived ? '<span class="absolute top-2 right-2 text-[9px] font-mono px-1.5 py-0.5 bg-slate-900/90 text-amber-400 border border-amber-500/40 rounded z-20">Dev Freeze</span>' : ''}
@@ -1335,15 +1335,15 @@
                         <span class="font-semibold text-slate-800 dark:text-slate-200">Curriculum AY: 2026 - 2030</span>
                         <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">1st Year</span>
                       </div>
-                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-500">
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-700 dark:text-slate-300">
                         <span>Curriculum AY: 2025 - 2029</span>
                         <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">2nd Year</span>
                       </div>
-                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-500">
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-700 dark:text-slate-300">
                         <span>Curriculum AY: 2024 - 2028</span>
                         <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">3rd Year</span>
                       </div>
-                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-500">
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-700 dark:text-slate-300">
                         <span>Curriculum AY: 2023 - 2027</span>
                         <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">4th Year</span>
                       </div>

@@ -133,5 +133,6 @@
   };
 
   window.toggleApcTheme = toggleTheme;
+  window.toggleTheme = toggleTheme;
 
 })(window);

@@ -244,14 +244,14 @@
 
       // Empty Card for Adding Schools (at the end of the grid)
       const addSchoolCardHtml = `
-      <div onclick="openAddSchoolModal()" class="school-card min-h-[360px] bg-[#181D26]/60 hover:bg-[#181D26] border-2 border-dashed border-slate-700 hover:border-[#E5A823] transition-all duration-200 cursor-pointer flex flex-col items-center justify-center p-8 text-center group select-none shadow-md">
-        <div class="w-14 h-14 rounded-full bg-[#10151E] border border-slate-700 group-hover:border-[#E5A823] group-hover:bg-[#E5A823]/10 flex items-center justify-center text-slate-400 group-hover:text-[#E5A823] text-2xl font-light transition mb-3">
+      <div onclick="openAddSchoolModal()" class="school-card min-h-[360px] bg-white dark:bg-[#181D26]/60 hover:bg-slate-50 dark:hover:bg-[#181D26] border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-[#E5A823] transition-all duration-200 cursor-pointer flex flex-col items-center justify-center p-8 text-center group select-none shadow-md">
+        <div class="w-14 h-14 rounded-full bg-slate-100 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 group-hover:border-[#E5A823] group-hover:bg-[#E5A823]/10 flex items-center justify-center text-slate-400 group-hover:text-[#E5A823] text-2xl font-light transition mb-3">
           +
         </div>
-        <h3 class="text-sm font-bold text-slate-200 group-hover:text-white uppercase tracking-wider mb-1">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-slate-200 group-hover:text-[#002855] dark:group-hover:text-white uppercase tracking-wider mb-1">
           Add Academic School
         </h3>
-        <p class="text-xs text-slate-400 group-hover:text-slate-300 max-w-[220px] leading-relaxed">
+        <p class="text-xs text-slate-600 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-300 max-w-[220px] leading-relaxed">
           Click to provision a new school or division with programs &amp; assets
         </p>
       </div>
@@ -263,12 +263,12 @@
           const item = programs[pi];
           const prog = typeof item === 'object' ? item : getProgramInfo(item);
           if (prog.code === 'BSCpE') {
-            activeHtml += '<a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram(\'' + prog.code + '\', \'homePdProgramView\')" class="text-slate-200 hover:text-[#E5A823] hover:underline transition flex items-center justify-between group cursor-pointer" title="Go to ' + prog.name + ' (' + prog.code + ')">' +
+            activeHtml += '<a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram(\'' + prog.code + '\', \'homePdProgramView\')" class="text-slate-900 dark:text-slate-200 hover:text-[#002855] dark:hover:text-[#E5A823] hover:underline transition flex items-center justify-between group cursor-pointer" title="Go to ' + prog.name + ' (' + prog.code + ')">' +
               '<span class="flex items-center gap-1.5 truncate">' +
-                '<span class="text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span> ' +
-                '<span class="truncate font-bold text-white">' + prog.name + '</span>' +
+                '<span class="text-amber-500 dark:text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span> ' +
+                '<span class="truncate font-bold text-slate-900 dark:text-white">' + prog.name + '</span>' +
               '</span>' +
-              '<span class="text-[9px] font-mono px-1.5 py-0.2 bg-emerald-950 text-emerald-300 border border-emerald-800 shrink-0">Active</span>' +
+              '<span class="text-[9px] font-mono px-1.5 py-0.2 bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800 shrink-0">Active</span>' +
             '</a>';
           }
         }
@@ -318,18 +318,18 @@
           </div>
 
           <!-- Card Body -->
-          <div class="p-4 pt-2 text-slate-200 space-y-3 flex-1 flex flex-col justify-between">
+          <div class="p-4 pt-2 text-slate-800 dark:text-slate-200 space-y-3 flex-1 flex flex-col justify-between">
             <div class="space-y-3">
               <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">Executive Director:</label>
-                <div class="bg-[#10151E] border border-slate-700/70 p-2 text-xs text-white font-medium truncate">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Executive Director:</label>
+                <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 text-xs text-slate-900 dark:text-white font-medium truncate">
                   ${s.director}
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">Programs Offered:</label>
-                <div class="bg-[#10151E] border border-slate-700/70 p-2.5 text-xs text-slate-300 space-y-1.5 font-sans">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Programs Offered:</label>
+                <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2.5 text-xs text-slate-700 dark:text-slate-300 space-y-1.5 font-sans">
                   ${programsHtml}
                 </div>
               </div>
@@ -338,7 +338,7 @@
             <!-- Bottom Actions & Color-coded Accent Stripe (Only Edit Pencil Button) -->
             <div class="space-y-3 pt-2">
               <div class="flex justify-end items-center">
-                <button type="button" onclick="event.stopPropagation(); openEditSchoolModal('${s.id}')" class="w-8 h-8 bg-[#10151E] hover:bg-slate-800 border border-slate-700/70 text-slate-300 hover:text-white flex items-center justify-center text-sm transition cursor-pointer shadow-xs" title="Edit ${s.bannerTitle} ${s.name} (Programs, Director, Assets)">
+                <button type="button" onclick="event.stopPropagation(); openEditSchoolModal('${s.id}')" class="w-8 h-8 bg-slate-100 dark:bg-[#10151E] hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/70 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center text-sm transition cursor-pointer shadow-xs" title="Edit ${s.bannerTitle} ${s.name} (Programs, Director, Assets)">
                   ✎
                 </button>
               </div>

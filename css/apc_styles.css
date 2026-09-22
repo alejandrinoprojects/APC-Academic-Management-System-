@@ -758,8 +758,8 @@
     /* Light Mode Academic School Cards */
     html:not(.dark) .school-card {
       background-color: #ffffff !important;
-      border-color: #e2e8f0 !important;
-      color: #1e293b !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
       box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04) !important;
     }
     html:not(.dark) .school-card:hover {
@@ -767,7 +767,7 @@
       box-shadow: 0 20px 30px -6px rgba(0, 0, 0, 0.12), 0 8px 12px -4px rgba(0, 0, 0, 0.06) !important;
     }
     html:not(.dark) .school-card .p-4 {
-      color: #1e293b !important;
+      color: #0f172a !important;
     }
     html:not(.dark) .school-card label {
       color: #475569 !important;
@@ -777,19 +777,37 @@
       border-color: #e2e8f0 !important;
       color: #0f172a !important;
     }
-    html:not(.dark) .school-card a.text-slate-300 {
-      color: #1e293b !important;
+    html:not(.dark) .school-card .text-white,
+    html:not(.dark) .school-card span.text-white,
+    html:not(.dark) .school-card div.text-white {
+      color: #0f172a !important;
     }
-    html:not(.dark) .school-card a.text-slate-300:hover {
+    html:not(.dark) .school-card a {
+      color: #002855 !important;
+      font-weight: 700 !important;
+    }
+    html:not(.dark) .school-card a span {
+      color: #002855 !important;
+    }
+    html:not(.dark) .school-card a:hover span {
       color: #d97706 !important;
+    }
+    html:not(.dark) .school-card a span.text-amber-400,
+    html:not(.dark) .school-card a span.text-amber-500 {
+      color: #d97706 !important;
+    }
+    html:not(.dark) .school-card .bg-emerald-950 {
+      background-color: #ecfdf5 !important;
+      color: #065f46 !important;
+      border-color: #a7f3d0 !important;
     }
     html:not(.dark) .school-card span.underline {
       text-decoration-color: #cbd5e1 !important;
     }
     html:not(.dark) .school-card button {
       background-color: #f1f5f9 !important;
-      color: #475569 !important;
-      border-color: #e2e8f0 !important;
+      color: #334155 !important;
+      border-color: #cbd5e1 !important;
     }
     html:not(.dark) .school-card button:hover {
       background-color: #e2e8f0 !important;
@@ -819,62 +837,19 @@
       color: #0f172a !important;
     }
     html:not(.dark) .school-card.border-dashed:hover h3 {
-      color: #0f172a !important;
+      color: #002855 !important;
     }
     html:not(.dark) .school-card.border-dashed p {
       color: #475569 !important;
     }
 
-    /* Light Mode Degree Program Cards (EXD Tier 3) */
-    html:not(.dark) .program-card {
-      background-color: #ffffff !important;
-      border-color: #e2e8f0 !important;
-      color: #0f172a !important;
-      box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.06) !important;
+    /* Light Mode Sidebar Badges Contrast */
+    html:not(.dark) #leftNavSidebar .text-amber-400 {
+      color: #b45309 !important;
     }
-    html:not(.dark) .program-card:hover {
-      border-color: #e5a823 !important;
-      box-shadow: 0 16px 24px -6px rgba(0, 0, 0, 0.12) !important;
-    }
-    html:not(.dark) .program-card .h-28 {
-      background-color: #f8fafc !important;
-    }
-    html:not(.dark) .program-card .h-28 .text-white {
-      color: #0f172a !important;
-    }
-    html:not(.dark) .program-card .bg-\[\#10151E\] {
-      background-color: #f8fafc !important;
-      border-color: #e2e8f0 !important;
-      color: #0f172a !important;
-    }
-    html:not(.dark) .program-card .text-slate-200 {
-      color: #0f172a !important;
-    }
-    html:not(.dark) .program-card .text-slate-300 {
-      color: #334155 !important;
-    }
-    html:not(.dark) .program-card .text-slate-400 {
-      color: #64748b !important;
-    }
-    html:not(.dark) .program-card .text-white {
-      color: #0f172a !important;
-    }
-    html:not(.dark) .program-card .bg-emerald-950\/60 {
-      background-color: #ecfdf5 !important;
-      color: #047857 !important;
-      border-color: #a7f3d0 !important;
-    }
-    html:not(.dark) .program-card button.bg-\[\#10151E\] {
-      background-color: #f1f5f9 !important;
-      border-color: #cbd5e1 !important;
-      color: #334155 !important;
-    }
-    html:not(.dark) .program-card button.bg-\[\#10151E\]:hover {
-      background-color: #e2e8f0 !important;
-      color: #0f172a !important;
-    }
-    html:not(.dark) .program-card .hover\:bg-slate-800\/60:hover {
-      background-color: #f1f5f9 !important;
+    html:not(.dark) #leftNavSidebar .bg-amber-400\/10 {
+      background-color: #fef3c7 !important;
+      border-color: #fde68a !important;
     }
 
     /* EXD Header Boxes */
@@ -1419,6 +1394,11 @@
     html:not(.dark) .program-card .h-28 span.drop-shadow-md {
       filter: none !important; /* Clear dirty shadow blur */
     }
+    html:not(.dark) .program-card .h-28 span.text-slate-300,
+    html:not(.dark) .program-card .h-28 span.text-slate-400 {
+      color: #334155 !important;
+      font-weight: 800 !important;
+    }
     html:not(.dark) .program-card .h-28 span.text-white {
       color: #0f172a !important;
       font-weight: 800 !important;
@@ -1427,6 +1407,16 @@
     html:not(.dark) .program-card .h-28 span.text-\[\#E5A823\] {
       color: #c2410c !important;
       font-weight: 900 !important;
+    }
+    html:not(.dark) .program-card .h-28 .w-10.h-10 {
+      background-color: #f0f9ff !important;
+      border-color: #0284c7 !important;
+      color: #0284c7 !important;
+    }
+    html:not(.dark) .program-card .text-white,
+    html:not(.dark) .program-card span.text-white,
+    html:not(.dark) .program-card div.text-white {
+      color: #0f172a !important;
     }
     html:not(.dark) .program-card .text-slate-200 {
       color: #334155 !important;
@@ -1438,6 +1428,14 @@
     }
     html:not(.dark) .program-card .bg-\[\#10151E\] div {
       color: #334155 !important;
+    }
+    html:not(.dark) .program-card .bg-\[\#10151E\] div span {
+      color: #1e293b !important;
+      font-weight: 600 !important;
+    }
+    html:not(.dark) .program-card .bg-\[\#10151E\] div span.text-emerald-700 {
+      color: #047857 !important;
+      font-weight: 700 !important;
     }
     html:not(.dark) .program-card .bg-\[\#10151E\] div:hover {
       background-color: #f1f5f9 !important;
@@ -1457,7 +1455,8 @@
       background-color: #e2e8f0 !important;
       color: #002855 !important;
     }
-    html:not(.dark) .program-card label.text-slate-400 {
+    html:not(.dark) .program-card label.text-slate-400,
+    html:not(.dark) .program-card label.text-slate-700 {
       color: #475569 !important;
     }
     html:not(.dark) .program-card .text-amber-400.font-mono {
