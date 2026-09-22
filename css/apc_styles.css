@@ -1649,3 +1649,20 @@
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
     }
 
+    /* In-place editing styles for Official Documents */
+    .reg-editing-node {
+      outline: 1.5px dashed #e5a823 !important;
+      outline-offset: 1px;
+      cursor: text !important;
+      transition: outline 0.15s ease, background-color 0.15s ease;
+    }
+    .reg-editing-node:hover {
+      background-color: rgba(229, 168, 35, 0.08) !important;
+      outline: 2px solid #e5a823 !important;
+    }
+    .reg-editing-node:focus {
+      background-color: rgba(229, 168, 35, 0.14) !important;
+      outline: 2px solid #b45309 !important;
+    }
+
+

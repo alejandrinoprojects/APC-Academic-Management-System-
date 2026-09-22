@@ -97,9 +97,9 @@
       <div class="w-full max-w-sm sm:max-w-md bg-white border-2 border-[#E5A823] shadow-2xl p-7 sm:p-9 space-y-6 text-center relative z-10">
         
         <!-- Header Branding Inside Card -->
-        <div class="text-center space-y-2 pb-2">
-          <img src="assets/login_apc_nu_logo_clean.png" class="h-8 mx-auto object-contain" alt="Asia Pacific College">
-          <div class="text-[11px] font-bold text-[#002855] uppercase tracking-wider">Academic Management System</div>
+        <div class="text-center space-y-2.5 pb-2">
+          <img src="assets/apc_seal.png" class="w-14 h-14 mx-auto object-contain bg-white p-1 rounded-full border-2 border-[#E5A823] shadow-md" alt="Asia Pacific College Seal">
+          <div class="text-xs font-black text-[#002855] uppercase tracking-wider">Academic Management System</div>
         </div>
 
         <!-- Native Credentials Login Form -->
@@ -564,17 +564,10 @@
         </div>
 
         <div class="flex items-center space-x-1.5 shrink-0">
-          <!-- Quick Theme Toggle Button -->
-          <button type="button" onclick="toggleTheme()" 
-            class="theme-toggle-btn w-8 h-8 rounded-none bg-[#1E2430] hover:bg-[#283142] border border-[#E5A823]/70 hover:border-[#E5A823] text-amber-400 hover:text-amber-300 flex items-center justify-center cursor-pointer transition shadow-xs group shrink-0" 
-            title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
-            <span class="theme-icon text-sm">🌙</span>
-          </button>
-
           <!-- Settings Button with Gear SVG Icon (Role Clearance & Display Theme) -->
           <button type="button" onclick="openLoginModal()" 
             class="w-8 h-8 rounded-none bg-[#1E2430] hover:bg-[#283142] border border-[#E5A823]/70 hover:border-[#E5A823] text-amber-400 hover:text-amber-300 flex items-center justify-center cursor-pointer transition shadow-xs group shrink-0" 
-            title="Settings, Role Clearance & Display Theme">
+            title="Settings & Display Theme Preferences">
             <svg class="w-4 h-4 transition-transform group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -651,23 +644,34 @@
                   <div class="absolute inset-0 bg-gradient-to-t from-[#08101e] via-transparent to-[#08101e]/60"></div>
                 </div>
 
-                <!-- White framed rectangle container -->
-                <div class="relative p-6 sm:p-8 md:p-10 flex items-center justify-center" draggable="true">
-                  <div class="border border-white/60 p-6 sm:p-8 md:p-10 text-center w-full max-w-4xl mx-auto shadow-2xl bg-[#000000]/20" draggable="true">
-                    <!-- Main Headline with white underline -->
-                    <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-black font-sans text-white tracking-tight underline decoration-white decoration-2 underline-offset-8" draggable="true">
+                <!-- White framed rectangle container (Compact Size) -->
+                <div class="relative p-4 sm:p-5 md:p-6 flex items-center justify-center">
+                  <div class="border border-white/60 p-4 sm:p-5 md:p-6 text-center w-full max-w-3xl mx-auto shadow-2xl bg-[#000000]/25 relative">
+                    <!-- Edit Pillars Button -->
+                    <button type="button" onclick="openEditPillarsModal()" class="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 px-2 py-1 bg-white/10 hover:bg-[#E5A823] text-white hover:text-slate-950 text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 border border-white/30 cursor-pointer shadow-xs" title="Edit Institutional Mission, Vision & Values">
+                      <span>✎</span>
+                      <span>Edit Statements</span>
+                    </button>
+
+                    <!-- Main Headline (No Underline) -->
+                    <h1 class="text-xl sm:text-2xl md:text-3xl font-black font-sans text-white tracking-tight">
                       Real Projects. Real Learning.
                     </h1>
                     
-                    <!-- 3 Pillars: MISSION, VISION, Values -->
-                    <div class="grid grid-cols-3 gap-4 sm:gap-8 mt-8 sm:mt-10 max-w-2xl mx-auto font-sans">
-                      <button type="button" onclick="showPillarModal('mission')" class="text-center font-black text-base sm:text-lg md:text-2xl tracking-widest text-white hover:text-[#E5A823] transition cursor-pointer uppercase">
-                        MISSION
+                    <!-- 3 Pillars: MISSION, VISION, VALUES (With prominent underline indicator bar) -->
+                    <div class="grid grid-cols-3 gap-3 sm:gap-6 mt-4 sm:mt-5 max-w-xl mx-auto font-sans">
+                      <button type="button" onclick="showPillarModal('mission')" class="group relative py-1 px-2 text-center transition cursor-pointer flex flex-col items-center" title="Click to view Institutional Mission">
+                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-white group-hover:text-[#E5A823] transition-colors uppercase">MISSION</span>
+                        <span class="mt-1 h-0.5 w-10 sm:w-14 bg-[#E5A823] group-hover:w-full transition-all duration-200"></span>
                       </button>
-                      <button type="button" onclick="showPillarModal('vision')" class="text-center font-black text-base sm:text-lg md:text-2xl tracking-widest text-white hover:text-[#E5A823] transition cursor-pointer uppercase">
-                        VISION
+                      <button type="button" onclick="showPillarModal('vision')" class="group relative py-1 px-2 text-center transition cursor-pointer flex flex-col items-center" title="Click to view Institutional Vision">
+                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-white group-hover:text-[#E5A823] transition-colors uppercase">VISION</span>
+                        <span class="mt-1 h-0.5 w-10 sm:w-14 bg-[#E5A823] group-hover:w-full transition-all duration-200"></span>
                       </button>
-                      <button type="button" onclick="showPillarModal('values')" class="text-center font-black text-base sm:text-lg md:text-2xl tracking-widest text-white hover:text-[#E5A823] transition cursor-pointer" draggable="true">VALUES</button>
+                      <button type="button" onclick="showPillarModal('values')" class="group relative py-1 px-2 text-center transition cursor-pointer flex flex-col items-center" title="Click to view Institutional Core Values">
+                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-white group-hover:text-[#E5A823] transition-colors uppercase">VALUES</span>
+                        <span class="mt-1 h-0.5 w-10 sm:w-14 bg-[#E5A823] group-hover:w-full transition-all duration-200"></span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -934,8 +938,8 @@
                   </div>
                 </div>
 
-                <!-- Right: Program Directorate Overview Banner -->
-                <div id="pdRightBannerBox" class="flex-1 bg-[#002855] text-white border border-slate-700 shadow-sm relative overflow-hidden flex flex-col justify-between p-6">
+                <!-- Right: Program Directorate Overview Banner (Carries School Color Family - Orange for School of Engineering) -->
+                <div id="pdRightBannerBox" class="flex-1 bg-gradient-to-r from-[#1b0c03] via-[#351505] to-[#6a2507] text-white border border-[#FF6B00]/40 shadow-sm relative overflow-hidden flex flex-col justify-between p-6">
                   <div class="relative z-10 flex flex-wrap items-center justify-between gap-3">
                     <div class="space-y-1">
                       <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/40 border border-amber-400/40 text-amber-300 text-[10px] font-mono font-black uppercase tracking-widest">
@@ -1197,11 +1201,11 @@
         <!-- ========================================================================= -->
         <section id="view-curriculum-home" class="hidden space-y-6">
           
-          <!-- Modern Institutional Executive Hero Banner -->
-          <div class="bg-gradient-to-r from-[#001733] via-[#002855] to-[#001f44] text-white p-6 sm:p-8 rounded-none border border-[#001733] shadow-lg relative overflow-hidden">
+          <!-- Modern Institutional Executive Hero Banner (Carries School Color Family - Orange for School of Engineering) -->
+          <div id="curricHomeBannerBox" class="bg-gradient-to-r from-[#1b0c03] via-[#351505] to-[#6a2507] text-white p-6 sm:p-8 rounded-none border border-[#FF6B00]/40 shadow-lg relative overflow-hidden">
             <!-- Subtle Institutional Ambient Glow -->
-            <div class="absolute -right-16 -top-16 w-80 h-80 bg-[#E5A823]/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -right-16 -top-16 w-80 h-80 bg-[#FF6B00]/15 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <!-- Left: Degree Title -->
@@ -1237,21 +1241,15 @@
             </div>
           </div>
 
-          <!-- Primary Curriculum Management Cards Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Primary Curriculum Management Cards Grid (Expanded Width to Prevent Text Truncation) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             
             <!-- Card 1: 1st Year (AY 2026–2027) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y1</span>
-                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2026–2027</span>
-                  </div>
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold font-mono">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-none animate-pulse"></span>
-                    Active
-                  </span>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y1</span>
+                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2026–2027</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
@@ -1274,33 +1272,28 @@
                   </div>
                 </div>
               </div>
-              <div class="pt-4 grid grid-cols-3 gap-2">
-                <a href="/soe/cpe/flowchart?year=1" onclick="event.preventDefault(); openFlowchartForYear(1)" class="w-full py-2 px-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 1 Flowchart">
+              <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+                <a href="/soe/cpe/flowchart?year=1" onclick="event.preventDefault(); openFlowchartForYear(1)" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 1 Flowchart">
                   <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
-                  <span class="truncate">Flowchart</span>
+                  <span>Flowchart</span>
                 </a>
-                <a href="/soe/cpe/spreadsheet?year=1" onclick="event.preventDefault(); openSpreadsheetForYear(1)" class="w-full py-2 px-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 1 Spreadsheet">
+                <a href="/soe/cpe/spreadsheet?year=1" onclick="event.preventDefault(); openSpreadsheetForYear(1)" class="w-full py-2 px-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 1 Spreadsheet">
                   <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  <span class="truncate">Spreadsheet</span>
+                  <span>Spreadsheet</span>
                 </a>
-                <button type="button" onclick="openDocsForYear(1)" class="w-full py-2 px-2 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 1 Official Documents">
+                <button type="button" onclick="openDocsForYear(1)" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 1 Official Documents">
                   <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                  <span class="truncate">Official Docs</span>
+                  <span>Official Docs</span>
                 </button>
               </div>
             </div>
 
             <!-- Card 2: 2nd Year (AY 2027–2028) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y2</span>
-                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2027–2028</span>
-                  </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                    Cohort
-                  </span>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y2</span>
+                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2027–2028</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
@@ -1323,33 +1316,28 @@
                   </div>
                 </div>
               </div>
-              <div class="pt-4 grid grid-cols-3 gap-2">
-                <a href="/soe/cpe/flowchart?year=2" onclick="event.preventDefault(); openFlowchartForYear(2)" class="w-full py-2 px-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 2 Flowchart">
+              <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+                <a href="/soe/cpe/flowchart?year=2" onclick="event.preventDefault(); openFlowchartForYear(2)" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 2 Flowchart">
                   <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
-                  <span class="truncate">Flowchart</span>
+                  <span>Flowchart</span>
                 </a>
-                <a href="/soe/cpe/spreadsheet?year=2" onclick="event.preventDefault(); openSpreadsheetForYear(2)" class="w-full py-2 px-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 2 Spreadsheet">
+                <a href="/soe/cpe/spreadsheet?year=2" onclick="event.preventDefault(); openSpreadsheetForYear(2)" class="w-full py-2 px-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 2 Spreadsheet">
                   <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  <span class="truncate">Spreadsheet</span>
+                  <span>Spreadsheet</span>
                 </a>
-                <button type="button" onclick="openDocsForYear(2)" class="w-full py-2 px-2 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 2 Official Documents">
+                <button type="button" onclick="openDocsForYear(2)" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 2 Official Documents">
                   <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                  <span class="truncate">Official Docs</span>
+                  <span>Official Docs</span>
                 </button>
               </div>
             </div>
 
             <!-- Card 3: 3rd Year (AY 2028–2029) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y3</span>
-                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2028–2029</span>
-                  </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                    Cohort
-                  </span>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y3</span>
+                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2028–2029</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
@@ -1372,33 +1360,28 @@
                   </div>
                 </div>
               </div>
-              <div class="pt-4 grid grid-cols-3 gap-2">
-                <a href="/soe/cpe/flowchart?year=3" onclick="event.preventDefault(); openFlowchartForYear(3)" class="w-full py-2 px-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 3 Flowchart">
+              <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+                <a href="/soe/cpe/flowchart?year=3" onclick="event.preventDefault(); openFlowchartForYear(3)" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 3 Flowchart">
                   <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
-                  <span class="truncate">Flowchart</span>
+                  <span>Flowchart</span>
                 </a>
-                <a href="/soe/cpe/spreadsheet?year=3" onclick="event.preventDefault(); openSpreadsheetForYear(3)" class="w-full py-2 px-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 3 Spreadsheet">
+                <a href="/soe/cpe/spreadsheet?year=3" onclick="event.preventDefault(); openSpreadsheetForYear(3)" class="w-full py-2 px-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 3 Spreadsheet">
                   <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  <span class="truncate">Spreadsheet</span>
+                  <span>Spreadsheet</span>
                 </a>
-                <button type="button" onclick="openDocsForYear(3)" class="w-full py-2 px-2 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 3 Official Documents">
+                <button type="button" onclick="openDocsForYear(3)" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 3 Official Documents">
                   <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                  <span class="truncate">Official Docs</span>
+                  <span>Official Docs</span>
                 </button>
               </div>
             </div>
 
             <!-- Card 4: 4th Year (AY 2029–2030) -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
+            <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y4</span>
-                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2029–2030</span>
-                  </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                    Graduating
-                  </span>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">Y4</span>
+                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">AY 2029–2030</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
@@ -1421,33 +1404,28 @@
                   </div>
                 </div>
               </div>
-              <div class="pt-4 grid grid-cols-3 gap-2">
-                <a href="/soe/cpe/flowchart?year=4" onclick="event.preventDefault(); openFlowchartForYear(4)" class="w-full py-2 px-2 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 4 Flowchart">
+              <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+                <a href="/soe/cpe/flowchart?year=4" onclick="event.preventDefault(); openFlowchartForYear(4)" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 4 Flowchart">
                   <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
-                  <span class="truncate">Flowchart</span>
+                  <span>Flowchart</span>
                 </a>
-                <a href="/soe/cpe/spreadsheet?year=4" onclick="event.preventDefault(); openSpreadsheetForYear(4)" class="w-full py-2 px-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 4 Spreadsheet">
+                <a href="/soe/cpe/spreadsheet?year=4" onclick="event.preventDefault(); openSpreadsheetForYear(4)" class="w-full py-2 px-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 4 Spreadsheet">
                   <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  <span class="truncate">Spreadsheet</span>
+                  <span>Spreadsheet</span>
                 </a>
-                <button type="button" onclick="openDocsForYear(4)" class="w-full py-2 px-2 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs" title="Open Year 4 Official Documents">
+                <button type="button" onclick="openDocsForYear(4)" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 4 Official Documents">
                   <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                  <span class="truncate">Official Docs</span>
+                  <span>Official Docs</span>
                 </button>
               </div>
             </div>
 
             <!-- Card 5: Past Curriculums Archive -->
-            <div onclick="navigateView('past-curriculums')" class="bg-slate-50/70 dark:bg-slate-900/40 border border-slate-200/90 dark:border-slate-800 p-5 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group border-t-4 border-t-slate-400 dark:border-t-slate-600 cursor-pointer">
+            <div onclick="navigateView('past-curriculums')" class="bg-slate-50/70 dark:bg-slate-900/40 border border-slate-200/90 dark:border-slate-800 p-5 sm:p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group border-t-4 border-t-slate-400 dark:border-t-slate-600 cursor-pointer">
               <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-0.5 bg-slate-700 text-white font-black text-xs font-mono">PAST</span>
-                    <span class="text-xs font-mono font-bold text-slate-500">AY 2018–2025</span>
-                  </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold font-mono bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    Archived (4 Cycles)
-                  </span>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 bg-slate-700 text-white font-black text-xs font-mono">PAST</span>
+                  <span class="text-xs font-mono font-bold text-slate-500">AY 2018–2025</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
@@ -1466,6 +1444,13 @@
                   </div>
                 </div>
               </div>
+              <div class="pt-4">
+                <button type="button" onclick="event.stopPropagation(); navigateView('past-curriculums')" class="w-full py-2 px-3 bg-slate-700 hover:bg-slate-800 text-amber-300 border border-slate-600 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="View Past Curriculums, Flowcharts, Spreadsheets &amp; Docs">
+                  <svg class="w-3.5 h-3.5 text-amber-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span class="truncate">Open Historical Editions &rarr;</span>
+                </button>
+              </div>
+            </div>
               <div class="pt-4">
                 <button type="button" onclick="event.stopPropagation(); navigateView('past-curriculums')" class="w-full py-2 px-3 bg-slate-700 hover:bg-slate-800 text-amber-300 border border-slate-600 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="View Past Curriculums, Flowcharts, Spreadsheets &amp; Docs">
                   <svg class="w-3.5 h-3.5 text-amber-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -3328,6 +3313,22 @@
             <!-- Action buttons matching Mockup Panel 3 -->
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div class="flex flex-wrap items-center gap-2.5">
+                <!-- Return to Curriculum Homepage Back Button -->
+                <button type="button" onclick="navigateView('curriculum-home')" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-black text-xs rounded-none transition flex items-center gap-1.5 border border-[#E5A823]/60 cursor-pointer shadow-xs" title="Return to Curriculum Management Homepage">
+                  <span class="text-sm font-bold">&larr;</span>
+                  <span>Curriculum Homepage</span>
+                </button>
+
+                <!-- In-Place Edit & Save Document Buttons -->
+                <button type="button" id="btnToggleEditRegistrarDoc" onclick="toggleRegistrarDocEdit()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 text-xs font-black rounded-none shadow-xs transition flex items-center gap-1.5 border border-[#d4971a] cursor-pointer" title="Enable In-Place Editing of Official Document content">
+                  <span>✎</span>
+                  <span id="editRegistrarDocText">Edit Document</span>
+                </button>
+                <button type="button" id="btnSaveRegistrarDoc" onclick="saveRegistrarDocEdits()" class="hidden px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-none shadow-xs transition flex items-center gap-1.5 border border-emerald-500 cursor-pointer" title="Save All Document Edits">
+                  <span>💾</span>
+                  <span>Save Document</span>
+                </button>
+
                 <button type="button" onclick="toggleRegistrarFullscreen()" id="btnRegistrarFullscreen" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Toggle Fullscreen Focus Mode">
                   <span id="fullscreenIcon">⛶</span>
                   <span id="fullscreenText">Focus Mode</span>
@@ -3784,9 +3785,9 @@
   <!-- MICROSOFT ENTRA ID / APC LOGIN MODAL (Curriculum System Responsibility) -->
   <!-- ========================================================================= -->
   <div id="loginModal" class="fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center hidden backdrop-blur-xs p-4 no-print">
-    <div class="bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] w-full max-w-lg shadow-2xl rounded-none overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col">
+    <div class="bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] w-full max-w-lg shadow-2xl rounded-none overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[90vh]">
       <!-- Modal Header -->
-      <div class="bg-[#002855] text-white px-6 py-4 flex items-center justify-between border-b-2 border-[#E5A823]">
+      <div class="bg-[#002855] text-white px-6 py-4 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-3">
           <div class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black flex items-center justify-center text-xs">RAMS</div>
           <div>
@@ -3798,7 +3799,7 @@
       </div>
 
       <!-- Modal Body -->
-      <div class="p-6 space-y-5">
+      <div class="p-6 space-y-5 overflow-y-auto flex-1">
         
         <!-- Active Session Card (Hardcoded System Administrator) -->
         <div class="p-4 bg-slate-50 dark:bg-[#131B28] border border-slate-300 dark:border-[#222F42] relative">
@@ -3831,7 +3832,7 @@
             </div>
             <div>
               <div class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wide">Display Theme Mode</div>
-              <div class="text-[11px] text-slate-500 dark:text-slate-400">Toggle between Institutional Light and Obsidian Gold Dark Mode</div>
+              <div class="text-[11px] text-slate-600 dark:text-slate-400">Toggle between Institutional Light and Obsidian Gold Dark Mode</div>
             </div>
           </div>
           <button type="button" onclick="toggleTheme()" class="theme-toggle-btn px-3.5 py-2 bg-white dark:bg-[#002855] border-2 border-[#E5A823] text-slate-900 dark:text-[#E5A823] hover:bg-amber-50 dark:hover:bg-[#003875] font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-xs transition">
@@ -3842,7 +3843,7 @@
 
         <!-- Role / Account Switcher for Direct Role Navigation -->
         <div>
-          <label class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2.5">
+          <label class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-400 mb-2.5">
             Select Role to Launch Homepage:
           </label>
           <div class="grid grid-cols-1 gap-2.5">
@@ -3859,8 +3860,8 @@
                     <span class="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition">System Administrator</span>
                     <span class="px-1.5 py-0.2 bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 text-[9px] font-mono font-bold">Tier 4</span>
                   </span>
-                  <span class="block text-[11px] text-slate-500 font-mono">admin@apc.edu.ph</span>
-                  <span class="block text-[10.5px] text-slate-400 mt-0.5">Homepage: Admin Institutional Overview &bull; All Academic Schools</span>
+                  <span class="block text-[11px] text-slate-600 dark:text-slate-400 font-mono">admin@apc.edu.ph</span>
+                  <span class="block text-[10.5px] text-slate-600 dark:text-slate-400 mt-0.5">Homepage: Admin Institutional Overview &bull; All Academic Schools</span>
                 </span>
               </span>
               <span class="text-right shrink-0">
@@ -3883,8 +3884,8 @@
                     <span class="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition">Executive Director</span>
                     <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[9px] font-mono font-bold">Tier 3</span>
                   </span>
-                  <span class="block text-[11px] text-slate-500 font-mono">exdirector@apc.edu.ph</span>
-                  <span class="block text-[10.5px] text-slate-400 mt-0.5">Homepage: School of Engineering (SoE) Executive Overview</span>
+                  <span class="block text-[11px] text-slate-600 dark:text-slate-400 font-mono">exdirector@apc.edu.ph</span>
+                  <span class="block text-[10.5px] text-slate-600 dark:text-slate-400 mt-0.5">Homepage: School of Engineering (SoE) Executive Overview</span>
                 </span>
               </span>
               <span class="text-right shrink-0">
@@ -3907,8 +3908,8 @@
                     <span class="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition">Program Director</span>
                     <span class="px-1.5 py-0.2 bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 text-[9px] font-mono font-bold">Tier 2</span>
                   </span>
-                  <span class="block text-[11px] text-slate-500 font-mono">programdirector@apc.edu.ph</span>
-                  <span class="block text-[10.5px] text-slate-400 mt-0.5">Homepage: BSCpE Program Director Academic Workbench</span>
+                  <span class="block text-[11px] text-slate-600 dark:text-slate-400 font-mono">programdirector@apc.edu.ph</span>
+                  <span class="block text-[10.5px] text-slate-600 dark:text-slate-400 mt-0.5">Homepage: BSCpE Program Director Academic Workbench</span>
                 </span>
               </span>
               <span class="text-right shrink-0">
@@ -3931,8 +3932,8 @@
                     <span class="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition">Faculty Member</span>
                     <span class="px-1.5 py-0.2 bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 text-[9px] font-mono font-bold">Tier 1</span>
                   </span>
-                  <span class="block text-[11px] text-slate-500 font-mono">faculty@apc.edu.ph</span>
-                  <span class="block text-[10.5px] text-slate-400 mt-0.5">Homepage: BSCpE Workbench (Scoped Cluster Contributor Permissions)</span>
+                  <span class="block text-[11px] text-slate-600 dark:text-slate-400 font-mono">faculty@apc.edu.ph</span>
+                  <span class="block text-[10.5px] text-slate-600 dark:text-slate-400 mt-0.5">Homepage: BSCpE Workbench (Scoped Cluster Contributor Permissions)</span>
                 </span>
               </span>
               <span class="text-right shrink-0">
@@ -3949,7 +3950,7 @@
       </div>
 
       <!-- Modal Footer -->
-      <div class="bg-slate-100 dark:bg-slate-800/70 px-6 py-3.5 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+      <div class="bg-slate-100 dark:bg-slate-800/70 px-6 py-3.5 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between shrink-0">
         <span class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
           <span>Asia Pacific College Single Sign-On Active</span>
@@ -3987,10 +3988,20 @@
           <input type="text" id="assignTaskFacultyTitle" value="Faculty Member" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-semibold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
         </div>
 
-        <!-- Course Title / Cluster Scope -->
+        <!-- Assigned Course Titles / Cluster Delegations (Multiple Fields) -->
         <div>
-          <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Assigned Course Title / Cluster Scope</label>
-          <input type="text" id="assignTaskCourseTitle" value="Hardware &amp; Embedded Systems" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-slate-700 dark:text-slate-200 font-bold uppercase tracking-wider text-[11px]">Assigned Subject / Cluster Delegations</label>
+            <button type="button" onclick="addClusterDelegationRow()" class="text-[11px] font-bold text-[#002855] dark:text-[#E5A823] hover:underline flex items-center gap-1 cursor-pointer">
+              <span>+ Add Another Cluster / Subject</span>
+            </button>
+          </div>
+          <div id="assignTaskClustersContainer" class="space-y-2">
+            <div class="flex items-center gap-2 cluster-row">
+              <input type="text" name="assignTaskClusterItem" id="assignTaskCourseTitle" value="Hardware &amp; Embedded Systems" required class="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" placeholder="e.g. Hardware &amp; Embedded Systems, CPEDES1, etc." />
+              <button type="button" onclick="removeClusterDelegationRow(this)" class="w-8 h-8 flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-rose-600 font-bold cursor-pointer transition shrink-0" title="Remove row">&times;</button>
+            </div>
+          </div>
         </div>
 
         <!-- Start Date and End Date of Access -->
@@ -4446,9 +4457,53 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       </div>
 
       <!-- Modal Footer -->
-      <div class="bg-[#10151E] px-5 py-3 border-t border-slate-700/80 flex items-center justify-end">
+      <div class="bg-[#10151E] px-5 py-3 border-t border-slate-700/80 flex items-center justify-between">
+        <button type="button" onclick="openEditPillarsModal()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer">
+          <span>✎</span>
+          <span>Edit Statements</span>
+        </button>
         <button type="button" onclick="closePillarModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition cursor-pointer">Close</button>
       </div>
+    </div>
+  </div>
+
+  <!-- EDIT INSTITUTIONAL PILLARS MODAL (Mission, Vision & Values Editor) -->
+  <div id="editPillarsModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-2xl flex flex-col rounded-none overflow-hidden max-h-[90vh]">
+      <!-- Header -->
+      <div class="bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-700/80">
+        <div class="flex items-center space-x-3">
+          <span class="text-[#E5A823] text-base font-bold">✎</span>
+          <div>
+            <h3 class="font-black text-sm tracking-wider text-[#E5A823] uppercase">Edit Institutional Statements</h3>
+            <p class="text-[11px] text-slate-400">Modify Mission, Vision, and Core Values displayed in the Executive Banner</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeEditPillarsModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+      <!-- Form Body -->
+      <form id="editPillarsForm" onsubmit="saveCustomPillars(event)" class="p-5 space-y-4 overflow-y-auto text-xs">
+        <div>
+          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Institutional Mission Statement</label>
+          <textarea id="editPillarMissionInput" rows="3" class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-200 outline-none focus:border-[#E5A823] leading-relaxed resize-y"></textarea>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Institutional Vision Statement</label>
+          <textarea id="editPillarVisionInput" rows="3" class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-200 outline-none focus:border-[#E5A823] leading-relaxed resize-y"></textarea>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Institutional Core Values (Comma or Line Separated)</label>
+          <textarea id="editPillarValuesInput" rows="3" class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-200 outline-none focus:border-[#E5A823] leading-relaxed resize-y"></textarea>
+        </div>
+        <div class="p-3 bg-[#10151E] border border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+          <span>Changes are saved persistently to your institutional configuration.</span>
+          <button type="button" onclick="resetPillarsToDefault()" class="text-rose-400 hover:text-rose-300 underline cursor-pointer">Reset Defaults</button>
+        </div>
+        <div class="pt-2 border-t border-slate-700/80 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="closeEditPillarsModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold cursor-pointer transition">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 font-black uppercase tracking-wider cursor-pointer shadow-md transition">Save Statements</button>
+        </div>
+      </form>
     </div>
   </div>
 

@@ -1292,6 +1292,16 @@
           }
         });
 
+        // Fail-safe guarantee: Computer Engineering (BSCpE) must ALWAYS be present
+        if (!activeProgs.some(p => p.code === 'BSCpE')) {
+          activeProgs.unshift({
+            code: 'BSCpE',
+            name: 'Bachelor of Science in Computer Engineering',
+            director: 'Program Director',
+            archived: false
+          });
+        }
+
         function buildProgramCard(prog, isArchived) {
           const banner = getProgramBannerConfig(prog.code, prog.name, schoolColor);
           const card = document.createElement('div');
@@ -3148,6 +3158,71 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       navigateRegistrarDoc(tabIdx);
     }
 
+    let isRegistrarEditingActive = false;
+
+    function toggleRegistrarDocEdit() {
+      const activeDocId = 'regDocView_' + (currentRegistrarTab || 1);
+      const container = document.getElementById(activeDocId);
+      const saveBtn = document.getElementById('btnSaveRegistrarDoc');
+      const toggleText = document.getElementById('editRegistrarDocText');
+      if (!container) return;
+
+      isRegistrarEditingActive = !isRegistrarEditingActive;
+
+      const editables = container.querySelectorAll('td, th, p, h1, h2, h3, h4, .editable-field');
+      editables.forEach(el => {
+        if (isRegistrarEditingActive) {
+          el.setAttribute('contenteditable', 'true');
+          el.classList.add('reg-editing-node');
+        } else {
+          el.removeAttribute('contenteditable');
+          el.classList.remove('reg-editing-node');
+        }
+      });
+
+      if (saveBtn) {
+        if (isRegistrarEditingActive) saveBtn.classList.remove('hidden');
+        else saveBtn.classList.add('hidden');
+      }
+      if (toggleText) {
+        toggleText.innerText = isRegistrarEditingActive ? 'Cancel Editing' : 'Edit Document';
+      }
+
+      if (typeof showToast === 'function') {
+        showToast(isRegistrarEditingActive 
+          ? '✎ Edit Mode Active: Click any cell or text in the document to edit. Click "Save Document" to persist.' 
+          : 'Edit mode cancelled.');
+      }
+    }
+
+    function saveRegistrarDocEdits() {
+      const activeDocId = 'regDocView_' + (currentRegistrarTab || 1);
+      const container = document.getElementById(activeDocId);
+      const saveBtn = document.getElementById('btnSaveRegistrarDoc');
+      const toggleText = document.getElementById('editRegistrarDocText');
+      if (!container) return;
+
+      const editables = container.querySelectorAll('[contenteditable]');
+      editables.forEach(el => {
+        el.removeAttribute('contenteditable');
+        el.classList.remove('reg-editing-node');
+      });
+
+      isRegistrarEditingActive = false;
+      if (saveBtn) saveBtn.classList.add('hidden');
+      if (toggleText) toggleText.innerText = 'Edit Document';
+
+      const prog = currentSelectedProgram || 'BSCpE';
+      const key = `apc_regdoc_custom_${prog}_tab${currentRegistrarTab || 1}`;
+      try {
+        localStorage.setItem(key, container.innerHTML);
+      } catch (e) {}
+
+      if (typeof showToast === 'function') {
+        showToast(`Document changes saved persistently for Sheet ${currentRegistrarTab || 1}!`);
+      }
+    }
+
     function toggleRegistrarFullscreen() {
       const view = document.getElementById('view-registrar');
       const icon = document.getElementById('fullscreenIcon');
@@ -3261,6 +3336,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.switchRegistrarDocTab = switchRegistrarDocTab;
     window.navigateRegistrarDoc = navigateRegistrarDoc;
     window.getRegistrarDocTitle = getRegistrarDocTitle;
+    window.toggleRegistrarDocEdit = toggleRegistrarDocEdit;
+    window.saveRegistrarDocEdits = saveRegistrarDocEdits;
     window.toggleRegistrarFullscreen = toggleRegistrarFullscreen;
     window.updatePrintStudentId = updatePrintStudentId;
     window.updatePrintStudentName = updatePrintStudentName;
@@ -4212,7 +4289,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
               </span>
             </td>
             <td class="py-2.5 px-3 text-right">
-              <button type="button" onclick="openAssignTaskModal('${f.cluster || ''}', '${f.name}')" class="px-2.5 py-1 bg-slate-100 hover:bg-[#002855] dark:bg-slate-800 dark:hover:bg-[#E5A823] text-slate-700 hover:text-white dark:text-slate-300 dark:hover:text-[#002855] font-bold text-xs transition cursor-pointer">
+              <button type="button" onclick="openAssignTaskModal('${(Array.isArray(f.courses) ? f.courses.join(', ') : f.cluster) || ''}', '${f.name}')" class="px-3 py-1 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#E5A823]/80 font-black text-xs transition cursor-pointer shadow-xs">
                 Assign Task
               </button>
             </td>
@@ -5496,6 +5573,34 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     // Assign Task Modal Controller
+    function addClusterDelegationRow(initialValue = '') {
+      const container = document.getElementById('assignTaskClustersContainer');
+      if (!container) return;
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-2 cluster-row';
+      row.innerHTML = `
+        <input type="text" name="assignTaskClusterItem" value="${initialValue.replace(/"/g, '&quot;')}" required class="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" placeholder="e.g. Hardware & Embedded Systems, CPEDES1, etc." />
+        <button type="button" onclick="removeClusterDelegationRow(this)" class="w-8 h-8 flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-rose-600 font-bold cursor-pointer transition shrink-0" title="Remove row">&times;</button>
+      `;
+      container.appendChild(row);
+    }
+    window.addClusterDelegationRow = addClusterDelegationRow;
+
+    function removeClusterDelegationRow(btn) {
+      const container = document.getElementById('assignTaskClustersContainer');
+      if (!container) return;
+      const rows = container.querySelectorAll('.cluster-row');
+      if (rows.length <= 1) {
+        const msg = 'At least one cluster delegation field is required.';
+        if (typeof showToastNotification === 'function') showToastNotification(msg);
+        else if (typeof showToast === 'function') showToast(msg);
+        return;
+      }
+      const row = btn.closest('.cluster-row');
+      if (row) row.remove();
+    }
+    window.removeClusterDelegationRow = removeClusterDelegationRow;
+
     function openAssignTaskModal(courseTitle, facultyTitle) {
       const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
       if (isFaculty) {
@@ -5508,13 +5613,26 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const modal = document.getElementById('modalAssignTask');
       if (!modal) return;
 
-      const courseInput = document.getElementById('assignTaskCourseTitle');
       const facultyInput = document.getElementById('assignTaskFacultyTitle');
       const startInput = document.getElementById('assignTaskStartDate');
       const endInput = document.getElementById('assignTaskEndDate');
+      const container = document.getElementById('assignTaskClustersContainer');
 
-      if (courseInput && courseTitle) courseInput.value = courseTitle;
       if (facultyInput && facultyTitle) facultyInput.value = facultyTitle;
+
+      if (container) {
+        container.innerHTML = '';
+        const rawItems = courseTitle ? String(courseTitle).split(',').map(s => s.trim()).filter(Boolean) : ['Hardware & Embedded Systems'];
+        rawItems.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-2 cluster-row';
+          row.innerHTML = `
+            <input type="text" name="assignTaskClusterItem" ${idx === 0 ? 'id="assignTaskCourseTitle"' : ''} value="${item.replace(/"/g, '&quot;')}" required class="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" placeholder="e.g. Hardware & Embedded Systems, CPEDES1, etc." />
+            <button type="button" onclick="removeClusterDelegationRow(this)" class="w-8 h-8 flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-rose-600 font-bold cursor-pointer transition shrink-0" title="Remove row">&times;</button>
+          `;
+          container.appendChild(row);
+        });
+      }
 
       // Default start date to today and end date to 90 days from now
       const today = new Date();
@@ -5545,7 +5663,20 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     function submitAssignTask(event) {
       if (event) event.preventDefault();
       const faculty = document.getElementById('assignTaskFacultyTitle')?.value || 'Faculty Member';
-      const course = document.getElementById('assignTaskCourseTitle')?.value || 'Cluster Courses';
+      const container = document.getElementById('assignTaskClustersContainer');
+      const clusterItems = [];
+      if (container) {
+        const inputs = container.querySelectorAll('input[name="assignTaskClusterItem"]');
+        inputs.forEach(inp => {
+          const v = inp.value.trim();
+          if (v && !clusterItems.includes(v)) clusterItems.push(v);
+        });
+      }
+      if (!clusterItems.length) {
+        const single = document.getElementById('assignTaskCourseTitle')?.value;
+        if (single) clusterItems.push(single.trim());
+      }
+      const course = clusterItems.join(', ') || 'Cluster Courses';
       const start = document.getElementById('assignTaskStartDate')?.value || '';
       const end = document.getElementById('assignTaskEndDate')?.value || '';
 
@@ -5554,7 +5685,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           id: 'del-' + Date.now(),
           cluster: course,
           faculty: faculty,
-          scope: [course],
+          scope: clusterItems.length ? clusterItems : [course],
           startDate: start || new Date().toISOString().split('T')[0],
           endDate: end || new Date(Date.now() + 30*86400000).toISOString().split('T')[0],
           status: 'pending',
@@ -5587,7 +5718,20 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     function submitAssignTaskAndOpenSpreadsheet() {
       const faculty = document.getElementById('assignTaskFacultyTitle')?.value || 'Faculty Member';
-      const course = document.getElementById('assignTaskCourseTitle')?.value || 'Cluster Courses';
+      const container = document.getElementById('assignTaskClustersContainer');
+      const clusterItems = [];
+      if (container) {
+        const inputs = container.querySelectorAll('input[name="assignTaskClusterItem"]');
+        inputs.forEach(inp => {
+          const v = inp.value.trim();
+          if (v && !clusterItems.includes(v)) clusterItems.push(v);
+        });
+      }
+      if (!clusterItems.length) {
+        const single = document.getElementById('assignTaskCourseTitle')?.value;
+        if (single) clusterItems.push(single.trim());
+      }
+      const course = clusterItems.join(', ') || 'Cluster Courses';
       const start = document.getElementById('assignTaskStartDate')?.value || '';
       const end = document.getElementById('assignTaskEndDate')?.value || '';
 
@@ -5596,7 +5740,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           id: 'del-' + Date.now(),
           cluster: course,
           faculty: faculty,
-          scope: [course],
+          scope: clusterItems.length ? clusterItems : [course],
           startDate: start || new Date().toISOString().split('T')[0],
           endDate: end || new Date(Date.now() + 30*86400000).toISOString().split('T')[0],
           status: 'active',

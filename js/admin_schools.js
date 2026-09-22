@@ -260,8 +260,9 @@
       function getSchoolProgramsHtml(programs) {
         let activeHtml = '';
         for (let pi = 0; pi < programs.length; pi++) {
-          const item = programs[pi];
-          const prog = typeof item === 'object' ? item : getProgramInfo(item);
+          const prog = (typeof item === 'object' && item !== null)
+            ? item 
+            : (typeof getProgramInfo === 'function' ? getProgramInfo(item) : { code: String(item), name: (String(item) === 'BSCpE' ? 'Bachelor of Science in Computer Engineering' : String(item)) });
           if (prog.code === 'BSCpE') {
             activeHtml += '<a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram(\'' + prog.code + '\', \'homePdProgramView\')" class="text-slate-900 dark:text-slate-200 hover:text-[#002855] dark:hover:text-[#E5A823] hover:underline transition flex items-center justify-between group cursor-pointer" title="Go to ' + prog.name + ' (' + prog.code + ')">' +
               '<span class="flex items-center gap-1.5 truncate">' +
@@ -613,55 +614,66 @@
     }
 
     // Modal controllers
+    // Modal controllers & Customizable Institutional Pillars
+    const DEFAULT_PILLARS = {
+      mission: 'Asia Pacific College is committed to bridging the gap between industry and academia by developing high-performing, professionally competent, and socially responsible professionals.\n\n• Delivering industry-integrated and project-based educational frameworks.\n• Instilling ethical, rigorous engineering principles and lifelong learning habits.\n• Promoting collaborative, real-world solutions that impact community and industry.',
+      vision: 'Asia Pacific College envisions itself as a leading educational institution recognized globally for academic excellence, digital transformation, and producing pioneering industry leaders.\n\n• Pioneering Outcomes-Based Engineering curricula compliant with CHED and international standards.\n• Driving digital curriculum topology, agile syllabus design, and verified prerequisite graphs.\n• Empowering graduates to lead technological innovations across the ASEAN region.',
+      values: 'Integrity: Uncompromising commitment to truth, ethical conduct, and academic honesty.\nIndustry: Deep integration with global industry standards and technological demands.\nInnovation: Fostering creative problem-solving, research curiosity, and entrepreneurial drive.\nInclusion: Embracing diverse perspectives, collaborative teams, and equitable access.'
+    };
+
+    function getPillarsData() {
+      try {
+        const stored = localStorage.getItem('apc_custom_pillars');
+        if (stored) return Object.assign({}, DEFAULT_PILLARS, JSON.parse(stored));
+      } catch (e) {}
+      return Object.assign({}, DEFAULT_PILLARS);
+    }
+
     function showPillarModal(pillar) {
       const modal = document.getElementById('pillarModal');
       const title = document.getElementById('pillarModalTitle');
       const content = document.getElementById('pillarModalContent');
       if (!modal || !title || !content) return;
 
+      const data = getPillarsData();
+
       if (pillar === 'mission') {
         title.innerText = 'Institutional Mission';
+        const lines = (data.mission || '').split('\n').filter(l => l.trim());
+        const lead = lines.shift() || 'Our Mission';
         content.innerHTML = `
-          <p class="font-bold text-white text-base mb-2">Our Mission</p>
-          <p class="text-slate-300 mb-3">Asia Pacific College is committed to bridging the gap between industry and academia by developing high-performing, professionally competent, and socially responsible professionals.</p>
-          <ul class="list-disc pl-5 space-y-1.5 text-slate-400 text-xs">
-            <li>Delivering industry-integrated and project-based educational frameworks.</li>
-            <li>Instilling ethical, rigorous engineering principles and lifelong learning habits.</li>
-            <li>Promoting collaborative, real-world solutions that impact community and industry.</li>
-          </ul>
+          <p class="font-bold text-[#E5A823] text-base mb-2">Our Mission</p>
+          <p class="text-slate-200 mb-3 leading-relaxed">${lead}</p>
+          ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
         `;
       } else if (pillar === 'vision') {
         title.innerText = 'Institutional Vision';
+        const lines = (data.vision || '').split('\n').filter(l => l.trim());
+        const lead = lines.shift() || 'Our Vision';
         content.innerHTML = `
-          <p class="font-bold text-white text-base mb-2">Our Vision</p>
-          <p class="text-slate-300 mb-3">Asia Pacific College envisions itself as a leading educational institution recognized globally for academic excellence, digital transformation, and producing pioneering industry leaders.</p>
-          <ul class="list-disc pl-5 space-y-1.5 text-slate-400 text-xs">
-            <li>Pioneering Outcomes-Based Engineering curricula compliant with CHED and international standards.</li>
-            <li>Driving digital curriculum topology, agile syllabus design, and verified prerequisite graphs.</li>
-            <li>Empowering graduates to lead technological innovations across the ASEAN region.</li>
-          </ul>
+          <p class="font-bold text-[#E5A823] text-base mb-2">Our Vision</p>
+          <p class="text-slate-200 mb-3 leading-relaxed">${lead}</p>
+          ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
         `;
       } else {
         title.innerText = 'Institutional Core Values';
+        const rawValues = (data.values || '').split('\n').filter(l => l.trim());
+        const valCards = rawValues.map(v => {
+          const parts = v.split(':');
+          const valTitle = parts[0] ? parts[0].trim() : 'Value';
+          const valDesc = parts.slice(1).join(':').trim() || '';
+          return `
+            <div class="p-3 bg-[#10151E] border border-slate-700/60">
+              <div class="font-bold text-[#E5A823] text-sm mb-1">${valTitle}</div>
+              <div class="text-slate-300 text-xs">${valDesc}</div>
+            </div>
+          `;
+        }).join('');
+
         content.innerHTML = `
-          <p class="font-bold text-white text-base mb-2">Our Core Values</p>
-          <div class="grid grid-cols-2 gap-3 text-xs">
-            <div class="p-2.5 bg-[#10151E] border border-slate-700/60">
-              <div class="font-bold text-[#E5A823] text-sm mb-1">Integrity</div>
-              <div class="text-slate-300">Uncompromising commitment to truth, ethical conduct, and academic honesty.</div>
-            </div>
-            <div class="p-2.5 bg-[#10151E] border border-slate-700/60">
-              <div class="font-bold text-[#E5A823] text-sm mb-1">Industry</div>
-              <div class="text-slate-300">Deep integration with global industry standards and technological demands.</div>
-            </div>
-            <div class="p-2.5 bg-[#10151E] border border-slate-700/60">
-              <div class="font-bold text-[#E5A823] text-sm mb-1">Innovation</div>
-              <div class="text-slate-300">Fostering creative problem-solving, research curiosity, and entrepreneurial drive.</div>
-            </div>
-            <div class="p-2.5 bg-[#10151E] border border-slate-700/60">
-              <div class="font-bold text-[#E5A823] text-sm mb-1">Inclusion</div>
-              <div class="text-slate-300">Embracing diverse perspectives, collaborative teams, and equitable access.</div>
-            </div>
+          <p class="font-bold text-[#E5A823] text-base mb-2">Our Core Values</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            ${valCards}
           </div>
         `;
       }
@@ -676,6 +688,59 @@
       if (modal) modal.classList.add('hidden');
       if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
         window.spaRouter.onModalClose('pillar');
+      }
+    }
+
+    function openEditPillarsModal() {
+      closePillarModal();
+      const modal = document.getElementById('editPillarsModal');
+      if (!modal) return;
+      const data = getPillarsData();
+      const mInput = document.getElementById('editPillarMissionInput');
+      const vInput = document.getElementById('editPillarVisionInput');
+      const valInput = document.getElementById('editPillarValuesInput');
+      if (mInput) mInput.value = data.mission;
+      if (vInput) vInput.value = data.vision;
+      if (valInput) valInput.value = data.values;
+      modal.classList.remove('hidden');
+    }
+
+    function closeEditPillarsModal() {
+      const modal = document.getElementById('editPillarsModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveCustomPillars(event) {
+      if (event) event.preventDefault();
+      const mInput = document.getElementById('editPillarMissionInput');
+      const vInput = document.getElementById('editPillarVisionInput');
+      const valInput = document.getElementById('editPillarValuesInput');
+      const updated = {
+        mission: mInput ? mInput.value.trim() : DEFAULT_PILLARS.mission,
+        vision: vInput ? vInput.value.trim() : DEFAULT_PILLARS.vision,
+        values: valInput ? valInput.value.trim() : DEFAULT_PILLARS.values
+      };
+      try {
+        localStorage.setItem('apc_custom_pillars', JSON.stringify(updated));
+      } catch (e) {}
+      closeEditPillarsModal();
+      if (typeof showToast === 'function') {
+        showToast('Institutional statements saved successfully!');
+      }
+    }
+
+    function resetPillarsToDefault() {
+      try {
+        localStorage.removeItem('apc_custom_pillars');
+      } catch (e) {}
+      const mInput = document.getElementById('editPillarMissionInput');
+      const vInput = document.getElementById('editPillarVisionInput');
+      const valInput = document.getElementById('editPillarValuesInput');
+      if (mInput) mInput.value = DEFAULT_PILLARS.mission;
+      if (vInput) vInput.value = DEFAULT_PILLARS.vision;
+      if (valInput) valInput.value = DEFAULT_PILLARS.values;
+      if (typeof showToast === 'function') {
+        showToast('Reset statements to institutional defaults.');
       }
     }
 
@@ -1643,6 +1708,10 @@
     window.closeEditSchoolModal = closeEditSchoolModal;
     window.showPillarModal = showPillarModal;
     window.closePillarModal = closePillarModal;
+    window.openEditPillarsModal = openEditPillarsModal;
+    window.closeEditPillarsModal = closeEditPillarsModal;
+    window.saveCustomPillars = saveCustomPillars;
+    window.resetPillarsToDefault = resetPillarsToDefault;
     window.submitEditSchool = submitEditSchool;
     window.getProgramDirector = getProgramDirector;
     window.openEditProgramModal = openEditProgramModal;
@@ -1672,7 +1741,7 @@
       // Check saved academic schools data with version gate
       try {
         const version = localStorage.getItem('schools_data_version');
-        if (version === 'v5_anonymized_titles') {
+        if (version === 'v7_restore_cpe_card') {
           const savedCustom = localStorage.getItem('academic_schools_data_custom');
           if (savedCustom) {
             const parsed = JSON.parse(savedCustom);
@@ -1682,7 +1751,7 @@
           }
         } else {
           // Initialize fresh version with only active development school (SoE BSCpE) and purge legacy personal names
-          localStorage.setItem('schools_data_version', 'v5_anonymized_titles');
+          localStorage.setItem('schools_data_version', 'v7_restore_cpe_card');
           try {
             const customMap = JSON.parse(localStorage.getItem('program_directors_custom') || '{}');
             for (const k in customMap) {
@@ -1696,6 +1765,30 @@
         }
       } catch (err) {
         console.warn('Failed to parse saved custom schools:', err);
+      }
+
+      // Safeguard: Ensure School of Engineering always has BSCpE active
+      const soeSchool = ACADEMIC_SCHOOLS_DATA.find(s => s.id === 'soe');
+      if (soeSchool) {
+        if (!Array.isArray(soeSchool.programs) || !soeSchool.programs.length || !soeSchool.programs.some(p => (typeof p === 'object' ? p.code : p) === 'BSCpE')) {
+          soeSchool.programs = [{ code: 'BSCpE', name: 'Bachelor of Science in Computer Engineering', archived: false }];
+        }
+      } else {
+        ACADEMIC_SCHOOLS_DATA.unshift({
+          id: 'soe',
+          name: 'ENGINEERING',
+          bannerTitle: 'SCHOOL OF',
+          color: '#FF6B00',
+          badgeBorder: 'border-[#FF6B00]',
+          badgeBg: 'from-[#FF6B00] to-[#E55A00]',
+          bannerGrad: 'from-[#16120e] via-[#2a1a12] to-[#0f0b08]',
+          bannerIcon: '⚙️',
+          director: 'SOE Executive Director',
+          archived: false,
+          programs: [
+            { code: 'BSCpE', name: 'Bachelor of Science in Computer Engineering', archived: false }
+          ]
+        });
       }
 
       renderSchoolCards();
