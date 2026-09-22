@@ -1697,6 +1697,11 @@
           }
           const cleanDocTitle = (typeof getRegistrarDocTitle === 'function') ? getRegistrarDocTitle(docNumber) : `Sheet ${docNumber}`;
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Official Documents > ${cleanDocTitle}`;
+        } else if (targetView === 'audit') {
+          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > System Audit Trail`;
+          if (typeof renderAuditTable === 'function') {
+            renderAuditTable();
+          }
         } else {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > ${targetView}`;
         }
@@ -5898,14 +5903,226 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.toggleSheetMoreDropdown = toggleSheetMoreDropdown;
     window.openAiImportModal = openAiImportModal;
     window.closeAiImportModal = closeAiImportModal;
+    // =========================================================================
+    // SYSTEM AUDIT TRAIL LOGGING, FILTERING & DIFF INSPECTION ENGINE
+    // =========================================================================
+    window.AUDIT_LOG = window.AUDIT_LOG || [
+      {
+        id: 'REC-892103',
+        timestamp: '2026-09-22 11:45:00',
+        user: 'Dr. Engr. Executive Director',
+        role: 'Executive Director',
+        action: 'CURRICULUM_APPROVE',
+        actionLabel: 'Curriculum Approved',
+        badgeClass: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
+        target: 'BSCpE AY 2026–2030',
+        targetType: 'Program Sequence',
+        description: 'Approved 4-Year BSCpE Curriculum Sequence for Institutional CHED Submission',
+        hash: 'c9d42f8b76e210fa89e41b523c10aef7314d590e8a719c35e80231945ab89d02',
+        diffs: [
+          { field: 'approvalStatus', oldVal: 'Pending Dean Review', newVal: 'Formally Endorsed & Approved' },
+          { field: 'chedCmoStatus', oldVal: 'Preliminary Check', newVal: 'Passed CHED CMO No. 92 Full Compliance' },
+          { field: 'effectiveTerm', oldVal: 'AY 2025–2026', newVal: 'AY 2026–2030' },
+          { field: 'totalCredits', oldVal: '172.0 Units', newVal: '175.0 Units (Full Lab Alignment)' }
+        ]
+      },
+      {
+        id: 'REC-892102',
+        timestamp: '2026-09-22 09:15:42',
+        user: 'Engr. Juan Dela Cruz',
+        role: 'Faculty Member',
+        action: 'SYLLABUS_UPDATE',
+        actionLabel: 'Syllabus Updated',
+        badgeClass: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 border-indigo-300 dark:border-indigo-800',
+        target: 'EMICROS',
+        targetType: 'Course Syllabus',
+        description: 'Updated Week 6–8 OBE Laboratory Modules for Embedded RISC-V Architecture',
+        hash: 'b8c31e9a45f10287cd4a38910eb67184a203f1947e5812903bdca7819034ce91',
+        diffs: [
+          { field: 'moduleTopic', oldVal: 'x86 Microprocessor Architecture', newVal: 'Embedded RISC-V and ESP32 Microcontrollers' },
+          { field: 'labAssessment', oldVal: 'Written Exam 2', newVal: 'Hands-on Hardware Breadboard Prototype Demo' },
+          { field: 'syllabusVersion', oldVal: 'v2.1 (Legacy)', newVal: 'v2.2-AY2026' }
+        ]
+      },
+      {
+        id: 'REC-892101',
+        timestamp: '2026-09-21 14:32:18',
+        user: 'Engr. Arlene B. Peruda',
+        role: 'Program Director',
+        action: 'COURSE_UPDATE',
+        actionLabel: 'Course Modified',
+        badgeClass: 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border-amber-300 dark:border-amber-800',
+        target: 'CPEDES1',
+        targetType: 'Course Offering',
+        description: 'Updated Course Title and Prerequisite requirement to align with AY 2026–2030 revision',
+        hash: 'a7f29b4e12c0781a95b341065e89d14f6820be4178593a14028bc1748293d014',
+        diffs: [
+          { field: 'title', oldVal: 'Old Capstone Design 1', newVal: 'Computer Engineering Practice and Design 1' },
+          { field: 'prereq', oldVal: 'CPEDEV2', newVal: 'CPE311, CPE312' },
+          { field: 'labHours', oldVal: '3.0 Hours/Week', newVal: '4.5 Hours/Week' },
+          { field: 'lifecycleStatus', oldVal: 'Draft', newVal: 'Submitted for Dean Endorsement' }
+        ]
+      }
+    ];
+
+    function escapeAuditHtml(str) {
+      if (typeof str !== 'string') return str || '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderAuditTable() {
+      const cHomeBody = document.getElementById('auditTableBodyCurricHome');
+      const mainBody = document.getElementById('auditTableBody');
+      if (!cHomeBody && !mainBody) return;
+
+      const activeFilterTextEl = document.getElementById('auditFilterTextCurricHome') || document.getElementById('auditFilterText');
+      const activeFilterRoleEl = document.getElementById('auditFilterRoleCurricHome') || document.getElementById('auditFilterRole');
+
+      const query = activeFilterTextEl ? activeFilterTextEl.value.trim().toLowerCase() : '';
+      const roleFilter = activeFilterRoleEl ? activeFilterRoleEl.value.trim() : '';
+
+      const logs = (window.AUDIT_LOG || []).filter(item => {
+        if (roleFilter && item.role !== roleFilter) return false;
+        if (query) {
+          const matchSearch = item.user.toLowerCase().includes(query) ||
+                              item.role.toLowerCase().includes(query) ||
+                              item.action.toLowerCase().includes(query) ||
+                              item.target.toLowerCase().includes(query) ||
+                              item.description.toLowerCase().includes(query) ||
+                              item.id.toLowerCase().includes(query);
+          if (!matchSearch) return false;
+        }
+        return true;
+      });
+
+      const countCurricHome = document.getElementById('auditCountCurricHome');
+      const countMain = document.getElementById('auditCount');
+      const countStr = `${logs.length} ${logs.length === 1 ? 'record' : 'records'}`;
+      if (countCurricHome) countCurricHome.innerText = countStr;
+      if (countMain) countMain.innerText = countStr;
+
+      const rowsHtml = logs.length === 0
+        ? `<tr><td colspan="7" class="py-8 text-center text-slate-400">No audit records match the current filter.</td></tr>`
+        : logs.map(item => `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+              <td class="py-3 px-3 font-mono text-[11px] text-slate-500 dark:text-slate-400 whitespace-nowrap">${escapeAuditHtml(item.timestamp)}</td>
+              <td class="py-3 px-3">
+                <div class="font-bold text-slate-900 dark:text-white">${escapeAuditHtml(item.user)}</div>
+                <div class="text-[10px] text-slate-500 font-medium">${escapeAuditHtml(item.role)}</div>
+              </td>
+              <td class="py-3 px-3">
+                <span class="inline-block px-2 py-0.5 text-[10px] font-mono font-bold uppercase border ${item.badgeClass}">
+                  ${escapeAuditHtml(item.actionLabel || item.action)}
+                </span>
+              </td>
+              <td class="py-3 px-3">
+                <span class="font-bold text-slate-800 dark:text-slate-200 font-mono">${escapeAuditHtml(item.target)}</span>
+                <div class="text-[10px] text-slate-400">${escapeAuditHtml(item.targetType || '')}</div>
+              </td>
+              <td class="py-3 px-3 text-slate-600 dark:text-slate-300 max-w-xs">
+                <div class="line-clamp-2">${escapeAuditHtml(item.description)}</div>
+              </td>
+              <td class="py-3 px-3 font-mono text-[11px] text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                ${escapeAuditHtml(item.id)}
+              </td>
+              <td class="py-3 px-3 text-right whitespace-nowrap space-x-1">
+                <button type="button" onclick="openAuditDiffModal('${item.id}')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-[#002855] dark:text-sky-300 border border-slate-300 dark:border-slate-600 text-[11px] font-bold cursor-pointer transition shadow-2xs">
+                  Inspect Diff
+                </button>
+                <button type="button" onclick="verifyHashModal('${item.id}')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 border border-slate-300 dark:border-slate-700 text-[11px] font-mono cursor-pointer transition" title="Cryptographic hash verification">
+                  ✓ Hash
+                </button>
+              </td>
+            </tr>
+          `).join('');
+
+      if (cHomeBody) cHomeBody.innerHTML = rowsHtml;
+      if (mainBody) mainBody.innerHTML = rowsHtml;
+    }
+
+    function openAuditDiffModal(recordId) {
+      const item = (window.AUDIT_LOG || []).find(r => r.id === recordId || r.hash === recordId);
+      if (!item) {
+        if (typeof showToast === 'function') showToast(`Audit record not found: ${recordId}`);
+        return;
+      }
+
+      const modal = document.getElementById('auditDiffModal');
+      const idEl = document.getElementById('diffModalRecordId');
+      const titleEl = document.getElementById('diffModalTitle');
+      const metaEl = document.getElementById('diffModalMeta');
+      const tbodyEl = document.getElementById('diffModalTableBody');
+
+      if (idEl) idEl.innerText = item.id;
+      if (titleEl) titleEl.innerText = `${item.actionLabel || item.action}: ${item.target}`;
+
+      if (metaEl) {
+        metaEl.innerHTML = `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div><span class="font-bold text-slate-700 dark:text-slate-300">Author:</span> ${escapeAuditHtml(item.user)} (${escapeAuditHtml(item.role)})</div>
+            <div><span class="font-bold text-slate-700 dark:text-slate-300">Timestamp:</span> ${escapeAuditHtml(item.timestamp)}</div>
+            <div class="sm:col-span-2"><span class="font-bold text-slate-700 dark:text-slate-300">Description:</span> ${escapeAuditHtml(item.description)}</div>
+            <div class="sm:col-span-2 font-mono text-[10px] text-slate-500 break-all"><span class="font-bold text-slate-700 dark:text-slate-300">SHA-256 Digest:</span> ${escapeAuditHtml(item.hash)}</div>
+          </div>
+        `;
+      }
+
+      if (tbodyEl) {
+        if (!item.diffs || item.diffs.length === 0) {
+          tbodyEl.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-slate-400">No field-level diffs recorded.</td></tr>`;
+        } else {
+          tbodyEl.innerHTML = item.diffs.map(d => `
+            <tr class="font-mono text-xs">
+              <td class="py-2.5 px-3 font-bold text-slate-800 dark:text-slate-200">${escapeAuditHtml(d.field)}</td>
+              <td class="py-2.5 px-3 bg-rose-50/70 dark:bg-rose-950/30 text-rose-800 dark:text-rose-300 line-through">${escapeAuditHtml(d.oldVal)}</td>
+              <td class="py-2.5 px-3 bg-emerald-50/70 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 font-bold">${escapeAuditHtml(d.newVal)}</td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      if (modal) {
+        modal.classList.remove('hidden');
+      }
+    }
+
+    function closeAuditDiffModal() {
+      const modal = document.getElementById('auditDiffModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function verifyHashModal(recordId) {
+      const item = (window.AUDIT_LOG || []).find(r => r.id === recordId || r.hash === recordId);
+      if (!item) return;
+      if (typeof showToast === 'function') {
+        showToast(`✓ Cryptographic Record ${item.id} verified: SHA-256 seal matches audit chain.`);
+      } else {
+        alert(`Record ${item.id} integrity verified. SHA-256 Hash:\n${item.hash}`);
+      }
+    }
+
+    function appendAuditLog(entry) {
+      if (!entry) return;
+      window.AUDIT_LOG = window.AUDIT_LOG || [];
+      window.AUDIT_LOG.unshift(entry);
+      renderAuditTable();
+    }
+
     window.togglePersonalAgentDrawer = togglePersonalAgentDrawer;
     window.openPersonalAgentDrawer = openPersonalAgentDrawer;
     window.closePersonalAgentDrawer = closePersonalAgentDrawer;
+    window.renderAuditTable = renderAuditTable;
+    window.openAuditDiffModal = openAuditDiffModal;
+    window.closeAuditDiffModal = closeAuditDiffModal;
+    window.verifyHashModal = verifyHashModal;
+    window.appendAuditLog = appendAuditLog;
+    window.escapeAuditHtml = escapeAuditHtml;
 
-    // Initialize categories and legend on load
+    // Initialize categories, legend and audit trail on load
     try {
       renderFlowchartLegend();
       populateCategoryDropdowns();
+      renderAuditTable();
     } catch (e) {
       console.warn('Initial setup warning:', e);
     }

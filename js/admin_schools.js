@@ -642,18 +642,18 @@
         const lines = (data.mission || '').split('\n').filter(l => l.trim());
         const lead = lines.shift() || 'Our Mission';
         content.innerHTML = `
-          <p class="font-bold text-[#E5A823] text-base mb-2">Our Mission</p>
-          <p class="text-slate-200 mb-3 leading-relaxed">${lead}</p>
-          ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
+          <p class="font-bold text-[#002855] dark:text-[#E5A823] text-base mb-2">Our Mission</p>
+          <p class="text-slate-800 dark:text-slate-200 mb-3 leading-relaxed">${lead}</p>
+          ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-700 dark:text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
         `;
       } else if (pillar === 'vision') {
         title.innerText = 'Institutional Vision';
         const lines = (data.vision || '').split('\n').filter(l => l.trim());
         const lead = lines.shift() || 'Our Vision';
         content.innerHTML = `
-          <p class="font-bold text-[#E5A823] text-base mb-2">Our Vision</p>
-          <p class="text-slate-200 mb-3 leading-relaxed">${lead}</p>
-          ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
+          <p class="font-bold text-[#002855] dark:text-[#E5A823] text-base mb-2">Our Vision</p>
+          <p class="text-slate-800 dark:text-slate-200 mb-3 leading-relaxed">${lead}</p>
+          ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-700 dark:text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
         `;
       } else {
         title.innerText = 'Institutional Core Values';
@@ -663,15 +663,15 @@
           const valTitle = parts[0] ? parts[0].trim() : 'Value';
           const valDesc = parts.slice(1).join(':').trim() || '';
           return `
-            <div class="p-3 bg-[#10151E] border border-slate-700/60">
-              <div class="font-bold text-[#E5A823] text-sm mb-1">${valTitle}</div>
-              <div class="text-slate-300 text-xs">${valDesc}</div>
+            <div class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/60">
+              <div class="font-bold text-[#002855] dark:text-[#E5A823] text-sm mb-1">${valTitle}</div>
+              <div class="text-slate-700 dark:text-slate-300 text-xs">${valDesc}</div>
             </div>
           `;
         }).join('');
 
         content.innerHTML = `
-          <p class="font-bold text-[#E5A823] text-base mb-2">Our Core Values</p>
+          <p class="font-bold text-[#002855] dark:text-[#E5A823] text-base mb-2">Our Core Values</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             ${valCards}
           </div>

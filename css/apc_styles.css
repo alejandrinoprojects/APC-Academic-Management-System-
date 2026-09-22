@@ -678,8 +678,11 @@
     html:not(.dark) #heroBannerContainer button {
       color: #002855 !important;
     }
-    html:not(.dark) #heroBannerContainer button:hover {
-      color: #d97706 !important;
+    html:not(.dark) #heroBannerContainer button span {
+      color: #002855 !important;
+    }
+    html:not(.dark) #heroBannerContainer button:hover span {
+      color: #b45309 !important;
     }
 
     /* School Card Top Banners in Light Mode */
@@ -1161,13 +1164,20 @@
     /* Modals in Light Mode */
     html:not(.dark) #modalAddSchool > div,
     html:not(.dark) #modalEditSchool > div,
+    html:not(.dark) #modalAddProgram > div,
+    html:not(.dark) #modalEditProgram > div,
+    html:not(.dark) #modalAddFaculty > div,
+    html:not(.dark) #modalAssignTask > div,
+    html:not(.dark) #createCurriculumModal > div,
+    html:not(.dark) #editPillarsModal > div,
     html:not(.dark) #courseEditModal > div,
     html:not(.dark) #batchModal > div,
     html:not(.dark) #cycleModal > div,
     html:not(.dark) #categoryManagerModal > div,
     html:not(.dark) #aiImportModal > div,
     html:not(.dark) #pillarModal > div,
-    html:not(.dark) #loginModal > div {
+    html:not(.dark) #loginModal > div,
+    html:not(.dark) #auditDiffModal > div {
       background-color: #ffffff !important;
       border-color: #e5a823 !important;
       color: #0f172a !important;
@@ -1175,19 +1185,37 @@
     }
     html:not(.dark) #modalAddSchool .bg-\[\#10151E\],
     html:not(.dark) #modalEditSchool .bg-\[\#10151E\],
+    html:not(.dark) #modalAddProgram .bg-\[\#10151E\],
+    html:not(.dark) #modalEditProgram .bg-\[\#10151E\],
+    html:not(.dark) #modalAddFaculty .bg-\[\#10151E\],
+    html:not(.dark) #modalAssignTask .bg-\[\#10151E\],
+    html:not(.dark) #createCurriculumModal .bg-\[\#10151E\],
+    html:not(.dark) #editPillarsModal .bg-\[\#10151E\],
     html:not(.dark) #courseEditModal .bg-\[\#10151E\],
     html:not(.dark) #batchModal .bg-\[\#10151E\],
     html:not(.dark) #cycleModal .bg-\[\#10151E\],
     html:not(.dark) #categoryManagerModal .bg-\[\#10151E\],
     html:not(.dark) #aiImportModal .bg-\[\#10151E\],
     html:not(.dark) #pillarModal .bg-\[\#10151E\],
-    html:not(.dark) #loginModal .bg-\[\#10151E\] {
+    html:not(.dark) #loginModal .bg-\[\#10151E\],
+    html:not(.dark) #auditDiffModal .bg-\[\#10151E\] {
       background-color: #f8fafc !important;
       border-color: #e2e8f0 !important;
       color: #0f172a !important;
     }
     html:not(.dark) #modalAddSchool input,
     html:not(.dark) #modalEditSchool input,
+    html:not(.dark) #modalAddProgram input,
+    html:not(.dark) #modalAddProgram select,
+    html:not(.dark) #modalEditProgram input,
+    html:not(.dark) #modalAddFaculty input,
+    html:not(.dark) #modalAddFaculty select,
+    html:not(.dark) #modalAssignTask input,
+    html:not(.dark) #modalAssignTask select,
+    html:not(.dark) #createCurriculumModal input,
+    html:not(.dark) #createCurriculumModal select,
+    html:not(.dark) #editPillarsModal input,
+    html:not(.dark) #editPillarsModal textarea,
     html:not(.dark) #courseEditModal input,
     html:not(.dark) #courseEditModal select,
     html:not(.dark) #batchModal input,
@@ -1201,6 +1229,12 @@
     }
     html:not(.dark) #modalAddSchool label,
     html:not(.dark) #modalEditSchool label,
+    html:not(.dark) #modalAddProgram label,
+    html:not(.dark) #modalEditProgram label,
+    html:not(.dark) #modalAddFaculty label,
+    html:not(.dark) #modalAssignTask label,
+    html:not(.dark) #createCurriculumModal label,
+    html:not(.dark) #editPillarsModal label,
     html:not(.dark) #courseEditModal label,
     html:not(.dark) #batchModal label,
     html:not(.dark) #cycleModal label,
@@ -1209,45 +1243,84 @@
       color: #475569 !important;
     }
     html:not(.dark) #modalAddSchool button.bg-slate-800,
-    html:not(.dark) #modalEditSchool button.bg-slate-800 {
+    html:not(.dark) #modalEditSchool button.bg-slate-800,
+    html:not(.dark) #modalAddProgram button.bg-slate-800,
+    html:not(.dark) #modalEditProgram button.bg-slate-800,
+    html:not(.dark) #modalAddFaculty button.bg-slate-800,
+    html:not(.dark) #modalAssignTask button.bg-slate-800,
+    html:not(.dark) #createCurriculumModal button.bg-slate-800,
+    html:not(.dark) #editPillarsModal button.bg-slate-800,
+    html:not(.dark) #pillarModal button.bg-slate-800 {
       background-color: #f1f5f9 !important;
       color: #475569 !important;
       border: 1px solid #cbd5e1 !important;
     }
     html:not(.dark) #modalAddSchool button.bg-slate-800:hover,
-    html:not(.dark) #modalEditSchool button.bg-slate-800:hover {
+    html:not(.dark) #modalEditSchool button.bg-slate-800:hover,
+    html:not(.dark) #modalAddProgram button.bg-slate-800:hover,
+    html:not(.dark) #modalEditProgram button.bg-slate-800:hover,
+    html:not(.dark) #pillarModal button.bg-slate-800:hover {
       background-color: #e2e8f0 !important;
       color: #0f172a !important;
     }
     html:not(.dark) #modalAddSchool h3,
     html:not(.dark) #modalEditSchool h3,
+    html:not(.dark) #modalAddProgram h3,
+    html:not(.dark) #modalEditProgram h3,
+    html:not(.dark) #modalAddFaculty h3,
+    html:not(.dark) #modalAssignTask h3,
+    html:not(.dark) #createCurriculumModal h3,
+    html:not(.dark) #editPillarsModal h3,
     html:not(.dark) #courseEditModal h3,
     html:not(.dark) #batchModal h3,
     html:not(.dark) #cycleModal h3,
     html:not(.dark) #categoryManagerModal h3,
     html:not(.dark) #aiImportModal h3,
     html:not(.dark) #pillarModal h3,
-    html:not(.dark) #loginModal h3 {
-      color: #0f172a !important;
+    html:not(.dark) #loginModal h3,
+    html:not(.dark) #auditDiffModal h3 {
+      color: #002855 !important;
     }
-    html:not(.dark) #modalAddSchool button,
-    html:not(.dark) #modalEditSchool button {
-      color: #475569 !important;
+    html:not(.dark) #pillarModal p,
+    html:not(.dark) #pillarModal li,
+    html:not(.dark) #pillarModal .text-slate-200,
+    html:not(.dark) #pillarModal .text-slate-300,
+    html:not(.dark) #pillarModal .text-slate-400 {
+      color: #334155 !important;
     }
 
     /* Modals in Dark Mode */
     .dark #modalAddSchool > div,
     .dark #modalEditSchool > div,
+    .dark #modalAddProgram > div,
+    .dark #modalEditProgram > div,
+    .dark #modalAddFaculty > div,
+    .dark #modalAssignTask > div,
+    .dark #createCurriculumModal > div,
+    .dark #editPillarsModal > div,
     .dark #courseEditModal > div,
     .dark #batchModal > div,
     .dark #cycleModal > div,
     .dark #categoryManagerModal > div,
     .dark #aiImportModal > div,
     .dark #pillarModal > div,
-    .dark #loginModal > div {
+    .dark #loginModal > div,
+    .dark #auditDiffModal > div {
       background-color: #111722 !important;
       border-color: #e5a823 !important;
       color: #f8fafc !important;
+    }
+    .dark #modalAddSchool .bg-\[\#10151E\],
+    .dark #modalEditSchool .bg-\[\#10151E\],
+    .dark #modalAddProgram .bg-\[\#10151E\],
+    .dark #modalEditProgram .bg-\[\#10151E\],
+    .dark #modalAddFaculty .bg-\[\#10151E\],
+    .dark #modalAssignTask .bg-\[\#10151E\],
+    .dark #createCurriculumModal .bg-\[\#10151E\],
+    .dark #editPillarsModal .bg-\[\#10151E\],
+    .dark #pillarModal .bg-\[\#10151E\] {
+      background-color: #0b0f17 !important;
+      border-color: #1e293b !important;
     }
 
     /* Dark Mode Scrollbars */
@@ -1529,51 +1602,20 @@
       border-bottom: 1px solid #334155;
     }
 
-    /* PD Right Banner Box in Light and Dark Mode */
-    html:not(.dark) #pdRightBannerBox {
-      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%) !important;
-      border-color: #cbd5e1 !important;
-      color: #0f172a !important;
-    }
-    html:not(.dark) #pdRightBannerBox h2 span:first-child {
-      color: #002855 !important;
-    }
-    html:not(.dark) #pdRightBannerBox p {
-      color: #475569 !important;
-    }
-    html:not(.dark) #pdRightBannerBox .bg-black\/40 {
-      background-color: #fef3c7 !important;
-      border-color: #fcd34d !important;
-      color: #92400e !important;
-    }
-    html:not(.dark) #pdRightBannerBox .border-white\/15,
-    html:not(.dark) #pdRightBannerBox .border-white\/20 {
-      border-color: #cbd5e1 !important;
-    }
-    html:not(.dark) #pdRightBannerBox .bg-white\/10 {
-      background-color: #f1f5f9 !important;
-      color: #002855 !important;
-      border-color: #cbd5e1 !important;
-    }
-    html:not(.dark) #pdRightBannerBox .text-blue-200 {
-      color: #475569 !important;
-    }
-    html:not(.dark) #pdRightBannerBox .text-amber-300 {
-      color: #b45309 !important;
-    }
-    html:not(.dark) #pdRightBannerBox button.bg-white\/10 {
-      background-color: #ffffff !important;
-      border-color: #cbd5e1 !important;
-      color: #002855 !important;
-    }
-    html:not(.dark) #pdRightBannerBox button.bg-white\/10:hover {
-      background-color: #f1f5f9 !important;
-      border-color: #E5A823 !important;
-    }
-    .dark #pdRightBannerBox {
-      background: #0f1b29 !important;
-      border-color: #334155 !important;
+    /* PD Right Banner Box & Curriculum Home Banner Box: Executive Decorated Theme Preserved Across All Modes */
+    #pdRightBannerBox, #curricHomeBannerBox {
+      background-color: #071322 !important;
+      border: 1px solid rgba(51, 65, 85, 0.8) !important;
+      border-left: 4px solid #E5A823 !important;
       color: #ffffff !important;
+      position: relative;
+      overflow: hidden;
+    }
+    #pdRightBannerBox h2, #curricHomeBannerBox h2 {
+      color: #ffffff !important;
+    }
+    #pdRightBannerBox p, #curricHomeBannerBox p {
+      color: #cbd5e1 !important;
     }
 
     /* Dark Mode PD Elements */

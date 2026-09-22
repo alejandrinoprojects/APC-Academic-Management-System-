@@ -2025,29 +2025,66 @@
                 </div>
 
                 <!-- Right: Program Directorate Overview Banner -->
-                <div id="pdRightBannerBox" class="flex-1 bg-[#002855] text-white border border-slate-700 shadow-sm relative overflow-hidden flex flex-col justify-between p-6">
-                  <div class="relative z-10 flex flex-wrap items-center justify-between gap-3">
-                    <div class="space-y-1">
-                      <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/40 border border-amber-400/40 text-amber-300 text-[10px] font-mono font-black uppercase tracking-widest">
-                        <span class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
+                <!-- Right: Program Directorate Overview Banner (School of Engineering Decorated Suite) -->
+                <div id="pdRightBannerBox" class="flex-1 bg-[#071322] text-white border border-slate-700/80 border-l-4 border-l-[#E5A823] shadow-xl relative overflow-hidden flex flex-col justify-between p-6">
+                  <!-- Layered Geometric Colored Shapes & Facets Background -->
+                  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                    <svg class="w-full h-full object-cover" preserveAspectRatio="none" viewBox="0 0 1200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="1200" height="320" fill="#071322"></rect>
+                      <!-- Deep navy geometric facets -->
+                      <polygon points="0,0 480,0 350,320 0,320" fill="#0B1D36" fill-opacity="0.9"></polygon>
+                      <polygon points="420,0 900,0 760,320 300,320" fill="#0E2548" fill-opacity="0.65"></polygon>
+                      <polygon points="820,0 1200,0 1200,320 680,320" fill="#09182E" fill-opacity="0.8"></polygon>
+                      <polygon points="260,320 620,90 780,320" fill="#14335C" fill-opacity="0.45"></polygon>
+                      <polygon points="920,0 1200,180 1200,0" fill="#183D6E" fill-opacity="0.35"></polygon>
+                      <!-- Angular accent lines (Gold, Amber & Cyan) -->
+                      <line x1="0" y1="0" x2="480" y2="320" stroke="#E5A823" stroke-width="1.5" stroke-opacity="0.35"></line>
+                      <line x1="420" y1="0" x2="900" y2="320" stroke="#FF6B00" stroke-width="1.2" stroke-opacity="0.25"></line>
+                      <line x1="820" y1="0" x2="1200" y2="280" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.2"></line>
+                      <!-- Geometric Grid Dots Pattern -->
+                      <defs>
+                        <pattern id="pdGridPattern" width="24" height="24" patternUnits="userSpaceOnUse">
+                          <circle cx="2" cy="2" r="1.2" fill="#E5A823" fill-opacity="0.14"></circle>
+                        </pattern>
+                      </defs>
+                      <rect width="1200" height="320" fill="url(#pdGridPattern)"></rect>
+                    </svg>
+                    <!-- Subtle Institutional Ambient Glow -->
+                    <div class="absolute -right-16 -top-16 w-80 h-80 bg-[#FF6B00]/15 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-[#002855]/50 rounded-full blur-3xl pointer-events-none"></div>
+                    <!-- APC Seal Watermark Crest -->
+                    <div class="absolute right-36 -bottom-8 opacity-10 pointer-events-none hidden sm:block">
+                      <img src="../assets/apc_seal.png" class="w-44 h-44 object-contain" alt="APC Watermark">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#071322]/80 via-transparent to-transparent pointer-events-none"></div>
+                  </div>
+
+                  <div class="relative z-10 flex flex-wrap items-center justify-between gap-4">
+                    <div class="space-y-1.5 max-w-3xl">
+                      <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/50 border border-amber-400/40 text-amber-300 text-[10px] font-mono font-black uppercase tracking-widest shadow-xs">
+                        <span class="w-1.5 h-1.5 bg-amber-400 rounded-none animate-pulse"></span>
                         <span id="pdHeaderSchoolName">SCHOOL OF ENGINEERING</span>
-                        <span>&bull;</span>
-                        <span>PROGRAM DIRECTOR WORKBENCH</span>
+                        <span class="text-amber-500/60">•</span>
+                        <span id="pdHeaderWorkbenchTag">PROGRAM DIRECTOR WORKBENCH</span>
+                        <span class="text-amber-500/60">•</span>
+                        <span class="text-amber-200">BSCpE</span>
                       </div>
                       <h2 id="pdHeaderProgramTitle" class="text-xl sm:text-2xl font-black tracking-tight uppercase flex items-center gap-2 text-white">
                         <span>BACHELOR OF SCIENCE IN</span>
                         <span class="text-[#E5A823]">COMPUTER ENGINEERING</span>
                       </h2>
-                      <p class="text-xs text-blue-100 max-w-2xl font-normal leading-relaxed">
-                        Operating under the <strong>School of Engineering</strong>. You lead curriculum architecture, prerequisite DAG topological verification, outcomes-based syllabus alignment, and master course catalogs.
+                      <div class="h-0.5 w-16 bg-gradient-to-r from-[#E5A823] to-[#FF6B00]"></div>
+                      <p id="pdHeaderWorkbenchDesc" class="text-xs text-slate-300 font-normal leading-relaxed">
+                        Central coordination portal for degree sequence authoring, course syllabi, and term offerings.
                       </p>
                     </div>
-                  </div>
 
-                  <!-- Executive Subsystem Navigation Callout -->
-                  <div class="relative z-10 pt-4 mt-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3 text-xs">
-                    <div class="text-[11px] text-blue-200">
-                      Designating a task to faculty grants direct access to the <strong>Integrated Spreadsheet</strong>.
+                    <!-- Return to School of Engineering (Visible for Sys Admin & EXD) -->
+                    <div class="flex flex-wrap items-center gap-2">
+                      <button type="button" id="pdReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3.5 py-2 bg-black/50 hover:bg-black/80 border border-amber-400/50 hover:border-amber-300 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-xs group" title="Return to School of Engineering Overview">
+                        <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
+                        <span>School of Engineering</span>
+                      </button>
                     </div>
                   </div>
                 </div>

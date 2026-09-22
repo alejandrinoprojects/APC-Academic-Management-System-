@@ -638,15 +638,15 @@
                     <!-- 3 Pillars: MISSION, VISION, VALUES (With prominent underline indicator bar) -->
                     <div class="grid grid-cols-3 gap-3 sm:gap-6 mt-4 sm:mt-5 max-w-xl mx-auto font-sans">
                       <button type="button" onclick="showPillarModal('mission')" class="group relative py-1 px-2 text-center transition cursor-pointer flex flex-col items-center" title="Click to view Institutional Mission">
-                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-white group-hover:text-[#E5A823] transition-colors uppercase">MISSION</span>
+                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-slate-900 dark:text-white group-hover:text-[#E5A823] transition-colors uppercase">MISSION</span>
                         <span class="mt-1 h-0.5 w-10 sm:w-14 bg-[#E5A823] group-hover:w-full transition-all duration-200"></span>
                       </button>
                       <button type="button" onclick="showPillarModal('vision')" class="group relative py-1 px-2 text-center transition cursor-pointer flex flex-col items-center" title="Click to view Institutional Vision">
-                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-white group-hover:text-[#E5A823] transition-colors uppercase">VISION</span>
+                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-slate-900 dark:text-white group-hover:text-[#E5A823] transition-colors uppercase">VISION</span>
                         <span class="mt-1 h-0.5 w-10 sm:w-14 bg-[#E5A823] group-hover:w-full transition-all duration-200"></span>
                       </button>
                       <button type="button" onclick="showPillarModal('values')" class="group relative py-1 px-2 text-center transition cursor-pointer flex flex-col items-center" title="Click to view Institutional Core Values">
-                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-white group-hover:text-[#E5A823] transition-colors uppercase">VALUES</span>
+                        <span class="font-black text-sm sm:text-base md:text-lg tracking-widest text-slate-900 dark:text-white group-hover:text-[#E5A823] transition-colors uppercase">VALUES</span>
                         <span class="mt-1 h-0.5 w-10 sm:w-14 bg-[#E5A823] group-hover:w-full transition-all duration-200"></span>
                       </button>
                     </div>
@@ -915,28 +915,63 @@
                   </div>
                 </div>
 
-                <!-- Right: Program Directorate Overview Banner (Carries School Color Family - Orange for School of Engineering) -->
-                <div id="pdRightBannerBox" class="flex-1 bg-gradient-to-r from-[#1b0c03] via-[#351505] to-[#6a2507] text-white border border-[#FF6B00]/40 shadow-sm relative overflow-hidden flex flex-col justify-between p-6">
-                  <div class="relative z-10 flex flex-wrap items-center justify-between gap-3">
-                    <div class="space-y-1">
-                      <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/40 border border-amber-400/40 text-amber-300 text-[10px] font-mono font-black uppercase tracking-widest">
+                <!-- Right: Program Directorate Overview Banner (School of Engineering Decorated Suite) -->
+                <div id="pdRightBannerBox" class="flex-1 bg-[#071322] text-white border border-slate-700/80 border-l-4 border-l-[#E5A823] shadow-xl relative overflow-hidden flex flex-col justify-between p-6">
+                  <!-- Layered Geometric Colored Shapes & Facets Background -->
+                  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                    <svg class="w-full h-full object-cover" preserveAspectRatio="none" viewBox="0 0 1200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="1200" height="320" fill="#071322"></rect>
+                      <!-- Deep navy geometric facets -->
+                      <polygon points="0,0 480,0 350,320 0,320" fill="#0B1D36" fill-opacity="0.9"></polygon>
+                      <polygon points="420,0 900,0 760,320 300,320" fill="#0E2548" fill-opacity="0.65"></polygon>
+                      <polygon points="820,0 1200,0 1200,320 680,320" fill="#09182E" fill-opacity="0.8"></polygon>
+                      <polygon points="260,320 620,90 780,320" fill="#14335C" fill-opacity="0.45"></polygon>
+                      <polygon points="920,0 1200,180 1200,0" fill="#183D6E" fill-opacity="0.35"></polygon>
+                      <!-- Angular accent lines (Gold, Amber & Cyan) -->
+                      <line x1="0" y1="0" x2="480" y2="320" stroke="#E5A823" stroke-width="1.5" stroke-opacity="0.35"></line>
+                      <line x1="420" y1="0" x2="900" y2="320" stroke="#FF6B00" stroke-width="1.2" stroke-opacity="0.25"></line>
+                      <line x1="820" y1="0" x2="1200" y2="280" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.2"></line>
+                      <!-- Geometric Grid Dots Pattern -->
+                      <defs>
+                        <pattern id="pdGridPattern" width="24" height="24" patternUnits="userSpaceOnUse">
+                          <circle cx="2" cy="2" r="1.2" fill="#E5A823" fill-opacity="0.14"></circle>
+                        </pattern>
+                      </defs>
+                      <rect width="1200" height="320" fill="url(#pdGridPattern)"></rect>
+                    </svg>
+                    <!-- Subtle Institutional Ambient Glow -->
+                    <div class="absolute -right-16 -top-16 w-80 h-80 bg-[#FF6B00]/15 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-[#002855]/50 rounded-full blur-3xl pointer-events-none"></div>
+                    <!-- APC Seal Watermark Crest -->
+                    <div class="absolute right-36 -bottom-8 opacity-10 pointer-events-none hidden sm:block">
+                      <img src="assets/apc_seal.png" class="w-44 h-44 object-contain" alt="APC Watermark">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#071322]/80 via-transparent to-transparent pointer-events-none"></div>
+                  </div>
+
+                  <div class="relative z-10 flex flex-wrap items-center justify-between gap-4">
+                    <div class="space-y-1.5 max-w-3xl">
+                      <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/50 border border-amber-400/40 text-amber-300 text-[10px] font-mono font-black uppercase tracking-widest shadow-xs">
                         <span class="w-1.5 h-1.5 bg-amber-400 rounded-none animate-pulse"></span>
                         <span id="pdHeaderSchoolName">SCHOOL OF ENGINEERING</span>
-                        <span>&bull;</span>
+                        <span class="text-amber-500/60">•</span>
                         <span id="pdHeaderWorkbenchTag">PROGRAM DIRECTOR WORKBENCH</span>
+                        <span class="text-amber-500/60">•</span>
+                        <span class="text-amber-200">BSCpE</span>
                       </div>
                       <h2 id="pdHeaderProgramTitle" class="text-xl sm:text-2xl font-black tracking-tight uppercase flex items-center gap-2 text-white">
                         <span>BACHELOR OF SCIENCE IN</span>
                         <span class="text-[#E5A823]">COMPUTER ENGINEERING</span>
                       </h2>
-                      <p id="pdHeaderWorkbenchDesc" class="text-xs text-blue-100 font-normal leading-relaxed">
+                      <div class="h-0.5 w-16 bg-gradient-to-r from-[#E5A823] to-[#FF6B00]"></div>
+                      <p id="pdHeaderWorkbenchDesc" class="text-xs text-slate-300 font-normal leading-relaxed">
                         Central coordination portal for degree sequence authoring, course syllabi, and term offerings.
                       </p>
                     </div>
 
                     <!-- Return to School of Engineering (Visible for Sys Admin & EXD) -->
                     <div class="flex flex-wrap items-center gap-2">
-                      <button type="button" id="pdReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3.5 py-2 bg-black/40 hover:bg-black/60 border border-amber-400/50 hover:border-amber-300 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-sm group" title="Return to School of Engineering Overview">
+                      <button type="button" id="pdReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3.5 py-2 bg-black/50 hover:bg-black/80 border border-amber-400/50 hover:border-amber-300 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-xs group" title="Return to School of Engineering Overview">
                         <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
                         <span>School of Engineering</span>
                       </button>
@@ -1178,29 +1213,69 @@
         <!-- ========================================================================= -->
         <section id="view-curriculum-home" class="hidden space-y-6">
           
-          <!-- Modern Institutional Executive Hero Banner (Carries School Color Family - Orange for School of Engineering) -->
-          <div id="curricHomeBannerBox" class="bg-gradient-to-r from-[#1b0c03] via-[#351505] to-[#6a2507] text-white p-6 sm:p-8 rounded-none border border-[#FF6B00]/40 shadow-lg relative overflow-hidden">
-            <!-- Subtle Institutional Ambient Glow -->
-            <div class="absolute -right-16 -top-16 w-80 h-80 bg-[#FF6B00]/15 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+          <!-- Modern Institutional Executive Hero Banner (School of Engineering Decorated Suite) -->
+          <div id="curricHomeBannerBox" class="bg-[#071322] text-white p-6 sm:p-7 rounded-none border border-slate-700/80 border-l-4 border-l-[#E5A823] shadow-xl relative overflow-hidden">
+            <!-- Layered Geometric Colored Shapes & Facets Background -->
+            <div class="absolute inset-0 pointer-events-none overflow-hidden">
+              <svg class="w-full h-full object-cover" preserveAspectRatio="none" viewBox="0 0 1200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="1200" height="320" fill="#071322"></rect>
+                <!-- Deep navy geometric facets -->
+                <polygon points="0,0 480,0 350,320 0,320" fill="#0B1D36" fill-opacity="0.9"></polygon>
+                <polygon points="420,0 900,0 760,320 300,320" fill="#0E2548" fill-opacity="0.65"></polygon>
+                <polygon points="820,0 1200,0 1200,320 680,320" fill="#09182E" fill-opacity="0.8"></polygon>
+                <polygon points="260,320 620,90 780,320" fill="#14335C" fill-opacity="0.45"></polygon>
+                <polygon points="920,0 1200,180 1200,0" fill="#183D6E" fill-opacity="0.35"></polygon>
+                <!-- Angular accent lines (Gold, Amber & Cyan) -->
+                <line x1="0" y1="0" x2="480" y2="320" stroke="#E5A823" stroke-width="1.5" stroke-opacity="0.35"></line>
+                <line x1="420" y1="0" x2="900" y2="320" stroke="#FF6B00" stroke-width="1.2" stroke-opacity="0.25"></line>
+                <line x1="820" y1="0" x2="1200" y2="280" stroke="#38BDF8" stroke-width="1" stroke-opacity="0.2"></line>
+                <!-- Geometric Grid Dots Pattern -->
+                <defs>
+                  <pattern id="curricGridPattern" width="24" height="24" patternUnits="userSpaceOnUse">
+                    <circle cx="2" cy="2" r="1.2" fill="#E5A823" fill-opacity="0.14"></circle>
+                  </pattern>
+                </defs>
+                <rect width="1200" height="320" fill="url(#curricGridPattern)"></rect>
+              </svg>
+              <!-- Subtle Institutional Ambient Glow -->
+              <div class="absolute -right-16 -top-16 w-80 h-80 bg-[#FF6B00]/15 rounded-full blur-3xl pointer-events-none"></div>
+              <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-[#002855]/50 rounded-full blur-3xl pointer-events-none"></div>
+              <!-- APC Seal Watermark Crest -->
+              <div class="absolute right-36 -bottom-8 opacity-10 pointer-events-none hidden sm:block">
+                <img src="assets/apc_seal.png" class="w-44 h-44 object-contain" alt="APC Watermark">
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#071322]/80 via-transparent to-transparent pointer-events-none"></div>
+            </div>
 
-            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <!-- Left: Degree Title -->
-              <div>
-                <h2 id="curricHomeProgramTitle" class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase text-white">
-                  Bachelor of Science in <span class="text-[#E5A823]">Computer Engineering</span>
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+              <!-- Left: Degree Title & Institutional Badges -->
+              <div class="space-y-1.5 max-w-3xl">
+                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 bg-black/50 border border-amber-400/40 text-amber-300 text-[10px] font-mono font-black uppercase tracking-widest shadow-xs">
+                  <span class="w-1.5 h-1.5 bg-amber-400 rounded-none animate-pulse"></span>
+                  <span id="curricHomeSchoolName">SCHOOL OF ENGINEERING</span>
+                  <span class="text-amber-500/60">•</span>
+                  <span>CURRICULUM MANAGEMENT</span>
+                  <span class="text-amber-500/60">•</span>
+                  <span class="text-amber-200">AY 2026–2030 COHORT</span>
+                </div>
+                <h2 id="curricHomeProgramTitle" class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight uppercase text-white flex flex-wrap items-center gap-2">
+                  <span>Bachelor of Science in</span> <span class="text-[#E5A823]">Computer Engineering</span>
                 </h2>
+                <div class="h-0.5 w-16 bg-gradient-to-r from-[#E5A823] to-[#FF6B00]"></div>
+                <p id="curricHomeWorkbenchDesc" class="text-xs text-slate-300 font-normal leading-relaxed">
+                  Comprehensive curriculum structure, prerequisite mappings, course syllabus records, and multi-term academic sequencing.
+                </p>
                 <h3 id="curricHomeHeading" class="hidden">Curriculum Management Homepage</h3>
               </div>
 
-              <!-- Right: Navigation Button -->
-              <div class="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-3 shrink-0">
-                <button type="button" id="curricHomeReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-xs" title="Return to School of Engineering Overview">
-                  <span>&larr;</span>
+              <!-- Right: Navigation Buttons -->
+              <div class="flex flex-wrap sm:flex-nowrap lg:flex-col items-start lg:items-end justify-between gap-2.5 shrink-0">
+                <button type="button" id="curricHomeReturnToSchoolBtn" onclick="goToSchoolExd('soe')" class="hidden px-3.5 py-2 bg-black/50 hover:bg-black/80 border border-amber-400/50 hover:border-amber-300 text-amber-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-xs group" title="Return to School of Engineering Overview">
+                  <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
                   <span>School of Engineering</span>
                 </button>
-                <button type="button" onclick="goToProgramPd('BSCpE')" class="px-4 py-2.5 bg-[#E5A823] hover:bg-[#d4971a] text-[#002855] font-black text-xs flex items-center gap-2 transition-all cursor-pointer border border-[#E5A823] shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0" title="Return to Multi-Subsystem PD Workbench">
-                  <svg class="w-4 h-4 text-[#002855]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <button type="button" onclick="goToProgramPd('BSCpE')" class="px-4 py-2 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-2 transition-all cursor-pointer border border-amber-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0" title="Return to Multi-Subsystem PD Workbench">
+                  <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                   <span id="curricHomeWorkbenchBtnText">PD Workbench</span>
                 </button>
               </div>
@@ -4404,33 +4479,33 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- MISSION, VISION & VALUES MODAL -->
   <!-- ========================================================================= -->
   <div id="pillarModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden">
       <!-- Modal Header -->
-      <div class="bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-700/80">
+      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/80">
         <div class="flex items-center space-x-3">
           <img src="assets/apc_seal.png" class="w-7 h-7 object-contain" alt="APC Seal">
-          <h3 id="pillarModalTitle" class="font-black text-sm tracking-wider text-[#E5A823] uppercase">Institutional Mission</h3>
+          <h3 id="pillarModalTitle" class="font-black text-sm tracking-wider text-[#002855] dark:text-[#E5A823] uppercase">Institutional Mission</h3>
         </div>
-        <button type="button" onclick="closePillarModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <button type="button" onclick="closePillarModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
       </div>
 
       <!-- Modal Body -->
-      <div class="p-6 space-y-4 text-slate-200">
+      <div class="p-6 space-y-4 text-slate-800 dark:text-slate-200">
         <div id="pillarModalContent" class="text-sm leading-relaxed">
           <!-- Populated by showPillarModal -->
         </div>
-        <div class="p-3 bg-[#10151E] border border-slate-700/60 text-xs text-slate-400">
-          <span class="font-bold text-[#E5A823]">Asia Pacific College (APC):</span> Real Projects. Real Learning. Academic Institutional Governance.
+        <div class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-400">
+          <span class="font-bold text-[#002855] dark:text-[#E5A823]">Asia Pacific College (APC):</span> Real Projects. Real Learning. Academic Institutional Governance.
         </div>
       </div>
 
       <!-- Modal Footer -->
-      <div class="bg-[#10151E] px-5 py-3 border-t border-slate-700/80 flex items-center justify-between">
-        <button type="button" onclick="openEditPillarsModal()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer">
+      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+        <button type="button" onclick="openEditPillarsModal()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-xs">
           <span>✎</span>
           <span>Edit Statements</span>
         </button>
-        <button type="button" onclick="closePillarModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition cursor-pointer">Close</button>
+        <button type="button" onclick="closePillarModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white text-xs font-bold transition cursor-pointer border border-slate-300 dark:border-slate-700">Close</button>
       </div>
     </div>
   </div>
@@ -4559,34 +4634,34 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- ADD PROGRAM MODAL -->
   <!-- ========================================================================= -->
   <div id="modalAddProgram" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
-      <div class="bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-700/80">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/80">
         <div class="flex items-center space-x-2.5">
           <span class="text-[#E5A823] font-bold text-base">&#10133;</span>
-          <h3 class="font-black text-sm tracking-wider text-white uppercase">Add Degree Program</h3>
+          <h3 class="font-black text-sm tracking-wider text-[#002855] dark:text-white uppercase">Add Degree Program</h3>
         </div>
-        <button type="button" onclick="closeAddProgramModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <button type="button" onclick="closeAddProgramModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
       </div>
 
       <form onsubmit="submitAddProgram(event)" class="p-6 space-y-4 text-xs">
         <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Academic School</label>
-          <select id="newProgSchool" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]">
+          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Academic School</label>
+          <select id="newProgSchool" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]">
             <!-- Dynamically populated by openAddProgramModal -->
           </select>
         </div>
         <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code / Acronym</label>
-          <input type="text" id="newProgCode" placeholder="e.g. BSSE, BSMech, BSData" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code / Acronym</label>
+          <input type="text" id="newProgCode" placeholder="e.g. BSSE, BSMech, BSData" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]" />
         </div>
         <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Full Degree Program Title</label>
-          <input type="text" id="newProgName" placeholder="e.g. Bachelor of Science in Software Engineering" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Full Degree Program Title</label>
+          <input type="text" id="newProgName" placeholder="e.g. Bachelor of Science in Software Engineering" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]" />
         </div>
 
         <div class="pt-2 flex items-center justify-end space-x-2">
-          <button type="button" onclick="closeAddProgramModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold cursor-pointer">Cancel</button>
-          <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase cursor-pointer">Add Degree Program</button>
+          <button type="button" onclick="closeAddProgramModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold cursor-pointer border border-slate-300 dark:border-slate-700">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase cursor-pointer shadow-xs">Add Degree Program</button>
         </div>
       </form>
     </div>
@@ -4596,34 +4671,34 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- EDIT DEGREE PROGRAM & DIRECTOR MODAL -->
   <!-- ========================================================================= -->
   <div id="modalEditProgram" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
-      <div class="bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-700/80">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/80">
         <div class="flex items-center space-x-2.5">
           <span class="text-[#E5A823] font-bold text-base">✎</span>
-          <h3 id="editProgramModalTitle" class="font-black text-sm tracking-wider text-white uppercase">Edit Program &amp; Director</h3>
+          <h3 id="editProgramModalTitle" class="font-black text-sm tracking-wider text-[#002855] dark:text-white uppercase">Edit Program &amp; Director</h3>
         </div>
-        <button type="button" onclick="closeEditProgramModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <button type="button" onclick="closeEditProgramModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
       </div>
 
       <form onsubmit="submitEditProgram(event)" class="p-6 space-y-4 text-xs">
         <input type="hidden" id="editProgOriginalCode" value="" />
         <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code</label>
-          <input type="text" id="editProgCode" readonly class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-amber-400 font-mono font-bold outline-none cursor-not-allowed opacity-80" />
+          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code</label>
+          <input type="text" id="editProgCode" readonly class="w-full px-3 py-2 bg-slate-100 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-amber-700 dark:text-amber-400 font-mono font-bold outline-none cursor-not-allowed opacity-80" />
         </div>
         <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Degree Program Title</label>
-          <input type="text" id="editProgName" placeholder="e.g. Bachelor of Science in Computer Engineering" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Degree Program Title</label>
+          <input type="text" id="editProgName" placeholder="e.g. Bachelor of Science in Computer Engineering" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]" />
         </div>
         <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Director</label>
-          <input type="text" id="editProgDirector" placeholder="e.g. Program Director" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
-          <p class="text-[10px] text-slate-400 mt-1">Changing the director updates the card display, executive overview, and PD Workbench headers.</p>
+          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Director</label>
+          <input type="text" id="editProgDirector" placeholder="e.g. Program Director" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]" />
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Changing the director updates the card display, executive overview, and PD Workbench headers.</p>
         </div>
 
         <div class="pt-2 flex items-center justify-end space-x-2">
-          <button type="button" onclick="closeEditProgramModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold cursor-pointer">Cancel</button>
-          <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase cursor-pointer">Save Changes</button>
+          <button type="button" onclick="closeEditProgramModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold cursor-pointer border border-slate-300 dark:border-slate-700">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase cursor-pointer shadow-xs">Save Changes</button>
         </div>
       </form>
     </div>
