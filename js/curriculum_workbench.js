@@ -1453,11 +1453,20 @@
       const pdProgTitle = document.getElementById('pdHeaderProgramTitle');
       const cProgTitle = document.getElementById('curricHomeProgramTitle');
       const pName = (progInfo.name || progCode).toUpperCase();
+      const schoolColor = (progInfo.schoolId === 'soe' || progCode === 'BSCpE' || progCode === 'BSCE' || progCode === 'BSECE')
+        ? '#FF6B00'
+        : ((typeof ACADEMIC_SCHOOLS_DATA !== 'undefined' && ACADEMIC_SCHOOLS_DATA.find(s => s.id === progInfo.schoolId)?.color) || '#FF6B00');
+
       const titleHtml = pName.includes('BACHELOR OF SCIENCE IN ')
-        ? `<span>BACHELOR OF SCIENCE IN</span> <span class="text-[#E5A823]">${pName.replace('BACHELOR OF SCIENCE IN ', '')}</span>`
-        : `<span class="text-[#E5A823]">${pName}</span>`;
+        ? `<span>BACHELOR OF SCIENCE IN</span> <span style="color: ${schoolColor};">${pName.replace('BACHELOR OF SCIENCE IN ', '')}</span>`
+        : `<span style="color: ${schoolColor};">${pName}</span>`;
       if (pdProgTitle) pdProgTitle.innerHTML = titleHtml;
       if (cProgTitle) cProgTitle.innerHTML = titleHtml;
+
+      const pdRightBannerBox = document.getElementById('pdRightBannerBox');
+      if (pdRightBannerBox) pdRightBannerBox.style.borderLeftColor = schoolColor;
+      const curricHomeBannerBox = document.getElementById('curricHomeBannerBox');
+      if (curricHomeBannerBox) curricHomeBannerBox.style.borderLeftColor = schoolColor;
 
       const pdWorkbenchTag = document.getElementById('pdHeaderWorkbenchTag');
       if (pdWorkbenchTag) {
