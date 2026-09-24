@@ -459,13 +459,19 @@
 
       // If route is explicitly login, show login screen
       if (routeState.type === 'login') {
-        if (loginScreen) loginScreen.classList.remove('hidden');
+        if (loginScreen) {
+          loginScreen.style.display = 'flex';
+          loginScreen.classList.remove('hidden');
+        }
         return;
       }
 
       // User has direct access without mandatory login requirement
       window.ramsAuthenticated = true;
-      if (loginScreen) loginScreen.classList.add('hidden');
+      if (loginScreen) {
+        loginScreen.style.display = 'none';
+        loginScreen.classList.add('hidden');
+      }
 
       if (routeState.type === 'admin') {
         if (typeof window.renderAdminOverview === 'function') {
@@ -710,17 +716,26 @@
     const loginScreen = document.getElementById('loginLandingScreen');
 
     if (route && route.type === 'login') {
-      if (loginScreen) loginScreen.classList.remove('hidden');
+      if (loginScreen) {
+        loginScreen.style.display = 'flex';
+        loginScreen.classList.remove('hidden');
+      }
     } else {
-      if (loginScreen) loginScreen.classList.add('hidden');
+      if (loginScreen) {
+        loginScreen.style.display = 'none';
+        loginScreen.classList.add('hidden');
+      }
       applyRouteState(route, true);
     }
   }
 
+  // Execute immediately upon script evaluation to prevent any FOUC or page flash
+  try {
+    initRouter();
+  } catch (e) {}
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initRouter);
-  } else {
-    setTimeout(initRouter, 30);
   }
 
   // --- EXPORTS ON WINDOW ---

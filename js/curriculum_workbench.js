@@ -1782,7 +1782,7 @@
       });
     }
 
-    function switchRole(role) {
+    function switchRole(role, shouldNavigate = true) {
       currentActiveRole = role;
       const avatar = document.getElementById('userAvatarText');
       const name = document.getElementById('userNameText');
@@ -1806,8 +1806,10 @@
           headerBadge.innerText = 'ROOT ADMIN';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-300';
         }
-        renderHomepageForRole('admin');
-        showToast('Active Role: System Administrator (Institutional Authority)');
+        if (shouldNavigate) {
+          renderHomepageForRole('admin');
+          showToast('Active Role: System Administrator (Institutional Authority)');
+        }
       } else if (role === 'exd' || role === 'x') {
         if (avatar) avatar.innerText = 'ED';
         if (sbAvatar) sbAvatar.innerText = 'ED';
@@ -1819,8 +1821,10 @@
           headerBadge.innerText = 'EXD';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300';
         }
-        renderHomepageForRole('exd');
-        showToast('Active Role: Executive Director (School of Engineering)');
+        if (shouldNavigate) {
+          renderHomepageForRole('exd');
+          showToast('Active Role: Executive Director (School of Engineering)');
+        }
       } else if (role === 'pd' || role === 'p') {
         if (avatar) avatar.innerText = 'PD';
         if (sbAvatar) sbAvatar.innerText = 'PD';
@@ -1832,8 +1836,10 @@
           headerBadge.innerText = 'PROGRAM DIRECTOR';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-blue-100 text-blue-800 border border-blue-300';
         }
-        renderHomepageForRole('pd');
-        showToast('Active Role: Program Director (BS Computer Engineering)');
+        if (shouldNavigate) {
+          renderHomepageForRole('pd');
+          showToast('Active Role: Program Director (BS Computer Engineering)');
+        }
       } else if (role === 'faculty' || role === 'f') {
         if (avatar) avatar.innerText = 'FC';
         if (sbAvatar) sbAvatar.innerText = 'FM';
@@ -1845,8 +1851,10 @@
           headerBadge.innerText = 'FACULTY';
           headerBadge.className = 'hidden md:inline-block px-2 py-0.5 text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-300';
         }
-        renderHomepageForRole('faculty');
-        showToast('Active Role: Faculty Member (Hardware & Embedded Cluster)');
+        if (shouldNavigate) {
+          renderHomepageForRole('faculty');
+          showToast('Active Role: Faculty Member (Hardware & Embedded Cluster)');
+        }
       }
 
       // Apply role-based sidebar folder visibility
@@ -6866,7 +6874,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       renderFlowchartLegend();
       populateCategoryDropdowns();
       renderAuditTable();
-      switchRole('admin');
+      switchRole('admin', false);
       applyRolePermissions();
     } catch (e) {
       console.warn('Initial setup warning:', e);
