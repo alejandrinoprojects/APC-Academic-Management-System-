@@ -1450,48 +1450,50 @@
       border-color: #E5A823 !important;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04) !important;
     }
-    html:not(.dark) .program-card .h-28 {
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-      border-bottom: 1px solid #e2e8f0 !important;
+    /* Thematic Top Banner: Keep rich dark contrast, vibrant circuit traces and glowing badge in ALL themes */
+    .program-card .h-28 {
+      background: linear-gradient(135deg, #0a111c 0%, #121f36 50%, #0c1626 100%) !important;
+      border-bottom: 2px solid #FF6B00 !important;
     }
-    html:not(.dark) .program-card .h-28 svg polygon {
-      display: none !important; /* Eliminate muddy dark grey triangles in light mode */
+    .program-card .h-28 svg polygon {
+      display: block !important;
+      fill-opacity: 0.8 !important;
     }
-    html:not(.dark) .program-card .h-28 svg rect {
-      fill: #e2e8f0 !important;
-      stroke: #0284c7 !important;
+    .program-card .h-28 svg line {
+      stroke-opacity: 0.9 !important;
     }
-    html:not(.dark) .program-card .h-28 svg line {
-      stroke-opacity: 0.3 !important;
+    .program-card .h-28 .w-10,
+    .program-card .h-28 .w-9,
+    .program-card .h-28 .w-8 {
+      background-color: #0b1728 !important;
+      border-color: rgba(56, 189, 248, 0.6) !important;
+      color: #38bdf8 !important;
+      box-shadow: 0 2px 8px rgba(56, 189, 248, 0.25) !important;
     }
-    html:not(.dark) .program-card .h-28 span.drop-shadow-md {
-      filter: none !important; /* Clear dirty shadow blur */
+    .program-card .h-28 span {
+      color: #f1f5f9 !important;
     }
-    html:not(.dark) .program-card .h-28 span.text-slate-300,
-    html:not(.dark) .program-card .h-28 span.text-slate-400 {
-      color: #334155 !important;
+    .program-card .h-28 .leading-tight span:first-child {
+      color: #cbd5e1 !important;
       font-weight: 800 !important;
+      letter-spacing: 0.12em !important;
+      font-size: 10px !important;
     }
-    html:not(.dark) .program-card .h-28 span.text-white {
-      color: #0f172a !important;
-      font-weight: 800 !important;
-    }
-    html:not(.dark) .program-card .h-28 span.text-\[\#FF6B00\],
-    html:not(.dark) .program-card .h-28 span.text-\[\#E5A823\] {
-      color: #c2410c !important;
+    .program-card .h-28 .leading-tight span:last-child {
+      color: #FF6B00 !important;
       font-weight: 900 !important;
+      letter-spacing: 0.04em !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6) !important;
     }
-    html:not(.dark) .program-card .h-28 .w-10.h-10 {
-      background-color: #f0f9ff !important;
-      border-color: #0284c7 !important;
-      color: #0284c7 !important;
+    .program-card:hover .h-28 .leading-tight span:last-child {
+      color: #fcd34d !important;
     }
-    html:not(.dark) .program-card .text-white,
-    html:not(.dark) .program-card span.text-white,
-    html:not(.dark) .program-card div.text-white {
+    html:not(.dark) .program-card .p-4 .text-white,
+    html:not(.dark) .program-card .p-4 span.text-white,
+    html:not(.dark) .program-card .p-4 div.text-white {
       color: #0f172a !important;
     }
-    html:not(.dark) .program-card .text-slate-200 {
+    html:not(.dark) .program-card .p-4 .text-slate-200 {
       color: #334155 !important;
     }
     html:not(.dark) .program-card .bg-\[\#10151E\] {

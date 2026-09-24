@@ -1316,8 +1316,8 @@
                 ${banner.iconHtml}
                 <!-- Title Typography -->
                 <div class="relative z-10 leading-tight">
-                  <span class="block text-[10px] font-black text-slate-700 dark:text-slate-300 tracking-widest uppercase drop-shadow-md">${banner.subTitle}</span>
-                  <span class="block text-sm sm:text-base font-black ${banner.titleColor} group-hover:text-amber-400 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors">${banner.title}</span>
+                  <span class="block text-[10px] font-black text-slate-200 tracking-widest uppercase drop-shadow-md banner-sub">${banner.subTitle}</span>
+                  <span class="block text-sm sm:text-base font-black ${banner.titleColor} group-hover:text-amber-300 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors banner-title">${banner.title}</span>
                 </div>
                 ${isArchived ? '<span class="absolute top-2 right-2 text-[9px] font-mono px-1.5 py-0.5 bg-slate-900/90 text-amber-400 border border-amber-500/40 rounded z-20">Dev Freeze</span>' : ''}
               </div>
