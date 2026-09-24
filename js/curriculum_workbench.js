@@ -1341,19 +1341,19 @@
                       <span class="text-[10px] text-amber-600 font-bold uppercase tracking-wider">Click to Manage</span>
                     </div>
                     <div class="bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/70 p-2 space-y-1.5 font-mono text-[11px]">
-                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-900 dark:text-white">
-                        <span class="font-semibold text-slate-800 dark:text-slate-200">Curriculum AY: 2026 - 2030</span>
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart', null, 1)" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-800 dark:text-slate-200">
+                        <span>Curriculum AY: 2026 - 2030</span>
                         <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">1st Year</span>
                       </div>
-                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-700 dark:text-slate-300">
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart', null, 2)" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-800 dark:text-slate-200">
                         <span>Curriculum AY: 2025 - 2029</span>
                         <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">2nd Year</span>
                       </div>
-                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-700 dark:text-slate-300">
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart', null, 3)" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-800 dark:text-slate-200">
                         <span>Curriculum AY: 2024 - 2028</span>
                         <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">3rd Year</span>
                       </div>
-                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart')" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-700 dark:text-slate-300">
+                      <div onclick="event.stopPropagation(); selectProgram('${prog.code}', 'flowchart', null, 4)" class="hover:text-amber-600 dark:hover:text-amber-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 px-1 py-0.5 rounded transition cursor-pointer flex justify-between items-center text-slate-800 dark:text-slate-200">
                         <span>Curriculum AY: 2023 - 2027</span>
                         <span class="text-[9px] text-emerald-700 dark:text-emerald-400 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/60 px-1.5 border border-emerald-300 dark:border-emerald-700/60">4th Year</span>
                       </div>
@@ -4574,7 +4574,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       html += `
-          <th class="py-2 px-2 text-center w-14">Action</th>
+          <th class="py-2 px-2 text-center w-20 text-[11px] font-bold text-slate-700 dark:text-slate-300">Remove</th>
         </tr>
       </thead><tbody>`;
 
@@ -4669,11 +4669,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         }
 
         const actionCell = isFaculty
-          ? `<span class="p-1 text-slate-400 dark:text-slate-500 font-mono text-xs cursor-not-allowed select-none" title="${isAssigned ? 'Course deletion is reserved for Program Director' : 'Course outside assigned cluster (Read-Only)'}">🔒</span>`
-          : `<button type="button" onclick="sheetDeleteCourseRow(${idx})" class="p-1 text-slate-400 hover:text-rose-600 transition cursor-pointer" title="Delete Course">🗑</button>`;
+          ? `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] text-slate-400 dark:text-slate-500 font-mono cursor-not-allowed select-none" title="${isAssigned ? 'Course deletion is reserved for Program Director' : 'Course outside assigned cluster (Read-Only)'}">🔒 Locked</span>`
+          : `<button type="button" onclick="sheetDeleteCourseRow(${idx})" class="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium text-rose-600 dark:text-rose-400 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/50 border border-transparent hover:border-rose-200 dark:hover:border-rose-800 transition cursor-pointer" title="Delete course ${c.code}">
+              <svg class="w-3 h-3 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              <span>Delete</span>
+            </button>`;
 
         html += `
-          <td class="py-1 px-1 text-center">
+          <td class="py-1 px-1 text-center whitespace-nowrap">
             ${actionCell}
           </td>
         </tr>`;

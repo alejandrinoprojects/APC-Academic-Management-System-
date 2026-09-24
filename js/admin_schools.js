@@ -269,7 +269,6 @@
                 '<span class="text-amber-500 dark:text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span> ' +
                 '<span class="truncate font-bold text-slate-900 dark:text-white">' + prog.name + '</span>' +
               '</span>' +
-              '<span class="text-[9px] font-mono px-1.5 py-0.2 bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800 shrink-0">Active</span>' +
             '</a>';
           }
         }
