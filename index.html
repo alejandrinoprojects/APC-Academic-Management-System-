@@ -233,9 +233,9 @@
                             <span class="font-medium text-slate-300 group-hover:text-emerald-300">Master Spreadsheet (All 4 Years)</span>
                           </a>
 
-                          <!-- By Year Section Header -->
+                          <!-- By Academic Year Section Header -->
                           <div class="px-2 pt-1 pb-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                            By Year / Cohort
+                            By Academic Year
                           </div>
 
                           <!-- 1st Year (2026–2030) -->
@@ -1262,7 +1262,7 @@
                   <span class="text-[#FF6B00]/60">•</span>
                   <span>CURRICULUM MANAGEMENT</span>
                   <span class="text-[#FF6B00]/60">•</span>
-                  <span class="text-orange-200">AY 2026–2030 COHORT</span>
+                  <span class="text-orange-200">AY 2026–2030</span>
                 </div>
                 <h2 id="curricHomeProgramTitle" class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight uppercase text-white flex flex-wrap items-center gap-2">
                   <span>Bachelor of Science in</span> <span class="text-[#FF6B00]">Computer Engineering</span>
@@ -1295,7 +1295,7 @@
                 <span class="w-2.5 h-2.5 bg-[#E5A823] shrink-0"></span>
                 <span>Curriculum Sequence by Academic Year</span>
               </div>
-              <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">AY 2026–2030 Active Cohort</span>
+              <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">AY 2026–2030</span>
             </div>
           </div>
 
@@ -1854,10 +1854,10 @@
               </div>
             </div>
 
-            <!-- YEAR / COHORT FILTER BUTTONS -->
+            <!-- YEAR FILTER BUTTONS -->
             <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 py-2 text-xs select-none">
               <div class="flex items-center gap-2">
-                <span class="font-bold text-slate-600 dark:text-slate-400 tracking-wider uppercase text-[11px]">COHORT / YEAR FILTER:</span>
+                <span class="font-bold text-slate-600 dark:text-slate-400 tracking-wider uppercase text-[11px]">YEAR LEVEL FILTER:</span>
                 <div id="pastFlowchartYearButtons" class="inline-flex items-center bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 p-0.5 text-xs">
                   <!-- Injected dynamically by past_flowchart_engine.js -->
                 </div>
@@ -2271,7 +2271,7 @@
                   </button>
                 </div>
                 <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono hidden md:block">
-                  4-Year Cohort Span • 12 Trimesters • 74 Total Courses
+                  4 Full Academic Years • 12 Trimesters • 74 Total Courses
                 </div>
               </div>
 
@@ -3170,40 +3170,55 @@
               <p id="regDocHeaderSubtitle" class="text-xs text-slate-500 dark:text-slate-400">A list of official and archived documents related to the curriculum system.</p>
             </div>
 
-            <!-- Action buttons matching Mockup Panel 3 -->
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div class="flex flex-wrap items-center gap-2.5">
-                <!-- Return to Curriculum Homepage Back Button -->
-                <button type="button" onclick="navigateView('curriculum-home')" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] font-black text-xs rounded-none transition flex items-center gap-1.5 border border-[#E5A823]/60 cursor-pointer shadow-xs" title="Return to Curriculum Management Homepage">
-                  <span class="text-sm font-bold">&larr;</span>
-                  <span>Curriculum Homepage</span>
+            <!-- Refined Action Toolbar (Clean, Cohesive, Institutional) -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <!-- Left: Navigation & Primary Edit Controls -->
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="navigateView('curriculum-home')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Return to Curriculum Management Homepage">
+                  <span class="text-sm leading-none">&larr;</span>
+                  <span>Curriculum Home</span>
                 </button>
 
-                <!-- In-Place Edit & Save Document Buttons -->
-                <button type="button" id="btnToggleEditRegistrarDoc" onclick="toggleRegistrarDocEdit()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 text-xs font-black rounded-none shadow-xs transition flex items-center gap-1.5 border border-[#d4971a] cursor-pointer" title="Enable In-Place Editing of Official Document content">
-                  <span>✎</span>
+                <button type="button" id="btnToggleEditRegistrarDoc" onclick="toggleRegistrarDocEdit()" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Enable In-Place Editing of Official Document content">
+                  <svg class="w-3.5 h-3.5 text-[#E5A823]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                   <span id="editRegistrarDocText">Edit Document</span>
                 </button>
-                <button type="button" id="btnSaveRegistrarDoc" onclick="saveRegistrarDocEdits()" class="hidden px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-none shadow-xs transition flex items-center gap-1.5 border border-emerald-500 cursor-pointer" title="Save All Document Edits">
-                  <span>💾</span>
-                  <span>Save Document</span>
+                <button type="button" id="btnSaveRegistrarDoc" onclick="saveRegistrarDocEdits()" class="hidden px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Save All Document Edits">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                  <span>Save &amp; Sync</span>
                 </button>
+              </div>
 
-                <button type="button" onclick="toggleRegistrarFullscreen()" id="btnRegistrarFullscreen" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Toggle Fullscreen Focus Mode">
+              <!-- Center: Document / Spreadsheet View Mode Toggle -->
+              <div class="inline-flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-none border border-slate-300 dark:border-slate-700 shadow-2xs">
+                <button type="button" id="btnRegViewDoc" onclick="setRegistrarViewFormat('doc')" class="px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700" title="Display as printable formatted official document">
+                  <svg class="w-3.5 h-3.5 text-apc-blue dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <span>Document View</span>
+                </button>
+                <button type="button" id="btnRegViewSheet" onclick="setRegistrarViewFormat('sheet')" class="px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none" title="Display as structured spreadsheet grid matching export table format">
+                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span>Spreadsheet View</span>
+                </button>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="toggleRegistrarFullscreen()" id="btnRegistrarFullscreen" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Toggle Fullscreen Focus Mode">
                   <span id="fullscreenIcon">⛶</span>
                   <span id="fullscreenText">Focus Mode</span>
                 </button>
-                <button type="button" onclick="printCurrentRegistrarDoc()" class="px-4 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#fbbf24] text-xs font-bold uppercase rounded-none shadow-xs transition flex items-center gap-2 border border-[#fbbf24]/30 cursor-pointer" title="Print Current Document">
-                  <svg class="w-4 h-4 text-[#fbbf24]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                  <span id="printCurrentPageBtnText">PRINT CURRENT DOCUMENT</span>
+
+                <button type="button" onclick="printCurrentRegistrarDoc()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Print Current Document Sheet">
+                  <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                  <span id="printCurrentPageBtnText">Print Sheet</span>
                 </button>
-                <button type="button" onclick="printAllRegistrarDocs()" class="px-3.5 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Print All 7 Official Sheets">
-                  <span>📚</span>
-                  <span>Print All 7 Sheets</span>
+
+                <button type="button" onclick="printAllRegistrarDocs()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Print All 7 Official Sheets">
+                  <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                  <span>Print All 7</span>
                 </button>
-                <button type="button" onclick="exportCurrentDocAsSpreadsheet()" class="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 border border-emerald-600 cursor-pointer" title="Export Current Document as Spreadsheet (.csv)">
-                  <span>📑</span>
-                  <span>Export Current Document as Spreadsheet</span>
+
+                <button type="button" onclick="exportCurrentDocAsSpreadsheet()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Export Current Document as CSV">
+                  <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                  <span>Export CSV</span>
                 </button>
               </div>
             </div>
@@ -3244,15 +3259,59 @@
             </button>
           </div>
 
-          <!-- DOCUMENT PAGES CONTAINER -->
+          <!-- DOCUMENT PAGES CONTAINER (Printable Official Paper Layout) -->
           <div id="allRegistrarDocsWrapper" class="w-full flex justify-center">
-      <div id="regDocView_1" class="reg-doc-page bg-white p-2.5 max-w-[1020px] w-full text-slate-900 font-sans mx-auto print-page-wrapper" style="box-sizing: border-box;"></div>
-      <div id="regDocView_2" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 border border-slate-300 max-w-6xl w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
-      <div id="regDocView_3" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 border border-slate-300 max-w-6xl w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
-      <div id="regDocView_4" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 border border-slate-300 max-w-6xl w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
-      <div id="regDocView_5" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 border border-slate-300 max-w-[1720px] w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
-      <div id="regDocView_6" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 border border-slate-300 max-w-[1720px] w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
-      <div id="regDocView_7" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 border border-slate-300 max-w-5xl w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_1" class="reg-doc-page bg-white p-2.5 max-w-[1020px] w-full text-slate-900 font-sans mx-auto print-page-wrapper" style="box-sizing: border-box;"></div>
+            <div id="regDocView_2" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 max-w-6xl w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_3" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 max-w-6xl w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_4" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 max-w-6xl w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_5" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 max-w-[1720px] w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_6" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 max-w-[1720px] w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_7" class="reg-doc-page hidden bg-white rounded-none border border-slate-300 p-8 max-w-5xl w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+          </div>
+
+          <!-- SPREADSHEET GRID CONTAINER (Structured Grid View Matching Official Sheet Export Format) -->
+          <div id="regDocSpreadsheetWrapper" class="hidden w-full space-y-3">
+            <!-- Spreadsheet Toolbar & Context Bar -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 p-3 rounded-none shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div class="flex items-center space-x-2">
+                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-mono font-bold uppercase tracking-wider border border-emerald-300 dark:border-emerald-800">
+                  Spreadsheet Grid Mode
+                </span>
+                <span id="regDocSpreadsheetTitleBadge" class="font-bold text-slate-800 dark:text-slate-100">
+                  Sheet 1: Official Flowchart
+                </span>
+                <span id="regDocSpreadsheetRowCount" class="text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                  (74 Rows)
+                </span>
+              </div>
+
+              <!-- Search Filter & Quick Actions -->
+              <div class="flex items-center space-x-2">
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">🔍</span>
+                  <input type="text" id="regDocSpreadsheetSearchInput" oninput="filterRegistrarSpreadsheetRows(this.value)" placeholder="Filter active sheet rows..." class="pl-7 pr-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-none w-56 text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-mono" />
+                </div>
+                <button type="button" onclick="exportCurrentDocAsSpreadsheet()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-emerald-400 font-bold text-xs rounded-none border border-emerald-500/40 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Download this exact spreadsheet table as CSV">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                  <span>Export Table CSV</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Spreadsheet Formula Bar -->
+            <div class="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 flex items-center gap-2 text-xs font-mono">
+              <span id="regDocCellCoord" class="px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-bold min-w-12 text-center shadow-2xs">A1</span>
+              <span class="text-slate-400 font-bold select-none italic text-sm">fx</span>
+              <input type="text" id="regDocFormulaBar" readonly value="" placeholder="Select any cell to inspect or edit..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 px-2 py-0.5 text-slate-900 dark:text-slate-100 rounded-none outline-none" />
+            </div>
+
+            <!-- Table Container Grid -->
+            <div id="regDocSpreadsheetGridContainer" class="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 shadow-sm overflow-x-auto max-h-[700px] overflow-y-auto">
+              <div id="regDocSpreadsheetGridContent" class="p-0">
+                <!-- Dynamically generated spreadsheet grid will render here -->
+              </div>
+            </div>
           </div>
         </section>
 
@@ -4376,7 +4435,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="w-7 h-7 bg-[#E5A823] text-slate-950 font-black text-sm flex items-center justify-center rounded-none shadow-xs">✨</span>
           <div>
             <h3 class="font-black text-sm tracking-wider uppercase text-white">Initialize New Curriculum Revision</h3>
-            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Degree Cohort Ingestion</p>
+            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Degree Curriculum Setup</p>
           </div>
         </div>
         <button type="button" onclick="closeCreateCurriculumModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
@@ -4402,11 +4461,11 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Cohort (Start)</label>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year (Start)</label>
             <input type="number" id="newCurricStartYear" value="2027" min="2020" max="2035" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
           </div>
           <div>
-            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Cohort (End)</label>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year (End)</label>
             <input type="number" id="newCurricEndYear" value="2031" min="2024" max="2040" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
           </div>
         </div>

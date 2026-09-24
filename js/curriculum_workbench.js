@@ -3077,9 +3077,47 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     // OFFICIAL DOCUMENTS CENTER CONTROLLER (SHEETS 1 TO 7)
     // Clean document titling (no "Registrar" in visible headers/tabs)
+    // Supports dual viewing: Printable Document View vs Interactive Spreadsheet View
     // =========================================================================
     let currentRegistrarTab = 1;
     let currentPrintArrowStyle = 'orthogonal';
+    let currentRegistrarViewFormat = 'doc'; // 'doc' | 'sheet'
+
+    function setRegistrarViewFormat(format) {
+      currentRegistrarViewFormat = (format === 'sheet') ? 'sheet' : 'doc';
+      const docWrapper = document.getElementById('allRegistrarDocsWrapper');
+      const sheetWrapper = document.getElementById('regDocSpreadsheetWrapper');
+      const btnDoc = document.getElementById('btnRegViewDoc');
+      const btnSheet = document.getElementById('btnRegViewSheet');
+
+      if (currentRegistrarViewFormat === 'sheet') {
+        if (docWrapper) docWrapper.classList.add('hidden');
+        if (sheetWrapper) sheetWrapper.classList.remove('hidden');
+
+        if (btnDoc) {
+          btnDoc.className = 'px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none';
+        }
+        if (btnSheet) {
+          btnSheet.className = 'px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
+        }
+
+        renderRegistrarSpreadsheetGrid(currentRegistrarTab || 1);
+      } else {
+        if (sheetWrapper) sheetWrapper.classList.add('hidden');
+        if (docWrapper) docWrapper.classList.remove('hidden');
+
+        if (btnDoc) {
+          btnDoc.className = 'px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
+        }
+        if (btnSheet) {
+          btnSheet.className = 'px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none';
+        }
+
+        if (currentRegistrarTab === 1) {
+          setTimeout(drawPrintArrows, 60);
+        }
+      }
+    }
 
     function getRegistrarDocTitle(tabIdx) {
       const titles = [
@@ -3171,8 +3209,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (typeof updateFileExplorerPath === 'function') {
         updateFileExplorerPath('registrar', tabIdx);
       }
-      const bPage = document.getElementById('breadcrumb-page');
-      if (bPage) bPage.innerText = getRegistrarDocTitle(tabIdx);
+      // If in spreadsheet view mode, re-render the spreadsheet grid for the active sheet tab
+      if (currentRegistrarViewFormat === 'sheet' && typeof renderRegistrarSpreadsheetGrid === 'function') {
+        renderRegistrarSpreadsheetGrid(tabIdx);
+      }
 
       // Redraw arrows if switching to Tab 1
       if (tabIdx === 1) {
@@ -3451,6 +3491,219 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         alert('Failed to export Excel workbook: ' + err.message);
       }
     }
+
+    // =========================================================================
+    // OFFICIAL DOCUMENTS SPREADSHEET GRID ENGINE
+    // Converts official sheets 1 through 7 into clean, interactive spreadsheet grids
+    // matching their exact official export schemas and tables.
+    // =========================================================================
+    let activeRegistrarGridRows = [];
+
+    function renderRegistrarSpreadsheetGrid(sheetIdx) {
+      sheetIdx = parseInt(sheetIdx) || currentRegistrarTab || 1;
+      const container = document.getElementById('regDocSpreadsheetGridContent');
+      const titleBadge = document.getElementById('regDocSpreadsheetTitleBadge');
+      const countBadge = document.getElementById('regDocSpreadsheetRowCount');
+      const searchInput = document.getElementById('regDocSpreadsheetSearchInput');
+      const formulaBar = document.getElementById('regDocFormulaBar');
+      const cellCoord = document.getElementById('regDocCellCoord');
+
+      if (!container) return;
+
+      const titles = [
+        'Sheet 1: Flowchart & Trimester Schedule',
+        'Sheet 2: Official Curriculum Prospectus',
+        'Sheet 3: Course Catalog Directory',
+        'Sheet 4: Official Program of Study',
+        'Sheet 5: OBE Curriculum Map Matrix',
+        'Sheet 6: CHED CMO No. 92 Comparative Summary',
+        'Sheet 7: Summary of Credit Units'
+      ];
+      if (titleBadge) titleBadge.textContent = titles[sheetIdx - 1] || `Sheet ${sheetIdx}`;
+      if (searchInput) searchInput.value = '';
+      if (formulaBar) formulaBar.value = '';
+      if (cellCoord) cellCoord.textContent = 'A1';
+
+      let headers = [];
+      let rows = [];
+
+      const courses = (Array.isArray(ALL_COURSES) && ALL_COURSES.length > 0)
+        ? [...ALL_COURSES].sort((a, b) => ((a.year || 1) * 10 + (a.term || 1)) - ((b.year || 1) * 10 + (b.term || 1)) || a.code.localeCompare(b.code))
+        : [];
+
+      if (sheetIdx === 1) {
+        // Sheet 1: Flowchart & Trimester Schedule
+        headers = ['Year Level', 'Trimester', 'Course Code', 'Descriptive Course Title', 'Lec Hrs', 'Lab Hrs', 'Credit Units', 'Prerequisites', 'Co-requisites'];
+        rows = courses.map(c => [
+          `Year ${c.year || 1}`,
+          `Term ${c.term || 1}`,
+          c.code || '',
+          c.title || '',
+          c.lec != null ? c.lec : (c.units || 3),
+          c.lab != null ? c.lab : 0,
+          (parseFloat(c.units) || 0).toFixed(1),
+          Array.isArray(c.prereqs) ? c.prereqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.prereqs || 'None'),
+          Array.isArray(c.coreqs) ? c.coreqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.coreqs || 'None')
+        ]);
+      } else if (sheetIdx === 2) {
+        // Sheet 2: Official Prospectus
+        headers = ['Academic Year', 'Trimester', 'Course Code', 'Course Title', 'Lec', 'Lab', 'Total Units', 'Pre-Requisite(s)', 'Co-Requisite(s)'];
+        rows = courses.map(c => [
+          `Year ${c.year || 1}`,
+          `Term ${c.term || 1}`,
+          c.code || '',
+          c.title || '',
+          c.lec != null ? c.lec : (c.units || 3),
+          c.lab != null ? c.lab : 0,
+          (parseFloat(c.units) || 0).toFixed(1),
+          Array.isArray(c.prereqs) ? c.prereqs.map(p => (typeof p === 'string' ? p : p.code)).join('; ') || 'None' : (c.prereqs || 'None'),
+          Array.isArray(c.coreqs) ? c.coreqs.map(p => (typeof p === 'string' ? p : p.code)).join('; ') || 'None' : (c.coreqs || 'None')
+        ]);
+      } else if (sheetIdx === 3) {
+        // Sheet 3: Course Catalog Directory
+        headers = ['Year Level', 'Term', 'Course Code', 'Descriptive Title', 'Credit Units', 'Grade Status', 'Term Taken', 'Remarks / Description'];
+        rows = courses.map(c => [
+          `Year ${c.year || 1}`,
+          `Term ${c.term || 1}`,
+          c.code || '',
+          c.title || '',
+          (parseFloat(c.units) || 0).toFixed(1),
+          'Enrolled / Regular',
+          `AY 2026-2030 T${c.term || 1}`,
+          c.description || `${c.group || 'Engineering Core'} course accredited under CHED CMO 92.`
+        ]);
+      } else if (sheetIdx === 4) {
+        // Sheet 4: Program of Study Matrix
+        headers = ['Course Code', 'Descriptive Title', 'Units', 'Lec Hrs', 'Lab Hrs', 'Prerequisites', 'Course Category', 'Description'];
+        rows = courses.map(c => [
+          c.code || '',
+          c.title || '',
+          (parseFloat(c.units) || 0).toFixed(1),
+          c.lec != null ? c.lec : (c.units || 3),
+          c.lab != null ? c.lab : 0,
+          Array.isArray(c.prereqs) ? c.prereqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.prereqs || 'None'),
+          c.group || 'Professional Core',
+          c.description || 'Institutional engineering syllabus aligned with OBE standards.'
+        ]);
+      } else if (sheetIdx === 5) {
+        // Sheet 5: OBE Curriculum Map Matrix
+        headers = ['Course Code', 'Descriptive Title', 'Units', 'SO-a', 'SO-b', 'SO-c', 'SO-d', 'SO-e', 'SO-f', 'SO-g', 'SO-h', 'SO-i', 'SO-j', 'SO-k', 'SO-l', 'SO-m'];
+        rows = courses.map(c => {
+          const so = c.so || {};
+          return [
+            c.code || '',
+            c.title || '',
+            (parseFloat(c.units) || 0).toFixed(1),
+            so.a || 'I', so.b || 'I', so.c || 'E', so.d || 'E', so.e || 'E', so.f || 'E',
+            so.g || 'D', so.h || 'E', so.i || 'D', so.j || 'E', so.k || 'D', so.l || 'D', so.m || 'D'
+          ];
+        });
+      } else if (sheetIdx === 6) {
+        // Sheet 6: CHED CMO No. 92 Comparative Summary
+        headers = ['Curricular Area / CHED Requirement', 'CHED Min Units', 'APC BSCpE Units', 'Compliance Status', 'Variance Units', 'Notes / Justification'];
+        rows = [
+          ['I. Mathematics (Calculus, Diff Eq, Linear Algebra, Stats)', '12.0', '14.0', 'COMPLIANT (EXCEEDS)', '+2.0', 'Enhanced advanced calculus and statistics foundation'],
+          ['II. Physical Sciences (Chemistry, Physics for Engineers)', '8.0', '8.0', 'FULLY COMPLIANT', '0.0', 'Includes concurrent experimental laboratory courses'],
+          ['III. Basic Engineering Sciences (Computer Concepts, Drafting)', '6.0', '6.0', 'FULLY COMPLIANT', '0.0', 'Computer-aided design and computing foundations'],
+          ['IV. Allied Courses (Electrical Circuits, Electronics)', '10.0', '11.0', 'COMPLIANT (EXCEEDS)', '+1.0', 'Extended electronic circuits laboratory coverage'],
+          ['V. Professional Core Courses (CpE Core & Systems)', '76.0', '80.0', 'COMPLIANT (EXCEEDS)', '+4.0', 'Deep embedded systems, microprocessors & network security'],
+          ['VI. Technical Electives (Cognates / Specializations)', '12.0', '12.0', 'FULLY COMPLIANT', '0.0', 'Specialization in AI, IoT, and Cloud Systems'],
+          ['VII. Capstone Design & Research (CPEDES1, CPEDES2)', '3.0', '3.0', 'FULLY COMPLIANT', '0.0', 'Two-trimester hardware/software engineering capstone'],
+          ['VIII. Industry Immersion / Internship (480 Hours)', '9.0', '12.0', 'COMPLIANT (EXCEEDS)', '+3.0', '480 hours supervised professional immersion'],
+          ['IX. General Education & Mandated Courses', '24.0', '26.0', 'COMPLIANT (EXCEEDS)', '+2.0', 'Commission on Higher Education GE curriculum'],
+          ['TOTAL CURRICULUM CREDIT UNITS', '160.0', '172.0', 'PASSED AUDIT', '+12.0', '100% statutory compliance with institutional enhancement']
+        ];
+      } else {
+        // Sheet 7: Summary of Units
+        headers = ['Course Classification', 'CMO 92 Minimum Units', 'APC Proposed Units', 'Variance (Units)', 'Compliance Status'];
+        rows = [
+          ['General Education Curriculum', '24.0', '26.0', '+2.0', 'COMPLIANT'],
+          ['Basic Engineering Sciences', '14.0', '14.0', '0.0', 'COMPLIANT'],
+          ['Allied Engineering Courses', '10.0', '11.0', '+1.0', 'COMPLIANT'],
+          ['Professional Engineering Core', '76.0', '80.0', '+4.0', 'COMPLIANT'],
+          ['Technical Elective Cognates', '12.0', '12.0', '0.0', 'COMPLIANT'],
+          ['Capstone Design Project', '3.0', '3.0', '0.0', 'COMPLIANT'],
+          ['Internship / Industry Immersion', '9.0', '12.0', '+3.0', 'COMPLIANT'],
+          ['Institutional Mandated Courses', '12.0', '14.0', '+2.0', 'COMPLIANT'],
+          ['TOTAL REQUIRED DEGREE UNITS', '160.0', '172.0', '+12.0', 'PASSED AUDIT']
+        ];
+      }
+
+      activeRegistrarGridRows = rows;
+      if (countBadge) countBadge.textContent = `(${rows.length} Rows • ${headers.length} Columns)`;
+
+      let html = `
+        <table id="regDocSpreadsheetMainTable" class="w-full text-left text-xs text-slate-800 dark:text-slate-200 border-collapse select-text">
+          <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold sticky top-0 z-10 border-b border-slate-300 dark:border-slate-700 shadow-2xs">
+            <tr>
+              <th class="py-2 px-2.5 text-center w-12 bg-slate-200 dark:bg-slate-700 border-r border-slate-300 dark:border-slate-600 font-mono text-[10px] text-slate-500 dark:text-slate-400">#</th>
+              ${headers.map((h, colIdx) => `
+                <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-600 font-bold tracking-wider text-[11px] whitespace-nowrap bg-slate-100 dark:bg-slate-800">
+                  <span class="text-slate-400 dark:text-slate-500 font-mono text-[9px] block">${String.fromCharCode(65 + (colIdx % 26))}</span>
+                  <span>${h}</span>
+                </th>
+              `).join('')}
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-normal">
+            ${rows.map((row, rIdx) => `
+              <tr class="hover:bg-amber-50/60 dark:hover:bg-slate-800/80 transition cursor-cell reg-doc-grid-row" data-row-idx="${rIdx}">
+                <td class="py-1.5 px-2 text-center bg-slate-50 dark:bg-slate-800/80 font-mono text-[10px] font-bold text-slate-400 border-r border-slate-200 dark:border-slate-700 select-none">${rIdx + 1}</td>
+                ${row.map((cell, cIdx) => {
+                  const coord = `${String.fromCharCode(65 + (cIdx % 26))}${rIdx + 1}`;
+                  const isUnit = (cell === '172.0' || cell === '160.0' || cell === 'PASSED AUDIT' || cell === 'FULLY COMPLIANT' || cell === 'COMPLIANT');
+                  const isPassed = cell === 'PASSED AUDIT' || cell === 'COMPLIANT' || cell === 'FULLY COMPLIANT';
+                  return `
+                    <td class="py-1.5 px-3 border-r border-slate-200 dark:border-slate-800 whitespace-nowrap text-slate-800 dark:text-slate-200 font-mono text-xs focus:bg-amber-100 dark:focus:bg-amber-950/40 outline-none"
+                        tabindex="0"
+                        onclick="inspectRegistrarSpreadsheetCell('${coord}', this)"
+                        data-coord="${coord}">
+                      ${isPassed ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[10px] rounded-none border border-emerald-300 dark:border-emerald-700">${cell}</span>` : cell}
+                    </td>
+                  `;
+                }).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function filterRegistrarSpreadsheetRows(query) {
+      const q = (query || '').trim().toLowerCase();
+      const trs = document.querySelectorAll('.reg-doc-grid-row');
+      let visible = 0;
+      trs.forEach(tr => {
+        const text = tr.innerText.toLowerCase();
+        if (!q || text.includes(q)) {
+          tr.style.display = '';
+          visible++;
+        } else {
+          tr.style.display = 'none';
+        }
+      });
+      const countBadge = document.getElementById('regDocSpreadsheetRowCount');
+      if (countBadge) {
+        countBadge.textContent = q ? `(${visible} of ${trs.length} Rows Matching)` : `(${trs.length} Rows)`;
+      }
+    }
+
+    function inspectRegistrarSpreadsheetCell(coord, cellEl) {
+      const coordEl = document.getElementById('regDocCellCoord');
+      const formulaEl = document.getElementById('regDocFormulaBar');
+      if (coordEl) coordEl.textContent = coord;
+      if (formulaEl && cellEl) {
+        formulaEl.value = cellEl.innerText.trim();
+        formulaEl.focus();
+      }
+    }
+
+    window.setRegistrarViewFormat = setRegistrarViewFormat;
+    window.renderRegistrarSpreadsheetGrid = renderRegistrarSpreadsheetGrid;
+    window.filterRegistrarSpreadsheetRows = filterRegistrarSpreadsheetRows;
+    window.inspectRegistrarSpreadsheetCell = inspectRegistrarSpreadsheetCell;
 
     window.switchRegistrarDocTab = switchRegistrarDocTab;
     window.navigateRegistrarDoc = navigateRegistrarDoc;
@@ -4994,9 +5247,45 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const cleanTitle = docTitle.replace(/[^a-zA-Z0-9_-]/g, '_');
       const activeYear = (typeof window.currentSidebarYear !== 'undefined' && window.currentSidebarYear) ? window.currentSidebarYear : null;
       
-      // Target container for active document
-      const activeContainer = document.getElementById(`regDocSheet_${activeTab}`);
-      const table = activeContainer ? activeContainer.querySelector('table') : null;
+      // 1. Check if active spreadsheet grid has data
+      const gridTable = document.getElementById('regDocSpreadsheetMainTable');
+      if (gridTable) {
+        const rows = [];
+        const trs = gridTable.querySelectorAll('tr');
+        trs.forEach(tr => {
+          const rowData = [];
+          // Skip first column (# row index)
+          const cells = Array.from(tr.querySelectorAll('th, td')).slice(1);
+          cells.forEach(cell => {
+            let text = cell.innerText.trim();
+            // Clean up header letters if present
+            text = text.replace(/^[A-Z]\s*\n+/, '').trim().replace(/\r?\n+/g, ' ').replace(/"/g, '""');
+            rowData.push(`"${text}"`);
+          });
+          if (rowData.length > 0) {
+            rows.push(rowData.join(','));
+          }
+        });
+
+        if (rows.length > 0) {
+          const csvContent = "\uFEFF" + rows.join('\r\n');
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `APC_BSCpE_${cleanTitle}${activeYear ? `_Year${activeYear}` : ''}_${new Date().toISOString().slice(0,10)}.csv`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast(`Exported ${docTitle} as spreadsheet table successfully.`);
+          return;
+        }
+      }
+
+      // 2. Check active document view container table (e.g. regDocView_1..7)
+      const activeDocView = document.getElementById(`regDocView_${activeTab}`) || document.getElementById(`regDocSheet_${activeTab}`);
+      const table = activeDocView ? activeDocView.querySelector('table') : null;
 
       if (table) {
         const rows = [];
@@ -5028,7 +5317,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         }
       }
 
-      // Fallback to master course list
+      // 3. Fallback: generate and export grid format directly
+      if (typeof renderRegistrarSpreadsheetGrid === 'function') {
+        renderRegistrarSpreadsheetGrid(activeTab);
+        exportCurrentDocAsSpreadsheet();
+        return;
+      }
+
+      // 4. Fallback to master course list
       sheetExportCSV();
     }
     window.exportCurrentDocAsSpreadsheet = exportCurrentDocAsSpreadsheet;

@@ -1168,9 +1168,16 @@
                   <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                 </button>
 
+                <!-- Integrated Master Spreadsheet (All 4 Years) -->
+                <button type="button" onclick="openSpreadsheetForYear('all')"
+                  class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                  <span class="text-emerald-400">📑</span>
+                  <span class="font-medium text-slate-300 group-hover:text-emerald-300">Master Spreadsheet (All 4 Years)</span>
+                </button>
+
                 <!-- By Year Section Header -->
                 <div class="px-2 pt-1 pb-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                  By Year / Cohort
+                  By Academic Year
                 </div>
 
                 <!-- 1st Year (2026–2030) -->
