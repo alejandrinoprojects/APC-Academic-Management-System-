@@ -1,31 +1,45 @@
 @echo off
-title APC Academic Architecture Suite - Deploy to Cloudflare Workers
+title APC Academic Suite - Cloudflare Deployer
 cd /d "%~dp0"
 color 0B
-echo =========================================================================
-echo       APC RAMS ACADEMIC SUITE - DEPLOY TO CLOUDFLARE WORKERS
-echo =========================================================================
-echo.
 
 set "NODE_DIR=C:\Users\aleja\AppData\Roaming\JetBrains\WebStorm2026.2\node\versions\24.21.0"
 if exist "%NODE_DIR%" (
     set "Path=%NODE_DIR%;%LOCALAPPDATA%\Programs\Git\cmd;%Path%"
 )
-
 set "WRANGLER_BIN=%LOCALAPPDATA%\npm-cache\_npx\32026684e21afda6\node_modules\wrangler\bin\wrangler.js"
 
-echo [1/3] Checking Cloudflare Authentication...
-node "%WRANGLER_BIN%" whoami >nul 2>nul
-if %ERRORLEVEL% NEQ 0 (
+echo =========================================================================
+echo       APC RAMS ACADEMIC SUITE - CLOUDFLARE WORKERS DEPLOYMENT
+echo =========================================================================
+echo.
+echo  Target: https://apc-academic-management-system.alejandrinoprojects.workers.dev
+echo.
+echo  [1] Log In to Cloudflare (Opens browser to authorize 'alejandrinoprojects')
+echo  [2] Deploy directly (If already logged in)
+echo  [3] Log In and then Deploy (Recommended)
+echo.
+set /p CHOICE="Select an option (1, 2, or 3) [Press Enter for 3]: "
+if "%CHOICE%"=="" set CHOICE=3
+
+if "%CHOICE%"=="1" (
     echo.
-    echo [*] Authentication needed. Opening browser to log in to Cloudflare...
-    echo [*] Please click "Allow" in your browser when prompted.
+    echo [*] Opening browser to authenticate Cloudflare account...
+    node "%WRANGLER_BIN%" login
     echo.
+    echo Login complete! You can now run option 2 to deploy.
+    pause
+    exit /b 0
+)
+
+if "%CHOICE%"=="3" (
+    echo.
+    echo [*] Step 1 of 2: Opening browser to authenticate Cloudflare account...
     node "%WRANGLER_BIN%" login
 )
 
 echo.
-echo [2/3] Validating HTML integrity before deployment...
+echo [*] Step 2 of 2: Deploying latest build to Cloudflare Workers...
 python scripts\validate_html.py
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] HTML validation failed. Aborting deployment.
@@ -33,14 +47,12 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-echo.
-echo [3/3] Deploying to Cloudflare Workers (apc-academic-management-system)...
 node "%WRANGLER_BIN%" deploy
 
 if %ERRORLEVEL% EQU 0 (
     echo.
     echo =========================================================================
-    echo [SUCCESS] Deployed to Cloudflare Workers!
+    echo [SUCCESS] Deployed successfully to Cloudflare Workers!
     echo Live URL: https://apc-academic-management-system.alejandrinoprojects.workers.dev/schools
     echo =========================================================================
 ) else (
