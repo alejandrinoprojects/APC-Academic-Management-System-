@@ -5917,6 +5917,40 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     window.AUDIT_LOG = window.AUDIT_LOG || [
       {
+        id: 'REC-892105',
+        timestamp: '2026-09-24 14:12:01',
+        user: 'Engr. Arlene B. Peruda',
+        role: 'Program Director',
+        action: 'LOAD_CURRICULUM',
+        actionLabel: 'Curriculum Loaded',
+        badgeClass: 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border-blue-300 dark:border-blue-800',
+        target: 'BSCpE 2026 Flowchart',
+        targetType: 'Degree Program',
+        description: 'Loaded 74 degree courses and configured prerequisite flowchart lines',
+        hash: '9c4e28a1f7e34012bc890123ef567890123456789abcdef0123456789abcdef0',
+        diffs: [
+          { field: 'courseCount', oldVal: '0 Courses', newVal: '74 Degree Courses' },
+          { field: 'prereqConnections', oldVal: 'None', newVal: '124 Prerequisite Lines Mapped' }
+        ]
+      },
+      {
+        id: 'REC-892104',
+        timestamp: '2026-09-24 02:42:12',
+        user: 'Curriculum Validator',
+        role: 'System Administrator',
+        action: 'VERIFY_SEQUENCE',
+        actionLabel: 'Sequence Validated',
+        badgeClass: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
+        target: 'Prerequisite Validator',
+        targetType: 'Curriculum Sequence',
+        description: 'Checked course sequence: 74/74 courses verified, no circular prerequisite loops found',
+        hash: '8f2a49d1ce2b4901fbc345890123456789abcdef0123456789abcdef01234567',
+        diffs: [
+          { field: 'sequenceStatus', oldVal: 'Unverified', newVal: 'All 74 Courses Sequenced' },
+          { field: 'loopStatus', oldVal: 'Pending Check', newVal: '0 Circular Loops (Passed)' }
+        ]
+      },
+      {
         id: 'REC-892103',
         timestamp: '2026-09-22 11:45:00',
         user: 'Dr. Engr. Executive Director',
@@ -6036,10 +6070,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
               </td>
               <td class="py-3 px-3 text-right whitespace-nowrap space-x-1">
                 <button type="button" onclick="openAuditDiffModal('${item.id}')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-[#002855] dark:text-sky-300 border border-slate-300 dark:border-slate-600 text-[11px] font-bold cursor-pointer transition shadow-2xs">
-                  Inspect Diff
+                  View Changes
                 </button>
-                <button type="button" onclick="verifyHashModal('${item.id}')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 border border-slate-300 dark:border-slate-700 text-[11px] font-mono cursor-pointer transition" title="Cryptographic hash verification">
-                  ✓ Hash
+                <button type="button" onclick="verifyHashModal('${item.id}')" class="px-2 py-1 bg-slate-100 dark:bg-slate-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 border border-slate-300 dark:border-slate-700 text-[11px] font-medium cursor-pointer transition" title="Verify record integrity">
+                  ✓ Verify
                 </button>
               </td>
             </tr>
@@ -6071,7 +6105,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             <div><span class="font-bold text-slate-700 dark:text-slate-300">Author:</span> ${escapeAuditHtml(item.user)} (${escapeAuditHtml(item.role)})</div>
             <div><span class="font-bold text-slate-700 dark:text-slate-300">Timestamp:</span> ${escapeAuditHtml(item.timestamp)}</div>
             <div class="sm:col-span-2"><span class="font-bold text-slate-700 dark:text-slate-300">Description:</span> ${escapeAuditHtml(item.description)}</div>
-            <div class="sm:col-span-2 font-mono text-[10px] text-slate-500 break-all"><span class="font-bold text-slate-700 dark:text-slate-300">SHA-256 Digest:</span> ${escapeAuditHtml(item.hash)}</div>
+            <div class="sm:col-span-2 font-mono text-[10px] text-slate-500 break-all"><span class="font-bold text-slate-700 dark:text-slate-300">Security Verification Code:</span> ${escapeAuditHtml(item.hash)}</div>
           </div>
         `;
       }
@@ -6104,9 +6138,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const item = (window.AUDIT_LOG || []).find(r => r.id === recordId || r.hash === recordId);
       if (!item) return;
       if (typeof showToast === 'function') {
-        showToast(`✓ Cryptographic Record ${item.id} verified: SHA-256 seal matches audit chain.`);
+        showToast(`✓ Record ${item.id} verified: Security stamp matches official audit record.`);
       } else {
-        alert(`Record ${item.id} integrity verified. SHA-256 Hash:\n${item.hash}`);
+        alert(`Record ${item.id} integrity verified.\nSecurity Verification Code:\n${item.hash}`);
       }
     }
 

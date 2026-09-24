@@ -3361,15 +3361,29 @@
             <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-3">
               <div>
                 <h2 class="font-extrabold text-slate-900 text-lg tracking-tight flex items-center gap-2">
-                  <span>Append-Only System Audit Trail</span>
+                  <span>System Audit Trail</span>
                   <span class="text-xs px-2 py-0.5 rounded-none bg-blue-100 text-blue-800 font-mono font-bold border border-blue-200">
-                    SHA-256 Verified
+                    Verified
                   </span>
                 </h2>
-                <p class="text-xs text-slate-500">Cryptographically verifiable, chronological record of all curriculum mutations.</p>
+                <p class="text-xs text-slate-500">Chronological record of all curriculum updates and verifications.</p>
               </div>
-              <button onclick="showToast('Exporting Tamper-Evident Audit Report...')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-none border border-slate-300 transition">
-                Export Audit Log (.csv)
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 border border-slate-200">
+              <div class="flex flex-wrap items-center gap-2">
+                <input type="text" id="auditFilterText" oninput="renderAuditTable()" placeholder="Search action, target, description..." class="px-3 py-1.5 bg-white border border-slate-300 text-xs text-slate-800 placeholder-slate-400 outline-none focus:border-apc-navy w-64" />
+                <select id="auditFilterRole" onchange="renderAuditTable()" class="px-3 py-1.5 bg-white border border-slate-300 text-xs text-slate-700 outline-none focus:border-apc-navy font-bold">
+                  <option value="">All Roles</option>
+                  <option value="Program Director">Program Director</option>
+                  <option value="System Administrator">System Administrator</option>
+                  <option value="Executive Director">Executive Director</option>
+                  <option value="Faculty Member">Faculty Member</option>
+                </select>
+                <span id="auditCount" class="text-xs font-bold font-mono text-slate-500 ml-2"></span>
+              </div>
+              <button onclick="showToast('Exporting Audit Report...')" class="px-3.5 py-1.5 bg-white hover:bg-slate-100 text-slate-800 text-xs font-bold rounded-none border border-slate-300 transition cursor-pointer shadow-xs">
+                Export Audit Log
               </button>
             </div>
 
@@ -3377,34 +3391,17 @@
               <table class="w-full text-left text-xs text-slate-700">
                 <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
                   <tr>
-                    <th class="py-2.5 px-3">Timestamp (ISO)</th>
-                    <th class="py-2.5 px-3">User & Role</th>
-                    <th class="py-2.5 px-3">Action Type</th>
-                    <th class="py-2.5 px-3">Target Entity</th>
-                    <th class="py-2.5 px-3">Mutation Summary</th>
-                    <th class="py-2.5 px-3 font-mono text-[11px]">SHA-256 Checksum</th>
-                    <th class="py-2.5 px-3 text-right">Verification</th>
+                    <th class="py-2.5 px-3">Date &amp; Time</th>
+                    <th class="py-2.5 px-3">User &amp; Role</th>
+                    <th class="py-2.5 px-3">Action</th>
+                    <th class="py-2.5 px-3">Target</th>
+                    <th class="py-2.5 px-3">Description</th>
+                    <th class="py-2.5 px-3 font-mono text-[11px]">Record ID</th>
+                    <th class="py-2.5 px-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
-                  <tr class="hover:bg-slate-50">
-                    <td class="py-2.5 px-3 font-mono text-slate-500">2026-09-10 14:12:01</td>
-                    <td class="py-2.5 px-3"><span class="font-bold text-slate-900">Program Director</span> <span class="text-[11px] text-slate-400">(PD)</span></td>
-                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-none bg-blue-50 text-blue-700 text-[11px] font-bold">INGEST_FLOWCHART</span></td>
-                    <td class="py-2.5 px-3 font-mono text-xs">BSCpE 2026 Registrar</td>
-                    <td class="py-2.5 px-3">Ingested 74 authentic courses & configured dynamic SVG arrows</td>
-                    <td class="py-2.5 px-3 font-mono text-[11px] text-slate-400">9c4e...81fd</td>
-                    <td class="py-2.5 px-3 text-right"><button onclick="verifyHashModal('9c4e...81fd')" class="text-blue-600 hover:underline font-bold">Verify</button></td>
-                  </tr>
-                  <tr class="hover:bg-slate-50">
-                    <td class="py-2.5 px-3 font-mono text-slate-500">2026-09-10 02:42:12</td>
-                    <td class="py-2.5 px-3"><span class="font-bold text-slate-900">Program Director</span> <span class="text-[11px] text-slate-400">(PD)</span></td>
-                    <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-none bg-emerald-50 text-emerald-700 text-[11px] font-bold">VALIDATE_DAG</span></td>
-                    <td class="py-2.5 px-3 font-mono text-xs">DAG Engine</td>
-                    <td class="py-2.5 px-3">Executed Kahn cycle check: 74/74 visited, 0 deadlocks</td>
-                    <td class="py-2.5 px-3 font-mono text-[11px] text-slate-400">8f2a...9d1c</td>
-                    <td class="py-2.5 px-3 text-right"><button onclick="verifyHashModal('8f2a...9d1c')" class="text-blue-600 hover:underline font-bold">Verify</button></td>
-                  </tr>
+                <tbody id="auditTableBody" class="divide-y divide-slate-100 font-medium">
+                  <!-- Populated dynamically via renderAuditTable() -->
                 </tbody>
               </table>
             </div>
