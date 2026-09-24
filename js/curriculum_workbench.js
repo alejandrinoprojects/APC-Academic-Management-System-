@@ -1692,7 +1692,12 @@
         } else if (targetView === 'flowchart' || !targetView) {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Flowchart`;
         } else if (targetView === 'spreadsheet' || targetView === 'catalog') {
-          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Spreadsheet`;
+          const scope = (yearNum !== undefined && yearNum !== null) ? yearNum : 'all';
+          if (typeof setSpreadsheetYearScope === 'function') {
+            setSpreadsheetYearScope(scope);
+          }
+          const yearLabel = (scope === 'all') ? 'All 4 Years' : `Year ${scope}`;
+          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Spreadsheet (${yearLabel})`;
         } else if (targetView === 'dashboard' || targetView === 'compliance') {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Dashboard`;
         } else if (targetView === 'syllabus') {
@@ -3226,7 +3231,81 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
     }
 
-    function saveRegistrarDocEdits() {
+    let currentRevisionModalCallback = null;
+
+    function openSaveRevisionModal(config) {
+      const modal = document.getElementById('saveRevisionNotesModal');
+      const targetEl = document.getElementById('revisionModalTarget');
+      const authorEl = document.getElementById('revisionModalAuthor');
+      const notesEl = document.getElementById('revisionModalNotes');
+      const titleEl = document.getElementById('revisionModalTitle');
+      const subEl = document.getElementById('revisionModalSubtitle');
+
+      const userObj = typeof getCurrentGenericUser === 'function' ? getCurrentGenericUser() : { user: 'Program Director', role: 'Program Director' };
+      if (targetEl) targetEl.innerText = config.target || 'Curriculum Record';
+      if (authorEl) authorEl.innerText = `${userObj.user}${userObj.user !== userObj.role ? ` (${userObj.role})` : ''}`;
+      if (notesEl) {
+        notesEl.value = config.defaultNote || '';
+        setTimeout(() => notesEl.focus(), 100);
+      }
+      if (titleEl) {
+        titleEl.innerText = config.type === 'registrar' ? 'Save & Sync Document Revision' : 'Save & Sync Master Spreadsheet';
+      }
+      if (subEl) {
+        subEl.innerText = 'Provide description notes for the permanent System Audit Trail.';
+      }
+
+      currentRevisionModalCallback = config.onConfirm;
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeSaveRevisionModal() {
+      const modal = document.getElementById('saveRevisionNotesModal');
+      if (modal) modal.classList.add('hidden');
+      currentRevisionModalCallback = null;
+    }
+
+    function setRevisionQuickNote(text) {
+      const notesEl = document.getElementById('revisionModalNotes');
+      if (notesEl) {
+        notesEl.value = text;
+        notesEl.focus();
+      }
+    }
+
+    function confirmSaveRevisionWithNotes() {
+      const notesEl = document.getElementById('revisionModalNotes');
+      const notes = (notesEl?.value || '').trim() || 'Updated curriculum records';
+      const cb = currentRevisionModalCallback;
+      closeSaveRevisionModal();
+      if (typeof cb === 'function') {
+        cb(notes);
+      }
+    }
+
+    function promptSaveRegistrarDoc() {
+      const docNum = currentRegistrarTab || 1;
+      const titles = {
+        1: 'Official Flowchart',
+        2: 'Curriculum Prospectus',
+        3: 'Course Catalog Directory',
+        4: 'Official Program of Study',
+        5: 'OBE Curriculum Map',
+        6: 'CHED Comparative Summary',
+        7: 'Summary of Credit Units'
+      };
+      const title = titles[docNum] || `Sheet ${docNum}`;
+      openSaveRevisionModal({
+        type: 'registrar',
+        target: `Sheet ${docNum}: ${title}`,
+        defaultNote: `Updated official content and layout for ${title}`,
+        onConfirm: function(notes) {
+          executeSaveRegistrarDoc(notes, title);
+        }
+      });
+    }
+
+    function executeSaveRegistrarDoc(notes, docTitle) {
       const activeDocId = 'regDocView_' + (currentRegistrarTab || 1);
       const container = document.getElementById(activeDocId);
       const saveBtn = document.getElementById('btnSaveRegistrarDoc');
@@ -3249,9 +3328,39 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         localStorage.setItem(key, container.innerHTML);
       } catch (e) {}
 
+      const userObj = typeof getCurrentGenericUser === 'function' ? getCurrentGenericUser() : { user: 'Program Director', role: 'Program Director' };
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      const recId = `REC-${Math.floor(100000 + Math.random() * 900000)}`;
+
+      const newEntry = {
+        id: recId,
+        timestamp: ts,
+        user: userObj.user,
+        role: userObj.role,
+        action: 'DOCUMENT_UPDATE',
+        actionLabel: 'Document Updated',
+        badgeClass: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
+        target: `Sheet ${currentRegistrarTab || 1}: ${docTitle || 'Registrar Document'}`,
+        targetType: 'Official Document',
+        description: notes || `Saved revisions to official document Sheet ${currentRegistrarTab || 1}`,
+        hash: Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join(''),
+        diffs: [
+          { field: 'documentState', oldVal: 'In-Place Editing Mode', newVal: 'Saved & Published' },
+          { field: 'revisionNotes', oldVal: 'Drafting', newVal: notes || 'Updated by user' }
+        ]
+      };
+
+      appendAuditLog(newEntry);
+
       if (typeof showToast === 'function') {
-        showToast(`Document changes saved persistently for Sheet ${currentRegistrarTab || 1}!`);
+        showToast(`✓ Document changes saved and recorded in System Audit Trail!`);
       }
+    }
+
+    function saveRegistrarDocEdits() {
+      promptSaveRegistrarDoc();
     }
 
     function toggleRegistrarFullscreen() {
@@ -3720,17 +3829,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     function openSpreadsheetForYear(yearNum) {
       const prog = currentSelectedProgram || 'BSCpE';
       currentSelectedProgram = prog;
-      if (typeof window.setSidebarYear === 'function') {
-        window.setSidebarYear(yearNum);
+      const scope = (yearNum === 'all' || !yearNum) ? 'all' : yearNum;
+      if (typeof window.setSidebarYear === 'function' && scope !== 'all') {
+        window.setSidebarYear(scope);
       }
       spreadsheetReturnSourceView = 'curriculum-home';
 
-      // 1. Set the year filter value
-      const yearFilter = document.getElementById('sheetYearFilter');
-      if (yearFilter) {
-        yearFilter.value = String(yearNum);
-      }
-      sheetYearFilter = String(yearNum);
+      // 1. Set the year scope
+      setSpreadsheetYearScope(scope);
 
       // 2. Set active tab to 'all' visually
       currentSpreadsheetTab = 'all';
@@ -3754,25 +3860,26 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       // 4. Update top breadcrumbs
       const progInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[prog]) || { schoolShort: 'SoE', schoolId: 'soe', name: prog };
       const topPill = document.getElementById('topBarPathPill');
+      const yearLabel = scope === 'all' ? 'All 4 Years' : `Year ${scope}`;
       if (topPill) {
-        topPill.innerText = `Schools > ${progInfo.schoolShort} > ${prog} > Curriculum Spreadsheet (Year ${yearNum})`;
+        topPill.innerText = `Schools > ${progInfo.schoolShort} > ${prog} > Curriculum Spreadsheet (${yearLabel})`;
       }
 
-      // 5. Synchronous sidebar sync in one pass - zero timeouts, zero accordion collapse
-      syncSidebarToCurrentPath(progInfo.schoolId, prog, 'spreadsheet', null, yearNum, 'spreadsheet');
+      // 5. Synchronous sidebar sync in one pass
+      syncSidebarToCurrentPath(progInfo.schoolId, prog, 'spreadsheet', null, scope !== 'all' ? scope : null, 'spreadsheet');
 
       recordNavigationStep({
         type: 'program',
         progCode: prog,
         schoolId: progInfo.schoolId,
         targetView: 'spreadsheet',
-        year: yearNum,
-        pathText: topPill ? topPill.innerText : `Schools > ${progInfo.schoolShort} > ${prog} > Curriculum Spreadsheet (Year ${yearNum})`
+        year: scope,
+        pathText: topPill ? topPill.innerText : `Schools > ${progInfo.schoolShort} > ${prog} > Curriculum Spreadsheet (${yearLabel})`
       });
 
       // 6. Router parameter update
       if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
-        window.spaRouter.updateParam('year', yearNum);
+        window.spaRouter.updateParam('year', scope);
       }
     }
     window.openSpreadsheetForYear = openSpreadsheetForYear;
@@ -3974,6 +4081,31 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       sheetYearFilter = document.getElementById('sheetYearFilter')?.value || 'all';
       sheetTermFilter = document.getElementById('sheetTermFilter')?.value || 'all';
       sheetGroupFilter = document.getElementById('sheetGroupFilter')?.value || 'all';
+
+      // Keep Scope buttons and Notice banner in sync with active filter
+      const scopes = ['all', '1', '2', '3', '4'];
+      scopes.forEach(s => {
+        const btn = document.getElementById(`btnScopeYear_${s}`);
+        if (btn) {
+          if (s === sheetYearFilter) {
+            btn.className = 'px-2.5 py-1 bg-[#002855] text-[#E5A823] font-black text-xs border border-[#E5A823] shadow-xs cursor-pointer';
+          } else {
+            btn.className = 'px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer';
+          }
+        }
+      });
+
+      const notice = document.getElementById('sheetYearScopeNotice');
+      const noticeText = document.getElementById('sheetYearScopeNoticeText');
+      if (notice && noticeText) {
+        if (sheetYearFilter === 'all') {
+          notice.classList.add('hidden');
+        } else {
+          notice.classList.remove('hidden');
+          noticeText.innerText = `Currently displaying Year ${sheetYearFilter} courses only.`;
+        }
+      }
+
       renderSpreadsheetGrid();
       if (window.spaRouter && typeof window.spaRouter.updateParam === 'function') {
         window.spaRouter.updateParam('year', sheetYearFilter);
@@ -4714,7 +4846,15 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       showToastNotification(`Course ${c.code} removed from spreadsheet.`);
     }
 
-    function sheetSaveAllChanges() {
+    function setSpreadsheetYearScope(scope) {
+      const yearFilter = document.getElementById('sheetYearFilter');
+      if (yearFilter) yearFilter.value = String(scope);
+      if (typeof sheetFilterChange === 'function') {
+        sheetFilterChange();
+      }
+    }
+
+    function promptSaveSpreadsheetChanges() {
       const codeSet = new Set();
       for (const c of ALL_COURSES) {
         if (!c.code || c.code.trim() === '') {
@@ -4729,6 +4869,18 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         codeSet.add(upper);
       }
 
+      const count = sheetUnsavedEditsCount > 0 ? sheetUnsavedEditsCount : ALL_COURSES.length;
+      openSaveRevisionModal({
+        type: 'spreadsheet',
+        target: `Master Spreadsheet (${ALL_COURSES.length} Courses)`,
+        defaultNote: `Synchronized course records, units, and prerequisites across master spreadsheet`,
+        onConfirm: function(notes) {
+          executeSaveSpreadsheetChanges(notes);
+        }
+      });
+    }
+
+    function executeSaveSpreadsheetChanges(notes) {
       try {
         localStorage.setItem('apc_curriculum_custom_courses', JSON.stringify(ALL_COURSES));
       } catch (e) {
@@ -4751,12 +4903,40 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (typeof renderObeMatrix === 'function') renderObeMatrix();
       if (typeof calculateCompliance === 'function') calculateCompliance();
 
-      if (typeof appendAuditLog === 'function') {
-        appendAuditLog('SHEET_SAVE', 'BSCpE Master Spreadsheet', `Saved ${ALL_COURSES.length} course records from spreadsheet workbench`);
-      }
+      const userObj = typeof getCurrentGenericUser === 'function' ? getCurrentGenericUser() : { user: 'Program Director', role: 'Program Director' };
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      const recId = `REC-${Math.floor(100000 + Math.random() * 900000)}`;
 
+      const newEntry = {
+        id: recId,
+        timestamp: ts,
+        user: userObj.user,
+        role: userObj.role,
+        action: 'SPREADSHEET_SYNC',
+        actionLabel: 'Spreadsheet Synced',
+        badgeClass: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
+        target: 'BSCpE Master Spreadsheet',
+        targetType: 'Curriculum Spreadsheet',
+        description: notes || `Saved and synced ${ALL_COURSES.length} courses across master spreadsheet`,
+        hash: Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join(''),
+        diffs: [
+          { field: 'coursesTotal', oldVal: `${ALL_COURSES.length} Courses`, newVal: `${ALL_COURSES.length} Courses (Synced)` },
+          { field: 'syncNotes', oldVal: 'Unsaved Edits', newVal: notes || 'Synced to persistent storage' }
+        ]
+      };
+
+      appendAuditLog(newEntry);
       renderSpreadsheetGrid();
-      showToastNotification(`✓ All ${ALL_COURSES.length} courses successfully saved & synchronized across Flowchart, Catalog, and OBE Matrix!`);
+
+      if (typeof showToast === 'function') {
+        showToast(`✓ Master Spreadsheet saved and recorded in System Audit Trail!`);
+      }
+    }
+
+    function sheetSaveAllChanges() {
+      promptSaveSpreadsheetChanges();
     }
     function sheetExportCSV() {
       const headers = [
@@ -5912,6 +6092,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.toggleSheetMoreDropdown = toggleSheetMoreDropdown;
     window.openAiImportModal = openAiImportModal;
     window.closeAiImportModal = closeAiImportModal;
+    function getCurrentGenericUser() {
+      const role = (window.currentActiveRole || currentActiveRole || 'pd').toLowerCase();
+      if (role === 'admin') return { user: 'System Administrator', role: 'System Administrator' };
+      if (role === 'exd') return { user: 'Executive Director', role: 'Executive Director' };
+      if (role === 'faculty' || role === 'f') return { user: 'Faculty 1', role: 'Faculty Member' };
+      return { user: 'Program Director', role: 'Program Director' };
+    }
+
     // =========================================================================
     // SYSTEM AUDIT TRAIL LOGGING, FILTERING & DIFF INSPECTION ENGINE
     // =========================================================================
@@ -5919,7 +6107,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       {
         id: 'REC-892105',
         timestamp: '2026-09-24 14:12:01',
-        user: 'Engr. Arlene B. Peruda',
+        user: 'Program Director',
         role: 'Program Director',
         action: 'LOAD_CURRICULUM',
         actionLabel: 'Curriculum Loaded',
@@ -5936,7 +6124,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       {
         id: 'REC-892104',
         timestamp: '2026-09-24 02:42:12',
-        user: 'Curriculum Validator',
+        user: 'System Administrator',
         role: 'System Administrator',
         action: 'VERIFY_SEQUENCE',
         actionLabel: 'Sequence Validated',
@@ -5953,7 +6141,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       {
         id: 'REC-892103',
         timestamp: '2026-09-22 11:45:00',
-        user: 'Dr. Engr. Executive Director',
+        user: 'Executive Director',
         role: 'Executive Director',
         action: 'CURRICULUM_APPROVE',
         actionLabel: 'Curriculum Approved',
@@ -5972,7 +6160,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       {
         id: 'REC-892102',
         timestamp: '2026-09-22 09:15:42',
-        user: 'Engr. Juan Dela Cruz',
+        user: 'Faculty 1',
         role: 'Faculty Member',
         action: 'SYLLABUS_UPDATE',
         actionLabel: 'Syllabus Updated',
@@ -5990,8 +6178,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       {
         id: 'REC-892101',
         timestamp: '2026-09-21 14:32:18',
-        user: 'Engr. Arlene B. Peruda',
-        role: 'Program Director',
+        user: 'Faculty 2',
+        role: 'Faculty Member',
         action: 'COURSE_UPDATE',
         actionLabel: 'Course Modified',
         badgeClass: 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border-amber-300 dark:border-amber-800',
@@ -6051,7 +6239,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
               <td class="py-3 px-3 font-mono text-[11px] text-slate-500 dark:text-slate-400 whitespace-nowrap">${escapeAuditHtml(item.timestamp)}</td>
               <td class="py-3 px-3">
                 <div class="font-bold text-slate-900 dark:text-white">${escapeAuditHtml(item.user)}</div>
-                <div class="text-[10px] text-slate-500 font-medium">${escapeAuditHtml(item.role)}</div>
+                ${item.user !== item.role ? `<div class="text-[10px] text-slate-500 font-medium">${escapeAuditHtml(item.role)}</div>` : ''}
               </td>
               <td class="py-3 px-3">
                 <span class="inline-block px-2 py-0.5 text-[10px] font-mono font-bold uppercase border ${item.badgeClass}">
@@ -6102,7 +6290,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (metaEl) {
         metaEl.innerHTML = `
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            <div><span class="font-bold text-slate-700 dark:text-slate-300">Author:</span> ${escapeAuditHtml(item.user)} (${escapeAuditHtml(item.role)})</div>
+            <div><span class="font-bold text-slate-700 dark:text-slate-300">Author:</span> ${escapeAuditHtml(item.user)}${item.user !== item.role ? ` (${escapeAuditHtml(item.role)})` : ''}</div>
             <div><span class="font-bold text-slate-700 dark:text-slate-300">Timestamp:</span> ${escapeAuditHtml(item.timestamp)}</div>
             <div class="sm:col-span-2"><span class="font-bold text-slate-700 dark:text-slate-300">Description:</span> ${escapeAuditHtml(item.description)}</div>
             <div class="sm:col-span-2 font-mono text-[10px] text-slate-500 break-all"><span class="font-bold text-slate-700 dark:text-slate-300">Security Verification Code:</span> ${escapeAuditHtml(item.hash)}</div>
@@ -6160,6 +6348,13 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.verifyHashModal = verifyHashModal;
     window.appendAuditLog = appendAuditLog;
     window.escapeAuditHtml = escapeAuditHtml;
+    window.openSaveRevisionModal = openSaveRevisionModal;
+    window.closeSaveRevisionModal = closeSaveRevisionModal;
+    window.setRevisionQuickNote = setRevisionQuickNote;
+    window.confirmSaveRevisionWithNotes = confirmSaveRevisionWithNotes;
+    window.setSpreadsheetYearScope = setSpreadsheetYearScope;
+    window.promptSaveSpreadsheetChanges = promptSaveSpreadsheetChanges;
+    window.promptSaveRegistrarDoc = promptSaveRegistrarDoc;
 
     // Initialize categories, legend and audit trail on load
     try {

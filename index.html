@@ -226,6 +226,13 @@
                             <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                           </button>
 
+                          <!-- Integrated Master Spreadsheet (All 4 Years) -->
+                          <a href="/soe/cpe/spreadsheet?year=all" onclick="event.preventDefault(); openSpreadsheetForYear('all')"
+                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                            <span class="text-emerald-400">📑</span>
+                            <span class="font-medium text-slate-300 group-hover:text-emerald-300">Master Spreadsheet (All 4 Years)</span>
+                          </a>
+
                           <!-- By Year Section Header -->
                           <div class="px-2 pt-1 pb-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
                             By Year / Cohort
@@ -2236,12 +2243,49 @@
               <!-- Full Width Divider Line -->
               <div class="border-b border-slate-200 dark:border-slate-700 pt-1"></div>
 
+              <!-- 4-Year Master Curriculum Scope Controls -->
+              <div class="flex flex-wrap items-center justify-between gap-2.5 pt-1">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Academic Year Scope:</span>
+                  <button type="button" id="btnScopeYear_all" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-black text-xs border border-[#E5A823] shadow-xs cursor-pointer" title="View all 74 courses across 4 full years">
+                    All 4 Years (Entire 74 Courses)
+                  </button>
+                  <button type="button" id="btnScopeYear_1" onclick="setSpreadsheetYearScope(1)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 1 courses">
+                    Year 1
+                  </button>
+                  <button type="button" id="btnScopeYear_2" onclick="setSpreadsheetYearScope(2)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 2 courses">
+                    Year 2
+                  </button>
+                  <button type="button" id="btnScopeYear_3" onclick="setSpreadsheetYearScope(3)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 3 courses">
+                    Year 3
+                  </button>
+                  <button type="button" id="btnScopeYear_4" onclick="setSpreadsheetYearScope(4)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 4 courses">
+                    Year 4
+                  </button>
+                </div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono hidden md:block">
+                  4-Year Cohort Span • 12 Trimesters • 74 Total Courses
+                </div>
+              </div>
+
+              <!-- Active Single-Year Filter Notice Banner -->
+              <div id="sheetYearScopeNotice" class="hidden p-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-xs flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-base leading-none">ℹ️</span>
+                  <span id="sheetYearScopeNoticeText" class="font-bold">Currently displaying single-year filtered courses.</span>
+                  <span class="text-amber-700 dark:text-amber-400 hidden sm:inline">(The curriculum has 4 full years with 74 courses across 12 trimesters).</span>
+                </div>
+                <button type="button" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs cursor-pointer shadow-xs">
+                  Show All 4 Years (74 Courses) &rarr;
+                </button>
+              </div>
+
               <!-- Right-aligned Filter Bar -->
               <div class="flex flex-wrap items-center justify-end gap-2.5">
                 <input type="text" id="sheetSearchInput" onkeyup="sheetFilterChange()" placeholder="Filter Code, Title, Prereq..." class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none focus:ring-1 focus:ring-[#002855] text-slate-800 dark:text-slate-100 w-52 sm:w-64 placeholder-slate-400">
                 
                 <select id="sheetYearFilter" onchange="sheetFilterChange()" class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none text-slate-700 dark:text-slate-200 cursor-pointer">
-                  <option value="all">Year Level ▾</option>
+                  <option value="all">All 4 Years (Entire Curriculum) ▾</option>
                   <option value="1">Year 1</option>
                   <option value="2">Year 2</option>
                   <option value="3">Year 3</option>
@@ -4649,6 +4693,73 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       <div class="p-3 border-t border-slate-200 dark:border-slate-800 flex justify-end bg-slate-50 dark:bg-slate-800/60">
         <button type="button" onclick="closeAuditDiffModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs cursor-pointer">
           Close Inspection
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- MODAL: SAVE & SYNC REVISION NOTES DIALOG                           -->
+  <!-- =================================================================== -->
+  <div id="saveRevisionNotesModal" class="hidden fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/70 backdrop-blur-xs p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 shadow-2xl w-full max-w-lg rounded-none animate-in fade-in zoom-in-95 duration-150">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/60">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-mono font-bold text-xs">OFFICIAL RECORD COMMIT</span>
+            <span id="revisionModalTarget" class="font-mono text-xs text-slate-500 dark:text-slate-400 font-bold">Curriculum Record</span>
+          </div>
+          <h3 id="revisionModalTitle" class="text-sm font-bold text-slate-900 dark:text-white mt-1">Save &amp; Sync Revision Notes</h3>
+          <p id="revisionModalSubtitle" class="text-[11px] text-slate-500 dark:text-slate-400">Provide description notes for the permanent System Audit Trail.</p>
+        </div>
+        <button type="button" onclick="closeSaveRevisionModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xl font-bold cursor-pointer">&times;</button>
+      </div>
+
+      <div class="p-4 space-y-3 text-xs">
+        <div class="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <div>
+            <span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Committer / Role</span>
+            <span id="revisionModalAuthor" class="font-bold text-slate-800 dark:text-slate-200 font-mono">Program Director</span>
+          </div>
+          <div class="text-right">
+            <span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Timestamp</span>
+            <span class="text-slate-700 dark:text-slate-300 font-mono text-[11px]">Auto-stamped</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+            Change Description &amp; Revision Notes: <span class="text-rose-500">*</span>
+          </label>
+          <textarea id="revisionModalNotes" rows="3" class="w-full px-3 py-2 text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-none focus:outline-none focus:ring-1 focus:ring-[#002855] placeholder-slate-400" placeholder="e.g. Synchronized course records, units, and prerequisites across master spreadsheet..."></textarea>
+        </div>
+
+        <!-- Quick suggestion chips -->
+        <div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Quick Presets:</span>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" onclick="setRevisionQuickNote('Updated course syllabus prerequisites and co-requisite sequences')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] border border-slate-200 dark:border-slate-700 cursor-pointer">
+              Prerequisites Update
+            </button>
+            <button type="button" onclick="setRevisionQuickNote('Aligned lecture/laboratory credit units to CHED CMO baseline')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] border border-slate-200 dark:border-slate-700 cursor-pointer">
+              CHED Units Alignment
+            </button>
+            <button type="button" onclick="setRevisionQuickNote('Synchronized course records, units, and prerequisites across master spreadsheet')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] border border-slate-200 dark:border-slate-700 cursor-pointer">
+              Master Sync
+            </button>
+            <button type="button" onclick="setRevisionQuickNote('Refined course description and official learning outcomes')" class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] border border-slate-200 dark:border-slate-700 cursor-pointer">
+              Course Outcomes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-3 border-t border-slate-200 dark:border-slate-800 flex justify-end gap-2 bg-slate-50 dark:bg-slate-800/60">
+        <button type="button" onclick="closeSaveRevisionModal()" class="px-3.5 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs cursor-pointer">
+          Cancel
+        </button>
+        <button type="button" onclick="confirmSaveRevisionWithNotes()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs">
+          <span>Commit &amp; Save &rarr;</span>
         </button>
       </div>
     </div>
