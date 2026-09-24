@@ -9,6 +9,11 @@ if exist "%NODE_DIR%" (
 )
 set "WRANGLER_BIN=%LOCALAPPDATA%\npm-cache\_npx\32026684e21afda6\node_modules\wrangler\bin\wrangler.js"
 
+:: Ensure OAuth callback port 8976 is free
+for /f "tokens=5" %%a in ('netstat -aon 2^>nul ^| findstr ":8976"') do (
+    taskkill /f /pid %%a >nul 2>nul
+)
+
 echo =========================================================================
 echo       APC RAMS ACADEMIC SUITE - CLOUDFLARE WORKERS DEPLOYMENT
 echo =========================================================================
@@ -16,7 +21,7 @@ echo.
 echo  Target: https://apc-academic-management-system.alejandrinoprojects.workers.dev
 echo.
 echo  [1] Log In to Cloudflare (Opens browser to authorize 'alejandrinoprojects')
-echo  [2] Deploy directly (If already logged in)
+echo  [2] Deploy directly (If already authorized)
 echo  [3] Log In and then Deploy (Recommended)
 echo.
 set /p CHOICE="Select an option (1, 2, or 3) [Press Enter for 3]: "
