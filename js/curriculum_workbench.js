@@ -3089,29 +3089,32 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const sheetWrapper = document.getElementById('regDocSpreadsheetWrapper');
       const btnDoc = document.getElementById('btnRegViewDoc');
       const btnSheet = document.getElementById('btnRegViewSheet');
+      const btnDocTab = document.getElementById('btnRegViewDoc_tab');
+      const btnSheetTab = document.getElementById('btnRegViewSheet_tab');
+
+      const activeToolbarStyle = 'px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
+      const inactiveToolbarStyle = 'px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none';
+      const activeTabStyle = 'px-2.5 py-1 text-xs font-bold transition flex items-center gap-1 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
+      const inactiveTabStyle = 'px-2.5 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1 cursor-pointer rounded-none';
 
       if (currentRegistrarViewFormat === 'sheet') {
         if (docWrapper) docWrapper.classList.add('hidden');
         if (sheetWrapper) sheetWrapper.classList.remove('hidden');
 
-        if (btnDoc) {
-          btnDoc.className = 'px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none';
-        }
-        if (btnSheet) {
-          btnSheet.className = 'px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
-        }
+        if (btnDoc) btnDoc.className = inactiveToolbarStyle;
+        if (btnSheet) btnSheet.className = activeToolbarStyle;
+        if (btnDocTab) btnDocTab.className = inactiveTabStyle;
+        if (btnSheetTab) btnSheetTab.className = activeTabStyle;
 
         renderRegistrarSpreadsheetGrid(currentRegistrarTab || 1);
       } else {
         if (sheetWrapper) sheetWrapper.classList.add('hidden');
         if (docWrapper) docWrapper.classList.remove('hidden');
 
-        if (btnDoc) {
-          btnDoc.className = 'px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
-        }
-        if (btnSheet) {
-          btnSheet.className = 'px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none';
-        }
+        if (btnDoc) btnDoc.className = activeToolbarStyle;
+        if (btnSheet) btnSheet.className = inactiveToolbarStyle;
+        if (btnDocTab) btnDocTab.className = activeTabStyle;
+        if (btnSheetTab) btnSheetTab.className = inactiveTabStyle;
 
         if (currentRegistrarTab === 1) {
           setTimeout(drawPrintArrows, 60);
@@ -3499,6 +3502,94 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     let activeRegistrarGridRows = [];
 
+    function colLetter(colIdx) {
+      let letter = '';
+      while (colIdx >= 0) {
+        letter = String.fromCharCode((colIdx % 26) + 65) + letter;
+        colIdx = Math.floor(colIdx / 26) - 1;
+      }
+      return letter;
+    }
+
+    function parseHtmlTableRows(tableHtml) {
+      const rowMatches = tableHtml.match(/<tr[\s\S]*?<\/tr>/gi) || [];
+      const rows = [];
+      rowMatches.forEach(r => {
+        const cellMatches = r.match(/<(?:td|th)[^>]*>([\s\S]*?)<\/(?:td|th)>/gi) || [];
+        const cellValues = cellMatches.map(c => {
+          return c.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+        });
+        if (cellValues.length > 0) {
+          rows.push(cellValues);
+        }
+      });
+      return rows;
+    }
+
+    function renderExcelTableBlock(title, headerRow, dataRows, startRowIdx = 1, badgeText = '') {
+      if (!headerRow || headerRow.length === 0) return '';
+      const maxCols = Math.max(headerRow.length, ...(dataRows.map(r => r.length)));
+      let html = `
+        <div class="border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs mb-6 rounded-none">
+          <div class="bg-slate-800 text-white px-3 py-2 text-xs font-bold flex flex-wrap items-center justify-between gap-2 border-b border-slate-700">
+            <div class="flex items-center gap-2">
+              ${badgeText ? `<span class="px-1.5 py-0.5 bg-emerald-600 text-white font-mono text-[10px] uppercase font-bold">${badgeText}</span>` : ''}
+              <span class="text-xs font-extrabold text-white">${title}</span>
+            </div>
+            <span class="text-slate-300 font-mono text-[11px]">(${dataRows.length} Rows • ${maxCols} Columns)</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse reg-doc-spreadsheet-table">
+              <thead>
+                <tr class="bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono text-[10px] border-b border-slate-300 dark:border-slate-700 select-none">
+                  <th class="py-1 px-2 text-center w-12 border-r border-slate-300 dark:border-slate-700 bg-slate-300 dark:bg-slate-700">#</th>
+                  ${Array.from({ length: maxCols }).map((_, cIdx) => `
+                    <th class="py-1 px-3 text-center border-r border-slate-300 dark:border-slate-700 font-bold">
+                      ${colLetter(cIdx)}
+                    </th>
+                  `).join('')}
+                </tr>
+                <tr class="bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200 font-bold text-[11px] border-b border-slate-300 dark:border-slate-700">
+                  <th class="py-1.5 px-2 text-center w-12 border-r border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-700 font-mono text-[10px] text-slate-400 select-none">1</th>
+                  ${headerRow.map((h, cIdx) => `
+                    <th class="py-1.5 px-3 border-r border-slate-300 dark:border-slate-700 tracking-wider whitespace-nowrap bg-slate-100 dark:bg-slate-800">
+                      ${h}
+                    </th>
+                  `).join('')}
+                  ${headerRow.length < maxCols ? Array.from({ length: maxCols - headerRow.length }).map(() => `<th class="border-r border-slate-300 dark:border-slate-700"></th>`).join('') : ''}
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                ${dataRows.map((r, rIdx) => {
+                  const rowNum = startRowIdx + rIdx + 1;
+                  const isSubtotal = r.some(c => /total|subtotal|cumulative|passed|audit|fully compliant/i.test(c));
+                  return `
+                    <tr class="reg-doc-grid-row ${isSubtotal ? 'bg-amber-50/80 dark:bg-amber-950/30 font-bold text-slate-900 dark:text-white' : 'hover:bg-slate-50 dark:hover:bg-slate-800/60'} transition cursor-cell">
+                      <td class="py-1 px-2 text-center bg-slate-50 dark:bg-slate-800/80 font-mono text-[10px] font-bold text-slate-400 border-r border-slate-300 dark:border-slate-700 select-none">${rowNum}</td>
+                      ${r.map((cell, cIdx) => {
+                        const coord = `${colLetter(cIdx)}${rowNum}`;
+                        const isPassed = /passed|fully compliant|compliant \(exceeds\)/i.test(cell);
+                        return `
+                          <td class="py-1 px-3 border-r border-slate-200 dark:border-slate-700 whitespace-nowrap font-mono text-xs text-slate-800 dark:text-slate-200 focus:bg-amber-100 dark:focus:bg-amber-950/40 outline-none"
+                              tabindex="0"
+                              onclick="inspectRegistrarSpreadsheetCell('${coord}', this)"
+                              data-coord="${coord}">
+                            ${isPassed ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[10px] border border-emerald-300 dark:border-emerald-700">${cell}</span>` : cell}
+                          </td>
+                        `;
+                      }).join('')}
+                      ${r.length < maxCols ? Array.from({ length: maxCols - r.length }).map(() => `<td class="border-r border-slate-200 dark:border-slate-700"></td>`).join('') : ''}
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      return html;
+    }
+
     function renderRegistrarSpreadsheetGrid(sheetIdx) {
       sheetIdx = parseInt(sheetIdx) || currentRegistrarTab || 1;
       const container = document.getElementById('regDocSpreadsheetGridContent');
@@ -3511,162 +3602,264 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (!container) return;
 
       const titles = [
-        'Sheet 1: Flowchart & Trimester Schedule',
-        'Sheet 2: Official Curriculum Prospectus',
-        'Sheet 3: Course Catalog Directory',
-        'Sheet 4: Official Program of Study',
-        'Sheet 5: OBE Curriculum Map Matrix',
-        'Sheet 6: CHED CMO No. 92 Comparative Summary',
-        'Sheet 7: Summary of Credit Units'
+        'Sheet 1: Official Flowchart & Trimester Schedule',
+        'Sheet 2: Official Curriculum Prospectus (12 Trimesters & Unit Audit)',
+        'Sheet 3: Course Catalog Directory & Descriptive Syllabi',
+        'Sheet 4: Official Program of Study (12 Trimesters)',
+        'Sheet 5: OBE Curriculum Map Matrix (4 Assessment Tables)',
+        'Sheet 6: CHED CMO No. 87 / 92 Comparative Summary (106 Compliance Rows)',
+        'Sheet 7: Summary of Credit Units Audit (Curricular Classification)'
       ];
       if (titleBadge) titleBadge.textContent = titles[sheetIdx - 1] || `Sheet ${sheetIdx}`;
       if (searchInput) searchInput.value = '';
       if (formulaBar) formulaBar.value = '';
       if (cellCoord) cellCoord.textContent = 'A1';
 
-      let headers = [];
-      let rows = [];
+      if (typeof mountRegistrarDocs === 'function') {
+        mountRegistrarDocs();
+      }
+
+      let html = '';
+      let totalDataRows = 0;
+      let totalTables = 0;
 
       const courses = (Array.isArray(ALL_COURSES) && ALL_COURSES.length > 0)
-        ? [...ALL_COURSES].sort((a, b) => ((a.year || 1) * 10 + (a.term || 1)) - ((b.year || 1) * 10 + (b.term || 1)) || a.code.localeCompare(b.code))
+        ? [...ALL_COURSES].sort((a, b) => ((a.year || 1) * 10 + (a.term || 1)) - ((b.year || 1) * 10 + (b.term || 1)) || (a.code || '').localeCompare(b.code || ''))
         : [];
 
       if (sheetIdx === 1) {
         // Sheet 1: Flowchart & Trimester Schedule
-        headers = ['Year Level', 'Trimester', 'Course Code', 'Descriptive Course Title', 'Lec Hrs', 'Lab Hrs', 'Credit Units', 'Prerequisites', 'Co-requisites'];
-        rows = courses.map(c => [
+        // Table 1: Complete 4-Year Flowchart Schedule Grid
+        const headers1 = ['Year Level', 'Trimester', 'Course Code', 'Descriptive Course Title', 'Lec Hrs', 'Lab Hrs', 'Credit Units', 'Pre-Requisites', 'Co-Requisites', 'Curricular Area'];
+        const rows1 = courses.map(c => [
           `Year ${c.year || 1}`,
           `Term ${c.term || 1}`,
           c.code || '',
           c.title || '',
-          c.lec != null ? c.lec : (c.units || 3),
-          c.lab != null ? c.lab : 0,
+          c.lec != null ? String(c.lec) : String(c.units || 3),
+          c.lab != null ? String(c.lab) : '0',
           (parseFloat(c.units) || 0).toFixed(1),
           Array.isArray(c.prereqs) ? c.prereqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.prereqs || 'None'),
-          Array.isArray(c.coreqs) ? c.coreqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.coreqs || 'None')
+          Array.isArray(c.coreqs) ? c.coreqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.coreqs || 'None'),
+          c.group || 'Core Engineering'
         ]);
+        html += renderExcelTableBlock('4-Year Flowchart Course Schedule (74 Courses)', headers1, rows1, 1, 'Schedule');
+        totalDataRows += rows1.length;
+        totalTables++;
+
+        // Table 2: Term-by-Term Units Summary Matrix (12 Terms)
+        const headers2 = ['Academic Year', 'Trimester', 'Lecture Units', 'Laboratory Units', 'Total Term Units', 'Cumulative Units'];
+        const termUnitsData = [
+          ['Year 1', 'Term 1', '14.0', '2.0', '16.0', '16.0'],
+          ['Year 1', 'Term 2', '15.0', '2.0', '17.0', '33.0'],
+          ['Year 1', 'Term 3', '15.0', '2.0', '17.0', '50.0'],
+          ['Year 2', 'Term 1', '15.0', '2.0', '17.0', '67.0'],
+          ['Year 2', 'Term 2', '16.0', '2.0', '18.0', '85.0'],
+          ['Year 2', 'Term 3', '18.0', '3.0', '21.0', '106.0'],
+          ['Year 3', 'Term 1', '15.0', '3.0', '18.0', '124.0'],
+          ['Year 3', 'Term 2', '15.0', '3.0', '18.0', '142.0'],
+          ['Year 3', 'Term 3', '15.0', '2.0', '17.0', '159.0'],
+          ['Year 4', 'Term 1', '6.0', '0.0', '6.0', '165.0'],
+          ['Year 4', 'Term 2', '6.0', '0.0', '6.0', '171.0'],
+          ['Year 4', 'Term 3', '13.0', '0.0', '13.0', '184.0'],
+          ['ALL YEARS', 'PROGRAM DEGREE TOTAL', '163.0', '21.0', '184.0 Units', '184.0 Units']
+        ];
+        html += renderExcelTableBlock('Term-by-Term Credit Units Matrix (12 Trimesters)', headers2, termUnitsData, 1, 'Units Audit');
+        totalDataRows += termUnitsData.length;
+        totalTables++;
+
+        // Table 3: Curricular Credit Units Distribution Summary
+        const headers3 = ['Curricular Classification', 'Component Subject Area', 'Required Units', 'Share of Total (%)', 'Statutory Status'];
+        const distData = [
+          ['I. Technical Courses', 'A. Mathematics (Calculus, Differential Equations, EDA)', '12.0', '6.5%', 'COMPLIANT'],
+          ['I. Technical Courses', 'B. Physical Sciences (Chemistry, Physics for Engineers)', '8.0', '4.3%', 'COMPLIANT'],
+          ['I. Technical Courses', 'C. Basic Engineering Sciences (Computer Concepts, Drafting)', '7.0', '3.8%', 'COMPLIANT'],
+          ['I. Technical Courses', 'D. Allied Engineering Subjects (Electrical Circuits, Electronics)', '8.0', '4.3%', 'COMPLIANT'],
+          ['I. Technical Courses', 'E. Professional Core Courses (CpE Core, Embedded, Networks)', '90.0', '48.9%', 'COMPLIANT (EXCEEDS)'],
+          ['I. Technical Courses', 'F. Technical Electives / Cognates (AI, IoT, Cloud)', '9.0', '4.9%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'A. Social Sciences & Humanities (General Education)', '24.0', '13.0%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'B. General Education Electives (GEC Electives)', '9.0', '4.9%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'C. Mandated Institutional Course (Life and Works of Rizal)', '3.0', '1.6%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'D. Physical Education (PE 1 to PE 4)', '8.0', '4.3%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'E. National Service Training Program (NSTP 1 & 2)', '6.0', '3.3%', 'COMPLIANT'],
+          ['TOTAL DEGREE PROGRAM', 'OFFICIAL STATUTORY BSCpE CURRICULUM TOTAL', '184.0 Units', '100.0%', 'PASSED AUDIT']
+        ];
+        html += renderExcelTableBlock('Curricular Credit Units Distribution (184 Total Degree Units)', headers3, distData, 1, 'Distribution');
+        totalDataRows += distData.length;
+        totalTables++;
+
+        if (countBadge) countBadge.textContent = `(3 Tables • ${totalDataRows} Rows • Complete Flowchart)`;
+
       } else if (sheetIdx === 2) {
         // Sheet 2: Official Prospectus
-        headers = ['Academic Year', 'Trimester', 'Course Code', 'Course Title', 'Lec', 'Lab', 'Total Units', 'Pre-Requisite(s)', 'Co-Requisite(s)'];
-        rows = courses.map(c => [
-          `Year ${c.year || 1}`,
-          `Term ${c.term || 1}`,
-          c.code || '',
-          c.title || '',
-          c.lec != null ? c.lec : (c.units || 3),
-          c.lab != null ? c.lab : 0,
-          (parseFloat(c.units) || 0).toFixed(1),
-          Array.isArray(c.prereqs) ? c.prereqs.map(p => (typeof p === 'string' ? p : p.code)).join('; ') || 'None' : (c.prereqs || 'None'),
-          Array.isArray(c.coreqs) ? c.coreqs.map(p => (typeof p === 'string' ? p : p.code)).join('; ') || 'None' : (c.coreqs || 'None')
-        ]);
+        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[2]) ? window.REGISTRAR_DOCS[2] : (document.getElementById('regDocView_2')?.innerHTML || '');
+        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
+        const titles2 = [
+          'FIRST YEAR — 1st Trimester (18 Units)',
+          'FIRST YEAR — 2nd Trimester (17 Units)',
+          'FIRST YEAR — 3rd Trimester (17 Units)',
+          'SECOND YEAR — 1st Trimester (17 Units)',
+          'SECOND YEAR — 2nd Trimester (18 Units)',
+          'SECOND YEAR — 3rd Trimester (21 Units)',
+          'THIRD YEAR — 1st Trimester (18 Units)',
+          'THIRD YEAR — 2nd Trimester (18 Units)',
+          'THIRD YEAR — 3rd Trimester (17 Units)',
+          'FOURTH YEAR — 1st Trimester (6 Units)',
+          'FOURTH YEAR — 2nd Trimester (6 Units)',
+          'FOURTH YEAR — 3rd Trimester (6 Units)'
+        ];
+
+        tableMatches.forEach((tHtml, tIdx) => {
+          const tRows = parseHtmlTableRows(tHtml);
+          if (tRows.length > 0) {
+            const h = tRows[0];
+            const d = tRows.slice(1);
+            html += renderExcelTableBlock(titles2[tIdx] || `Trimester ${tIdx + 1}`, h, d, 1, `Term ${tIdx + 1}`);
+            totalDataRows += d.length;
+            totalTables++;
+          }
+        });
+
+        // Summary of Units Distribution Table
+        const headersDist = ['Curricular Classification', 'Component Subject Area', 'Required Units', 'Distribution (%)', 'Audit Status'];
+        const rowsDist = [
+          ['I. Technical Courses', 'A. Mathematics', '12.0', '6.5%', 'COMPLIANT'],
+          ['I. Technical Courses', 'B. Physical Sciences', '8.0', '4.3%', 'COMPLIANT'],
+          ['I. Technical Courses', 'C. Basic Engineering Sciences', '7.0', '3.8%', 'COMPLIANT'],
+          ['I. Technical Courses', 'D. Allied Subjects', '8.0', '4.3%', 'COMPLIANT'],
+          ['I. Technical Courses', 'E. Professional Core Courses', '90.0', '48.9%', 'COMPLIANT'],
+          ['I. Technical Courses', 'F. Cognates / Electives', '9.0', '4.9%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'A. Social Sciences', '24.0', '13.0%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'B. GEC Electives', '9.0', '4.9%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'C. Mandated Course', '3.0', '1.6%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'D. Physical Education', '8.0', '4.3%', 'COMPLIANT'],
+          ['II. Non-Technical Courses', 'E. National Service Training Program', '6.0', '3.3%', 'COMPLIANT'],
+          ['PROGRAM TOTAL', 'TOTAL PROGRAM DEGREE CREDIT UNITS', '184.0 Units', '100.0%', 'PASSED AUDIT']
+        ];
+        html += renderExcelTableBlock('Curricular Credit Units Distribution Summary', headersDist, rowsDist, 1, 'Units Audit');
+        totalDataRows += rowsDist.length;
+        totalTables++;
+
+        if (countBadge) countBadge.textContent = `(${totalTables} Tables • ${totalDataRows} Rows • Complete Prospectus)`;
+
       } else if (sheetIdx === 3) {
         // Sheet 3: Course Catalog Directory
-        headers = ['Year Level', 'Term', 'Course Code', 'Descriptive Title', 'Credit Units', 'Grade Status', 'Term Taken', 'Remarks / Description'];
-        rows = courses.map(c => [
-          `Year ${c.year || 1}`,
-          `Term ${c.term || 1}`,
-          c.code || '',
-          c.title || '',
-          (parseFloat(c.units) || 0).toFixed(1),
-          'Enrolled / Regular',
-          `AY 2026-2030 T${c.term || 1}`,
-          c.description || `${c.group || 'Engineering Core'} course accredited under CHED CMO 92.`
-        ]);
+        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[3]) ? window.REGISTRAR_DOCS[3] : (document.getElementById('regDocView_3')?.innerHTML || '');
+        const pattern = /<span[^>]*class="[^"]*text-apc-blue[^"]*"[^>]*>\s*([^<]+?)\s*<\/span>\s*<span[^>]*class="[^"]*font-extrabold[^"]*"[^>]*>\s*([^<]+?)\s*<\/span>[\s\S]*?(?:Pre-requisite:<\/span>\s*<span[^>]*>([^<]*?)<\/span>)?[\s\S]*?<p[^>]*class="[^"]*text-slate-700[^"]*"[^>]*>([\s\S]*?)<\/p>/gi;
+        const catalogRows = [];
+        let m;
+        while ((m = pattern.exec(docHtml)) !== null) {
+          const code = m[1].trim();
+          const title = m[2].trim();
+          const prereq = (m[3] || 'None').trim();
+          const desc = m[4].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+          // Find matching course for units and group
+          const matched = courses.find(c => (c.code || '').toUpperCase() === code.toUpperCase());
+          const units = matched ? (parseFloat(matched.units) || 3).toFixed(1) : '3.0';
+          const group = matched ? (matched.group || 'Core Engineering') : 'Engineering Syllabus';
+          catalogRows.push([code, title, units, prereq, 'None', group, desc]);
+        }
+
+        const headersCat = ['Course Code', 'Descriptive Course Title', 'Units', 'Pre-Requisite(s)', 'Co-Requisite(s)', 'Curricular Group', 'Official Catalog Syllabus & Course Description'];
+        html += renderExcelTableBlock('Official Course Catalog Directory & Descriptive Syllabi (81 Courses)', headersCat, catalogRows, 1, 'Directory');
+        totalDataRows += catalogRows.length;
+        totalTables = 1;
+
+        if (countBadge) countBadge.textContent = `(1 Table • ${totalDataRows} Course Syllabi • Complete Catalog)`;
+
       } else if (sheetIdx === 4) {
         // Sheet 4: Program of Study Matrix
-        headers = ['Course Code', 'Descriptive Title', 'Units', 'Lec Hrs', 'Lab Hrs', 'Prerequisites', 'Course Category', 'Description'];
-        rows = courses.map(c => [
-          c.code || '',
-          c.title || '',
-          (parseFloat(c.units) || 0).toFixed(1),
-          c.lec != null ? c.lec : (c.units || 3),
-          c.lab != null ? c.lab : 0,
-          Array.isArray(c.prereqs) ? c.prereqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.prereqs || 'None'),
-          c.group || 'Professional Core',
-          c.description || 'Institutional engineering syllabus aligned with OBE standards.'
-        ]);
+        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[4]) ? window.REGISTRAR_DOCS[4] : (document.getElementById('regDocView_4')?.innerHTML || '');
+        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
+        const titles4 = [
+          'FIRST YEAR — 1st Trimester (18 Units)',
+          'FIRST YEAR — 2nd Trimester (17 Units)',
+          'FIRST YEAR — 3rd Trimester (17 Units)',
+          'SECOND YEAR — 1st Trimester (17 Units)',
+          'SECOND YEAR — 2nd Trimester (18 Units)',
+          'SECOND YEAR — 3rd Trimester (21 Units)',
+          'THIRD YEAR — 1st Trimester (18 Units)',
+          'THIRD YEAR — 2nd Trimester (18 Units)',
+          'THIRD YEAR — 3rd Trimester (17 Units)',
+          'FOURTH YEAR — 1st Trimester (6 Units)',
+          'FOURTH YEAR — 2nd Trimester (6 Units)',
+          'FOURTH YEAR — 3rd Trimester (6 Units)'
+        ];
+
+        tableMatches.forEach((tHtml, tIdx) => {
+          const tRows = parseHtmlTableRows(tHtml);
+          if (tRows.length > 0) {
+            const h = tRows[0];
+            const d = tRows.slice(1);
+            html += renderExcelTableBlock(titles4[tIdx] || `Program of Study Term ${tIdx + 1}`, h, d, 1, `Term ${tIdx + 1}`);
+            totalDataRows += d.length;
+            totalTables++;
+          }
+        });
+
+        if (countBadge) countBadge.textContent = `(${totalTables} Tables • ${totalDataRows} Rows • Complete Program of Study)`;
+
       } else if (sheetIdx === 5) {
         // Sheet 5: OBE Curriculum Map Matrix
-        headers = ['Course Code', 'Descriptive Title', 'Units', 'SO-a', 'SO-b', 'SO-c', 'SO-d', 'SO-e', 'SO-f', 'SO-g', 'SO-h', 'SO-i', 'SO-j', 'SO-k', 'SO-l', 'SO-m'];
-        rows = courses.map(c => {
-          const so = c.so || {};
-          return [
-            c.code || '',
-            c.title || '',
-            (parseFloat(c.units) || 0).toFixed(1),
-            so.a || 'I', so.b || 'I', so.c || 'E', so.d || 'E', so.e || 'E', so.f || 'E',
-            so.g || 'D', so.h || 'E', so.i || 'D', so.j || 'E', so.k || 'D', so.l || 'D', so.m || 'D'
-          ];
-        });
-      } else if (sheetIdx === 6) {
-        // Sheet 6: CHED CMO No. 92 Comparative Summary
-        headers = ['Curricular Area / CHED Requirement', 'CHED Min Units', 'APC BSCpE Units', 'Compliance Status', 'Variance Units', 'Notes / Justification'];
-        rows = [
-          ['I. Mathematics (Calculus, Diff Eq, Linear Algebra, Stats)', '12.0', '14.0', 'COMPLIANT (EXCEEDS)', '+2.0', 'Enhanced advanced calculus and statistics foundation'],
-          ['II. Physical Sciences (Chemistry, Physics for Engineers)', '8.0', '8.0', 'FULLY COMPLIANT', '0.0', 'Includes concurrent experimental laboratory courses'],
-          ['III. Basic Engineering Sciences (Computer Concepts, Drafting)', '6.0', '6.0', 'FULLY COMPLIANT', '0.0', 'Computer-aided design and computing foundations'],
-          ['IV. Allied Courses (Electrical Circuits, Electronics)', '10.0', '11.0', 'COMPLIANT (EXCEEDS)', '+1.0', 'Extended electronic circuits laboratory coverage'],
-          ['V. Professional Core Courses (CpE Core & Systems)', '76.0', '80.0', 'COMPLIANT (EXCEEDS)', '+4.0', 'Deep embedded systems, microprocessors & network security'],
-          ['VI. Technical Electives (Cognates / Specializations)', '12.0', '12.0', 'FULLY COMPLIANT', '0.0', 'Specialization in AI, IoT, and Cloud Systems'],
-          ['VII. Capstone Design & Research (CPEDES1, CPEDES2)', '3.0', '3.0', 'FULLY COMPLIANT', '0.0', 'Two-trimester hardware/software engineering capstone'],
-          ['VIII. Industry Immersion / Internship (480 Hours)', '9.0', '12.0', 'COMPLIANT (EXCEEDS)', '+3.0', '480 hours supervised professional immersion'],
-          ['IX. General Education & Mandated Courses', '24.0', '26.0', 'COMPLIANT (EXCEEDS)', '+2.0', 'Commission on Higher Education GE curriculum'],
-          ['TOTAL CURRICULUM CREDIT UNITS', '160.0', '172.0', 'PASSED AUDIT', '+12.0', '100% statutory compliance with institutional enhancement']
+        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[5]) ? window.REGISTRAR_DOCS[5] : (document.getElementById('regDocView_5')?.innerHTML || '');
+        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
+        const titles5 = [
+          'Course Learning Outcomes to Student Outcomes (SO-a through SO-m) Matrix',
+          'Student Outcomes Statements, Competency Descriptors & Course Counts',
+          'Summary of Learning Progression (I - E - D) Across Curricular Classifications',
+          'Curricular Category vs Outcome Attainment Breakdown'
         ];
+        const badges5 = ['OBE Map', 'Descriptors', 'Progression', 'Categories'];
+
+        tableMatches.forEach((tHtml, tIdx) => {
+          const tRows = parseHtmlTableRows(tHtml);
+          if (tRows.length > 0) {
+            const h = tRows[0];
+            const d = tRows.slice(1);
+            html += renderExcelTableBlock(titles5[tIdx] || `OBE Table ${tIdx + 1}`, h, d, 1, badges5[tIdx] || 'OBE');
+            totalDataRows += d.length;
+            totalTables++;
+          }
+        });
+
+        if (countBadge) countBadge.textContent = `(${totalTables} Tables • ${totalDataRows} Rows • Complete OBE Map)`;
+
+      } else if (sheetIdx === 6) {
+        // Sheet 6: Comparative Summary
+        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[6]) ? window.REGISTRAR_DOCS[6] : (document.getElementById('regDocView_6')?.innerHTML || '');
+        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
+
+        tableMatches.forEach((tHtml, tIdx) => {
+          const tRows = parseHtmlTableRows(tHtml);
+          if (tRows.length > 0) {
+            const h = tRows[0];
+            const d = tRows.slice(1);
+            html += renderExcelTableBlock('CHED CMO No. 87 / 92 Curriculum Comparison vs APC Proposed BSCpE Offerings', h, d, 1, 'CMO 87 Audit');
+            totalDataRows += d.length;
+            totalTables++;
+          }
+        });
+
+        if (countBadge) countBadge.textContent = `(${totalTables} Table • ${totalDataRows} Rows • Complete CMO 87 vs APC Audit)`;
+
       } else {
         // Sheet 7: Summary of Units
-        headers = ['Course Classification', 'CMO 92 Minimum Units', 'APC Proposed Units', 'Variance (Units)', 'Compliance Status'];
-        rows = [
-          ['General Education Curriculum', '24.0', '26.0', '+2.0', 'COMPLIANT'],
-          ['Basic Engineering Sciences', '14.0', '14.0', '0.0', 'COMPLIANT'],
-          ['Allied Engineering Courses', '10.0', '11.0', '+1.0', 'COMPLIANT'],
-          ['Professional Engineering Core', '76.0', '80.0', '+4.0', 'COMPLIANT'],
-          ['Technical Elective Cognates', '12.0', '12.0', '0.0', 'COMPLIANT'],
-          ['Capstone Design Project', '3.0', '3.0', '0.0', 'COMPLIANT'],
-          ['Internship / Industry Immersion', '9.0', '12.0', '+3.0', 'COMPLIANT'],
-          ['Institutional Mandated Courses', '12.0', '14.0', '+2.0', 'COMPLIANT'],
-          ['TOTAL REQUIRED DEGREE UNITS', '160.0', '172.0', '+12.0', 'PASSED AUDIT']
-        ];
+        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[7]) ? window.REGISTRAR_DOCS[7] : (document.getElementById('regDocView_7')?.innerHTML || '');
+        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
+
+        tableMatches.forEach((tHtml, tIdx) => {
+          const tRows = parseHtmlTableRows(tHtml);
+          if (tRows.length > 0) {
+            const h = tRows[0];
+            const d = tRows.slice(1);
+            html += renderExcelTableBlock('Summary of Credit Units & Statutory Curricular Classification Audit', h, d, 1, 'Unit Audit');
+            totalDataRows += d.length;
+            totalTables++;
+          }
+        });
+
+        if (countBadge) countBadge.textContent = `(${totalTables} Table • ${totalDataRows} Rows • Complete Curricular Audit)`;
       }
-
-      activeRegistrarGridRows = rows;
-      if (countBadge) countBadge.textContent = `(${rows.length} Rows • ${headers.length} Columns)`;
-
-      let html = `
-        <table id="regDocSpreadsheetMainTable" class="w-full text-left text-xs text-slate-800 dark:text-slate-200 border-collapse select-text">
-          <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold sticky top-0 z-10 border-b border-slate-300 dark:border-slate-700 shadow-2xs">
-            <tr>
-              <th class="py-2 px-2.5 text-center w-12 bg-slate-200 dark:bg-slate-700 border-r border-slate-300 dark:border-slate-600 font-mono text-[10px] text-slate-500 dark:text-slate-400">#</th>
-              ${headers.map((h, colIdx) => `
-                <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-600 font-bold tracking-wider text-[11px] whitespace-nowrap bg-slate-100 dark:bg-slate-800">
-                  <span class="text-slate-400 dark:text-slate-500 font-mono text-[9px] block">${String.fromCharCode(65 + (colIdx % 26))}</span>
-                  <span>${h}</span>
-                </th>
-              `).join('')}
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-normal">
-            ${rows.map((row, rIdx) => `
-              <tr class="hover:bg-amber-50/60 dark:hover:bg-slate-800/80 transition cursor-cell reg-doc-grid-row" data-row-idx="${rIdx}">
-                <td class="py-1.5 px-2 text-center bg-slate-50 dark:bg-slate-800/80 font-mono text-[10px] font-bold text-slate-400 border-r border-slate-200 dark:border-slate-700 select-none">${rIdx + 1}</td>
-                ${row.map((cell, cIdx) => {
-                  const coord = `${String.fromCharCode(65 + (cIdx % 26))}${rIdx + 1}`;
-                  const isUnit = (cell === '172.0' || cell === '160.0' || cell === 'PASSED AUDIT' || cell === 'FULLY COMPLIANT' || cell === 'COMPLIANT');
-                  const isPassed = cell === 'PASSED AUDIT' || cell === 'COMPLIANT' || cell === 'FULLY COMPLIANT';
-                  return `
-                    <td class="py-1.5 px-3 border-r border-slate-200 dark:border-slate-800 whitespace-nowrap text-slate-800 dark:text-slate-200 font-mono text-xs focus:bg-amber-100 dark:focus:bg-amber-950/40 outline-none"
-                        tabindex="0"
-                        onclick="inspectRegistrarSpreadsheetCell('${coord}', this)"
-                        data-coord="${coord}">
-                      ${isPassed ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[10px] rounded-none border border-emerald-300 dark:border-emerald-700">${cell}</span>` : cell}
-                    </td>
-                  `;
-                }).join('')}
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      `;
 
       container.innerHTML = html;
     }
@@ -5247,24 +5440,36 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const cleanTitle = docTitle.replace(/[^a-zA-Z0-9_-]/g, '_');
       const activeYear = (typeof window.currentSidebarYear !== 'undefined' && window.currentSidebarYear) ? window.currentSidebarYear : null;
       
-      // 1. Check if active spreadsheet grid has data
-      const gridTable = document.getElementById('regDocSpreadsheetMainTable');
-      if (gridTable) {
+      // 1. Check all tables in active spreadsheet grid
+      const gridContainer = document.getElementById('regDocSpreadsheetGridContent');
+      const tables = gridContainer ? gridContainer.querySelectorAll('.reg-doc-spreadsheet-table') : [];
+      if (tables.length > 0) {
         const rows = [];
-        const trs = gridTable.querySelectorAll('tr');
-        trs.forEach(tr => {
-          const rowData = [];
-          // Skip first column (# row index)
-          const cells = Array.from(tr.querySelectorAll('th, td')).slice(1);
-          cells.forEach(cell => {
-            let text = cell.innerText.trim();
-            // Clean up header letters if present
-            text = text.replace(/^[A-Z]\s*\n+/, '').trim().replace(/\r?\n+/g, ' ').replace(/"/g, '""');
-            rowData.push(`"${text}"`);
+        tables.forEach((tbl, tIdx) => {
+          // Find preceding title in container
+          const cardEl = tbl.closest('.border');
+          const titleEl = cardEl ? cardEl.querySelector('.font-extrabold') : null;
+          const title = titleEl ? titleEl.innerText.trim() : `Section ${tIdx + 1}`;
+          rows.push(`"=== ${title} ==="`);
+
+          const trs = tbl.querySelectorAll('tr');
+          trs.forEach(tr => {
+            // Skip the Excel letter header row (# A B C ...)
+            if (tr.parentElement && tr.parentElement.tagName.toLowerCase() === 'thead' && tr.classList.contains('bg-slate-200')) {
+              return;
+            }
+            const rowData = [];
+            // Skip first cell (# row index)
+            const cells = Array.from(tr.querySelectorAll('th, td')).slice(1);
+            cells.forEach(cell => {
+              let text = cell.innerText.trim().replace(/\r?\n+/g, ' ').replace(/"/g, '""');
+              rowData.push(`"${text}"`);
+            });
+            if (rowData.length > 0) {
+              rows.push(rowData.join(','));
+            }
           });
-          if (rowData.length > 0) {
-            rows.push(rowData.join(','));
-          }
+          rows.push(''); // blank row separator between tables
         });
 
         if (rows.length > 0) {
@@ -5278,27 +5483,31 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           a.click();
           document.body.removeChild(a);
           URL.revokeObjectURL(url);
-          showToast(`Exported ${docTitle} as spreadsheet table successfully.`);
+          showToast(`Exported ${docTitle} as complete multi-table spreadsheet successfully.`);
           return;
         }
       }
 
       // 2. Check active document view container table (e.g. regDocView_1..7)
       const activeDocView = document.getElementById(`regDocView_${activeTab}`) || document.getElementById(`regDocSheet_${activeTab}`);
-      const table = activeDocView ? activeDocView.querySelector('table') : null;
+      const docTables = activeDocView ? activeDocView.querySelectorAll('table') : [];
 
-      if (table) {
+      if (docTables.length > 0) {
         const rows = [];
-        const trs = table.querySelectorAll('tr');
-        trs.forEach(tr => {
-          const rowData = [];
-          tr.querySelectorAll('th, td').forEach(cell => {
-            const text = cell.innerText.trim().replace(/\r?\n+/g, ' ').replace(/"/g, '""');
-            rowData.push(`"${text}"`);
+        docTables.forEach((tbl, tIdx) => {
+          rows.push(`"=== Table ${tIdx + 1} ==="`);
+          const trs = tbl.querySelectorAll('tr');
+          trs.forEach(tr => {
+            const rowData = [];
+            tr.querySelectorAll('th, td').forEach(cell => {
+              const text = cell.innerText.trim().replace(/\r?\n+/g, ' ').replace(/"/g, '""');
+              rowData.push(`"${text}"`);
+            });
+            if (rowData.length > 0) {
+              rows.push(rowData.join(','));
+            }
           });
-          if (rowData.length > 0) {
-            rows.push(rowData.join(','));
-          }
+          rows.push('');
         });
 
         if (rows.length > 0) {
@@ -5320,7 +5529,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       // 3. Fallback: generate and export grid format directly
       if (typeof renderRegistrarSpreadsheetGrid === 'function') {
         renderRegistrarSpreadsheetGrid(activeTab);
-        exportCurrentDocAsSpreadsheet();
+        setTimeout(exportCurrentDocAsSpreadsheet, 60);
         return;
       }
 
