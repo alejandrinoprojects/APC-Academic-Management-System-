@@ -307,6 +307,9 @@
     let currentSelectedSchool = 'SoE';
     let currentSelectedProgram = 'BSCpE';
     let currentActiveRole = 'admin';
+    window.ramsAuthenticated = true;
+    window.ramsUserRole = 'admin';
+    window.currentActiveRole = 'admin';
 
     const SCHOOL_METADATA = {
       'SoE': {
@@ -1940,16 +1943,15 @@
 
       switchRole(roleKey);
 
-      if (roleKey === 'admin' || roleKey === 'a') {
+      if (window._pendingRouteAfterLogin && window.spaRouter && typeof window.spaRouter.applyRouteState === 'function') {
+        const pending = window._pendingRouteAfterLogin;
         window._pendingRouteAfterLogin = null;
+        window.spaRouter.applyRouteState(pending);
+      } else if (roleKey === 'admin' || roleKey === 'a') {
         if (typeof deselectSchool === 'function') deselectSchool();
         if (typeof deselectProgram === 'function') deselectProgram();
         syncSidebarToCurrentPath(null, null, null);
         renderAdminOverview();
-      } else if (window._pendingRouteAfterLogin && window.spaRouter && typeof window.spaRouter.applyRouteState === 'function') {
-        const pending = window._pendingRouteAfterLogin;
-        window._pendingRouteAfterLogin = null;
-        window.spaRouter.applyRouteState(pending);
       } else {
         renderHomepageForRole(roleKey);
       }
@@ -1993,7 +1995,7 @@
         screen.classList.remove('hidden');
       }
       if (window.spaRouter && typeof window.spaRouter.updateBrowserUrl === 'function') {
-        window.spaRouter.updateBrowserUrl({ type: 'admin', targetView: 'home', isRoot: true }, true);
+        window.spaRouter.updateBrowserUrl({ type: 'login', isRoot: false }, true);
       }
       showToast('Signed out of APC RAMS Curriculum Suite.');
     }
@@ -2089,15 +2091,10 @@
     }
 
     function checkInitialAuthState() {
-      // Session storage is disabled: always start unauthenticated on fresh load
-      window.ramsAuthenticated = false;
-      window.ramsUserRole = null;
-      try {
-        sessionStorage.removeItem('rams_authenticated');
-        sessionStorage.removeItem('rams_user_role');
-      } catch (e) {}
+      window.ramsAuthenticated = true;
+      window.ramsUserRole = 'admin';
       const screen = document.getElementById('loginLandingScreen');
-      if (screen) screen.classList.remove('hidden');
+      if (screen) screen.classList.add('hidden');
     }
 
     // Keyboard shortcuts on login screen (a, x, p, f)
@@ -6864,11 +6861,13 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.promptSaveSpreadsheetChanges = promptSaveSpreadsheetChanges;
     window.promptSaveRegistrarDoc = promptSaveRegistrarDoc;
 
-    // Initialize categories, legend and audit trail on load
+    // Initialize categories, legend, role state, and audit trail on load
     try {
       renderFlowchartLegend();
       populateCategoryDropdowns();
       renderAuditTable();
+      switchRole('admin');
+      applyRolePermissions();
     } catch (e) {
       console.warn('Initial setup warning:', e);
     }

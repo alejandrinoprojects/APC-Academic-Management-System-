@@ -117,6 +117,7 @@
     'past-flowchart': 'past-flowchart',
     'dashboard': 'dashboard',
     'obe': 'obe',
+    'obe-matrix': 'obe',
     'catalog': 'catalog',
     'syllabus': 'syllabus',
     'course': 'course',
@@ -185,10 +186,8 @@
   function buildUrlForState(state) {
     if (!state) return '/';
 
-    // If login landing screen is currently visible
-    const loginScreen = document.getElementById('loginLandingScreen');
-    if (loginScreen && !loginScreen.classList.contains('hidden') && state.isRoot) {
-      return '/';
+    if (state.type === 'login') {
+      return '/login';
     }
 
     let basePath = '/';
@@ -378,6 +377,16 @@
       modalParams.hash = params.get('hash');
     }
 
+    // Explicit login route
+    if (segments[0] === 'login') {
+      return {
+        type: 'login',
+        isRoot: false,
+        modal: modal,
+        modalParams: Object.keys(modalParams).length > 0 ? modalParams : undefined
+      };
+    }
+
     // Root or empty path -> landing or schools overview
     if (segments.length === 0 || segments[0] === 'schools' || segments[0] === 'home') {
       return {
@@ -447,22 +456,15 @@
     isPopStateNavigating = true;
     try {
       const loginScreen = document.getElementById('loginLandingScreen');
-      const isAuth = Boolean(window.ramsAuthenticated);
 
-      // If state is root '/', show login screen
-      if (routeState.isRoot) {
+      // If route is explicitly login, show login screen
+      if (routeState.type === 'login') {
         if (loginScreen) loginScreen.classList.remove('hidden');
         return;
       }
 
-      // If user is not authenticated, keep login screen visible and save route
-      if (!isAuth) {
-        if (loginScreen) loginScreen.classList.remove('hidden');
-        window._pendingRouteAfterLogin = routeState;
-        return;
-      }
-
-      // User is authenticated: ensure login screen is hidden
+      // User has direct access without mandatory login requirement
+      window.ramsAuthenticated = true;
       if (loginScreen) loginScreen.classList.add('hidden');
 
       if (routeState.type === 'admin') {
@@ -701,24 +703,17 @@
     if (isInitialized) return;
     isInitialized = true;
 
-    // Session storage disabled: purge any stale credentials
-    try {
-      sessionStorage.removeItem('rams_authenticated');
-      sessionStorage.removeItem('rams_user_role');
-    } catch (e) {}
-    window.ramsAuthenticated = false;
+    window.ramsAuthenticated = true;
+    window.ramsUserRole = window.ramsUserRole || 'admin';
 
     const route = parseCurrentLocation();
     const loginScreen = document.getElementById('loginLandingScreen');
 
-    // Always ensure login screen is visible on initial load / reload
-    if (loginScreen) loginScreen.classList.remove('hidden');
-
-    if (!route.isRoot) {
-      // Direct deep link accessed: save target route to fulfill upon login
-      window._pendingRouteAfterLogin = route;
+    if (route && route.type === 'login') {
+      if (loginScreen) loginScreen.classList.remove('hidden');
     } else {
-      window._pendingRouteAfterLogin = null;
+      if (loginScreen) loginScreen.classList.add('hidden');
+      applyRouteState(route, true);
     }
   }
 
