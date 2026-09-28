@@ -23,7 +23,9 @@
   // Safely get courses from window.ALL_COURSES
   function getCourses() {
     if (typeof window.ALL_COURSES !== 'undefined' && Array.isArray(window.ALL_COURSES)) {
-      return window.ALL_COURSES;
+      const activeCohort = window.currentFlowchartCohort || window.currentActiveSidebarYear || 1;
+      const filtered = window.ALL_COURSES.filter(c => !c.cohort || String(c.cohort) === String(activeCohort));
+      return filtered.length > 0 ? filtered : window.ALL_COURSES.slice(0, 74);
     }
     return [];
   }
@@ -88,12 +90,16 @@
     const courses = getCourses();
     if (courses.length === 0) return;
 
+    const activeCohort = window.currentFlowchartCohort || window.currentActiveSidebarYear || 1;
+    const baseAyMap = { 1: 2026, 2: 2025, 3: 2024, 4: 2023 };
+    const baseAy = baseAyMap[activeCohort] || 2026;
+
     // Academic Year meta
     const yearHeaders = [
-      { year: 1, ay: 'AY 2026–2027', title: 'General Engineering & Foundation', units: '52.0u', bg: 'bg-[#002855]', text: 'text-white' },
-      { year: 2, ay: 'AY 2027–2028', title: 'Intermediate Hardware & Software Core', units: '52.0u', bg: 'bg-[#0d3b66]', text: 'text-white' },
-      { year: 3, ay: 'AY 2028–2029', title: 'Systems Specialization & Design', units: '51.0u', bg: 'bg-[#1a365d]', text: 'text-white' },
-      { year: 4, ay: 'AY 2029–2030', title: 'Capstone Design & Practicum Internships', units: '29.0u', bg: 'bg-[#1f293d]', text: 'text-white' }
+      { year: 1, ay: `AY ${baseAy}–${baseAy + 1}`, title: 'General Engineering & Foundation', units: '52.0u', bg: 'bg-[#002855]', text: 'text-white' },
+      { year: 2, ay: `AY ${baseAy + 1}–${baseAy + 2}`, title: 'Intermediate Hardware & Software Core', units: '52.0u', bg: 'bg-[#0d3b66]', text: 'text-white' },
+      { year: 3, ay: `AY ${baseAy + 2}–${baseAy + 3}`, title: 'Systems Specialization & Design', units: '51.0u', bg: 'bg-[#1a365d]', text: 'text-white' },
+      { year: 4, ay: `AY ${baseAy + 3}–${baseAy + 4}`, title: 'Capstone Design & Practicum Internships', units: '29.0u', bg: 'bg-[#1f293d]', text: 'text-white' }
     ];
 
     // Determine active years and active columns based on filter
