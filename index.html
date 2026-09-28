@@ -2174,7 +2174,7 @@
             <div class="flex items-center space-x-2">
               <button type="button" onclick="returnFromSpreadsheet()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 cursor-pointer">
                 <span>&larr;</span>
-                <span id="spreadsheetReturnText">Back to Prerequisite Flowchart</span>
+                <span id="spreadsheetReturnText">Back to Curriculum Management</span>
               </button>
             </div>
             <div class="flex items-center space-x-2">
@@ -2255,20 +2255,20 @@
               <div class="flex flex-wrap items-center justify-between gap-2.5 pt-1">
                 <div class="flex flex-wrap items-center gap-1.5">
                   <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Academic Year Scope:</span>
-                  <button type="button" id="btnScopeYear_all" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-black text-xs border border-[#E5A823] shadow-xs cursor-pointer" title="View all 74 courses across 4 full years">
-                    All 4 Years (Entire 74 Courses)
+                  <button type="button" id="btnScopeYear_all" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-black text-xs border border-[#E5A823] shadow-xs cursor-pointer" title="View all 74 courses across full 4-year cohort">
+                    Full 4-Year Program (All 74 Courses)
                   </button>
-                  <button type="button" id="btnScopeYear_1" onclick="setSpreadsheetYearScope(1)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 1 courses">
-                    Year 1
+                  <button type="button" id="btnScopeYear_1" onclick="setSpreadsheetYearScope(1)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 1st Year courses (Terms 1–3)">
+                    1st Year (2026–2027)
                   </button>
-                  <button type="button" id="btnScopeYear_2" onclick="setSpreadsheetYearScope(2)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 2 courses">
-                    Year 2
+                  <button type="button" id="btnScopeYear_2" onclick="setSpreadsheetYearScope(2)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 2nd Year courses (Terms 4–6)">
+                    2nd Year (2027–2028)
                   </button>
-                  <button type="button" id="btnScopeYear_3" onclick="setSpreadsheetYearScope(3)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 3 courses">
-                    Year 3
+                  <button type="button" id="btnScopeYear_3" onclick="setSpreadsheetYearScope(3)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 3rd Year courses (Terms 7–9)">
+                    3rd Year (2028–2029)
                   </button>
-                  <button type="button" id="btnScopeYear_4" onclick="setSpreadsheetYearScope(4)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 4 courses">
-                    Year 4
+                  <button type="button" id="btnScopeYear_4" onclick="setSpreadsheetYearScope(4)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 4th Year courses (Terms 10–12)">
+                    4th Year (2029–2030)
                   </button>
                 </div>
                 <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono hidden md:block">
@@ -2281,10 +2281,10 @@
                 <div class="flex items-center gap-2">
                   <span class="text-base leading-none">ℹ️</span>
                   <span id="sheetYearScopeNoticeText" class="font-bold">Currently displaying single-year filtered courses.</span>
-                  <span class="text-amber-700 dark:text-amber-400 hidden sm:inline">(The curriculum has 4 full years with 74 courses across 12 trimesters).</span>
+                  <span class="text-amber-700 dark:text-amber-400 hidden sm:inline">(Curriculum spans 4 academic years across 12 trimesters with 74 total courses).</span>
                 </div>
                 <button type="button" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs cursor-pointer shadow-xs">
-                  Show All 4 Years (74 Courses) &rarr;
+                  Show Full 4-Year Program (74 Courses) &rarr;
                 </button>
               </div>
 
@@ -2293,11 +2293,11 @@
                 <input type="text" id="sheetSearchInput" onkeyup="sheetFilterChange()" placeholder="Filter Code, Title, Prereq..." class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none focus:ring-1 focus:ring-[#002855] text-slate-800 dark:text-slate-100 w-52 sm:w-64 placeholder-slate-400">
                 
                 <select id="sheetYearFilter" onchange="sheetFilterChange()" class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none text-slate-700 dark:text-slate-200 cursor-pointer">
-                  <option value="all">All 4 Years (Entire Curriculum) ▾</option>
-                  <option value="1">Year 1</option>
-                  <option value="2">Year 2</option>
-                  <option value="3">Year 3</option>
-                  <option value="4">Year 4</option>
+                  <option value="all">Full 4-Year Program (All 74 Courses) ▾</option>
+                  <option value="1">1st Year (AY 2026–2027 • Terms 1–3)</option>
+                  <option value="2">2nd Year (AY 2027–2028 • Terms 4–6)</option>
+                  <option value="3">3rd Year (AY 2028–2029 • Terms 7–9)</option>
+                  <option value="4">4th Year (AY 2029–2030 • Terms 10–12)</option>
                 </select>
 
                 <select id="sheetTermFilter" onchange="sheetFilterChange()" class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none text-slate-700 dark:text-slate-200 cursor-pointer">
@@ -3032,9 +3032,14 @@
                       <span class="text-slate-400">&bull;</span>
                       <span class="text-slate-500 font-mono">Expires Nov 01, 2026</span>
                     </div>
-                    <button type="button" id="btnReassignCluster1" onclick="openAssignTaskModal('Hardware &amp; Embedded Systems', 'Faculty Member 2')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
-                      Reassign
-                    </button>
+                    <div class="flex items-center space-x-1.5">
+                      <button type="button" id="btnReassignCluster1" onclick="openAssignTaskModal('Hardware &amp; Embedded Systems', 'Faculty Member 2')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
+                        Reassign
+                      </button>
+                      <button type="button" onclick="terminateClusterDelegation('Hardware &amp; Embedded Systems')" class="px-2.5 py-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-bold transition cursor-pointer shadow-xs" title="Revoke cluster delegation">
+                        Terminate
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -3058,9 +3063,14 @@
                       <span class="text-slate-400">&bull;</span>
                       <span class="text-slate-500 font-mono">Expires Oct 15, 2026</span>
                     </div>
-                    <button type="button" id="btnReassignCluster2" onclick="openAssignTaskModal('Computer Networks &amp; Security', 'Faculty Member 1')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
-                      Reassign
-                    </button>
+                    <div class="flex items-center space-x-1.5">
+                      <button type="button" id="btnReassignCluster2" onclick="openAssignTaskModal('Computer Networks &amp; Security', 'Faculty Member 1')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
+                        Reassign
+                      </button>
+                      <button type="button" onclick="terminateClusterDelegation('Computer Networks &amp; Security')" class="px-2.5 py-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-bold transition cursor-pointer shadow-xs" title="Revoke cluster delegation">
+                        Terminate
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -3898,10 +3908,13 @@
   <!-- ========================================================================= -->
   <!-- MODAL: ASSIGN TASK & SPREADSHEET ACCESS DELEGATION                        -->
   <!-- ========================================================================= -->
-  <div id="modalAssignTask" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+  <!-- ========================================================================= -->
+  <!-- MODAL: ASSIGN TASK & SPREADSHEET ACCESS DELEGATION                        -->
+  <!-- ========================================================================= -->
+  <div id="modalAssignTask" onclick="if(event.target === this) closeAssignTaskModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl max-h-[90vh] flex flex-col rounded-none overflow-hidden">
       <!-- Modal Header -->
-      <div class="bg-[#002855] px-5 py-3.5 flex items-center justify-between border-b border-[#E5A823]">
+      <div class="bg-[#002855] px-5 py-3.5 flex items-center justify-between border-b border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
           <span class="text-[#E5A823] font-bold text-base">👥</span>
           <div>
@@ -3913,60 +3926,73 @@
       </div>
 
       <!-- Form Body -->
-      <form id="assignTaskForm" onsubmit="submitAssignTask(event)" class="p-6 space-y-4 text-xs">
-        <!-- Faculty Member Title -->
-        <div>
-          <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Faculty Member (Role / Title)</label>
-          <input type="text" id="assignTaskFacultyTitle" value="Faculty Member" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-semibold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
-        </div>
-
-        <!-- Assigned Course Titles / Cluster Delegations (Multiple Fields) -->
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="block text-slate-700 dark:text-slate-200 font-bold uppercase tracking-wider text-[11px]">Assigned Subject / Cluster Delegations</label>
-            <button type="button" onclick="addClusterDelegationRow()" class="text-[11px] font-bold text-[#002855] dark:text-[#E5A823] hover:underline flex items-center gap-1 cursor-pointer">
-              <span>+ Add Another Cluster / Subject</span>
-            </button>
+      <form id="assignTaskForm" onsubmit="submitAssignTask(event)" class="flex flex-col flex-1 overflow-hidden text-xs">
+        <div class="p-6 space-y-4 overflow-y-auto flex-1">
+          <!-- Faculty Member Title -->
+          <div>
+            <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Faculty Member (Role / Title)</label>
+            <input type="text" id="assignTaskFacultyTitle" value="Faculty Member" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-semibold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
           </div>
-          <div id="assignTaskClustersContainer" class="space-y-2">
-            <div class="flex items-center gap-2 cluster-row">
-              <input type="text" name="assignTaskClusterItem" id="assignTaskCourseTitle" value="Hardware &amp; Embedded Systems" required class="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" placeholder="e.g. Hardware &amp; Embedded Systems, CPEDES1, etc." />
-              <button type="button" onclick="removeClusterDelegationRow(this)" class="w-8 h-8 flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-rose-600 font-bold cursor-pointer transition shrink-0" title="Remove row">&times;</button>
+
+          <!-- Assigned Cluster Name / Target Scope -->
+          <div>
+            <label class="block text-slate-700 dark:text-slate-200 font-bold uppercase tracking-wider text-[11px] mb-1">Assigned Cluster / Subject Area</label>
+            <input type="text" id="assignTaskCourseTitle" value="Hardware &amp; Embedded Systems" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" placeholder="e.g. Hardware &amp; Embedded Systems, Computer Networks, etc." />
+          </div>
+
+          <!-- Multi-Select Course Codes via Checkbox Grid -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-slate-700 dark:text-slate-200 font-bold uppercase tracking-wider text-[11px]">
+                Assigned Course Scope (<span id="assignTaskSelectedCount" class="text-[#002855] dark:text-[#E5A823] font-bold">0</span> selected)
+              </label>
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="selectAllCoursesInAssignTask(true)" class="text-[10.5px] font-bold text-[#002855] dark:text-[#E5A823] hover:underline cursor-pointer">Select All</button>
+                <span class="text-slate-400">&bull;</span>
+                <button type="button" onclick="selectAllCoursesInAssignTask(false)" class="text-[10.5px] font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:underline cursor-pointer">Clear</button>
+              </div>
+            </div>
+            <div class="mb-1.5">
+              <input type="text" id="assignTaskCourseSearch" oninput="filterAssignTaskCourseCheckboxes()" placeholder="Filter courses by code or title..." class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            </div>
+            <div id="assignTaskCoursesChecklist" class="max-h-48 overflow-y-auto border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-[#10151E] p-2 divide-y divide-slate-200 dark:divide-slate-800">
+              <!-- Dynamically populated course checkboxes -->
+            </div>
+            <p class="text-[10.5px] text-slate-500 dark:text-slate-400 mt-1">Check all courses this faculty member is authorized to author or modify.</p>
+          </div>
+
+          <!-- Start Date and End Date of Access -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/40 p-3 border border-slate-200 dark:border-slate-700">
+            <div>
+              <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Access Start Date</label>
+              <input type="date" id="assignTaskStartDate" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            </div>
+            <div>
+              <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Access End Date</label>
+              <input type="date" id="assignTaskEndDate" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
             </div>
           </div>
-        </div>
 
-        <!-- Start Date and End Date of Access -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/40 p-3 border border-slate-200 dark:border-slate-700">
+          <!-- Permission Level -->
           <div>
-            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Access Start Date</label>
-            <input type="date" id="assignTaskStartDate" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Authorized Permission Level</label>
+            <select id="assignTaskPermission" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]">
+              <option value="spreadsheet_full">Full Spreadsheet Edit &amp; OBE Outcomes Authoring</option>
+              <option value="spreadsheet_scoped">Scoped Spreadsheet Course Row Editing</option>
+              <option value="syllabus_only">Syllabus &amp; ILO Authoring Only</option>
+              <option value="read_only">Read-Only Verification Access</option>
+            </select>
           </div>
-          <div>
-            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[11px]">Access End Date</label>
-            <input type="date" id="assignTaskEndDate" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+
+          <!-- Informational Note -->
+          <div class="p-2.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-[11px] text-blue-900 dark:text-blue-200 flex items-start gap-2">
+            <span>ℹ️</span>
+            <span>Faculty will be delegated editing access to the Curriculum Spreadsheet for all checked courses throughout the authorized date window.</span>
           </div>
         </div>
 
-        <!-- Permission Level -->
-        <div>
-          <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Authorized Permission Level</label>
-          <select id="assignTaskPermission" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]">
-            <option value="spreadsheet_full">Full Spreadsheet Edit &amp; OBE Outcomes Authoring</option>
-            <option value="spreadsheet_scoped">Scoped Spreadsheet Course Row Editing</option>
-            <option value="syllabus_only">Syllabus &amp; ILO Authoring Only</option>
-            <option value="read_only">Read-Only Verification Access</option>
-          </select>
-        </div>
-
-        <!-- Informational Note -->
-        <div class="p-2.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-[11px] text-blue-900 dark:text-blue-200 flex items-start gap-2">
-          <span>ℹ️</span>
-          <span>Faculty will be delegated editing access to the Curriculum Spreadsheet for all courses within the assigned cluster throughout the authorized date window.</span>
-        </div>
-
-        <!-- Modal Actions -->
-        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-2">
+        <!-- Modal Actions Footer (Pinned) -->
+        <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 flex flex-wrap items-center justify-between gap-2 shrink-0">
           <button type="button" onclick="closeAssignTaskModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer transition">
             Cancel
           </button>
@@ -3987,10 +4013,10 @@
   <!-- ========================================================================= -->
   <!-- MODAL: ADD FACULTY MEMBER & SCHOOL ASSIGNMENT                             -->
   <!-- ========================================================================= -->
-  <div id="modalAddFaculty" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+  <div id="modalAddFaculty" onclick="if(event.target === this) closeAddFacultyModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl max-h-[90vh] flex flex-col rounded-none overflow-hidden">
       <!-- Modal Header -->
-      <div class="bg-[#002855] px-5 py-3.5 flex items-center justify-between border-b border-[#E5A823]">
+      <div class="bg-[#002855] px-5 py-3.5 flex items-center justify-between border-b border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
           <span class="text-[#E5A823] font-bold text-base">👤</span>
           <div>
@@ -4002,79 +4028,92 @@
       </div>
 
       <!-- Form Body -->
-      <form id="addFacultyForm" onsubmit="submitAddFaculty(event)" class="p-5 space-y-4 text-xs">
-        
-        <!-- Field 1: Academic School -->
-        <div>
-          <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-            Academic School <span class="text-rose-500">*</span>
-          </label>
-          <select id="addFacultySchool" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
-            <option value="soe" selected>School of Engineering (SoE)</option>
-            <option value="socit">School of Computing and Information Technologies (SoCIT)</option>
-            <option value="som">School of Management (SoM)</option>
-            <option value="soad">School of Architecture and Design (SoAD)</option>
-          </select>
-          <p class="text-[10.5px] text-slate-400 mt-0.5">Determines faculty affiliation and departmental governance structure.</p>
-        </div>
-
-        <!-- Field 2: Faculty Full Name -->
-        <div>
-          <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-            Faculty Full Name <span class="text-rose-500">*</span>
-          </label>
-          <input type="text" id="addFacultyName" placeholder="e.g. Faculty Member 3" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
-        </div>
-
-        <!-- Field 3: Entra ID Account / Email -->
-        <div>
-          <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-            Entra ID Account / Official Email <span class="text-rose-500">*</span>
-          </label>
-          <input type="email" id="addFacultyAccount" placeholder="e.g. faculty3@apc.edu.ph" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-mono focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
-          <p class="text-[10.5px] text-slate-400 mt-0.5">Used for federated Microsoft Entra ID single sign-on authentication.</p>
-        </div>
-
-        <!-- Field 4: Academic Rank / Designation & Cluster -->
-        <div class="grid grid-cols-2 gap-3">
+      <form id="addFacultyForm" onsubmit="submitAddFaculty(event)" class="flex flex-col flex-1 overflow-hidden text-xs">
+        <div class="p-5 space-y-4 overflow-y-auto flex-1">
+          <!-- Field 1: Academic School -->
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-              Academic Rank
+              Academic School <span class="text-rose-500">*</span>
             </label>
-            <select id="addFacultyRank" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
-              <option value="Assistant Professor" selected>Assistant Professor</option>
-              <option value="Associate Professor">Associate Professor</option>
-              <option value="Professor">Full Professor</option>
-              <option value="Senior Lecturer">Senior Lecturer</option>
-              <option value="Faculty Contributor">Faculty Contributor</option>
+            <select id="addFacultySchool" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
+              <option value="soe" selected>School of Engineering (SoE)</option>
+              <option value="socit">School of Computing and Information Technologies (SoCIT)</option>
+              <option value="som">School of Management (SoM)</option>
+              <option value="soad">School of Architecture and Design (SoAD)</option>
             </select>
+            <p class="text-[10.5px] text-slate-400 mt-0.5">Determines faculty affiliation and departmental governance structure.</p>
           </div>
 
+          <!-- Field 2: Faculty Full Name -->
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-              Assigned Cluster
+              Faculty Full Name <span class="text-rose-500">*</span>
             </label>
-            <select id="addFacultyCluster" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
-              <option value="Hardware & Embedded Systems" selected>Hardware &amp; Embedded Systems</option>
-              <option value="Computer Networks & Security">Computer Networks &amp; Security</option>
-              <option value="Software Systems & AI">Software Systems &amp; AI</option>
-              <option value="Signal Processing & Comms">Signal Processing &amp; Comms</option>
-              <option value="General Engineering">General Engineering</option>
-            </select>
+            <input type="text" id="addFacultyName" placeholder="e.g. Faculty Member 3" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
+          </div>
+
+          <!-- Field 3: Entra ID Account / Email -->
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+              Entra ID Account / Official Email <span class="text-rose-500">*</span>
+            </label>
+            <input type="email" id="addFacultyAccount" placeholder="e.g. faculty3@apc.edu.ph" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-mono focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
+            <p class="text-[10.5px] text-slate-400 mt-0.5">Used for federated Microsoft Entra ID single sign-on authentication.</p>
+          </div>
+
+          <!-- Field 4: Academic Rank / Designation & Cluster -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                Academic Rank
+              </label>
+              <select id="addFacultyRank" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
+                <option value="Assistant Professor" selected>Assistant Professor</option>
+                <option value="Associate Professor">Associate Professor</option>
+                <option value="Professor">Full Professor</option>
+                <option value="Senior Lecturer">Senior Lecturer</option>
+                <option value="Faculty Contributor">Faculty Contributor</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                Assigned Cluster
+              </label>
+              <select id="addFacultyCluster" onchange="syncClusterPresetsToAddFacultyCourses()" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-medium focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none">
+                <option value="Hardware & Embedded Systems" selected>Hardware &amp; Embedded Systems</option>
+                <option value="Computer Networks & Security">Computer Networks &amp; Security</option>
+                <option value="Software Systems & AI">Software Systems &amp; AI</option>
+                <option value="Signal Processing & Comms">Signal Processing &amp; Comms</option>
+                <option value="General Engineering">General Engineering</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Field 5: Multi-Select Course Codes via Checkbox Grid -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px]">
+                Assigned Course Scope (<span id="addFacultySelectedCount" class="text-[#047857] font-bold">0</span> selected)
+              </label>
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="selectAllCoursesInAddFaculty(true)" class="text-[10.5px] font-bold text-[#047857] hover:underline cursor-pointer">Select All</button>
+                <span class="text-slate-400">&bull;</span>
+                <button type="button" onclick="selectAllCoursesInAddFaculty(false)" class="text-[10.5px] font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:underline cursor-pointer">Clear</button>
+              </div>
+            </div>
+            <div class="mb-1.5">
+              <input type="text" id="addFacultyCourseSearch" oninput="filterAddFacultyCourseCheckboxes()" placeholder="Filter courses by code or title..." class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            </div>
+            <div id="addFacultyCoursesChecklist" class="max-h-48 overflow-y-auto border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-2 divide-y divide-slate-200 dark:divide-slate-800">
+              <!-- Dynamically populated course checkboxes -->
+            </div>
+            <p class="text-[10.5px] text-slate-400 mt-1">Courses outside this selection will be read-only in curriculum authoring tools.</p>
           </div>
         </div>
 
-        <!-- Field 5: Course Codes Scope (Optional) -->
-        <div>
-          <label class="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-            Assigned Course Codes (Comma-separated)
-          </label>
-          <input type="text" id="addFacultyCourses" placeholder="e.g. LOGCDES, EMICROS, EMBEDDS, COMAROR" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-mono uppercase focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
-          <p class="text-[10.5px] text-slate-400 mt-0.5">Courses outside this cluster will be read-only in curriculum authoring tools.</p>
-        </div>
-
-        <!-- Modal Actions -->
-        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+        <!-- Modal Actions Footer (Pinned) -->
+        <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between shrink-0">
           <button type="button" onclick="closeAddFacultyModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer transition">
             Cancel
           </button>

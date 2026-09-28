@@ -4424,12 +4424,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     // SPREADSHEET LAUNCHER & RETURN ROUTING ENGINE
     // =========================================================================
-    let spreadsheetReturnSourceView = 'flowchart';
+    let spreadsheetReturnSourceView = 'curriculum-home';
 
     function openIntegratedSpreadsheet(targetTab, returnSourceView) {
-      if (returnSourceView) {
-        spreadsheetReturnSourceView = returnSourceView;
-      }
+      spreadsheetReturnSourceView = returnSourceView || 'curriculum-home';
       navigateView('spreadsheet');
       if (typeof switchSpreadsheetTab === 'function') {
         switchSpreadsheetTab('all');
@@ -4845,6 +4843,101 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     window.FACULTY_MEMBERS = (Array.isArray(loadedFaculty) && loadedFaculty.length > 0) ? loadedFaculty : DEFAULT_FACULTY_MEMBERS;
 
+    // Checkbox checklist and selection helpers for Add Faculty and Assign Task modals
+    function populateCourseChecklist(containerId, countBadgeId, selectedCodes = []) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const set = new Set((selectedCodes || []).map(c => String(c).trim().toUpperCase()));
+      const courses = (typeof ALL_COURSES !== 'undefined' && Array.isArray(ALL_COURSES)) ? ALL_COURSES : [];
+      
+      container.innerHTML = courses.map((c, i) => {
+        const checked = set.has(c.code.toUpperCase()) ? 'checked' : '';
+        return `
+          <label class="flex items-center justify-between py-1 px-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-[11px] cursor-pointer course-check-label" data-code="${c.code.toLowerCase()}" data-title="${(c.title || '').toLowerCase()}" data-group="${(c.group || '').toLowerCase()}">
+            <span class="flex items-center space-x-2 truncate">
+              <input type="checkbox" value="${c.code}" ${checked} onchange="updateSelectedCourseCount('${containerId}', '${countBadgeId}')" class="rounded border-slate-300 dark:border-slate-700 text-[#002855] focus:ring-0 cursor-pointer" />
+              <span class="font-mono font-bold text-slate-800 dark:text-slate-200">${c.code}</span>
+              <span class="truncate text-slate-600 dark:text-slate-400 font-medium">${c.title}</span>
+            </span>
+            <span class="text-[9.5px] font-mono px-1 py-0.2 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 ml-2 shrink-0">Y${c.year}T${c.term}</span>
+          </label>
+        `;
+      }).join('');
+      updateSelectedCourseCount(containerId, countBadgeId);
+    }
+    window.populateCourseChecklist = populateCourseChecklist;
+
+    function updateSelectedCourseCount(containerId, countBadgeId) {
+      const container = document.getElementById(containerId);
+      const badge = document.getElementById(countBadgeId);
+      if (!container || !badge) return;
+      const count = container.querySelectorAll('input[type="checkbox"]:checked').length;
+      badge.textContent = count;
+    }
+    window.updateSelectedCourseCount = updateSelectedCourseCount;
+
+    function filterCheckboxesByQuery(containerId, query) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const q = (query || '').toLowerCase().trim();
+      container.querySelectorAll('.course-check-label').forEach(lbl => {
+        const code = lbl.getAttribute('data-code') || '';
+        const title = lbl.getAttribute('data-title') || '';
+        const group = lbl.getAttribute('data-group') || '';
+        if (!q || code.includes(q) || title.includes(q) || group.includes(q)) {
+          lbl.style.display = 'flex';
+        } else {
+          lbl.style.display = 'none';
+        }
+      });
+    }
+
+    function filterAddFacultyCourseCheckboxes() {
+      const q = document.getElementById('addFacultyCourseSearch')?.value;
+      filterCheckboxesByQuery('addFacultyCoursesChecklist', q);
+    }
+    window.filterAddFacultyCourseCheckboxes = filterAddFacultyCourseCheckboxes;
+
+    function filterAssignTaskCourseCheckboxes() {
+      const q = document.getElementById('assignTaskCourseSearch')?.value;
+      filterCheckboxesByQuery('assignTaskCoursesChecklist', q);
+    }
+    window.filterAssignTaskCourseCheckboxes = filterAssignTaskCourseCheckboxes;
+
+    function selectAllCoursesInAddFaculty(select) {
+      const container = document.getElementById('addFacultyCoursesChecklist');
+      if (!container) return;
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = Boolean(select);
+      });
+      updateSelectedCourseCount('addFacultyCoursesChecklist', 'addFacultySelectedCount');
+    }
+    window.selectAllCoursesInAddFaculty = selectAllCoursesInAddFaculty;
+
+    function selectAllCoursesInAssignTask(select) {
+      const container = document.getElementById('assignTaskCoursesChecklist');
+      if (!container) return;
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = Boolean(select);
+      });
+      updateSelectedCourseCount('assignTaskCoursesChecklist', 'assignTaskSelectedCount');
+    }
+    window.selectAllCoursesInAssignTask = selectAllCoursesInAssignTask;
+
+    function syncClusterPresetsToAddFacultyCourses() {
+      const cluster = document.getElementById('addFacultyCluster')?.value;
+      const map = {
+        'Hardware & Embedded Systems': ['LOGCDES', 'LOGICLB', 'EMICROS', 'MCROLAB', 'EMBEDDS', 'EMBEDLB', 'COMAROR', 'ARCORLB', 'CPEDES1'],
+        'Computer Networks & Security': ['DATCOMS', 'COMNETS', 'NETSLAB', 'CYBSEC1', 'NETSEC1'],
+        'Software Systems & AI': ['COMPPRO', 'PROGLAB', 'DSALGOR', 'DSALGLB', 'SOFTENG', 'SOFTEGLB', 'AIMLDLA', 'AIMLLAB'],
+        'Signal Processing & Comms': ['SIGPROC', 'SIGPRLB', 'COMMTH1', 'COMMTL1'],
+        'General Engineering': ['CALCUL1', 'CALCUL2', 'DIFFEQN', 'CHEMENG', 'CHMENGL', 'PHYSIC1', 'PHYSCL1']
+      };
+      const codes = map[cluster] || [];
+      populateCourseChecklist('addFacultyCoursesChecklist', 'addFacultySelectedCount', codes);
+    }
+    window.syncClusterPresetsToAddFacultyCourses = syncClusterPresetsToAddFacultyCourses;
+
     function renderFacultyDirectory() {
       const tbody = document.getElementById('facultyDirectoryTableBody');
       if (!tbody) return;
@@ -4858,6 +4951,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const schoolName = FACULTY_SCHOOL_LABELS[f.school] || f.school?.toUpperCase() || 'SoE';
         const courseCount = Array.isArray(f.courses) ? f.courses.length : 0;
         const initial = (f.name || 'F').charAt(0).toUpperCase();
+        const hasActiveDelegation = f.status === 'Active' && f.cluster && f.cluster !== 'Unassigned' && f.cluster !== 'None';
 
         return `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
@@ -4881,24 +4975,148 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
               ${f.rank || 'Faculty Member'}
             </td>
             <td class="py-2.5 px-3">
-              <div class="font-semibold text-slate-900 dark:text-white text-xs">${f.cluster || 'General'}</div>
+              <div class="font-semibold text-slate-900 dark:text-white text-xs">${f.cluster || 'Unassigned'}</div>
               <div class="text-[10px] text-slate-400">${courseCount} courses</div>
             </td>
             <td class="py-2.5 px-3">
-              <span class="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span>Verified</span>
-              </span>
+              ${hasActiveDelegation ? `
+                <span class="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  <span>Active Delegation</span>
+                </span>
+              ` : `
+                <span class="inline-flex items-center gap-1.5 text-xs text-slate-400 font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                  <span>No Delegation</span>
+                </span>
+              `}
             </td>
             <td class="py-2.5 px-3 text-right">
-              <button type="button" onclick="openAssignTaskModal('${(Array.isArray(f.courses) ? f.courses.join(', ') : f.cluster) || ''}', '${f.name}')" class="px-3 py-1 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#E5A823]/80 font-black text-xs transition cursor-pointer shadow-xs">
-                Assign Task
-              </button>
+              <div class="flex items-center justify-end space-x-1.5">
+                <button type="button" onclick="openAssignTaskModal('${(Array.isArray(f.courses) ? f.courses.join(', ') : f.cluster) || ''}', '${f.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#E5A823]/80 font-black text-xs transition cursor-pointer shadow-xs">
+                  Assign Task
+                </button>
+                ${hasActiveDelegation ? `
+                  <button type="button" onclick="terminateFacultyDelegation('${f.id}')" class="px-2.5 py-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-bold transition cursor-pointer shadow-xs" title="Revoke delegation and spreadsheet authoring access">
+                    Terminate
+                  </button>
+                ` : ''}
+              </div>
             </td>
           </tr>
         `;
       }).join('');
     }
+
+    function terminateFacultyDelegation(facId) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        showToastNotification('⛔ Access Restricted: Revoking delegation is reserved for Program Directors.');
+        return;
+      }
+
+      const faculty = (window.FACULTY_MEMBERS || []).find(f => f.id === facId);
+      if (!faculty) return;
+
+      if (!confirm(`Are you sure you want to terminate delegation for ${faculty.name}?\n\nThis will revoke spreadsheet authoring privileges and remove assigned cluster courses.`)) {
+        return;
+      }
+
+      const prevCluster = faculty.cluster;
+      const prevCourses = Array.isArray(faculty.courses) ? faculty.courses.join(', ') : '';
+
+      faculty.cluster = 'Unassigned';
+      faculty.courses = [];
+      faculty.status = 'Inactive';
+
+      try {
+        localStorage.setItem('apc_faculty_directory', JSON.stringify(window.FACULTY_MEMBERS));
+      } catch (err) {}
+
+      // If active in DELEGATION_REGISTRY, mark revoked
+      if (window.DELEGATION_REGISTRY) {
+        window.DELEGATION_REGISTRY.forEach(d => {
+          if (d.faculty === faculty.name) {
+            d.status = 'revoked';
+          }
+        });
+      }
+
+      if (typeof appendAuditLog === 'function') {
+        const role = (() => {
+          const sel = document.getElementById('roleSelector');
+          const map = { admin: 'System Administrator', exd: 'Executive Director', pd: 'Program Director', faculty: 'Faculty Member' };
+          return map[sel ? sel.value : 'pd'] || 'Program Director';
+        })();
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        const summary = `${role} terminated delegation for ${faculty.name} at ${timeStr}`;
+        const diff = [
+          { field: 'Cluster Delegation', old: prevCluster, new: 'Unassigned' },
+          { field: 'Authorized Courses', old: prevCourses || 'None', new: 'None (Revoked)' },
+          { field: 'Spreadsheet Access', old: 'Active', new: 'Revoked' }
+        ];
+        appendAuditLog('DELEGATION_TERMINATED', prevCluster || 'Curriculum', summary, diff, { faculty: faculty.name });
+      }
+
+      renderFacultyDirectory();
+      showToastNotification(`Delegation terminated: spreadsheet access revoked for ${faculty.name}.`);
+    }
+    window.terminateFacultyDelegation = terminateFacultyDelegation;
+
+    function terminateClusterDelegation(clusterName) {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        showToastNotification('⛔ Access Restricted: Revoking cluster delegation is reserved for Program Directors.');
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to terminate delegation for "${clusterName}"?\n\nThis will revoke active permissions for this cluster across assigned faculty.`)) {
+        return;
+      }
+
+      (window.FACULTY_MEMBERS || []).forEach(f => {
+        if (f.cluster === clusterName) {
+          f.cluster = 'Unassigned';
+          f.courses = [];
+          f.status = 'Inactive';
+        }
+      });
+
+      try {
+        localStorage.setItem('apc_faculty_directory', JSON.stringify(window.FACULTY_MEMBERS));
+      } catch (err) {}
+
+      if (window.DELEGATION_REGISTRY) {
+        window.DELEGATION_REGISTRY.forEach(d => {
+          if (d.cluster === clusterName || (d.scope && d.scope.includes(clusterName))) {
+            d.status = 'revoked';
+          }
+        });
+      }
+
+      if (typeof appendAuditLog === 'function') {
+        const role = (() => {
+          const sel = document.getElementById('roleSelector');
+          const map = { admin: 'System Administrator', exd: 'Executive Director', pd: 'Program Director', faculty: 'Faculty Member' };
+          return map[sel ? sel.value : 'pd'] || 'Program Director';
+        })();
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        const summary = `${role} terminated cluster delegation "${clusterName}" at ${timeStr}`;
+        const diff = [
+          { field: 'Cluster Delegation', old: clusterName, new: 'Unassigned' },
+          { field: 'Access Privileges', old: 'Active', new: 'Terminated / Revoked' }
+        ];
+        appendAuditLog('DELEGATION_TERMINATED', clusterName, summary, diff, { cluster: clusterName });
+      }
+
+      renderFacultyDirectory();
+      showToastNotification(`Cluster delegation "${clusterName}" terminated successfully.`);
+    }
+    window.terminateClusterDelegation = terminateClusterDelegation;
 
     function openAddFacultyModal() {
       const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
@@ -4909,6 +5127,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
       const modal = document.getElementById('modalAddFaculty');
       if (modal) modal.classList.remove('hidden');
+
+      // Populate courses checklist with defaults based on selected cluster
+      syncClusterPresetsToAddFacultyCourses();
+
       if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
         window.spaRouter.onModalOpen('add-faculty');
       }
@@ -4929,15 +5151,19 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const account = document.getElementById('addFacultyAccount')?.value.trim();
       const rank = document.getElementById('addFacultyRank')?.value || 'Assistant Professor';
       const cluster = document.getElementById('addFacultyCluster')?.value || 'Hardware & Embedded Systems';
-      const coursesRaw = document.getElementById('addFacultyCourses')?.value.trim() || '';
+
+      // Read selected courses from checkboxes
+      const container = document.getElementById('addFacultyCoursesChecklist');
+      let courses = [];
+      if (container) {
+        courses = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value.toUpperCase());
+      }
 
       if (!name || !account) {
         if (typeof showToastNotification === 'function') showToastNotification('Please enter faculty full name and Entra ID account.');
         else if (typeof showToast === 'function') showToast('Please enter faculty full name and Entra ID account.');
         return;
       }
-
-      const courses = coursesRaw ? coursesRaw.split(',').map(c => c.trim().toUpperCase()).filter(Boolean) : [];
 
       const newFaculty = {
         id: 'fac-' + Date.now(),
@@ -4958,7 +5184,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       closeAddFacultyModal();
       renderFacultyDirectory();
       
-      const msg = `Registered ${name} to ${school.toUpperCase()} successfully.`;
+      const msg = `Registered ${name} to ${school.toUpperCase()} successfully with ${courses.length} courses assigned.`;
       if (typeof showToastNotification === 'function') showToastNotification(msg);
       else if (typeof showToast === 'function') showToast(msg);
 
@@ -6328,23 +6554,27 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const facultyInput = document.getElementById('assignTaskFacultyTitle');
       const startInput = document.getElementById('assignTaskStartDate');
       const endInput = document.getElementById('assignTaskEndDate');
-      const container = document.getElementById('assignTaskClustersContainer');
+      const clusterInput = document.getElementById('assignTaskCourseTitle');
 
       if (facultyInput && facultyTitle) facultyInput.value = facultyTitle;
 
-      if (container) {
-        container.innerHTML = '';
-        const rawItems = courseTitle ? String(courseTitle).split(',').map(s => s.trim()).filter(Boolean) : ['Hardware & Embedded Systems'];
-        rawItems.forEach((item, idx) => {
-          const row = document.createElement('div');
-          row.className = 'flex items-center gap-2 cluster-row';
-          row.innerHTML = `
-            <input type="text" name="assignTaskClusterItem" ${idx === 0 ? 'id="assignTaskCourseTitle"' : ''} value="${item.replace(/"/g, '&quot;')}" required class="flex-1 px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" placeholder="e.g. Hardware & Embedded Systems, CPEDES1, etc." />
-            <button type="button" onclick="removeClusterDelegationRow(this)" class="w-8 h-8 flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-rose-600 font-bold cursor-pointer transition shrink-0" title="Remove row">&times;</button>
-          `;
-          container.appendChild(row);
-        });
+      // Determine initial courses from courseTitle or from faculty member's existing courses
+      let initialCodes = [];
+      if (facultyTitle) {
+        const existingFac = (window.FACULTY_MEMBERS || []).find(f => f.name.toLowerCase() === facultyTitle.toLowerCase());
+        if (existingFac && Array.isArray(existingFac.courses) && existingFac.courses.length > 0) {
+          initialCodes = existingFac.courses;
+        }
       }
+      if (!initialCodes.length && courseTitle) {
+        initialCodes = String(courseTitle).split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+      }
+      if (clusterInput && courseTitle) {
+        clusterInput.value = courseTitle;
+      }
+
+      // Populate courses checklist
+      populateCourseChecklist('assignTaskCoursesChecklist', 'assignTaskSelectedCount', initialCodes);
 
       // Default start date to today and end date to 90 days from now
       const today = new Date();
@@ -6375,29 +6605,35 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     function submitAssignTask(event) {
       if (event) event.preventDefault();
       const faculty = document.getElementById('assignTaskFacultyTitle')?.value || 'Faculty Member';
-      const container = document.getElementById('assignTaskClustersContainer');
-      const clusterItems = [];
+      const cluster = document.getElementById('assignTaskCourseTitle')?.value || 'Hardware & Embedded Systems';
+      
+      const container = document.getElementById('assignTaskCoursesChecklist');
+      let checkedCourses = [];
       if (container) {
-        const inputs = container.querySelectorAll('input[name="assignTaskClusterItem"]');
-        inputs.forEach(inp => {
-          const v = inp.value.trim();
-          if (v && !clusterItems.includes(v)) clusterItems.push(v);
-        });
+        checkedCourses = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value.toUpperCase());
       }
-      if (!clusterItems.length) {
-        const single = document.getElementById('assignTaskCourseTitle')?.value;
-        if (single) clusterItems.push(single.trim());
-      }
-      const course = clusterItems.join(', ') || 'Cluster Courses';
+      const courseDesc = checkedCourses.length ? checkedCourses.join(', ') : cluster;
       const start = document.getElementById('assignTaskStartDate')?.value || '';
       const end = document.getElementById('assignTaskEndDate')?.value || '';
+
+      // Update faculty directory record if matching faculty found
+      const facObj = (window.FACULTY_MEMBERS || []).find(f => f.name.toLowerCase() === faculty.toLowerCase());
+      if (facObj) {
+        facObj.cluster = cluster;
+        facObj.courses = checkedCourses.length ? checkedCourses : [cluster];
+        facObj.status = 'Active';
+        try {
+          localStorage.setItem('apc_faculty_directory', JSON.stringify(window.FACULTY_MEMBERS));
+        } catch (e) {}
+        renderFacultyDirectory();
+      }
 
       if (window.DELEGATION_REGISTRY) {
         window.DELEGATION_REGISTRY.push({
           id: 'del-' + Date.now(),
-          cluster: course,
+          cluster: cluster,
           faculty: faculty,
-          scope: clusterItems.length ? clusterItems : [course],
+          scope: checkedCourses.length ? checkedCourses : [cluster],
           startDate: start || new Date().toISOString().split('T')[0],
           endDate: end || new Date(Date.now() + 30*86400000).toISOString().split('T')[0],
           status: 'pending',
@@ -6416,43 +6652,49 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const now = new Date();
         const pad = n => String(n).padStart(2, '0');
         const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-        const summary = `${role} created cluster delegation "${course}" at ${timeStr} for BSCpE 2026 Curriculum`;
+        const summary = `${role} created cluster delegation "${cluster}" (${checkedCourses.length} courses) at ${timeStr} for BSCpE 2026 Curriculum`;
         const diff = [
           { field: 'Assigned Faculty', old: '(unassigned)', new: faculty },
+          { field: 'Assigned Courses', old: 'None', new: courseDesc },
           { field: 'Delegation Validity Period', old: 'None', new: `${start} to ${end}` }
         ];
-        appendAuditLog('TASK_DELEGATE', course, summary, diff, { faculty, start, end, course });
+        appendAuditLog('TASK_DELEGATE', cluster, summary, diff, { faculty, start, end, cluster, courses: checkedCourses });
       }
 
       closeAssignTaskModal();
-      showToastNotification(`Delegation active: ${faculty} authorized for ${course} from ${start} to ${end}.`);
+      showToastNotification(`Delegation active: ${faculty} authorized for ${checkedCourses.length} courses (${start} to ${end}).`);
     }
 
     function submitAssignTaskAndOpenSpreadsheet() {
       const faculty = document.getElementById('assignTaskFacultyTitle')?.value || 'Faculty Member';
-      const container = document.getElementById('assignTaskClustersContainer');
-      const clusterItems = [];
+      const cluster = document.getElementById('assignTaskCourseTitle')?.value || 'Hardware & Embedded Systems';
+      
+      const container = document.getElementById('assignTaskCoursesChecklist');
+      let checkedCourses = [];
       if (container) {
-        const inputs = container.querySelectorAll('input[name="assignTaskClusterItem"]');
-        inputs.forEach(inp => {
-          const v = inp.value.trim();
-          if (v && !clusterItems.includes(v)) clusterItems.push(v);
-        });
+        checkedCourses = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value.toUpperCase());
       }
-      if (!clusterItems.length) {
-        const single = document.getElementById('assignTaskCourseTitle')?.value;
-        if (single) clusterItems.push(single.trim());
-      }
-      const course = clusterItems.join(', ') || 'Cluster Courses';
+      const courseDesc = checkedCourses.length ? checkedCourses.join(', ') : cluster;
       const start = document.getElementById('assignTaskStartDate')?.value || '';
       const end = document.getElementById('assignTaskEndDate')?.value || '';
+
+      const facObj = (window.FACULTY_MEMBERS || []).find(f => f.name.toLowerCase() === faculty.toLowerCase());
+      if (facObj) {
+        facObj.cluster = cluster;
+        facObj.courses = checkedCourses.length ? checkedCourses : [cluster];
+        facObj.status = 'Active';
+        try {
+          localStorage.setItem('apc_faculty_directory', JSON.stringify(window.FACULTY_MEMBERS));
+        } catch (e) {}
+        renderFacultyDirectory();
+      }
 
       if (window.DELEGATION_REGISTRY) {
         window.DELEGATION_REGISTRY.push({
           id: 'del-' + Date.now(),
-          cluster: course,
+          cluster: cluster,
           faculty: faculty,
-          scope: clusterItems.length ? clusterItems : [course],
+          scope: checkedCourses.length ? checkedCourses : [cluster],
           startDate: start || new Date().toISOString().split('T')[0],
           endDate: end || new Date(Date.now() + 30*86400000).toISOString().split('T')[0],
           status: 'active',
@@ -6471,13 +6713,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const now = new Date();
         const pad = n => String(n).padStart(2, '0');
         const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-        const summary = `${role} created cluster delegation "${course}" at ${timeStr} for BSCpE 2026 Curriculum`;
+        const summary = `${role} created cluster delegation "${cluster}" (${checkedCourses.length} courses) at ${timeStr} for BSCpE 2026 Curriculum`;
         const diff = [
           { field: 'Assigned Faculty', old: '(unassigned)', new: faculty },
+          { field: 'Assigned Courses', old: 'None', new: courseDesc },
           { field: 'Delegation Validity Period', old: 'None', new: `${start} to ${end}` },
           { field: 'Spreadsheet Access', old: 'Closed', new: 'Active / Opened' }
         ];
-        appendAuditLog('TASK_DELEGATE', course, summary, diff, { faculty, start, end, course });
+        appendAuditLog('TASK_DELEGATE', cluster, summary, diff, { faculty, start, end, cluster, courses: checkedCourses });
       }
 
       closeAssignTaskModal();
