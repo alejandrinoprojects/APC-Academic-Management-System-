@@ -4551,7 +4551,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           notice.classList.add('hidden');
         } else {
           notice.classList.remove('hidden');
-          noticeText.innerText = `Currently displaying Year ${sheetYearFilter} courses only.`;
+          const cohortSpans = {
+            '1': '1st Year (2026–2030 Cohort)',
+            '2': '2nd Year (2025–2029 Cohort)',
+            '3': '3rd Year (2024–2028 Cohort)',
+            '4': '4th Year (2023–2027 Cohort)'
+          };
+          const cohortLabel = cohortSpans[sheetYearFilter] || `Year ${sheetYearFilter}`;
+          noticeText.innerText = `Currently displaying ${cohortLabel} courses only (4-Year Cohort Span).`;
         }
       }
 

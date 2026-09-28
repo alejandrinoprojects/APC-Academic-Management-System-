@@ -2255,24 +2255,24 @@
               <div class="flex flex-wrap items-center justify-between gap-2.5 pt-1">
                 <div class="flex flex-wrap items-center gap-1.5">
                   <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Academic Year Scope:</span>
-                  <button type="button" id="btnScopeYear_all" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-black text-xs border border-[#E5A823] shadow-xs cursor-pointer" title="View all 74 courses across full 4-year cohort">
-                    Full 4-Year Program (All 74 Courses)
+                  <button type="button" id="btnScopeYear_all" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-black text-xs border border-[#E5A823] shadow-xs cursor-pointer" title="View all courses across active curriculum">
+                    All Courses (74 Courses)
                   </button>
-                  <button type="button" id="btnScopeYear_1" onclick="setSpreadsheetYearScope(1)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 1st Year courses (Terms 1–3)">
-                    1st Year (2026–2027)
+                  <button type="button" id="btnScopeYear_1" onclick="setSpreadsheetYearScope(1)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 1st Year cohort (2026–2030, 4-Year Span)">
+                    1st Year (2026–2030)
                   </button>
-                  <button type="button" id="btnScopeYear_2" onclick="setSpreadsheetYearScope(2)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 2nd Year courses (Terms 4–6)">
-                    2nd Year (2027–2028)
+                  <button type="button" id="btnScopeYear_2" onclick="setSpreadsheetYearScope(2)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 2nd Year cohort (2025–2029, 4-Year Span)">
+                    2nd Year (2025–2029)
                   </button>
-                  <button type="button" id="btnScopeYear_3" onclick="setSpreadsheetYearScope(3)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 3rd Year courses (Terms 7–9)">
-                    3rd Year (2028–2029)
+                  <button type="button" id="btnScopeYear_3" onclick="setSpreadsheetYearScope(3)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 3rd Year cohort (2024–2028, 4-Year Span)">
+                    3rd Year (2024–2028)
                   </button>
-                  <button type="button" id="btnScopeYear_4" onclick="setSpreadsheetYearScope(4)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 4th Year courses (Terms 10–12)">
-                    4th Year (2029–2030)
+                  <button type="button" id="btnScopeYear_4" onclick="setSpreadsheetYearScope(4)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View 4th Year cohort (2023–2027, 4-Year Span)">
+                    4th Year (2023–2027)
                   </button>
                 </div>
                 <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono hidden md:block">
-                  4 Full Academic Years • 12 Trimesters • 74 Total Courses
+                  4 Active Cohorts • 4-Year Spans • 16-Year Total Curricular Horizon
                 </div>
               </div>
 
@@ -2280,11 +2280,11 @@
               <div id="sheetYearScopeNotice" class="hidden p-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-xs flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <span class="text-base leading-none">ℹ️</span>
-                  <span id="sheetYearScopeNoticeText" class="font-bold">Currently displaying single-year filtered courses.</span>
-                  <span class="text-amber-700 dark:text-amber-400 hidden sm:inline">(Curriculum spans 4 academic years across 12 trimesters with 74 total courses).</span>
+                  <span id="sheetYearScopeNoticeText" class="font-bold">Currently displaying cohort filtered courses.</span>
+                  <span class="text-amber-700 dark:text-amber-400 hidden sm:inline">(Each academic cohort spans 4 years across a 16-year total curricular program horizon).</span>
                 </div>
                 <button type="button" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs cursor-pointer shadow-xs">
-                  Show Full 4-Year Program (74 Courses) &rarr;
+                  Show All Courses (74 Courses) &rarr;
                 </button>
               </div>
 
@@ -2293,11 +2293,11 @@
                 <input type="text" id="sheetSearchInput" onkeyup="sheetFilterChange()" placeholder="Filter Code, Title, Prereq..." class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none focus:ring-1 focus:ring-[#002855] text-slate-800 dark:text-slate-100 w-52 sm:w-64 placeholder-slate-400">
                 
                 <select id="sheetYearFilter" onchange="sheetFilterChange()" class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none text-slate-700 dark:text-slate-200 cursor-pointer">
-                  <option value="all">Full 4-Year Program (All 74 Courses) ▾</option>
-                  <option value="1">1st Year (AY 2026–2027 • Terms 1–3)</option>
-                  <option value="2">2nd Year (AY 2027–2028 • Terms 4–6)</option>
-                  <option value="3">3rd Year (AY 2028–2029 • Terms 7–9)</option>
-                  <option value="4">4th Year (AY 2029–2030 • Terms 10–12)</option>
+                  <option value="all">All Cohorts (Full 16-Year Curricular Program) ▾</option>
+                  <option value="1">1st Year (2026–2030 Cohort • 4-Year Span)</option>
+                  <option value="2">2nd Year (2025–2029 Cohort • 4-Year Span)</option>
+                  <option value="3">3rd Year (2024–2028 Cohort • 4-Year Span)</option>
+                  <option value="4">4th Year (2023–2027 Cohort • 4-Year Span)</option>
                 </select>
 
                 <select id="sheetTermFilter" onchange="sheetFilterChange()" class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none text-slate-700 dark:text-slate-200 cursor-pointer">
