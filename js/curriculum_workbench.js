@@ -1730,8 +1730,8 @@
           if (typeof setSpreadsheetYearScope === 'function') {
             setSpreadsheetYearScope(scope);
           }
-          const yearLabel = (scope === 'all') ? 'All 4 Years' : `Year ${scope}`;
-          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Spreadsheet (${yearLabel})`;
+          const yearLabel = (scope === 'all') ? 'Master Spreadsheet (All 16 Years)' : `Curriculum Spreadsheet (Year ${scope})`;
+          pText = `Schools > ${progInfo.schoolShort} > ${progCode} > ${yearLabel}`;
         } else if (targetView === 'dashboard' || targetView === 'compliance') {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Dashboard`;
         } else if (targetView === 'syllabus') {
@@ -4288,7 +4288,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const progInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[prog]) || { schoolShort: 'SoE', schoolId: 'soe', name: prog };
       const topPill = document.getElementById('topBarPathPill');
       const cohortLabels = {
-        'all': 'All Cohorts',
+        'all': 'All 16 Years',
         '1': '1st Year (2026–2030)',
         '2': '2nd Year (2025–2029)',
         '3': '3rd Year (2024–2028)',
@@ -4349,16 +4349,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // 4. Update top breadcrumbs
-      const cohortLabels = {
-        'all': 'All Cohorts (16 Years)',
-        '1': '1st Year (2026–2030)',
-        '2': '2nd Year (2025–2029)',
-        '3': '3rd Year (2024–2028)',
-        '4': '4th Year (2023–2027)'
-      };
-      const yearLabel = cohortLabels[scope] || `Cohort ${scope}`;
+      const yearLabel = (scope === 'all') ? 'Master Spreadsheet (All 16 Years)' : `Curriculum Spreadsheet (Year ${scope})`;
       if (topPill) {
-        topPill.innerText = `Schools > ${progInfo.schoolShort} > ${prog} > Curriculum Spreadsheet (${yearLabel})`;
+        topPill.innerText = `Schools > ${progInfo.schoolShort} > ${prog} > ${yearLabel}`;
       }
 
       // 5. Synchronous sidebar sync in one pass
@@ -4370,7 +4363,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         schoolId: progInfo.schoolId,
         targetView: 'spreadsheet',
         year: scope,
-        pathText: topPill ? topPill.innerText : `Schools > ${progInfo.schoolShort} > ${prog} > Curriculum Spreadsheet (${yearLabel})`
+        pathText: topPill ? topPill.innerText : `Schools > ${progInfo.schoolShort} > ${prog} > ${yearLabel}`
       });
 
       // 6. Router parameter update
@@ -4596,6 +4589,31 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         }
       });
 
+      // Update header title and subtitle
+      const titleEl = document.getElementById('spreadsheetHeaderTitle');
+      const subtitleEl = document.getElementById('spreadsheetHeaderSubtitle');
+      if (titleEl && subtitleEl) {
+        if (sheetYearFilter === 'all') {
+          titleEl.innerText = 'Master Spreadsheet (All 16 Years)';
+          subtitleEl.innerText = 'Complete 16-Year Curricular Program Horizon • 296 Courses • Full Master Catalog and OBE Outcomes Matrix.';
+        } else {
+          const yrTitles = {
+            '1': 'Curriculum Spreadsheet (Year 1)',
+            '2': 'Curriculum Spreadsheet (Year 2)',
+            '3': 'Curriculum Spreadsheet (Year 3)',
+            '4': 'Curriculum Spreadsheet (Year 4)'
+          };
+          const yrSubtitles = {
+            '1': '1st Year Curriculum (2026–2030) • 22 Courses • Terms 1–3 • Official BSCpE Program',
+            '2': '2nd Year Curriculum (2025–2029) • 21 Courses • Terms 4–6 • Official BSCpE Program',
+            '3': '3rd Year Curriculum (2024–2028) • 22 Courses • Terms 7–9 • Official BSCpE Program',
+            '4': '4th Year Curriculum (2023–2027) • 9 Courses • Terms 10–12 • Official BSCpE Program'
+          };
+          titleEl.innerText = yrTitles[sheetYearFilter] || `Curriculum Spreadsheet (Year ${sheetYearFilter})`;
+          subtitleEl.innerText = yrSubtitles[sheetYearFilter] || `Academic Year ${sheetYearFilter} Courses`;
+        }
+      }
+
       const notice = document.getElementById('sheetYearScopeNotice');
       const noticeText = document.getElementById('sheetYearScopeNoticeText');
       if (notice && noticeText) {
@@ -4603,15 +4621,22 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           notice.classList.add('hidden');
         } else {
           notice.classList.remove('hidden');
-          const cohortSpans = {
-            '1': '1st Year (2026–2030 Cohort • 4-Year Span • 74 Courses • AY 2026–2030)',
-            '2': '2nd Year (2025–2029 Cohort • 4-Year Span • 74 Courses • AY 2025–2029)',
-            '3': '3rd Year (2024–2028 Cohort • 4-Year Span • 74 Courses • AY 2024–2028)',
-            '4': '4th Year (2023–2027 Cohort • 4-Year Span • 74 Courses • AY 2023–2027)'
+          const spanLabels = {
+            '1': 'Year 1 Curriculum (22 Courses • Terms 1–3)',
+            '2': 'Year 2 Curriculum (21 Courses • Terms 4–6)',
+            '3': 'Year 3 Curriculum (22 Courses • Terms 7–9)',
+            '4': 'Year 4 Curriculum (9 Courses • Terms 10–12)'
           };
-          const cohortLabel = cohortSpans[sheetYearFilter] || `Cohort ${sheetYearFilter}`;
-          noticeText.innerText = `Currently displaying ${cohortLabel}.`;
+          const spanLabel = spanLabels[sheetYearFilter] || `Year ${sheetYearFilter}`;
+          noticeText.innerText = `Currently displaying ${spanLabel}.`;
         }
+      }
+
+      const topPill = document.getElementById('topBarPathPill');
+      if (topPill && currentSelectedProgram) {
+        const pInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[currentSelectedProgram]) || { schoolShort: 'SoE' };
+        const label = (sheetYearFilter === 'all') ? 'Master Spreadsheet (All 16 Years)' : `Curriculum Spreadsheet (Year ${sheetYearFilter})`;
+        topPill.innerText = `Schools > ${pInfo.schoolShort} > ${currentSelectedProgram} > ${label}`;
       }
 
       renderSpreadsheetGrid();
@@ -5284,39 +5309,39 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       html += `<thead class="bg-slate-100 dark:bg-slate-800 sticky top-0 z-20 border-b border-slate-300 dark:border-slate-700 text-[11px] select-none shadow-xs">
         <!-- Field Titles Row -->
         <tr class="text-[11px] uppercase font-bold text-slate-700 dark:text-slate-200">
-          <th class="py-2 px-2 text-center w-12 border-r border-slate-300 dark:border-slate-700">Row</th>
-          <th class="py-2 px-2 w-36 border-r border-slate-300 dark:border-slate-700">Cohort Span</th>
-          <th class="py-2 px-2 w-28 border-r border-slate-300 dark:border-slate-700">Academic Year</th>
-          <th class="py-2 px-2 w-24 border-r border-slate-300 dark:border-slate-700">Code</th>
-          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[200px]">Descriptive Title</th>`;
+          <th class="py-2 px-2 text-center w-12 min-w-[50px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Row</th>
+          <th class="py-2 px-2 w-44 min-w-[170px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Academic Span</th>
+          <th class="py-2 px-2 w-32 min-w-[130px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Academic Year</th>
+          <th class="py-2 px-2 w-32 min-w-[120px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Code</th>
+          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[320px] whitespace-nowrap">Descriptive Title</th>`;
 
       if (showGeneral) {
         html += `
-          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[280px]">Course Description</th>`;
+          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[380px] whitespace-nowrap">Course Description</th>`;
       }
 
       html += `
-          <th class="py-2 px-2 text-center w-16 border-r border-slate-300 dark:border-slate-700">Units</th>
-          <th class="py-2 px-2 text-center w-14 border-r border-slate-300 dark:border-slate-700">Lec</th>
-          <th class="py-2 px-2 text-center w-14 border-r border-slate-300 dark:border-slate-700">Lab</th>
-          <th class="py-2 px-2 text-center w-14 border-r border-slate-300 dark:border-slate-700">Year</th>
-          <th class="py-2 px-2 text-center w-14 border-r border-slate-300 dark:border-slate-700">Term</th>`;
+          <th class="py-2 px-2 text-center w-16 min-w-[65px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Units</th>
+          <th class="py-2 px-2 text-center w-14 min-w-[58px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Lec</th>
+          <th class="py-2 px-2 text-center w-14 min-w-[58px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Lab</th>
+          <th class="py-2 px-2 text-center w-16 min-w-[70px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Year</th>
+          <th class="py-2 px-2 text-center w-16 min-w-[70px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Term</th>`;
 
       if (showGeneral) {
         html += `
-          <th class="py-2 px-2 border-r border-slate-300 dark:border-slate-700 w-36">Prerequisites</th>
-          <th class="py-2 px-2 border-r border-slate-300 dark:border-slate-700 w-32">Co-requisites</th>
-          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 w-44">Curriculum Group</th>`;
+          <th class="py-2 px-2 border-r border-slate-300 dark:border-slate-700 w-48 min-w-[190px] whitespace-nowrap">Prerequisites</th>
+          <th class="py-2 px-2 border-r border-slate-300 dark:border-slate-700 w-40 min-w-[160px] whitespace-nowrap">Co-requisites</th>
+          <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 w-56 min-w-[220px] whitespace-nowrap">Curriculum Group</th>`;
       }
 
       if (showObe) {
         soLetters.forEach((letter) => {
-          html += `<th class="py-2 px-1 text-center w-9 border-r border-slate-300 dark:border-slate-700 bg-amber-50/50 dark:bg-amber-950/20 text-[#002855] dark:text-amber-300 font-mono text-[10px]" title="Student Outcome ${letter.toUpperCase()}">SO-${letter}</th>`;
+          html += `<th class="py-2 px-1 text-center w-10 min-w-[42px] border-r border-slate-300 dark:border-slate-700 bg-amber-50/50 dark:bg-amber-950/20 text-[#002855] dark:text-amber-300 font-mono text-[10px] whitespace-nowrap" title="Student Outcome ${letter.toUpperCase()}">SO-${letter}</th>`;
         });
       }
 
       html += `
-          <th class="py-2 px-2 text-center w-20 text-[11px] font-bold text-slate-700 dark:text-slate-300">Remove</th>
+          <th class="py-2 px-2 text-center w-24 min-w-[90px] text-[11px] font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Remove</th>
         </tr>
       </thead><tbody>`;
 
@@ -5335,47 +5360,47 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const disClass = !isAssigned ? 'opacity-60 cursor-not-allowed' : '';
 
         html += `<tr class="${bg} hover:bg-amber-50/40 dark:hover:bg-slate-800 transition border-b border-slate-200 dark:border-slate-700/60">
-          <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-500 border-r border-slate-200 dark:border-slate-700/60 text-[11px]">${displayRow}</td>
-          <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-700/60 font-mono text-[10px] text-slate-700 dark:text-slate-300 whitespace-nowrap">
+          <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-500 border-r border-slate-200 dark:border-slate-700/60 text-[11px] min-w-[50px]">${displayRow}</td>
+          <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-700/60 font-mono text-[10px] text-slate-700 dark:text-slate-300 whitespace-nowrap min-w-[170px]">
             <span class="px-1.5 py-0.5 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800">${c.cohortLabel || '1st Year (2026–2030)'}</span>
           </td>
-          <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-700/60 font-mono text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap text-center font-semibold">
+          <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-700/60 font-mono text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap text-center font-semibold min-w-[130px]">
             ${c.ay || 'AY 2026–2027'}
           </td>
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-            <input type="text" value="${c.code || ''}" ${disAttr} onfocus="selectExcelCell('A${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'code', this.value)" class="w-full px-1.5 py-0.5 font-mono font-bold text-xs text-[#002855] dark:text-blue-300 uppercase bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[120px]">
+            <input type="text" value="${c.code || ''}" ${disAttr} onfocus="selectExcelCell('A${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'code', this.value)" class="w-full min-w-[105px] px-1.5 py-0.5 font-mono font-bold text-xs text-[#002855] dark:text-blue-300 uppercase bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-            <input type="text" value="${(c.title || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="selectExcelCell('B${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'title', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[320px]">
+            <input type="text" value="${(c.title || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="selectExcelCell('B${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'title', this.value)" class="w-full min-w-[300px] px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>`;
 
         if (showGeneral) {
           html += `
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-            <input type="text" value="${(c.desc || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="selectExcelCell('DESC_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'desc', this.value)" placeholder="Enter course description..." title="${(c.desc || '').replace(/"/g, '&quot;')}" class="w-full px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none truncate ${disClass}">
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[380px]">
+            <input type="text" value="${(c.desc || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="selectExcelCell('DESC_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'desc', this.value)" placeholder="Enter course description..." title="${(c.desc || '').replace(/"/g, '&quot;')}" class="w-full min-w-[360px] px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none truncate ${disClass}">
           </td>`;
         }
 
         html += `
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <input type="number" step="0.5" min="0" max="12" value="${c.units || 0}" ${disAttr} onfocus="selectExcelCell('C${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'units', this.value)" class="w-full text-center px-1 py-0.5 font-mono font-bold text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center min-w-[65px]">
+            <input type="number" step="0.5" min="0" max="12" value="${c.units || 0}" ${disAttr} onfocus="selectExcelCell('C${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'units', this.value)" class="w-full min-w-[55px] text-center px-1 py-0.5 font-mono font-bold text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <input type="number" step="1" min="0" max="15" value="${c.lec || 0}" ${disAttr} onfocus="selectExcelCell('D${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'lec', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center min-w-[58px]">
+            <input type="number" step="1" min="0" max="15" value="${c.lec || 0}" ${disAttr} onfocus="selectExcelCell('D${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'lec', this.value)" class="w-full min-w-[50px] text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <input type="number" step="1" min="0" max="15" value="${c.lab || 0}" ${disAttr} onfocus="selectExcelCell('E${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'lab', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center min-w-[58px]">
+            <input type="number" step="1" min="0" max="15" value="${c.lab || 0}" ${disAttr} onfocus="selectExcelCell('E${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'lab', this.value)" class="w-full min-w-[50px] text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <select ${disAttr} onfocus="selectExcelCell('F${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'year', this.value)" class="w-full text-center px-1 py-0.5 font-bold text-xs text-slate-700 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center min-w-[70px]">
+            <select ${disAttr} onfocus="selectExcelCell('F${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'year', this.value)" class="w-full min-w-[60px] text-center px-1 py-0.5 font-bold text-xs text-slate-700 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
               <option value="1" ${c.year === 1 ? 'selected' : ''}>Y1</option>
               <option value="2" ${c.year === 2 ? 'selected' : ''}>Y2</option>
               <option value="3" ${c.year === 3 ? 'selected' : ''}>Y3</option>
               <option value="4" ${c.year === 4 ? 'selected' : ''}>Y4</option>
             </select>
           </td>
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center">
-            <select ${disAttr} onfocus="selectExcelCell('G${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'term', this.value)" class="w-full text-center px-1 py-0.5 font-bold text-xs text-slate-700 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 text-center min-w-[70px]">
+            <select ${disAttr} onfocus="selectExcelCell('G${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'term', this.value)" class="w-full min-w-[60px] text-center px-1 py-0.5 font-bold text-xs text-slate-700 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
               <option value="1" ${c.term === 1 ? 'selected' : ''}>T1</option>
               <option value="2" ${c.term === 2 ? 'selected' : ''}>T2</option>
               <option value="3" ${c.term === 3 ? 'selected' : ''}>T3</option>
@@ -5384,14 +5409,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
         if (showGeneral) {
           html += `
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-              <input type="text" value="${prereqStr}" ${disAttr} onfocus="selectExcelCell('H${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'prereqs', this.value)" placeholder="None" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[190px]">
+              <input type="text" value="${prereqStr}" ${disAttr} onfocus="selectExcelCell('H${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'prereqs', this.value)" placeholder="None" class="w-full min-w-[170px] px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-              <input type="text" value="${coreqStr}" ${disAttr} onfocus="selectExcelCell('H2_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'coreqs', this.value)" placeholder="None" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[160px]">
+              <input type="text" value="${coreqStr}" ${disAttr} onfocus="selectExcelCell('H2_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'coreqs', this.value)" placeholder="None" class="w-full min-w-[140px] px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60">
-              <select ${disAttr} onfocus="selectExcelCell('I${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'group', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[220px]">
+              <select ${disAttr} onfocus="selectExcelCell('I${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'group', this.value)" class="w-full min-w-[200px] px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none ${disClass}">
                 ${getCategoryOptionsHtml(c.group)}
                 ${!isFaculty ? '<option value="__CREATE_NEW__" class="font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-slate-800">+ Create New Category...</option>' : ''}
               </select>
@@ -5408,7 +5433,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             const soTitle = isAssigned ? `Click to cycle: - ➔ I ➔ E ➔ D (SO-${letter})` : `Read-Only: ${c.code} is outside your assigned cluster`;
             const soCursor = isAssigned ? '' : 'cursor-not-allowed opacity-60';
             html += `
-              <td class="py-1 px-0.5 text-center border-r border-slate-200 dark:border-slate-700/60">
+              <td class="py-1 px-0.5 text-center border-r border-slate-200 dark:border-slate-700/60 min-w-[42px]">
                 <button type="button" id="soBtn_${idx}_${sIdx}" ${soClick} class="${getSOBadgeClass(val)} ${soCursor}" title="${soTitle}">
                   ${val === '-' ? '·' : val}
                 </button>
@@ -5424,7 +5449,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             </button>`;
 
         html += `
-          <td class="py-1 px-1 text-center whitespace-nowrap">
+          <td class="py-1 px-1 text-center whitespace-nowrap min-w-[90px]">
             ${actionCell}
           </td>
         </tr>`;
@@ -5439,27 +5464,29 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         for (let r = renderedCount + 1; r <= totalToRender; r++) {
           const bg = (r % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50';
           html += `<tr class="${bg} hover:bg-amber-50/30 dark:hover:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-slate-400">
-            <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-600 border-r border-slate-200 dark:border-slate-800 text-[11px]">${r}</td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
-              <input type="text" placeholder="" onfocus="selectExcelCell('A${r}', this)" onchange="onEmptySheetCellChange(${r}, 'code', this.value)" class="w-full px-1.5 py-0.5 font-mono font-bold text-xs uppercase text-[#002855] dark:text-blue-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-600 border-r border-slate-200 dark:border-slate-800 text-[11px] min-w-[50px]">${r}</td>
+            <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-800 font-mono text-[10px] min-w-[170px]"></td>
+            <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-800 font-mono text-[10px] min-w-[130px]"></td>
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[120px]">
+              <input type="text" placeholder="" onfocus="selectExcelCell('A${r}', this)" onchange="onEmptySheetCellChange(${r}, 'code', this.value)" class="w-full min-w-[105px] px-1.5 py-0.5 font-mono font-bold text-xs uppercase text-[#002855] dark:text-blue-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
-              <input type="text" placeholder="" onfocus="selectExcelCell('B${r}', this)" onchange="onEmptySheetCellChange(${r}, 'title', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[320px]">
+              <input type="text" placeholder="" onfocus="selectExcelCell('B${r}', this)" onchange="onEmptySheetCellChange(${r}, 'title', this.value)" class="w-full min-w-[300px] px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
-              <input type="text" placeholder="" onfocus="selectExcelCell('DESC_${r}', this)" onchange="onEmptySheetCellChange(${r}, 'desc', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[380px]">
+              <input type="text" placeholder="" onfocus="selectExcelCell('DESC_${r}', this)" onchange="onEmptySheetCellChange(${r}, 'desc', this.value)" class="w-full min-w-[360px] px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center">
-              <input type="number" step="0.5" placeholder="" onfocus="selectExcelCell('C${r}', this)" onchange="onEmptySheetCellChange(${r}, 'units', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center min-w-[65px]">
+              <input type="number" step="0.5" placeholder="" onfocus="selectExcelCell('C${r}', this)" onchange="onEmptySheetCellChange(${r}, 'units', this.value)" class="w-full min-w-[55px] text-center px-1 py-0.5 font-mono text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center">
-              <input type="number" step="1" placeholder="" onfocus="selectExcelCell('D${r}', this)" onchange="onEmptySheetCellChange(${r}, 'lec', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center min-w-[58px]">
+              <input type="number" step="1" placeholder="" onfocus="selectExcelCell('D${r}', this)" onchange="onEmptySheetCellChange(${r}, 'lec', this.value)" class="w-full min-w-[50px] text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center">
-              <input type="number" step="1" placeholder="" onfocus="selectExcelCell('E${r}', this)" onchange="onEmptySheetCellChange(${r}, 'lab', this.value)" class="w-full text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center min-w-[58px]">
+              <input type="number" step="1" placeholder="" onfocus="selectExcelCell('E${r}', this)" onchange="onEmptySheetCellChange(${r}, 'lab', this.value)" class="w-full min-w-[50px] text-center px-1 py-0.5 font-mono text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center">
-              <select onfocus="selectExcelCell('F${r}', this)" onchange="onEmptySheetCellChange(${r}, 'year', this.value)" class="w-full text-center px-1 py-0.5 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center min-w-[70px]">
+              <select onfocus="selectExcelCell('F${r}', this)" onchange="onEmptySheetCellChange(${r}, 'year', this.value)" class="w-full min-w-[60px] text-center px-1 py-0.5 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
                 <option value="">-</option>
                 <option value="1">Y1</option>
                 <option value="2">Y2</option>
@@ -5467,24 +5494,24 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
                 <option value="4">Y4</option>
               </select>
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center">
-              <select onfocus="selectExcelCell('G${r}', this)" onchange="onEmptySheetCellChange(${r}, 'term', this.value)" class="w-full text-center px-1 py-0.5 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center min-w-[70px]">
+              <select onfocus="selectExcelCell('G${r}', this)" onchange="onEmptySheetCellChange(${r}, 'term', this.value)" class="w-full min-w-[60px] text-center px-1 py-0.5 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
                 <option value="">-</option>
                 <option value="1">T1</option>
                 <option value="2">T2</option>
                 <option value="3">T3</option>
               </select>
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
-              <input type="text" placeholder="" onfocus="selectExcelCell('H${r}', this)" onchange="onEmptySheetCellChange(${r}, 'prereqs', this.value)" class="w-full px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[190px]">
+              <input type="text" placeholder="" onfocus="selectExcelCell('H${r}', this)" onchange="onEmptySheetCellChange(${r}, 'prereqs', this.value)" class="w-full min-w-[170px] px-1.5 py-0.5 font-mono text-xs uppercase text-slate-800 dark:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800">
-              <select onfocus="selectExcelCell('I${r}', this)" onchange="onEmptySheetCellChange(${r}, 'group', this.value)" class="w-full px-1.5 py-0.5 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[220px]">
+              <select onfocus="selectExcelCell('I${r}', this)" onchange="onEmptySheetCellChange(${r}, 'group', this.value)" class="w-full min-w-[200px] px-1.5 py-0.5 text-xs text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none cursor-pointer focus:outline-none">
                 <option value="">- Select Group -</option>
                 ${getCategoryOptionsHtml()}
               </select>
             </td>
-            <td class="py-1 px-1 text-center font-mono text-slate-300 dark:text-slate-700 text-xs">
+            <td class="py-1 px-1 text-center font-mono text-slate-300 dark:text-slate-700 text-xs min-w-[90px]">
               &bull;
             </td>
           </tr>`;
@@ -5503,7 +5530,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const scope = (typeof sheetYearFilter !== 'undefined') ? sheetYearFilter : 'all';
       const targetCourses = (scope === 'all')
         ? ALL_COURSES
-        : ALL_COURSES.filter(c => String(c.cohort) === String(scope));
+        : ALL_COURSES.filter(c => {
+            if (String(c.cohort) !== String(scope)) return false;
+            if (typeof sheetStandingFilter !== 'undefined' && sheetStandingFilter !== 'all' && String(c.year) !== String(sheetStandingFilter)) return false;
+            return true;
+          });
 
       const coursesCount = targetCourses.length;
       let totalUnits = 0;
@@ -5597,6 +5628,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     function setSpreadsheetYearScope(scope) {
       const yearFilter = document.getElementById('sheetYearFilter');
       if (yearFilter) yearFilter.value = String(scope);
+      const standingFilter = document.getElementById('sheetStandingFilter');
+      if (standingFilter) {
+        standingFilter.value = (scope === 'all') ? 'all' : String(scope);
+      }
       if (typeof sheetFilterChange === 'function') {
         sheetFilterChange();
       }
@@ -5612,7 +5647,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const upper = c.code.trim().toUpperCase();
         const key = `${c.cohort || 1}_${upper}`;
         if (codeSet.has(key)) {
-          alert(`Validation Error: Duplicate course code detected: "${upper}" in cohort ${c.cohortLabel || c.cohort}. Course codes must be unique per cohort.`);
+          alert(`Validation Error: Duplicate course code detected: "${upper}" in ${c.cohortLabel || 'Year ' + c.cohort}. Course codes must be unique.`);
           return;
         }
         codeSet.add(key);

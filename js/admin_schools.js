@@ -1168,11 +1168,11 @@
                   <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                 </button>
 
-                <!-- Integrated Master Spreadsheet (All 4 Years) -->
+                <!-- Integrated Master Spreadsheet (All 16 Years) -->
                 <button type="button" onclick="openSpreadsheetForYear('all')"
                   class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                   <span class="text-emerald-400">📑</span>
-                  <span class="font-medium text-slate-300 group-hover:text-emerald-300">Master Spreadsheet (All 4 Years)</span>
+                  <span class="font-medium text-slate-300 group-hover:text-emerald-300">Master Spreadsheet (All 16 Years)</span>
                 </button>
 
                 <!-- By Year Section Header -->
