@@ -187,7 +187,7 @@
         tbodyHtml += `<td class="flow-col-term border-r border-slate-200 dark:border-slate-800 align-top">`;
         if (course) {
           const catMeta = getCategoryMeta(course.group);
-          const borderClass = catMeta.border || 'border-l-indigo-600';
+          const borderClass = catMeta.border || `border-l-${catMeta.color || 'indigo'}-500`;
           const prereqCount = Array.isArray(course.prereqs) ? course.prereqs.length : 0;
           const unitsFormatted = Number(course.units || 0).toFixed(1);
 
@@ -196,6 +196,7 @@
                  data-course-code="${course.code}"
                  data-col="${col}"
                  data-row="${r}"
+                 style="border-left-color: ${catMeta.hex || '#4f46e5'} !important; border-left-width: 6px !important;"
                  class="course-card flow-course-card select-none relative p-2 flex flex-col justify-between cursor-pointer border border-slate-300 dark:border-slate-700 ${borderClass} border-l-[6px] shadow-2xs ${catMeta.bg || ''}">
               
               <!-- Left Port for Prerequisite Inflow -->

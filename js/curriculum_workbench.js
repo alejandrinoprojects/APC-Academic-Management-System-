@@ -3958,12 +3958,12 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // DYNAMIC CURRICULUM CATEGORIES & GROUPINGS SUBSYSTEM
     // =========================================================================
     const DEFAULT_CURRICULUM_CATEGORIES = [
-      { id: 'cat-core', name: 'Professional Core', short: 'Core', color: 'indigo', bg: 'bg-indigo-50 border-indigo-200 text-indigo-950', badgeBg: 'bg-indigo-100/90 text-indigo-800 border-indigo-200/80', dot: 'bg-indigo-600', hex: '#4f46e5' },
-      { id: 'cat-eng', name: 'Basic Engineering', short: 'Basic Eng', color: 'amber', bg: 'bg-amber-50 border-amber-200 text-amber-950', badgeBg: 'bg-amber-100/90 text-amber-800 border-amber-200/80', dot: 'bg-amber-500', hex: '#d97706' },
-      { id: 'cat-gened', name: 'General Education', short: 'Gen Ed', color: 'sky', bg: 'bg-sky-50 border-sky-200 text-sky-950', badgeBg: 'bg-sky-100/90 text-sky-800 border-sky-200/80', dot: 'bg-sky-500', hex: '#0284c7' },
-      { id: 'cat-allied', name: 'Allied', short: 'Allied', color: 'purple', bg: 'bg-purple-50 border-purple-200 text-purple-950', badgeBg: 'bg-purple-100/90 text-purple-800 border-purple-200/80', dot: 'bg-purple-500', hex: '#7c3aed' },
-      { id: 'cat-elec', name: 'Technical Electives', short: 'Elective', color: 'rose', bg: 'bg-rose-50 border-rose-200 text-rose-950', badgeBg: 'bg-rose-100/90 text-rose-800 border-rose-200/80', dot: 'bg-rose-500', hex: '#e11d48' },
-      { id: 'cat-inst', name: 'Institutional', short: 'Inst', color: 'emerald', bg: 'bg-emerald-50 border-emerald-200 text-emerald-950', badgeBg: 'bg-emerald-100/90 text-emerald-800 border-emerald-200/80', dot: 'bg-emerald-500', hex: '#059669' }
+      { id: 'cat-core', name: 'Professional Core', short: 'Core', color: 'indigo', border: 'border-l-indigo-600', bg: 'bg-indigo-50 border-indigo-200 text-indigo-950', badgeBg: 'bg-indigo-100/90 text-indigo-800 border-indigo-200/80', dot: 'bg-indigo-600', hex: '#4f46e5' },
+      { id: 'cat-eng', name: 'Basic Engineering', short: 'Basic Eng', color: 'amber', border: 'border-l-amber-500', bg: 'bg-amber-50 border-amber-200 text-amber-950', badgeBg: 'bg-amber-100/90 text-amber-800 border-amber-200/80', dot: 'bg-amber-500', hex: '#d97706' },
+      { id: 'cat-gened', name: 'General Education', short: 'Gen Ed', color: 'sky', border: 'border-l-sky-500', bg: 'bg-sky-50 border-sky-200 text-sky-950', badgeBg: 'bg-sky-100/90 text-sky-800 border-sky-200/80', dot: 'bg-sky-500', hex: '#0284c7' },
+      { id: 'cat-allied', name: 'Allied', short: 'Allied', color: 'purple', border: 'border-l-purple-500', bg: 'bg-purple-50 border-purple-200 text-purple-950', badgeBg: 'bg-purple-100/90 text-purple-800 border-purple-200/80', dot: 'bg-purple-500', hex: '#7c3aed' },
+      { id: 'cat-elec', name: 'Technical Electives', short: 'Elective', color: 'rose', border: 'border-l-rose-500', bg: 'bg-rose-50 border-rose-200 text-rose-950', badgeBg: 'bg-rose-100/90 text-rose-800 border-rose-200/80', dot: 'bg-rose-500', hex: '#e11d48' },
+      { id: 'cat-inst', name: 'Institutional', short: 'Inst', color: 'emerald', border: 'border-l-emerald-500', bg: 'bg-emerald-50 border-emerald-200 text-emerald-950', badgeBg: 'bg-emerald-100/90 text-emerald-800 border-emerald-200/80', dot: 'bg-emerald-500', hex: '#059669' }
     ];
 
     let CURRICULUM_CATEGORIES = JSON.parse(JSON.stringify(DEFAULT_CURRICULUM_CATEGORIES));
@@ -3981,21 +3981,36 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     const COLOR_PALETTES = {
-      indigo:  { bg: 'bg-indigo-50 border-indigo-200 text-indigo-950',   badgeBg: 'bg-indigo-100/90 text-indigo-800 border-indigo-200/80',   dot: 'bg-indigo-600',  hex: '#4f46e5' },
-      amber:   { bg: 'bg-amber-50 border-amber-200 text-amber-950',     badgeBg: 'bg-amber-100/90 text-amber-800 border-amber-200/80',     dot: 'bg-amber-500',   hex: '#d97706' },
-      sky:     { bg: 'bg-sky-50 border-sky-200 text-sky-950',         badgeBg: 'bg-sky-100/90 text-sky-800 border-sky-200/80',         dot: 'bg-sky-500',     hex: '#0284c7' },
-      purple:  { bg: 'bg-purple-50 border-purple-200 text-purple-950',  badgeBg: 'bg-purple-100/90 text-purple-800 border-purple-200/80',  dot: 'bg-purple-500',  hex: '#7c3aed' },
-      rose:    { bg: 'bg-rose-50 border-rose-200 text-rose-950',        badgeBg: 'bg-rose-100/90 text-rose-800 border-rose-200/80',        dot: 'bg-rose-500',    hex: '#e11d48' },
-      emerald: { bg: 'bg-emerald-50 border-emerald-200 text-emerald-950',badgeBg: 'bg-emerald-100/90 text-emerald-800 border-emerald-200/80',dot: 'bg-emerald-500', hex: '#059669' },
-      teal:    { bg: 'bg-teal-50 border-teal-200 text-teal-950',       badgeBg: 'bg-teal-100/90 text-teal-800 border-teal-200/80',       dot: 'bg-teal-500',    hex: '#0d9488' },
-      cyan:    { bg: 'bg-cyan-50 border-cyan-200 text-cyan-950',       badgeBg: 'bg-cyan-100/90 text-cyan-800 border-cyan-200/80',       dot: 'bg-cyan-500',    hex: '#0891b2' },
-      orange:  { bg: 'bg-orange-50 border-orange-200 text-orange-950',   badgeBg: 'bg-orange-100/90 text-orange-800 border-orange-200/80',   dot: 'bg-orange-500',  hex: '#ea580c' },
-      slate:   { bg: 'bg-slate-50 border-slate-200 text-slate-950',     badgeBg: 'bg-slate-100 text-slate-700 border-slate-200',          dot: 'bg-slate-500',   hex: '#64748b' }
+      indigo:  { bg: 'bg-indigo-50 border-indigo-200 text-indigo-950',   badgeBg: 'bg-indigo-100/90 text-indigo-800 border-indigo-200/80',   dot: 'bg-indigo-600',  border: 'border-l-indigo-600', hex: '#4f46e5' },
+      amber:   { bg: 'bg-amber-50 border-amber-200 text-amber-950',     badgeBg: 'bg-amber-100/90 text-amber-800 border-amber-200/80',     dot: 'bg-amber-500',   border: 'border-l-amber-500',  hex: '#d97706' },
+      sky:     { bg: 'bg-sky-50 border-sky-200 text-sky-950',         badgeBg: 'bg-sky-100/90 text-sky-800 border-sky-200/80',         dot: 'bg-sky-500',     border: 'border-l-sky-500',    hex: '#0284c7' },
+      purple:  { bg: 'bg-purple-50 border-purple-200 text-purple-950',  badgeBg: 'bg-purple-100/90 text-purple-800 border-purple-200/80',  dot: 'bg-purple-500',  border: 'border-l-purple-500', hex: '#7c3aed' },
+      rose:    { bg: 'bg-rose-50 border-rose-200 text-rose-950',        badgeBg: 'bg-rose-100/90 text-rose-800 border-rose-200/80',        dot: 'bg-rose-500',    border: 'border-l-rose-500',   hex: '#e11d48' },
+      emerald: { bg: 'bg-emerald-50 border-emerald-200 text-emerald-950',badgeBg: 'bg-emerald-100/90 text-emerald-800 border-emerald-200/80',dot: 'bg-emerald-500', border: 'border-l-emerald-500',hex: '#059669' },
+      teal:    { bg: 'bg-teal-50 border-teal-200 text-teal-950',       badgeBg: 'bg-teal-100/90 text-teal-800 border-teal-200/80',       dot: 'bg-teal-500',    border: 'border-l-teal-500',   hex: '#0d9488' },
+      cyan:    { bg: 'bg-cyan-50 border-cyan-200 text-cyan-950',       badgeBg: 'bg-cyan-100/90 text-cyan-800 border-cyan-200/80',       dot: 'bg-cyan-500',    border: 'border-l-cyan-500',   hex: '#0891b2' },
+      orange:  { bg: 'bg-orange-50 border-orange-200 text-orange-950',   badgeBg: 'bg-orange-100/90 text-orange-800 border-orange-200/80',   dot: 'bg-orange-500',  border: 'border-l-orange-500', hex: '#ea580c' },
+      slate:   { bg: 'bg-slate-50 border-slate-200 text-slate-950',     badgeBg: 'bg-slate-100 text-slate-700 border-slate-200',          dot: 'bg-slate-500',   border: 'border-l-slate-500',  hex: '#64748b' }
     };
 
     function getCategoryMeta(groupName) {
       const match = CURRICULUM_CATEGORIES.find(c => (c.name || '').trim().toLowerCase() === (groupName || '').trim().toLowerCase());
-      if (match) return match;
+      if (match) {
+        const pal = COLOR_PALETTES[match.color] || {};
+        return {
+          ...match,
+          border: match.border || pal.border || `border-l-${match.color || 'indigo'}-500`,
+          hex: match.hex || pal.hex || '#4f46e5'
+        };
+      }
+      const g = (groupName || '').toLowerCase();
+      if (g.includes('basic eng')) return { id: 'cat-eng', name: 'Basic Engineering', short: 'Basic Eng', color: 'amber', dot: 'bg-amber-500', border: 'border-l-amber-500', bg: 'bg-amber-50', hex: '#d97706' };
+      if (g.includes('gen ed') || g.includes('general ed')) return { id: 'cat-gened', name: 'General Education', short: 'Gen Ed', color: 'sky', dot: 'bg-sky-500', border: 'border-l-sky-500', bg: 'bg-sky-50', hex: '#0284c7' };
+      if (g.includes('allied')) return { id: 'cat-allied', name: 'Allied', short: 'Allied', color: 'purple', dot: 'bg-purple-500', border: 'border-l-purple-500', bg: 'bg-purple-50', hex: '#7c3aed' };
+      if (g.includes('elective') || g.includes('cognate')) return { id: 'cat-elec', name: 'Technical Electives', short: 'Elective', color: 'rose', dot: 'bg-rose-500', border: 'border-l-rose-500', bg: 'bg-rose-50', hex: '#e11d48' };
+      if (g.includes('inst')) return { id: 'cat-inst', name: 'Institutional', short: 'Inst', color: 'emerald', dot: 'bg-emerald-500', border: 'border-l-emerald-500', bg: 'bg-emerald-50', hex: '#059669' };
+      if (g.includes('core')) return { id: 'cat-core', name: 'Professional Core', short: 'Core', color: 'indigo', dot: 'bg-indigo-600', border: 'border-l-indigo-600', bg: 'bg-indigo-50', hex: '#4f46e5' };
+
       return {
         id: 'cat-custom',
         name: groupName || 'General',
@@ -4004,6 +4019,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         bg: 'bg-slate-50 border-slate-200 text-slate-950',
         badgeBg: 'bg-slate-100 text-slate-700 border-slate-200',
         dot: 'bg-slate-500',
+        border: 'border-l-slate-500',
         hex: '#64748b'
       };
     }
