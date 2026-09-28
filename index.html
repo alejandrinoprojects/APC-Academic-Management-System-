@@ -53,7 +53,7 @@
     <!-- ========================================================================= -->
   <!-- APC RAMS INSTITUTIONAL LOGIN & IDENTITY SCREEN (Microsoft Entra ID)       -->
   <!-- ========================================================================= -->
-  <div id="loginLandingScreen" class="fixed inset-0 z-50 bg-[#001731] flex flex-col justify-between overflow-hidden no-print select-none hidden" style="display: none; background-image: radial-gradient(circle at 50% 30%, rgba(0, 40, 85, 0.85) 0%, rgba(0, 23, 49, 0.98) 100%), url('assets/login_screen_bg.png'); background-size: cover; background-position: center;">
+  <div id="loginLandingScreen" class="fixed inset-0 z-50 bg-[#001731] flex flex-col justify-between overflow-hidden no-print select-none hidden" style="background-image: radial-gradient(circle at 50% 30%, rgba(0, 40, 85, 0.85) 0%, rgba(0, 23, 49, 0.98) 100%), url('assets/login_screen_bg.png'); background-size: cover; background-position: center;">
     
     <!-- Top Institutional Bar -->
     <div class="w-full px-6 py-4 flex items-center justify-between border-b border-[#E5A823]/80 bg-[#001731]/80 backdrop-blur-xs shrink-0">
@@ -64,7 +64,8 @@
           <div class="text-[10px] text-[#E5A823] font-bold uppercase tracking-widest mt-0.5">Academic Management System</div>
         </div>
       </div>
-      <div class="hidden sm:flex items-center space-x-2 text-[11px] text-slate-300 font-medium">
+      <div class="flex items-center space-x-3 text-[11px] text-slate-300 font-medium">
+        <a href="/" onclick="event.preventDefault(); handleMicrosoftSSOLogin('admin');" class="hover:text-[#E5A823] underline transition hidden sm:inline" title="Bypass directly to Academic Workbench">Direct Portal Entry &rarr;</a>
         <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
         <span>Online</span>
       </div>
@@ -72,16 +73,33 @@
 
     <!-- Center Card Area (Sharp Architectural Suite Design) -->
     <div class="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 my-auto">
-      <div class="w-full max-w-sm sm:max-w-md bg-white border-2 border-[#E5A823] shadow-2xl p-7 sm:p-9 space-y-6 text-center relative z-10">
+      <div class="w-full max-w-sm sm:max-w-md bg-white border-2 border-[#E5A823] shadow-2xl p-7 sm:p-8 space-y-5 text-center relative z-10">
         
         <!-- Header Branding Inside Card -->
-        <div class="text-center space-y-2.5 pb-2">
+        <div class="text-center space-y-2 pb-1">
           <img src="assets/apc_seal.png" class="w-14 h-14 mx-auto object-contain bg-white p-1 rounded-full border-2 border-[#E5A823] shadow-md" alt="Asia Pacific College Seal">
           <div class="text-xs font-black text-[#002855] uppercase tracking-wider">Academic Management System</div>
+          <p class="text-[11px] text-slate-500 font-mono">Institutional Microsoft Entra ID Authentication</p>
+        </div>
+
+        <!-- Slow Login Realistic Verification Progress State -->
+        <div id="loginProgressState" class="hidden p-4 bg-slate-50 border-2 border-[#002855] text-center space-y-3 shadow-inner">
+          <div class="flex items-center justify-center gap-2.5">
+            <svg class="animate-spin h-5 w-5 text-[#002855]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span id="loginProgressText" class="text-xs font-bold text-[#002855]">Connecting to Microsoft Entra ID...</span>
+          </div>
+          <!-- Animated Progress Bar -->
+          <div class="w-full bg-slate-200 h-2 overflow-hidden border border-slate-300">
+            <div id="loginProgressBar" class="bg-[#E5A823] h-full transition-all duration-700 ease-out" style="width: 25%;"></div>
+          </div>
+          <p id="loginProgressSubtext" class="text-[10px] text-slate-600 font-mono">Verifying institutional credentials and clearances...</p>
         </div>
 
         <!-- Native Credentials Login Form -->
-        <form onsubmit="handleNativeLogin(event)" class="space-y-4 text-left">
+        <form id="nativeLoginForm" onsubmit="handleNativeLogin(event)" class="space-y-3.5 text-left">
           <div>
             <label for="loginEmail" class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address</label>
             <input type="email" id="loginEmail" placeholder="user@apc.edu.ph"
@@ -101,8 +119,34 @@
           </button>
         </form>
 
+        <!-- Quick Institutional Role Persona Switcher -->
+        <div class="pt-2 border-t border-slate-200 text-left">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Fast Institutional Personas:</span>
+            <span class="text-[9px] text-slate-400 font-mono">Simulated SSO</span>
+          </div>
+          <div class="grid grid-cols-2 gap-1.5 font-mono text-[10.5px]">
+            <button type="button" onclick="startSlowLogin('admin')" class="px-2 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-bold flex items-center justify-between cursor-pointer shadow-2xs hover:border-[#002855]">
+              <span>Admin</span>
+              <span class="text-[9px] text-[#002855] font-black">SA &rarr;</span>
+            </button>
+            <button type="button" onclick="startSlowLogin('exd')" class="px-2 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-bold flex items-center justify-between cursor-pointer shadow-2xs hover:border-[#002855]">
+              <span>Exec Director</span>
+              <span class="text-[9px] text-[#002855] font-black">ED &rarr;</span>
+            </button>
+            <button type="button" onclick="startSlowLogin('pd')" class="px-2 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-bold flex items-center justify-between cursor-pointer shadow-2xs hover:border-[#002855]">
+              <span>Prog Director</span>
+              <span class="text-[9px] text-[#002855] font-black">PD &rarr;</span>
+            </button>
+            <button type="button" onclick="startSlowLogin('faculty')" class="px-2 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-bold flex items-center justify-between cursor-pointer shadow-2xs hover:border-[#002855]">
+              <span>Faculty</span>
+              <span class="text-[9px] text-[#002855] font-black">FM &rarr;</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Security Notice -->
-        <div class="pt-1 flex items-center justify-center space-x-2 text-[11px] text-slate-500 font-medium border-t border-slate-100">
+        <div class="pt-1 flex items-center justify-center space-x-2 text-[10.5px] text-slate-500 font-medium border-t border-slate-100">
           <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
           </svg>
@@ -556,6 +600,14 @@
             <svg class="w-4 h-4 transition-transform group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </button>
+          <!-- Institutional Sign Out / Login Link Button -->
+          <button type="button" onclick="logoutApp()" 
+            class="w-8 h-8 rounded-none bg-[#1E2430] hover:bg-red-950/40 border border-slate-700 hover:border-red-500/80 text-slate-400 hover:text-red-400 flex items-center justify-center cursor-pointer transition shadow-xs group shrink-0" 
+            title="Sign Out / APC Institutional Login">
+            <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
           </button>
         </div>
@@ -3930,9 +3982,15 @@
           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
           <span>Asia Pacific College Single Sign-On Active</span>
         </span>
-        <button type="button" onclick="closeLoginModal()" class="px-4 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition cursor-pointer">
-          Close
-        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeLoginModal(); logoutApp()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50 text-xs font-bold transition cursor-pointer flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            <span>Institutional Login Screen</span>
+          </button>
+          <button type="button" onclick="closeLoginModal()" class="px-4 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition cursor-pointer">
+            Close
+          </button>
+        </div>
       </div>
 
     </div>

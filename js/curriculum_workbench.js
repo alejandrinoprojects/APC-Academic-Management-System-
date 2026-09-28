@@ -1996,6 +1996,63 @@
       }
     }
 
+    function resetLoginForm() {
+      const progressBox = document.getElementById('loginProgressState');
+      const loginForm = document.getElementById('nativeLoginForm');
+      const progressBar = document.getElementById('loginProgressBar');
+      const progressText = document.getElementById('loginProgressText');
+      const progressSub = document.getElementById('loginProgressSubtext');
+      if (progressBox) progressBox.classList.add('hidden');
+      if (loginForm) loginForm.classList.remove('hidden');
+      if (progressBar) progressBar.style.width = '25%';
+      if (progressText) progressText.innerText = 'Connecting to Microsoft Entra ID...';
+      if (progressSub) progressSub.innerText = 'Verifying institutional credentials and clearances...';
+    }
+    window.resetLoginForm = resetLoginForm;
+
+    let _slowLoginTimeoutId = null;
+
+    function startSlowLogin(roleKey = 'admin') {
+      const progressBox = document.getElementById('loginProgressState');
+      const loginForm = document.getElementById('nativeLoginForm');
+      const progressBar = document.getElementById('loginProgressBar');
+      const progressText = document.getElementById('loginProgressText');
+      const progressSub = document.getElementById('loginProgressSubtext');
+      const errEl = document.getElementById('loginErrorMsg');
+
+      if (errEl) errEl.classList.add('hidden');
+
+      if (loginForm) loginForm.classList.add('hidden');
+      if (progressBox) progressBox.classList.remove('hidden');
+
+      // Stage 1: Connecting (0ms - 800ms)
+      if (progressBar) progressBar.style.width = '30%';
+      if (progressText) progressText.innerText = 'Connecting to Microsoft Entra ID...';
+      if (progressSub) progressSub.innerText = 'Contacting login.microsoftonline.com for institutional token...';
+
+      if (_slowLoginTimeoutId) clearTimeout(_slowLoginTimeoutId);
+
+      _slowLoginTimeoutId = setTimeout(() => {
+        // Stage 2: Token verification (800ms - 1700ms)
+        if (progressBar) progressBar.style.width = '70%';
+        if (progressText) progressText.innerText = 'Verifying OAuth 2.0 institutional token...';
+        if (progressSub) progressSub.innerText = 'Confirming APC academic directory roles and RBAC clearances...';
+
+        _slowLoginTimeoutId = setTimeout(() => {
+          // Stage 3: Clearance Authorized (1700ms - 2300ms)
+          if (progressBar) progressBar.style.width = '100%';
+          if (progressText) progressText.innerText = 'Clearance Authorized • Access Granted';
+          if (progressSub) progressSub.innerText = 'Initializing APC Academic Management System workspace...';
+
+          _slowLoginTimeoutId = setTimeout(() => {
+            resetLoginForm();
+            handleMicrosoftSSOLogin(roleKey);
+          }, 600);
+        }, 900);
+      }, 800);
+    }
+    window.startSlowLogin = startSlowLogin;
+
     function handleNativeLogin(event) {
       if (event) event.preventDefault();
       const emailInput = document.getElementById('loginEmail') || document.getElementById('loginInputEmail');
@@ -2014,7 +2071,7 @@
       }
 
       if (errEl) errEl.classList.add('hidden');
-      handleMicrosoftSSOLogin(roleKey);
+      startSlowLogin(roleKey);
     }
     window.handleNativeLogin = handleNativeLogin;
 
@@ -2029,8 +2086,10 @@
         sessionStorage.removeItem('rams_authenticated');
         sessionStorage.removeItem('rams_user_role');
       } catch (e) {}
+      resetLoginForm();
       const screen = document.getElementById('loginLandingScreen');
       if (screen) {
+        screen.style.display = 'flex';
         screen.classList.remove('hidden');
       }
       if (window.spaRouter && typeof window.spaRouter.updateBrowserUrl === 'function') {
@@ -2038,6 +2097,7 @@
       }
       showToast('Signed out of APC RAMS Curriculum Suite.');
     }
+    window.logoutApp = logoutApp;
 
     function openLoginModal() {
       const modal = document.getElementById('loginModal');
@@ -2130,22 +2190,37 @@
     }
 
     function checkInitialAuthState() {
-      window.ramsAuthenticated = true;
-      window.ramsUserRole = 'admin';
+      // Check if current route is explicitly /login or #/login
+      const path = (window.location.pathname || '') + (window.location.hash || '');
+      const isLoginRoute = path.includes('/login');
       const screen = document.getElementById('loginLandingScreen');
-      if (screen) screen.classList.add('hidden');
+
+      if (isLoginRoute) {
+        window.ramsAuthenticated = false;
+        if (screen) {
+          screen.style.display = 'flex';
+          screen.classList.remove('hidden');
+        }
+      } else {
+        window.ramsAuthenticated = true;
+        window.ramsUserRole = 'admin';
+        if (screen) {
+          screen.style.display = 'none';
+          screen.classList.add('hidden');
+        }
+      }
     }
 
     // Keyboard shortcuts on login screen (a, x, p, f)
     document.addEventListener('keydown', function(e) {
       const screen = document.getElementById('loginLandingScreen');
-      if (screen && !screen.classList.contains('hidden')) {
+      if (screen && !screen.classList.contains('hidden') && screen.style.display !== 'none') {
         const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
         if (tag !== 'input' && tag !== 'textarea') {
-          if (e.key === 'a' || e.key === 'A') handleMicrosoftSSOLogin('admin');
-          else if (e.key === 'x' || e.key === 'X') handleMicrosoftSSOLogin('exd');
-          else if (e.key === 'p' || e.key === 'P') handleMicrosoftSSOLogin('pd');
-          else if (e.key === 'f' || e.key === 'F') handleMicrosoftSSOLogin('faculty');
+          if (e.key === 'a' || e.key === 'A') startSlowLogin('admin');
+          else if (e.key === 'x' || e.key === 'X') startSlowLogin('exd');
+          else if (e.key === 'p' || e.key === 'P') startSlowLogin('pd');
+          else if (e.key === 'f' || e.key === 'F') startSlowLogin('faculty');
         }
       }
     });
