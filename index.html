@@ -2354,6 +2354,30 @@
               <table id="spreadsheetTable" class="w-max min-w-full text-left text-xs border-collapse bg-white dark:bg-slate-900">
                 <!-- Dynamically injected by renderSpreadsheetGrid() -->
               </table>
+
+              <!-- Floating Expanded Course Description Editor -->
+              <div id="sheetDescFloatingEditor" class="hidden absolute z-50 w-[540px] max-w-[90vw] bg-white dark:bg-slate-900 border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl p-3 text-left">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 dark:border-slate-700">
+                  <div class="flex items-center gap-2">
+                    <span id="sheetDescFloatingCode" class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-black text-xs">CPE101</span>
+                    <span id="sheetDescFloatingTitle" class="text-xs font-bold text-slate-800 dark:text-slate-100 truncate max-w-[280px]">Course Description</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] text-slate-400 font-mono hidden sm:inline">Esc to close • Auto-saves</span>
+                    <button type="button" onclick="closeDescFloatingEditor()" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 cursor-pointer shadow-xs">Done ✕</button>
+                  </div>
+                </div>
+                <textarea
+                  id="sheetDescFloatingTextarea"
+                  rows="6"
+                  placeholder="Enter comprehensive course description..."
+                  class="w-full text-xs text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 p-2.5 focus:outline-none focus:ring-1 focus:ring-[#002855] dark:focus:ring-[#E5A823] leading-relaxed resize-y min-h-[140px] font-sans"
+                ></textarea>
+                <div class="flex items-center justify-between pt-2 text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+                  <span id="sheetDescFloatingChars">0 characters</span>
+                  <span class="text-emerald-600 dark:text-emerald-400 font-bold">✓ Expanded Full Description View</span>
+                </div>
+              </div>
             </div>
 
             <!-- INFINITE EXCEL STATUS BAR & ROW ADDER -->

@@ -4681,6 +4681,117 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
     }
 
+    let _activeDescInput = null;
+    let _activeDescCourseIdx = null;
+    let _activeDescDisplayRow = null;
+
+    function openDescFloatingEditor(inputEl, courseIdx, displayRow) {
+      const editor = document.getElementById('sheetDescFloatingEditor');
+      const textarea = document.getElementById('sheetDescFloatingTextarea');
+      const codeBadge = document.getElementById('sheetDescFloatingCode');
+      const titleBadge = document.getElementById('sheetDescFloatingTitle');
+      const charsBadge = document.getElementById('sheetDescFloatingChars');
+      const container = document.getElementById('spreadsheetTableContainer');
+      if (!editor || !textarea || !container || !inputEl) return;
+
+      _activeDescInput = inputEl;
+      _activeDescCourseIdx = courseIdx;
+      _activeDescDisplayRow = displayRow;
+
+      let currentDesc = '';
+      let courseCode = '';
+      let courseTitle = '';
+
+      if (typeof courseIdx === 'number' && ALL_COURSES[courseIdx]) {
+        const c = ALL_COURSES[courseIdx];
+        currentDesc = c.desc || '';
+        courseCode = c.code || 'COURSE';
+        courseTitle = c.title || 'Course Description';
+      } else {
+        currentDesc = inputEl.value || '';
+        courseCode = 'ROW ' + displayRow;
+        courseTitle = 'New Course Description';
+      }
+
+      if (codeBadge) codeBadge.innerText = courseCode;
+      if (titleBadge) titleBadge.innerText = courseTitle;
+      textarea.value = currentDesc;
+      if (charsBadge) charsBadge.innerText = `${currentDesc.length} characters`;
+
+      if (typeof selectExcelCell === 'function') {
+        selectExcelCell(`DESC_${displayRow}`, inputEl);
+      }
+
+      // Calculate position relative to container
+      const containerRect = container.getBoundingClientRect();
+      const inputRect = inputEl.getBoundingClientRect();
+
+      const left = (inputRect.left - containerRect.left) + container.scrollLeft;
+      let top = (inputRect.bottom - containerRect.top) + container.scrollTop + 2;
+      const editorHeight = 230;
+
+      // If near bottom of container, position above cell
+      if ((inputRect.bottom - containerRect.top) + editorHeight > container.clientHeight && (inputRect.top - containerRect.top) > editorHeight) {
+        top = (inputRect.top - containerRect.top) + container.scrollTop - editorHeight - 4;
+      }
+
+      editor.style.left = `${Math.max(10, left)}px`;
+      editor.style.top = `${Math.max(10, top)}px`;
+      editor.classList.remove('hidden');
+
+      initDescFloatingEditorEvents();
+
+      setTimeout(() => {
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+      }, 50);
+    }
+
+    function closeDescFloatingEditor() {
+      const editor = document.getElementById('sheetDescFloatingEditor');
+      if (editor) editor.classList.add('hidden');
+    }
+
+    function initDescFloatingEditorEvents() {
+      const textarea = document.getElementById('sheetDescFloatingTextarea');
+      const charsBadge = document.getElementById('sheetDescFloatingChars');
+      if (textarea && !textarea._descEventsAttached) {
+        textarea._descEventsAttached = true;
+        textarea.addEventListener('input', function() {
+          const val = this.value;
+          if (charsBadge) charsBadge.innerText = `${val.length} characters`;
+          if (_activeDescInput) {
+            _activeDescInput.value = val;
+            _activeDescInput.title = `Click to view and edit full description (${val})`;
+          }
+          if (typeof _activeDescCourseIdx === 'number' && ALL_COURSES[_activeDescCourseIdx]) {
+            ALL_COURSES[_activeDescCourseIdx].desc = val;
+            onSheetCellChange(_activeDescCourseIdx, 'desc', val);
+          } else if (typeof _activeDescCourseIdx === 'string' && _activeDescCourseIdx.startsWith('empty_')) {
+            const r = parseInt(_activeDescCourseIdx.replace('empty_', ''), 10);
+            onEmptySheetCellChange(r, 'desc', val);
+          }
+        });
+
+        textarea.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            closeDescFloatingEditor();
+            if (_activeDescInput) _activeDescInput.focus();
+          }
+        });
+
+        document.addEventListener('mousedown', function(e) {
+          const editor = document.getElementById('sheetDescFloatingEditor');
+          if (!editor || editor.classList.contains('hidden')) return;
+          if (editor.contains(e.target) || (_activeDescInput && _activeDescInput.contains(e.target))) {
+            return;
+          }
+          closeDescFloatingEditor();
+        });
+      }
+    }
+
     function loadMoreExcelRows(count = 50) {
       excelGridTotalRows += count;
       renderSpreadsheetGrid();
@@ -5377,7 +5488,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (showGeneral) {
           html += `
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[380px]">
-            <input type="text" value="${(c.desc || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="selectExcelCell('DESC_${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'desc', this.value)" placeholder="Enter course description..." title="${(c.desc || '').replace(/"/g, '&quot;')}" class="w-full min-w-[360px] px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none truncate ${disClass}">
+            <div class="relative flex items-center group/desc">
+              <input type="text" id="descInput_${idx}" value="${(c.desc || '').replace(/"/g, '&quot;')}" ${disAttr} onfocus="openDescFloatingEditor(this, ${idx}, ${displayRow})" onclick="openDescFloatingEditor(this, ${idx}, ${displayRow})" onchange="onSheetCellChange(${idx}, 'desc', this.value)" placeholder="Enter course description..." title="Click to view and edit full description (${(c.desc || '').replace(/"/g, '&quot;')})" class="w-full min-w-[340px] px-1.5 py-0.5 text-xs text-slate-700 dark:text-slate-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none truncate cursor-pointer ${disClass}">
+              <button type="button" onclick="event.stopPropagation(); openDescFloatingEditor(document.getElementById('descInput_${idx}'), ${idx}, ${displayRow})" class="opacity-0 group-hover/desc:opacity-100 transition-opacity px-1 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xs shrink-0 cursor-pointer" title="Expand full description">⛶</button>
+            </div>
           </td>`;
         }
 
@@ -5474,7 +5588,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
               <input type="text" placeholder="" onfocus="selectExcelCell('B${r}', this)" onchange="onEmptySheetCellChange(${r}, 'title', this.value)" class="w-full min-w-[300px] px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[380px]">
-              <input type="text" placeholder="" onfocus="selectExcelCell('DESC_${r}', this)" onchange="onEmptySheetCellChange(${r}, 'desc', this.value)" class="w-full min-w-[360px] px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+              <div class="relative flex items-center group/desc">
+                <input type="text" id="descEmptyInput_${r}" placeholder="" onfocus="openDescFloatingEditor(this, 'empty_${r}', ${r})" onclick="openDescFloatingEditor(this, 'empty_${r}', ${r})" onchange="onEmptySheetCellChange(${r}, 'desc', this.value)" class="w-full min-w-[340px] px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none cursor-pointer">
+                <button type="button" onclick="event.stopPropagation(); openDescFloatingEditor(document.getElementById('descEmptyInput_${r}'), 'empty_${r}', ${r})" class="opacity-0 group-hover/desc:opacity-100 transition-opacity px-1 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xs shrink-0 cursor-pointer" title="Expand full description">⛶</button>
+              </div>
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 text-center min-w-[65px]">
               <input type="number" step="0.5" placeholder="" onfocus="selectExcelCell('C${r}', this)" onchange="onEmptySheetCellChange(${r}, 'units', this.value)" class="w-full min-w-[55px] text-center px-1 py-0.5 font-mono text-xs text-slate-800 dark:text-slate-100 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
@@ -6922,6 +7039,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.toggleAcademicSuiteDropdown = toggleAcademicSuiteDropdown;
     window.openIntegratedSpreadsheet = openIntegratedSpreadsheet;
     window.returnFromSpreadsheet = returnFromSpreadsheet;
+    window.openDescFloatingEditor = openDescFloatingEditor;
+    window.closeDescFloatingEditor = closeDescFloatingEditor;
     if (typeof switchRequisiteMode !== 'undefined') window.switchRequisiteMode = switchRequisiteMode;
     window.openCategoryManagerModal = openCategoryManagerModal;
     window.closeCategoryManagerModal = closeCategoryManagerModal;
