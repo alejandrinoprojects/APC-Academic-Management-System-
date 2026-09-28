@@ -3360,7 +3360,8 @@
             <div class="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 flex items-center gap-2 text-xs font-mono">
               <span id="regDocCellCoord" class="px-2 py-0.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-bold min-w-12 text-center shadow-2xs">A1</span>
               <span class="text-slate-400 font-bold select-none italic text-sm">fx</span>
-              <input type="text" id="regDocFormulaBar" readonly value="" placeholder="Select any cell to inspect or edit..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 px-2 py-0.5 text-slate-900 dark:text-slate-100 rounded-none outline-none" />
+              <input type="text" id="regDocFormulaBar" oninput="onRegistrarFormulaBarInput(this.value)" value="" placeholder="Select any cell to inspect or edit directly here or in the grid..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 px-2 py-0.5 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500" />
+              <span id="regDocEditStatus" class="text-emerald-600 dark:text-emerald-400 font-bold text-[11px] hidden whitespace-nowrap">✓ Live Edit Active</span>
             </div>
 
             <!-- Table Container Grid -->

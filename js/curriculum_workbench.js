@@ -3606,9 +3606,12 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
                         const coord = `${colLetter(cIdx)}${rowNum}`;
                         const isPassed = /passed|fully compliant|compliant \(exceeds\)/i.test(cell);
                         return `
-                          <td class="py-1 px-3 border-r border-slate-200 dark:border-slate-700 whitespace-nowrap font-mono text-xs text-slate-800 dark:text-slate-200 focus:bg-amber-100 dark:focus:bg-amber-950/40 outline-none"
+                          <td class="py-1 px-3 border-r border-slate-200 dark:border-slate-700 whitespace-nowrap font-mono text-xs text-slate-800 dark:text-slate-200 focus:bg-amber-100 dark:focus:bg-amber-950/40 outline-none cursor-text hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                              contenteditable="true"
                               tabindex="0"
+                              onfocus="inspectRegistrarSpreadsheetCell('${coord}', this)"
                               onclick="inspectRegistrarSpreadsheetCell('${coord}', this)"
+                              oninput="onRegistrarCellInput(this, '${coord}')"
                               data-coord="${coord}">
                             ${isPassed ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[10px] border border-emerald-300 dark:border-emerald-700">${cell}</span>` : cell}
                           </td>
@@ -3919,13 +3922,74 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
     }
 
+    let activeRegDocCellEl = null;
+    let activeRegDocCellCoord = null;
+
     function inspectRegistrarSpreadsheetCell(coord, cellEl) {
+      activeRegDocCellEl = cellEl;
+      activeRegDocCellCoord = coord;
       const coordEl = document.getElementById('regDocCellCoord');
       const formulaEl = document.getElementById('regDocFormulaBar');
       if (coordEl) coordEl.textContent = coord;
       if (formulaEl && cellEl) {
         formulaEl.value = cellEl.innerText.trim();
-        formulaEl.focus();
+      }
+      document.querySelectorAll('.reg-doc-grid-cell-active').forEach(el => {
+        el.classList.remove('reg-doc-grid-cell-active', 'ring-2', 'ring-emerald-500', 'bg-emerald-50/60', 'dark:bg-emerald-950/50');
+      });
+      if (cellEl) {
+        cellEl.classList.add('reg-doc-grid-cell-active', 'ring-2', 'ring-emerald-500', 'bg-emerald-50/60', 'dark:bg-emerald-950/50');
+      }
+    }
+
+    function onRegistrarFormulaBarInput(val) {
+      if (activeRegDocCellEl) {
+        activeRegDocCellEl.innerText = val;
+        syncRegistrarCellChange(activeRegDocCellEl, activeRegDocCellCoord, val);
+      }
+    }
+
+    function onRegistrarCellInput(cellEl, coord) {
+      activeRegDocCellEl = cellEl;
+      activeRegDocCellCoord = coord;
+      const formulaEl = document.getElementById('regDocFormulaBar');
+      if (formulaEl) formulaEl.value = cellEl.innerText.trim();
+      syncRegistrarCellChange(cellEl, coord, cellEl.innerText.trim());
+    }
+
+    function syncRegistrarCellChange(cellEl, coord, val) {
+      const row = cellEl.closest('tr');
+      if (!row) return;
+      const firstCell = row.querySelector('td:nth-child(2)');
+      const code = firstCell ? firstCell.innerText.trim().toUpperCase() : null;
+
+      if (code && typeof ALL_COURSES !== 'undefined') {
+        const c = ALL_COURSES.find(item => (item.code || '').toUpperCase() === code);
+        if (c) {
+          const colLtr = coord ? coord.charAt(0).toUpperCase() : '';
+          if (colLtr === 'A') c.code = val.trim().toUpperCase();
+          else if (colLtr === 'B') c.title = val.trim();
+          else if (colLtr === 'C') c.units = parseFloat(val) || c.units;
+          else if (colLtr === 'F') c.group = val.trim();
+          else if (colLtr === 'G') c.desc = val.trim();
+
+          sheetUnsavedEditsCount++;
+          const badge = document.getElementById('sheetUnsavedBadge');
+          if (badge) {
+            badge.classList.remove('hidden');
+            badge.innerText = `${sheetUnsavedEditsCount} unsaved`;
+          }
+        }
+      }
+
+      const statusEl = document.getElementById('regDocEditStatus');
+      if (statusEl) {
+        statusEl.classList.remove('hidden');
+        statusEl.innerText = '● Live edit synced';
+        clearTimeout(window._regDocStatusTimer);
+        window._regDocStatusTimer = setTimeout(() => {
+          statusEl.innerText = '✓ Live Edit Active';
+        }, 1500);
       }
     }
 
@@ -3933,6 +3997,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.renderRegistrarSpreadsheetGrid = renderRegistrarSpreadsheetGrid;
     window.filterRegistrarSpreadsheetRows = filterRegistrarSpreadsheetRows;
     window.inspectRegistrarSpreadsheetCell = inspectRegistrarSpreadsheetCell;
+    window.onRegistrarFormulaBarInput = onRegistrarFormulaBarInput;
+    window.onRegistrarCellInput = onRegistrarCellInput;
 
     window.switchRegistrarDocTab = switchRegistrarDocTab;
     window.navigateRegistrarDoc = navigateRegistrarDoc;
