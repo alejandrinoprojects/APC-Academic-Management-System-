@@ -7244,17 +7244,17 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         timestamp: '2026-09-22 09:15:42',
         user: 'Faculty 1',
         role: 'Faculty Member',
-        action: 'SYLLABUS_UPDATE',
-        actionLabel: 'Syllabus Updated',
+        action: 'COURSE_SPEC_UPDATE',
+        actionLabel: 'Course Spec Updated',
         badgeClass: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 border-indigo-300 dark:border-indigo-800',
         target: 'EMICROS',
-        targetType: 'Course Syllabus',
+        targetType: 'Course Specification',
         description: 'Updated Week 6–8 OBE Laboratory Modules for Embedded RISC-V Architecture',
         hash: 'b8c31e9a45f10287cd4a38910eb67184a203f1947e5812903bdca7819034ce91',
         diffs: [
           { field: 'moduleTopic', oldVal: 'x86 Microprocessor Architecture', newVal: 'Embedded RISC-V and ESP32 Microcontrollers' },
           { field: 'labAssessment', oldVal: 'Written Exam 2', newVal: 'Hands-on Hardware Breadboard Prototype Demo' },
-          { field: 'syllabusVersion', oldVal: 'v2.1 (Legacy)', newVal: 'v2.2-AY2026' }
+          { field: 'courseVersion', oldVal: 'v2.1 (Legacy)', newVal: 'v2.2-AY2026' }
         ]
       },
       {
