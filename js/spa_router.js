@@ -294,7 +294,13 @@
     try {
       if (isFile) {
         if (targetUrl === '/' || targetUrl === '/schools') {
-          // Keep root clean
+          if (window.location.hash) {
+            if (replace) {
+              window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            } else {
+              window.location.hash = '';
+            }
+          }
         } else {
           const currentHash = window.location.hash.slice(1);
           if (currentHash !== targetUrl) {

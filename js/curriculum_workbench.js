@@ -1514,9 +1514,18 @@
       }
 
       const topPill = document.getElementById('topBarPathPill');
-      if (topPill) topPill.innerText = `Schools > ${progInfo.schoolShort} > ${progCode} > ${isFaculty ? 'Faculty Workbench' : 'PD Workbench'}`;
+      const pText = `Schools > ${progInfo.schoolShort} > ${progCode} > ${isFaculty ? 'Faculty Workbench' : 'PD Workbench'}`;
+      if (topPill) topPill.innerText = pText;
 
       syncSidebarToCurrentPath(progInfo.schoolId, progCode, 'workbench');
+
+      recordNavigationStep({
+        type: 'program',
+        progCode: progCode,
+        schoolId: progInfo.schoolId,
+        targetView: 'homePdProgramView',
+        pathText: pText
+      });
 
       // Apply RBAC return-button visibility each time the workbench renders
       if (typeof updateRoleGatedButtons === 'function') updateRoleGatedButtons(currentActiveRole);
@@ -1968,6 +1977,12 @@
     window.handleSidebarSchoolClick = handleSidebarSchoolClick;
 
     function handleMicrosoftSSOLogin(roleKey = 'admin') {
+      if (_slowLoginTimeoutId) {
+        clearTimeout(_slowLoginTimeoutId);
+        _slowLoginTimeoutId = null;
+      }
+      resetLoginForm();
+
       const screen = document.getElementById('loginLandingScreen');
       window.ramsAuthenticated = true;
       window.ramsUserRole = roleKey;
@@ -1977,6 +1992,7 @@
       } catch (e) {}
 
       if (screen) {
+        screen.style.display = 'none';
         screen.classList.add('hidden');
       }
 
@@ -2005,7 +2021,7 @@
       if (progressBox) progressBox.classList.add('hidden');
       if (loginForm) loginForm.classList.remove('hidden');
       if (progressBar) progressBar.style.width = '25%';
-      if (progressText) progressText.innerText = 'Connecting to Microsoft Entra ID...';
+      if (progressText) progressText.innerText = 'Authenticating APC Credentials...';
       if (progressSub) progressSub.innerText = 'Verifying institutional credentials and clearances...';
     }
     window.resetLoginForm = resetLoginForm;
@@ -2025,18 +2041,18 @@
       if (loginForm) loginForm.classList.add('hidden');
       if (progressBox) progressBox.classList.remove('hidden');
 
-      // Stage 1: Connecting (0ms - 800ms)
+      // Stage 1: Authenticating (0ms - 800ms)
       if (progressBar) progressBar.style.width = '30%';
-      if (progressText) progressText.innerText = 'Connecting to Microsoft Entra ID...';
-      if (progressSub) progressSub.innerText = 'Contacting login.microsoftonline.com for institutional token...';
+      if (progressText) progressText.innerText = 'Authenticating APC Credentials...';
+      if (progressSub) progressSub.innerText = 'Verifying institutional account and security credentials...';
 
       if (_slowLoginTimeoutId) clearTimeout(_slowLoginTimeoutId);
 
       _slowLoginTimeoutId = setTimeout(() => {
-        // Stage 2: Token verification (800ms - 1700ms)
+        // Stage 2: Role & clearance verification (800ms - 1700ms)
         if (progressBar) progressBar.style.width = '70%';
-        if (progressText) progressText.innerText = 'Verifying OAuth 2.0 institutional token...';
-        if (progressSub) progressSub.innerText = 'Confirming APC academic directory roles and RBAC clearances...';
+        if (progressText) progressText.innerText = 'Checking Role & Authority Clearance...';
+        if (progressSub) progressSub.innerText = 'Confirming APC academic directory roles and RBAC permissions...';
 
         _slowLoginTimeoutId = setTimeout(() => {
           // Stage 3: Clearance Authorized (1700ms - 2300ms)
