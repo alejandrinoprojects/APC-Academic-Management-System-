@@ -172,6 +172,7 @@
         badgeBg: 'from-[#FF6B00] to-[#E55A00]',
         bannerGrad: 'from-[#16120e] via-[#2a1a12] to-[#0f0b08]',
         bannerIcon: '⚙️',
+        logoImage: 'assets/exd_soe_logo_crop.png',
         director: 'SOE Executive Director',
         archived: false,
         programs: [
@@ -282,8 +283,9 @@
         const bannerStyle = s.bannerImage 
           ? `style="background-image: url('${s.bannerImage}'); background-size: cover; background-position: center;"` 
           : '';
-        const logoImg = s.logoImage 
-          ? `<img src="${s.logoImage}" class="w-full h-full object-cover" alt="${s.name} Emblem" />` 
+        const effectiveLogo = s.logoImage || (s.id === 'soe' ? 'assets/exd_soe_logo_crop.png' : null);
+        const logoImg = effectiveLogo 
+          ? `<img src="${effectiveLogo}" class="w-full h-full object-contain p-1" alt="${s.name} Emblem" onerror="this.onerror=null; this.src='assets/card_emblem_ref.png';" />` 
           : null;
         const defaultTorchSvg = `<svg class="w-8 h-8 text-white" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <!-- Vector APC Torch & Signal Waves -->
@@ -313,7 +315,7 @@
           <!-- Overlapping Circular Vector Emblem with School Color Disc -->
           <div class="flex justify-center -mt-7 relative z-10">
             <div class="apc-circle-badge w-14 h-14 rounded-full bg-white p-1 shadow-lg border-2 ${s.badgeBorder} flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full rounded-full bg-gradient-to-br ${s.badgeBg} flex items-center justify-center shadow-inner overflow-hidden">
+              <div class="w-full h-full rounded-full ${effectiveLogo ? 'bg-white' : `bg-gradient-to-br ${s.badgeBg}`} flex items-center justify-center shadow-inner overflow-hidden">
                 ${logoImg || defaultTorchSvg}
               </div>
             </div>
@@ -2138,9 +2140,12 @@
         console.warn('Failed to parse saved custom schools:', err);
       }
 
-      // Safeguard: Ensure School of Engineering always has BSCpE active
+      // Safeguard: Ensure School of Engineering always has BSCpE active and official SOE logo
       const soeSchool = ACADEMIC_SCHOOLS_DATA.find(s => s.id === 'soe');
       if (soeSchool) {
+        if (!soeSchool.logoImage || soeSchool.logoImage.includes('card_emblem_ref')) {
+          soeSchool.logoImage = 'assets/exd_soe_logo_crop.png';
+        }
         if (!Array.isArray(soeSchool.programs) || !soeSchool.programs.length || !soeSchool.programs.some(p => (typeof p === 'object' ? p.code : p) === 'BSCpE')) {
           soeSchool.programs = [{ code: 'BSCpE', name: 'Bachelor of Science in Computer Engineering', archived: false }];
         }
@@ -2154,6 +2159,7 @@
           badgeBg: 'from-[#FF6B00] to-[#E55A00]',
           bannerGrad: 'from-[#16120e] via-[#2a1a12] to-[#0f0b08]',
           bannerIcon: '⚙️',
+          logoImage: 'assets/exd_soe_logo_crop.png',
           director: 'SOE Executive Director',
           archived: false,
           programs: [
