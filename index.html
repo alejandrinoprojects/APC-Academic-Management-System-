@@ -45,6 +45,7 @@
     };
   </script>
   <script src="js/theme_manager.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
   <link rel="stylesheet" href="css/apc_styles.css">
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
@@ -2240,12 +2241,12 @@
                   <div id="sheetMoreDropdown" class="hidden absolute left-0 mt-1 w-56 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl z-50 py-1 text-xs">
                     <div class="px-3 py-1 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Import &amp; Export</div>
                     <button type="button" onclick="sheetExportCSV(); toggleSheetMoreDropdown()" class="w-full text-left px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer">
-                      <svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                      <span>Export CSV</span>
+                      <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                      <span>Export Excel (.xlsx)</span>
                     </button>
                     <button type="button" onclick="document.getElementById('sheetCsvFileInput').click(); toggleSheetMoreDropdown()" class="w-full text-left px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer">
-                      <svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                      <span>Import CSV</span>
+                      <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                      <span>Import Excel (.xlsx)</span>
                     </button>
                     <button type="button" onclick="exportCurriculumJSON(); toggleSheetMoreDropdown()" class="w-full text-left px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 flex items-center gap-2 cursor-pointer">
                       <span class="text-slate-500 shrink-0">💾</span>
@@ -2269,7 +2270,7 @@
                   </div>
                 </div>
                 
-                <input type="file" id="sheetCsvFileInput" onchange="sheetImportCSV(event)" accept=".csv" class="hidden">
+                <input type="file" id="sheetCsvFileInput" onchange="sheetImportCSV(event)" accept=".xlsx,.xls" class="hidden">
                 <input type="file" id="importJsonInput" onchange="importCurriculumJSON(event)" accept=".json" class="hidden">
               </div>
 
@@ -2456,7 +2457,7 @@
                   <span>Mass Edit in Spreadsheet (OBE Grid)</span>
                 </button>
                 <button onclick="exportObeMatrixCSV()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-none border border-slate-300 transition">
-                  Export OBE Matrix (.csv)
+                  Export OBE Matrix (.xlsx)
                 </button>
               </div>
             </div>
@@ -3284,9 +3285,9 @@
                   <span>Print All 7</span>
                 </button>
 
-                <button type="button" onclick="exportCurrentDocAsSpreadsheet()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Export Current Document as CSV">
+                <button type="button" onclick="exportCurrentDocAsSpreadsheet()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-none border border-slate-300 dark:border-slate-600 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Export Current Document as Excel (.xlsx)">
                   <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                  <span>Export CSV</span>
+                  <span>Export Excel (.xlsx)</span>
                 </button>
               </div>
             </div>
@@ -3374,9 +3375,9 @@
                   <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">🔍</span>
                   <input type="text" id="regDocSpreadsheetSearchInput" oninput="filterRegistrarSpreadsheetRows(this.value)" placeholder="Filter active sheet rows..." class="pl-7 pr-3 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-none w-56 text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-mono" />
                 </div>
-                <button type="button" onclick="exportCurrentDocAsSpreadsheet()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-emerald-400 font-bold text-xs rounded-none border border-emerald-500/40 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Download this exact spreadsheet table as CSV">
+                <button type="button" onclick="exportCurrentDocAsSpreadsheet()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-emerald-400 font-bold text-xs rounded-none border border-emerald-500/40 transition flex items-center gap-1.5 shadow-xs cursor-pointer" title="Download this exact spreadsheet table as Excel (.xlsx)">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                  <span>Export Table CSV</span>
+                  <span>Export Table (.xlsx)</span>
                 </button>
               </div>
             </div>
@@ -3469,35 +3470,36 @@
   <!-- BATCH INGESTION MODAL DIALOG -->
   <!-- ========================================================================= -->
   <div id="batchModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-none max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
-          <span>📥 Batch Curriculum Spreadsheet Ingestion</span>
+    <div class="bg-white dark:bg-[#181D26] rounded-none max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+        <h3 class="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+          <span>📥 Batch Curriculum Excel Workbook Ingestion</span>
         </h3>
-        <button onclick="closeBatchModal()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+        <button onclick="closeBatchModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg">&times;</button>
       </div>
 
-      <div class="border-2 border-dashed border-slate-300 rounded-none p-7 text-center bg-slate-50 hover:bg-slate-100/60 transition cursor-pointer" onclick="simulateUpload()">
-        <div class="text-3xl mb-2">📁</div>
-        <p class="text-xs font-bold text-slate-800">Click to upload or drag and drop</p>
-        <p class="text-[11px] text-slate-500 mt-1">Accepts standardized Microsoft Excel (.xlsx) or CSV files</p>
-        <p class="text-[11px] text-amber-600 font-medium mt-2 font-mono">Template: Proposed_BS_CpE_Curriculum_2026_Final.xlsx</p>
-      </div>
+      <label class="block border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-none p-7 text-center bg-slate-50 dark:bg-[#10151E] hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition cursor-pointer">
+        <div class="text-3xl mb-2">📊</div>
+        <p class="text-xs font-bold text-slate-800 dark:text-slate-100">Click to upload or drag and drop Excel Workbook</p>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Accepts standardized Microsoft Excel (.xlsx, .xls) workbooks</p>
+        <p class="text-[11px] text-amber-600 dark:text-amber-400 font-medium mt-2 font-mono">Template: Proposed_BS_CpE_Curriculum_2026_Final_Registrars_Copy.xlsx</p>
+        <input type="file" accept=".xlsx,.xls" class="hidden" onchange="sheetImportCSV(event); simulateUpload()" />
+      </label>
 
       <!-- Upload Simulation Progress (hidden by default) -->
-      <div id="uploadProgress" class="hidden space-y-2 bg-slate-50 p-3 rounded-none border border-slate-200">
-        <div class="flex justify-between text-xs font-semibold text-slate-700">
-          <span>Validating 74 BSCpE Courses & Prerequisites...</span>
+      <div id="uploadProgress" class="hidden space-y-2 bg-slate-50 dark:bg-[#10151E] p-3 rounded-none border border-slate-200 dark:border-slate-700">
+        <div class="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-200">
+          <span>Validating Curriculum Excel Workbook &amp; Prerequisites...</span>
           <span id="progressPercent">100%</span>
         </div>
-        <div class="w-full bg-slate-200 rounded-none h-2 overflow-hidden">
+        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-none h-2 overflow-hidden">
           <div class="bg-emerald-500 h-2 rounded-none w-full"></div>
         </div>
-        <p class="text-[11px] text-emerald-700 font-medium">✓ 74 Courses Parsed • 0 Conflicts • 13 SOs Configured</p>
+        <p class="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">✓ Excel Workbook Parsed • 0 Conflicts • 13 SOs Configured</p>
       </div>
 
       <div class="flex justify-end space-x-2 pt-2">
-        <button onclick="closeBatchModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-none transition">Cancel</button>
+        <button onclick="closeBatchModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-none transition">Cancel</button>
         <button onclick="commitBatchUpload()" class="px-4 py-2 bg-apc-blue hover:bg-apc-navy text-white text-xs font-bold rounded-none shadow transition">Commit to Active Draft</button>
       </div>
     </div>
@@ -4545,14 +4547,14 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- ========================================================================= -->
   <!-- CREATE NEW CURRICULUM REVISION MODAL -->
   <!-- ========================================================================= -->
-  <div id="createCurriculumModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
+  <div id="createCurriculumModal" onclick="if(event.target === this) closeCreateCurriculumModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden max-h-[92vh]">
       <!-- Modal Header -->
-      <div class="bg-[#002855] text-white px-5 py-3.5 flex items-center justify-between border-b border-[#E5A823]/60">
+      <div class="bg-[#002855] dark:bg-[#10151E] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
           <span class="w-7 h-7 bg-[#E5A823] text-slate-950 font-black text-sm flex items-center justify-center rounded-none shadow-xs">✨</span>
           <div>
-            <h3 class="font-black text-sm tracking-wider uppercase text-white">Initialize New Curriculum Revision</h3>
+            <h3 class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Initialize New Curriculum Revision</h3>
             <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Degree Curriculum Setup</p>
           </div>
         </div>
@@ -4560,7 +4562,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       </div>
 
       <!-- Modal Body -->
-      <form onsubmit="submitCreateCurriculum(event)" class="p-5 space-y-4 text-xs">
+      <form onsubmit="submitCreateCurriculum(event)" class="p-5 space-y-4 text-xs overflow-y-auto">
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Target Degree Program</label>
           <select id="newCurricProgram" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823]">
@@ -4589,20 +4591,31 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         </div>
 
         <div>
-          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Baseline Template</label>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Baseline Source</label>
           <div class="space-y-2">
             <label class="flex items-start gap-2 p-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 cursor-pointer">
               <input type="radio" name="curricTemplate" value="clone" checked class="mt-0.5" />
               <div>
                 <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Clone Active Baseline (AY 2026–2030)</div>
-                <div class="text-[11px] text-slate-500">Duplicate courses, prerequisite links, and catalog mappings from active curriculum.</div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400">Duplicate courses, prerequisite links, and catalog mappings from active curriculum.</div>
               </div>
             </label>
             <label class="flex items-start gap-2 p-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 cursor-pointer">
               <input type="radio" name="curricTemplate" value="ched" class="mt-0.5" />
               <div>
                 <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Official CHED CMO 92 Baseline</div>
-                <div class="text-[11px] text-slate-500">Start with national standard minimum course requirement template.</div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400">Start with national standard minimum course requirement template.</div>
+              </div>
+            </label>
+            <label class="flex items-start gap-2 p-2.5 border border-emerald-300 dark:border-emerald-700/70 bg-emerald-50/40 dark:bg-emerald-950/20 cursor-pointer">
+              <input type="radio" name="curricTemplate" value="excel" id="curricTemplateExcelRadio" class="mt-0.5" />
+              <div class="w-full">
+                <div class="font-bold text-slate-900 dark:text-slate-100 text-xs flex items-center justify-between">
+                  <span>Upload Microsoft Excel Workbook (.xlsx, .xls)</span>
+                  <span class="px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-[9px] font-mono uppercase">Excel</span>
+                </div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400 mb-2">Import courses, units, prerequisites &amp; SO mappings directly from an Excel workbook.</div>
+                <input type="file" id="newCurricExcelFile" accept=".xlsx,.xls" onchange="document.getElementById('curricTemplateExcelRadio').checked = true; sheetImportCSV(event)" class="text-[11px] text-slate-700 dark:text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:border file:border-emerald-500/50 file:text-[10px] file:font-bold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 file:cursor-pointer" />
               </div>
             </label>
           </div>
@@ -4625,35 +4638,134 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- ========================================================================= -->
   <!-- ADD PROGRAM MODAL -->
   <!-- ========================================================================= -->
-  <div id="modalAddProgram" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
-      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/80">
+  <div id="modalAddProgram" onclick="if(event.target === this) closeAddProgramModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+      <!-- Header -->
+      <div class="bg-[#002855] dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
-          <span class="text-[#E5A823] font-bold text-base">&#10133;</span>
-          <h3 class="font-black text-sm tracking-wider text-[#002855] dark:text-white uppercase">Add Degree Program</h3>
+          <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black flex items-center justify-center text-sm">+</span>
+          <div>
+            <h3 class="font-black text-sm tracking-wider text-white uppercase" style="color: #ffffff !important;">Add Academic Degree Program</h3>
+            <p class="text-[11px] text-slate-300">Provision a new degree program, director, theme assets &amp; Excel curriculum</p>
+          </div>
         </div>
-        <button type="button" onclick="closeAddProgramModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <button type="button" onclick="closeAddProgramModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer leading-none">&times;</button>
       </div>
 
-      <form onsubmit="submitAddProgram(event)" class="p-6 space-y-4 text-xs">
-        <div>
-          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Academic School</label>
-          <select id="newProgSchool" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]">
-            <!-- Dynamically populated by openAddProgramModal -->
-          </select>
-        </div>
-        <div>
-          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code / Acronym</label>
-          <input type="text" id="newProgCode" placeholder="e.g. BSSE, BSMech, BSData" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]" />
-        </div>
-        <div>
-          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Full Degree Program Title</label>
-          <input type="text" id="newProgName" placeholder="e.g. Bachelor of Science in Software Engineering" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]" />
+      <!-- Form Body -->
+      <form onsubmit="submitAddProgram(event)" class="p-5 space-y-4 overflow-y-auto text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Academic School <span class="text-rose-500">*</span></label>
+            <select id="newProgSchool" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]">
+              <!-- Dynamically populated by openAddProgramModal -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code <span class="text-rose-500">*</span></label>
+            <input type="text" id="newProgCode" placeholder="e.g. BSSE, BSCS" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono font-bold uppercase outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
         </div>
 
-        <div class="pt-2 flex items-center justify-end space-x-2">
-          <button type="button" onclick="closeAddProgramModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold cursor-pointer border border-slate-300 dark:border-slate-700">Cancel</button>
-          <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase cursor-pointer shadow-xs">Add Degree Program</button>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Degree Prefix</label>
+            <select id="newProgPrefix" class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]">
+              <option value="Bachelor of Science in" selected>Bachelor of Science in</option>
+              <option value="Bachelor of Arts in">Bachelor of Arts in</option>
+              <option value="Bachelor of">Bachelor of</option>
+              <option value="Master of">Master of</option>
+              <option value="">Custom / Full Title Only</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Full Degree Program Title <span class="text-rose-500">*</span></label>
+            <input type="text" id="newProgName" placeholder="e.g. Bachelor of Science in Software Engineering" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Director <span class="text-rose-500">*</span></label>
+            <input type="text" id="newProgDirector" placeholder="e.g. Program Director" value="Program Director" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Theme Color (Hex)</label>
+              <div class="flex items-center space-x-1.5">
+                <input type="color" id="newProgColorPicker" value="#FF6B00" onchange="document.getElementById('newProgColor').value = this.value" class="w-8 h-8 bg-transparent border border-slate-300 dark:border-slate-700 cursor-pointer p-0 shrink-0" />
+                <input type="text" id="newProgColor" value="#FF6B00" oninput="if(/^#[0-9A-Fa-f]{6}$/.test(this.value)) document.getElementById('newProgColorPicker').value = this.value" class="w-full px-2 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-[11px] outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Icon / Badge</label>
+              <input type="text" id="newProgIcon" value="💻" placeholder="e.g. 💻, ⚙️, &lt;/&gt;" class="w-full px-2.5 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-center outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo / Banner Upload Section -->
+        <div class="border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-[#10151E] p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[#002855] dark:text-[#E5A823] uppercase tracking-wider text-[11px]">📸 Program Banner &amp; Graphic Assets</span>
+            <span class="text-[10px] text-slate-500 font-mono">Optional Custom Card Banner</span>
+          </div>
+          <div class="flex items-center justify-between gap-2 bg-white dark:bg-[#181D26] p-2.5 border border-slate-200 dark:border-slate-800">
+            <div class="truncate">
+              <div class="font-bold text-slate-800 dark:text-slate-200 text-[11px]">Program Card Banner Photo</div>
+              <div id="addProgBannerPreview" class="text-[10px] text-slate-500 truncate">Default: Geometric vector circuit theme</div>
+            </div>
+            <div class="flex items-center space-x-1.5 shrink-0">
+              <label class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-amber-400 border border-slate-300 dark:border-slate-600 font-bold text-[10px] cursor-pointer transition">
+                Upload
+                <input type="file" id="addProgBannerFile" accept="image/*" class="hidden" onchange="handleAddProgramBannerUpload(event)" />
+              </label>
+              <button type="button" onclick="clearAddProgramBanner()" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/50 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60 text-[10px] cursor-pointer" title="Reset to Default Vector">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curriculum Excel (.xlsx / .xls) Initialization Section -->
+        <div class="border border-emerald-300 dark:border-emerald-700/70 bg-emerald-50/40 dark:bg-emerald-950/20 p-3.5 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="text-sm">📊</span>
+              <span class="font-bold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider text-[11px]">Curriculum Workbook Initialization (Microsoft Excel)</span>
+            </div>
+            <a href="assets/Proposed_BS_CpE_Curriculum_2026_Final_Registrars_Copy.xlsx" download="APC_Curriculum_Template_2026.xlsx" class="text-[10px] font-mono font-bold text-[#002855] dark:text-[#E5A823] underline hover:opacity-80">
+              ⬇ Download .xlsx Template
+            </a>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[10px]">Initial Curriculum AY (Start)</label>
+              <input type="number" id="newProgStartYear" value="2026" min="2020" max="2035" class="w-full px-2.5 py-1.5 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            </div>
+            <div>
+              <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[10px]">Initial Curriculum AY (End)</label>
+              <input type="number" id="newProgEndYear" value="2030" min="2024" max="2040" class="w-full px-2.5 py-1.5 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-[#181D26] p-3 border border-emerald-200 dark:border-slate-800 flex items-center justify-between gap-2">
+            <div class="truncate">
+              <div class="font-bold text-slate-800 dark:text-slate-200 text-[11px]">Curriculum Master Excel File (.xlsx, .xls)</div>
+              <div id="addProgExcelPreview" class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Default: Initialize with standard APC 2026–2030 Excel baseline</div>
+            </div>
+            <div class="flex items-center space-x-1.5 shrink-0">
+              <label class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] cursor-pointer transition shadow-2xs">
+                Upload Excel (.xlsx)
+                <input type="file" id="newProgExcelFile" accept=".xlsx,.xls" class="hidden" onchange="handleAddProgramExcelUpload(event)" />
+              </label>
+              <button type="button" onclick="clearAddProgramExcel()" class="px-2 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 text-[10px] cursor-pointer">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-end space-x-2 shrink-0">
+          <button type="button" onclick="closeAddProgramModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-300 font-bold cursor-pointer transition">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-[#002855] hover:bg-[#003875] dark:bg-[#E5A823] dark:hover:bg-amber-400 text-[#E5A823] dark:text-slate-950 font-black tracking-wider uppercase cursor-pointer shadow-sm border border-[#E5A823] transition">Add Degree Program</button>
         </div>
       </form>
     </div>
@@ -4662,35 +4774,81 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- ========================================================================= -->
   <!-- EDIT DEGREE PROGRAM & DIRECTOR MODAL -->
   <!-- ========================================================================= -->
-  <div id="modalEditProgram" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
-      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/80">
+  <div id="modalEditProgram" onclick="if(event.target === this) closeEditProgramModal()" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+      <div class="bg-[#002855] dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
-          <span class="text-[#E5A823] font-bold text-base">✎</span>
-          <h3 id="editProgramModalTitle" class="font-black text-sm tracking-wider text-[#002855] dark:text-white uppercase">Edit Program &amp; Director</h3>
+          <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black flex items-center justify-center text-sm">✎</span>
+          <div>
+            <h3 id="editProgramModalTitle" class="font-black text-sm tracking-wider text-white uppercase" style="color: #ffffff !important;">Edit Program &amp; Director</h3>
+            <p class="text-[11px] text-slate-300">Modify program metadata, director assignment, theme assets &amp; Excel curriculum</p>
+          </div>
         </div>
-        <button type="button" onclick="closeEditProgramModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <button type="button" onclick="closeEditProgramModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer leading-none">&times;</button>
       </div>
 
-      <form onsubmit="submitEditProgram(event)" class="p-6 space-y-4 text-xs">
+      <form onsubmit="submitEditProgram(event)" class="p-5 space-y-4 overflow-y-auto text-xs">
         <input type="hidden" id="editProgOriginalCode" value="" />
-        <div>
-          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code</label>
-          <input type="text" id="editProgCode" readonly class="w-full px-3 py-2 bg-slate-100 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-amber-700 dark:text-amber-400 font-mono font-bold outline-none cursor-not-allowed opacity-80" />
-        </div>
-        <div>
-          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Degree Program Title</label>
-          <input type="text" id="editProgName" placeholder="e.g. Bachelor of Science in Computer Engineering" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]" />
-        </div>
-        <div>
-          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Director</label>
-          <input type="text" id="editProgDirector" placeholder="e.g. Program Director" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823]" />
-          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Changing the director updates the card display, executive overview, and PD Workbench headers.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Code</label>
+            <input type="text" id="editProgCode" readonly class="w-full px-3 py-2 bg-slate-100 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-amber-700 dark:text-amber-400 font-mono font-bold outline-none cursor-not-allowed opacity-80" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Degree Program Title <span class="text-rose-500">*</span></label>
+            <input type="text" id="editProgName" placeholder="e.g. Bachelor of Science in Computer Engineering" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
         </div>
 
-        <div class="pt-2 flex items-center justify-end space-x-2">
-          <button type="button" onclick="closeEditProgramModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold cursor-pointer border border-slate-300 dark:border-slate-700">Cancel</button>
-          <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase cursor-pointer shadow-xs">Save Changes</button>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Program Director <span class="text-rose-500">*</span></label>
+            <input type="text" id="editProgDirector" placeholder="e.g. Program Director" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Theme Color (Hex)</label>
+              <div class="flex items-center space-x-1.5">
+                <input type="color" id="editProgColorPicker" value="#FF6B00" onchange="document.getElementById('editProgColor').value = this.value" class="w-8 h-8 bg-transparent border border-slate-300 dark:border-slate-700 cursor-pointer p-0 shrink-0" />
+                <input type="text" id="editProgColor" value="#FF6B00" oninput="if(/^#[0-9A-Fa-f]{6}$/.test(this.value)) document.getElementById('editProgColorPicker').value = this.value" class="w-full px-2 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-[11px] outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Icon / Badge</label>
+              <input type="text" id="editProgIcon" value="💻" placeholder="e.g. 💻, ⚙️, &lt;/&gt;" class="w-full px-2.5 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-center outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Curriculum Excel (.xlsx / .xls) Import / Sync Section -->
+        <div class="border border-emerald-300 dark:border-emerald-700/70 bg-emerald-50/40 dark:bg-emerald-950/20 p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider text-[11px]">📊 Curriculum Excel Workbook (.xlsx, .xls)</span>
+            <a href="assets/Proposed_BS_CpE_Curriculum_2026_Final_Registrars_Copy.xlsx" download="APC_Curriculum_Template_2026.xlsx" class="text-[10px] font-mono font-bold text-[#002855] dark:text-[#E5A823] underline hover:opacity-80">
+              ⬇ Download .xlsx Template
+            </a>
+          </div>
+          <div class="bg-white dark:bg-[#181D26] p-2.5 border border-emerald-200 dark:border-slate-800 flex items-center justify-between gap-2">
+            <div class="truncate">
+              <div class="font-bold text-slate-800 dark:text-slate-200 text-[11px]">Import / Replace Curriculum from Excel</div>
+              <div id="editProgExcelPreview" class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Upload a Microsoft Excel (.xlsx, .xls) file to update program courses</div>
+            </div>
+            <label class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] cursor-pointer transition shrink-0 shadow-2xs">
+              Upload Excel (.xlsx)
+              <input type="file" id="editProgExcelFile" accept=".xlsx,.xls" class="hidden" onchange="handleEditProgramExcelUpload(event)" />
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between shrink-0">
+          <button type="button" onclick="const code = document.getElementById('editProgOriginalCode')?.value; if(code) { closeEditProgramModal(); deleteProgram(code); }" class="px-3 py-2 bg-rose-50 hover:bg-rose-600 dark:bg-rose-950/60 dark:hover:bg-rose-600 text-rose-600 dark:text-rose-300 hover:text-white font-bold border border-rose-300 dark:border-rose-700/60 cursor-pointer transition flex items-center space-x-1">
+            <span>🗑</span>
+            <span>Delete Program</span>
+          </button>
+          <div class="flex items-center space-x-2">
+            <button type="button" onclick="closeEditProgramModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-300 font-bold cursor-pointer transition">Cancel</button>
+            <button type="submit" class="px-5 py-2 bg-[#002855] hover:bg-[#003875] dark:bg-[#E5A823] dark:hover:bg-amber-400 text-[#E5A823] dark:text-slate-950 font-black tracking-wider uppercase cursor-pointer shadow-sm border border-[#E5A823] transition">Save Changes</button>
+          </div>
         </div>
       </form>
     </div>
@@ -4699,33 +4857,102 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- ========================================================================= -->
   <!-- ADD SCHOOL MODAL -->
   <!-- ========================================================================= -->
-  <div id="modalAddSchool" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden">
-      <div class="bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-700/80">
+  <div id="modalAddSchool" onclick="if(event.target === this) closeAddSchoolModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+      <!-- Header -->
+      <div class="bg-[#002855] dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
-          <span class="text-[#E5A823] font-bold text-base">&#10133;</span>
-          <h3 class="font-black text-sm tracking-wider text-white uppercase">Add Academic School / Division</h3>
+          <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black flex items-center justify-center text-sm">+</span>
+          <div>
+            <h3 class="font-black text-sm tracking-wider text-white uppercase" style="color: #ffffff !important;">Add Academic School / Division</h3>
+            <p class="text-[11px] text-slate-300">Provision a new school, executive director, theme assets &amp; degree programs</p>
+          </div>
         </div>
-        <button type="button" onclick="closeAddSchoolModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <button type="button" onclick="closeAddSchoolModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer leading-none">&times;</button>
       </div>
 
-      <form onsubmit="submitAddSchool(event)" class="p-6 space-y-4 text-xs">
-        <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">School Name</label>
-          <input type="text" id="newSchoolName" placeholder="e.g. SCHOOL OF DIPLOMACY & LAW" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
-        </div>
-        <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Executive Director Name</label>
-          <input type="text" id="newSchoolDirector" placeholder="e.g. Executive Director" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
-        </div>
-        <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Programs Offered (Comma separated)</label>
-          <input type="text" id="newSchoolPrograms" placeholder="e.g. Bachelor of Arts in Foreign Service, BS Legal Management" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+      <!-- Form Body -->
+      <form onsubmit="submitAddSchool(event)" class="p-6 space-y-4 text-xs overflow-y-auto flex-1">
+        <!-- School Name & Banner Prefix -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Banner Prefix</label>
+            <input type="text" id="newSchoolBannerTitle" value="SCHOOL OF" placeholder="SCHOOL OF" class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">School Name <span class="text-rose-500">*</span></label>
+            <input type="text" id="newSchoolName" placeholder="e.g. COMPUTING &amp; INFORMATION TECHNOLOGIES" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
         </div>
 
-        <div class="pt-2 flex items-center justify-end space-x-2">
-          <button type="button" onclick="closeAddSchoolModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">Cancel</button>
-          <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase">Provision School</button>
+        <!-- Executive Director Name -->
+        <div>
+          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Executive Director <span class="text-rose-500">*</span></label>
+          <input type="text" id="newSchoolDirector" placeholder="e.g. SoCIT Executive Director" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+        </div>
+
+        <!-- Theme Color & Icon -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Theme Color (Hex)</label>
+            <div class="flex items-center gap-2">
+              <input type="color" id="newSchoolColorPicker" value="#00A4EF" onchange="document.getElementById('newSchoolColor').value = this.value" class="w-9 h-9 p-0.5 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 cursor-pointer shrink-0" />
+              <input type="text" id="newSchoolColor" value="#00A4EF" onchange="document.getElementById('newSchoolColorPicker').value = this.value" class="flex-1 px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Icon / Symbol</label>
+            <input type="text" id="newSchoolIcon" value="🏛️" placeholder="e.g. ⚙️, 💻, 🎨, 🏛️" class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
+          </div>
+        </div>
+
+        <!-- Photos & Graphic Assets (Banner and Logo) -->
+        <div class="border border-slate-300 dark:border-slate-700/80 bg-slate-50 dark:bg-[#10151E] p-3.5 space-y-3">
+          <label class="block text-slate-800 dark:text-slate-200 font-bold uppercase tracking-wider">Photos &amp; Graphic Assets</label>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Banner Image Upload -->
+            <div class="space-y-1.5">
+              <span class="text-[11px] text-slate-600 dark:text-slate-400 font-medium block">Header Banner Photo:</span>
+              <div class="flex items-center gap-2">
+                <input type="file" id="newSchoolBannerFile" accept="image/*" class="hidden" onchange="handleAddSchoolImageUpload(event, 'banner')" />
+                <button type="button" onclick="document.getElementById('newSchoolBannerFile').click()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs">
+                  <span>📁</span> Upload Banner
+                </button>
+                <button type="button" onclick="clearAddSchoolImage('banner')" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 dark:bg-red-950/60 dark:hover:bg-red-900 border border-rose-300 dark:border-red-700/60 text-rose-700 dark:text-red-300 text-xs font-semibold transition cursor-pointer" title="Reset to geometric vector pattern">Reset</button>
+              </div>
+              <div id="newSchoolBannerPreview" class="text-[11px] text-slate-500 dark:text-slate-400 italic truncate max-w-[220px]">Geometric vector pattern</div>
+            </div>
+
+            <!-- Circular Logo Image Upload -->
+            <div class="space-y-1.5">
+              <span class="text-[11px] text-slate-600 dark:text-slate-400 font-medium block">Center Emblem / Seal:</span>
+              <div class="flex items-center gap-2">
+                <input type="file" id="newSchoolLogoFile" accept="image/*" class="hidden" onchange="handleAddSchoolImageUpload(event, 'logo')" />
+                <button type="button" onclick="document.getElementById('newSchoolLogoFile').click()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs">
+                  <span>📁</span> Upload Emblem
+                </button>
+                <button type="button" onclick="clearAddSchoolImage('logo')" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 dark:bg-red-950/60 dark:hover:bg-red-900 border border-rose-300 dark:border-red-700/60 text-rose-700 dark:text-red-300 text-xs font-semibold transition cursor-pointer" title="Reset to APC vector badge">Reset</button>
+              </div>
+              <div id="newSchoolLogoPreview" class="text-[11px] text-slate-500 dark:text-slate-400 italic truncate max-w-[220px]">APC circular vector seal</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Programs Offered Editor -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-slate-700 dark:text-slate-300 font-bold uppercase tracking-wider">Programs Offered (One per line: CODE: Full Title) <span class="text-rose-500">*</span></label>
+            <span class="text-[11px] text-amber-600 dark:text-amber-400 font-mono font-semibold">Hyperlinks auto-generated</span>
+          </div>
+          <textarea id="newSchoolPrograms" rows="4" required class="w-full p-2.5 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823] leading-relaxed" placeholder="BSCS: Bachelor of Science in Computer Science&#10;BSIT: Bachelor of Science in Information Technology"></textarea>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Example format: <code class="text-[#002855] dark:text-amber-300 font-mono font-bold">BSCS: Bachelor of Science in Computer Science</code>. Each line becomes a direct program link on the school card.</p>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeAddSchoolModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-300 font-bold cursor-pointer transition">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-[#002855] hover:bg-[#003875] dark:bg-[#E5A823] dark:hover:bg-amber-400 text-[#E5A823] dark:text-slate-950 font-black tracking-wider uppercase cursor-pointer shadow-sm border border-[#E5A823] transition">Provision School</button>
         </div>
       </form>
     </div>
@@ -4734,83 +4961,83 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- ========================================================================= -->
   <!-- EDIT SCHOOL MODAL -->
   <!-- ========================================================================= -->
-  <div id="modalEditSchool" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+  <div id="modalEditSchool" onclick="if(event.target === this) closeEditSchoolModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
       <!-- Header -->
-      <div class="bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-700/80">
+      <div class="bg-[#002855] dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
-          <span class="text-[#E5A823] font-bold text-base">✎</span>
-          <h3 id="editSchoolModalTitle" class="font-black text-sm tracking-wider text-white uppercase">Edit School &amp; Programs</h3>
+          <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black flex items-center justify-center text-sm">✎</span>
+          <h3 id="editSchoolModalTitle" class="font-black text-sm tracking-wider text-white uppercase" style="color: #ffffff !important;">Edit School &amp; Programs</h3>
         </div>
-        <button type="button" onclick="closeEditSchoolModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <button type="button" onclick="closeEditSchoolModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer leading-none">&times;</button>
       </div>
 
       <!-- Form Body -->
-      <form onsubmit="submitEditSchool(event)" class="p-6 space-y-4 text-xs overflow-y-auto">
+      <form onsubmit="submitEditSchool(event)" class="p-6 space-y-4 text-xs overflow-y-auto flex-1">
         <input type="hidden" id="editSchoolId" value="" />
 
         <!-- School Name Display -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Banner Prefix</label>
-            <input type="text" id="editSchoolBannerTitle" value="SCHOOL OF" class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Banner Prefix</label>
+            <input type="text" id="editSchoolBannerTitle" value="SCHOOL OF" class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
           </div>
-          <div>
-            <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">School Name</label>
-            <input type="text" id="editSchoolName" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+          <div class="sm:col-span-2">
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">School Name</label>
+            <input type="text" id="editSchoolName" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
           </div>
         </div>
 
         <!-- Executive Director Name -->
         <div>
-          <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Executive Director</label>
-          <input type="text" id="editSchoolDirector" required class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+          <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Executive Director</label>
+          <input type="text" id="editSchoolDirector" required class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
         </div>
 
         <!-- Theme Color & Badges -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Theme Color (Hex)</label>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Theme Color (Hex)</label>
             <div class="flex items-center gap-2">
-              <input type="color" id="editSchoolColorPicker" onchange="document.getElementById('editSchoolColor').value = this.value" class="w-9 h-9 p-0.5 bg-[#10151E] border border-slate-700 cursor-pointer" />
-              <input type="text" id="editSchoolColor" onchange="document.getElementById('editSchoolColorPicker').value = this.value" class="flex-1 px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 font-mono outline-none focus:border-[#E5A823]" />
+              <input type="color" id="editSchoolColorPicker" onchange="document.getElementById('editSchoolColor').value = this.value" class="w-9 h-9 p-0.5 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 cursor-pointer shrink-0" />
+              <input type="text" id="editSchoolColor" onchange="document.getElementById('editSchoolColorPicker').value = this.value" class="flex-1 px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
             </div>
           </div>
           <div>
-            <label class="block text-slate-300 font-bold mb-1 uppercase tracking-wider">Icon / Symbol</label>
-            <input type="text" id="editSchoolIcon" placeholder="e.g. ⚙️, 💻, 🎨" class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-100 outline-none focus:border-[#E5A823]" />
+            <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider">Icon / Symbol</label>
+            <input type="text" id="editSchoolIcon" placeholder="e.g. ⚙️, 💻, 🎨" class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
           </div>
         </div>
 
         <!-- Photos & Image Assets (Banner and Logo) -->
-        <div class="border border-slate-700/80 bg-[#10151E]/60 p-3 space-y-3">
-          <label class="block text-slate-200 font-bold uppercase tracking-wider">Photos &amp; Graphic Assets</label>
+        <div class="border border-slate-300 dark:border-slate-700/80 bg-slate-50 dark:bg-[#10151E] p-3.5 space-y-3">
+          <label class="block text-slate-800 dark:text-slate-200 font-bold uppercase tracking-wider">Photos &amp; Graphic Assets</label>
           
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <!-- Banner Image Upload -->
             <div class="space-y-1.5">
-              <span class="text-[11px] text-slate-400 font-medium">Header Banner Photo:</span>
+              <span class="text-[11px] text-slate-600 dark:text-slate-400 font-medium block">Header Banner Photo:</span>
               <div class="flex items-center gap-2">
                 <input type="file" id="editSchoolBannerFile" accept="image/*" class="hidden" onchange="handleModalImageUpload(event, 'banner')" />
-                <button type="button" onclick="document.getElementById('editSchoolBannerFile').click()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+                <button type="button" onclick="document.getElementById('editSchoolBannerFile').click()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs">
                   <span>📁</span> Upload Banner
                 </button>
-                <button type="button" onclick="clearModalImage('banner')" class="px-2 py-1.5 bg-red-950/60 hover:bg-red-900 border border-red-700/60 text-red-300 text-xs transition" title="Reset to geometric vector pattern">Reset</button>
+                <button type="button" onclick="clearModalImage('banner')" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 dark:bg-red-950/60 dark:hover:bg-red-900 border border-rose-300 dark:border-red-700/60 text-rose-700 dark:text-red-300 text-xs font-semibold transition cursor-pointer" title="Reset to geometric vector pattern">Reset</button>
               </div>
-              <div id="editSchoolBannerPreview" class="text-[11px] text-slate-400 italic truncate max-w-[200px]">Geometric vector pattern</div>
+              <div id="editSchoolBannerPreview" class="text-[11px] text-slate-500 dark:text-slate-400 italic truncate max-w-[220px]">Geometric vector pattern</div>
             </div>
 
             <!-- Circular Logo Image Upload -->
             <div class="space-y-1.5">
-              <span class="text-[11px] text-slate-400 font-medium">Center Emblem / Seal:</span>
+              <span class="text-[11px] text-slate-600 dark:text-slate-400 font-medium block">Center Emblem / Seal:</span>
               <div class="flex items-center gap-2">
                 <input type="file" id="editSchoolLogoFile" accept="image/*" class="hidden" onchange="handleModalImageUpload(event, 'logo')" />
-                <button type="button" onclick="document.getElementById('editSchoolLogoFile').click()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+                <button type="button" onclick="document.getElementById('editSchoolLogoFile').click()" class="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs">
                   <span>📁</span> Upload Emblem
                 </button>
-                <button type="button" onclick="clearModalImage('logo')" class="px-2 py-1.5 bg-red-950/60 hover:bg-red-900 border border-red-700/60 text-red-300 text-xs transition" title="Reset to APC vector badge">Reset</button>
+                <button type="button" onclick="clearModalImage('logo')" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 dark:bg-red-950/60 dark:hover:bg-red-900 border border-rose-300 dark:border-red-700/60 text-rose-700 dark:text-red-300 text-xs font-semibold transition cursor-pointer" title="Reset to APC vector badge">Reset</button>
               </div>
-              <div id="editSchoolLogoPreview" class="text-[11px] text-slate-400 italic truncate max-w-[200px]">APC circular vector seal</div>
+              <div id="editSchoolLogoPreview" class="text-[11px] text-slate-500 dark:text-slate-400 italic truncate max-w-[220px]">APC circular vector seal</div>
             </div>
           </div>
         </div>
@@ -4818,22 +5045,22 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <!-- Programs Offered Editor -->
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label class="block text-slate-300 font-bold uppercase tracking-wider">Programs Offered (One per line: CODE: Full Title or Full Title)</label>
-            <span class="text-[11px] text-amber-400/90 font-mono">Hyperlinks auto-generated</span>
+            <label class="block text-slate-700 dark:text-slate-300 font-bold uppercase tracking-wider">Programs Offered (One per line: CODE: Full Title or Full Title)</label>
+            <span class="text-[11px] text-amber-600 dark:text-amber-400 font-mono font-semibold">Hyperlinks auto-generated</span>
           </div>
-          <textarea id="editSchoolPrograms" rows="4" required class="w-full p-2.5 bg-[#10151E] border border-slate-700 text-slate-100 font-mono text-xs outline-none focus:border-[#E5A823] leading-relaxed" placeholder="BSCpE: Bachelor of Science in Computer Engineering&#10;BSCE: Bachelor of Science in Civil Engineering&#10;BSECE: Bachelor of Science in Electronics Engineering"></textarea>
-          <p class="text-[11px] text-slate-400 mt-1">Example format: <code class="text-amber-300 font-mono">BSCS: Bachelor of Science in Computer Science</code>. Each line becomes an instant navigation hyperlink on the card.</p>
+          <textarea id="editSchoolPrograms" rows="4" required class="w-full p-2.5 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823] leading-relaxed" placeholder="BSCpE: Bachelor of Science in Computer Engineering&#10;BSCE: Bachelor of Science in Civil Engineering&#10;BSECE: Bachelor of Science in Electronics Engineering"></textarea>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Example format: <code class="text-[#002855] dark:text-amber-300 font-mono font-bold">BSCS: Bachelor of Science in Computer Science</code>. Each line becomes an instant navigation hyperlink on the card.</p>
         </div>
 
         <!-- Modal Actions: Delete option + Cancel + Save -->
-        <div class="pt-3 border-t border-slate-700/80 flex items-center justify-between">
-          <button type="button" onclick="deleteCurrentSchool()" class="px-3.5 py-1.5 bg-red-950/60 hover:bg-red-900 border border-red-700 text-red-300 hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer" title="Permanently delete this school and its programs">
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+          <button type="button" onclick="deleteCurrentSchool()" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-red-950/60 dark:hover:bg-red-900 border border-rose-300 dark:border-red-700 text-rose-700 dark:text-red-300 hover:text-rose-900 dark:hover:text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer" title="Permanently delete this school and its programs">
             <span>🗑</span>
             <span>Delete School</span>
           </button>
           <div class="flex items-center space-x-2">
-            <button type="button" onclick="closeEditSchoolModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold cursor-pointer">Cancel</button>
-            <button type="submit" class="px-4 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-black tracking-wider uppercase cursor-pointer">Save Changes</button>
+            <button type="button" onclick="closeEditSchoolModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-300 font-bold cursor-pointer transition">Cancel</button>
+            <button type="submit" class="px-5 py-2 bg-[#002855] hover:bg-[#003875] dark:bg-[#E5A823] dark:hover:bg-amber-400 text-[#E5A823] dark:text-slate-950 font-black tracking-wider uppercase cursor-pointer shadow-sm border border-[#E5A823] transition">Save Changes</button>
           </div>
         </div>
       </form>

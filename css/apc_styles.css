@@ -1204,7 +1204,9 @@
       color: #0f172a !important;
     }
     html:not(.dark) #modalAddSchool input,
+    html:not(.dark) #modalAddSchool textarea,
     html:not(.dark) #modalEditSchool input,
+    html:not(.dark) #modalEditSchool textarea,
     html:not(.dark) #modalAddProgram input,
     html:not(.dark) #modalAddProgram select,
     html:not(.dark) #modalEditProgram input,

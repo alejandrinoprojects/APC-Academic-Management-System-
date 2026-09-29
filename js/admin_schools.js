@@ -259,11 +259,13 @@
 
       function getSchoolProgramsHtml(programs) {
         let activeHtml = '';
+        if (!Array.isArray(programs)) return activeHtml;
         for (let pi = 0; pi < programs.length; pi++) {
+          const item = programs[pi];
           const prog = (typeof item === 'object' && item !== null)
             ? item 
             : (typeof getProgramInfo === 'function' ? getProgramInfo(item) : { code: String(item), name: (String(item) === 'BSCpE' ? 'Bachelor of Science in Computer Engineering' : String(item)) });
-          if (prog.code === 'BSCpE') {
+          if (!prog.archived) {
             activeHtml += '<a href="javascript:void(0)" onclick="event.stopPropagation(); selectProgram(\'' + prog.code + '\', \'homePdProgramView\')" class="text-slate-900 dark:text-slate-200 hover:text-[#002855] dark:hover:text-[#E5A823] hover:underline transition flex items-center justify-between group cursor-pointer" title="Go to ' + prog.name + ' (' + prog.code + ')">' +
               '<span class="flex items-center gap-1.5 truncate">' +
                 '<span class="text-amber-500 dark:text-amber-400 font-bold group-hover:translate-x-0.5 transition-transform">&bull;</span> ' +
@@ -350,7 +352,7 @@
         `;
       }
 
-      const activeSchools = visibleSchools.filter(s => !s.archived && s.id === 'soe');
+      const activeSchools = visibleSchools.filter(s => !s.archived);
       const activeHtml = activeSchools.map((s, idx) => renderSingleSchoolCard(s, idx, false)).join('');
 
       container.innerHTML = activeHtml + addSchoolCardHtml;
@@ -743,8 +745,41 @@
       }
     }
 
+    let addModalTempBanner = null;
+    let addModalTempLogo = null;
+
     function openAddSchoolModal() {
       const modal = document.getElementById('modalAddSchool');
+      addModalTempBanner = null;
+      addModalTempLogo = null;
+
+      const prefixEl = document.getElementById('newSchoolBannerTitle');
+      const nameEl = document.getElementById('newSchoolName');
+      const dirEl = document.getElementById('newSchoolDirector');
+      const colEl = document.getElementById('newSchoolColor');
+      const pickEl = document.getElementById('newSchoolColorPicker');
+      const iconEl = document.getElementById('newSchoolIcon');
+      const progsEl = document.getElementById('newSchoolPrograms');
+      const previewBanner = document.getElementById('newSchoolBannerPreview');
+      const previewLogo = document.getElementById('newSchoolLogoPreview');
+      const bannerFile = document.getElementById('newSchoolBannerFile');
+      const logoFile = document.getElementById('newSchoolLogoFile');
+
+      const defaultColors = ['#00A4EF', '#10B981', '#F59E0B', '#A855F7', '#EF4444', '#6366F1'];
+      const nextColor = defaultColors[ACADEMIC_SCHOOLS_DATA.length % defaultColors.length];
+
+      if (prefixEl) prefixEl.value = 'SCHOOL OF';
+      if (nameEl) nameEl.value = '';
+      if (dirEl) dirEl.value = '';
+      if (colEl) colEl.value = nextColor;
+      if (pickEl) pickEl.value = nextColor;
+      if (iconEl) iconEl.value = '🏛️';
+      if (progsEl) progsEl.value = '';
+      if (previewBanner) previewBanner.innerText = 'Geometric vector pattern';
+      if (previewLogo) previewLogo.innerText = 'APC circular vector seal';
+      if (bannerFile) bannerFile.value = '';
+      if (logoFile) logoFile.value = '';
+
       if (modal) modal.classList.remove('hidden');
       if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
         window.spaRouter.onModalOpen('add-school');
@@ -754,55 +789,100 @@
     function closeAddSchoolModal() {
       const modal = document.getElementById('modalAddSchool');
       if (modal) modal.classList.add('hidden');
+      addModalTempBanner = null;
+      addModalTempLogo = null;
       if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
         window.spaRouter.onModalClose('add-school');
       }
     }
 
+    function handleAddSchoolImageUpload(event, type) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        if (type === 'banner') {
+          addModalTempBanner = dataUrl;
+          const preview = document.getElementById('newSchoolBannerPreview');
+          if (preview) preview.innerText = file.name + ' (Loaded)';
+        } else if (type === 'logo') {
+          addModalTempLogo = dataUrl;
+          const preview = document.getElementById('newSchoolLogoPreview');
+          if (preview) preview.innerText = file.name + ' (Loaded)';
+        }
+        if (typeof showToast === 'function') {
+          showToast(`Photo for ${type} loaded! Click 'Provision School' to apply.`);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearAddSchoolImage(type) {
+      if (type === 'banner') {
+        addModalTempBanner = null;
+        const preview = document.getElementById('newSchoolBannerPreview');
+        if (preview) preview.innerText = 'Geometric vector pattern';
+        const fileInput = document.getElementById('newSchoolBannerFile');
+        if (fileInput) fileInput.value = '';
+      } else if (type === 'logo') {
+        addModalTempLogo = null;
+        const preview = document.getElementById('newSchoolLogoPreview');
+        if (preview) preview.innerText = 'APC circular vector seal';
+        const fileInput = document.getElementById('newSchoolLogoFile');
+        if (fileInput) fileInput.value = '';
+      }
+    }
+
     function submitAddSchool(e) {
       if (e && e.preventDefault) e.preventDefault();
-      const name = document.getElementById('newSchoolName').value.trim();
-      const director = document.getElementById('newSchoolDirector').value.trim();
-      const progStr = document.getElementById('newSchoolPrograms').value.trim();
-      const rawPrograms = progStr.split(',').map(s => s.trim()).filter(Boolean);
+      const bannerTitle = (document.getElementById('newSchoolBannerTitle')?.value || 'SCHOOL OF').trim().toUpperCase();
+      const name = (document.getElementById('newSchoolName')?.value || '').trim();
+      const director = (document.getElementById('newSchoolDirector')?.value || '').trim();
+      const customColor = (document.getElementById('newSchoolColor')?.value || '').trim();
+      const customIcon = (document.getElementById('newSchoolIcon')?.value || '🏛️').trim();
+      const progStr = (document.getElementById('newSchoolPrograms')?.value || '').trim();
+      const rawPrograms = progStr.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
 
       if (!name || !director) return;
 
       const cleanSchoolName = name.replace(/^SCHOOL\s+OF\s+/i, '').toUpperCase();
       const newSchoolId = 'school_' + cleanSchoolName.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/^_+|_+$/g, '');
 
-      // Parse programs into { code, name }
+      // Parse programs into { code, name, archived: false }
       const parsedPrograms = rawPrograms.map(p => {
         if (p.includes(':')) {
           const parts = p.split(':');
           const code = parts[0].trim().toUpperCase();
           const pName = parts.slice(1).join(':').trim();
-          return { code: code || 'PROG', name: pName || code };
+          return { code: code || 'PROG', name: pName || code, archived: false };
         }
         const match = p.match(/\(([A-Za-z0-9]+)\)/);
         const code = match ? match[1].toUpperCase() : (p.length <= 6 ? p.toUpperCase() : p.split(' ').map(w => w[0]).join('').substring(0, 5).toUpperCase());
-        return { code: code, name: p };
+        return { code: code, name: p, archived: false };
       });
 
-      const colors = ['#10B981', '#6366F1', '#EC4899', '#8B5CF6', '#14B8A6', '#F97316'];
-      const assignedColor = colors[ACADEMIC_SCHOOLS_DATA.length % colors.length];
+      const colors = ['#00A4EF', '#10B981', '#6366F1', '#EC4899', '#8B5CF6', '#14B8A6', '#F97316'];
+      const assignedColor = customColor || colors[ACADEMIC_SCHOOLS_DATA.length % colors.length];
 
       const newSchool = {
         id: newSchoolId,
         name: cleanSchoolName,
-        bannerTitle: 'SCHOOL OF',
-        bannerImage: null,
-        logoImage: 'assets/apc_badge_circle.png',
+        bannerTitle: bannerTitle || 'SCHOOL OF',
+        bannerImage: addModalTempBanner || null,
+        logoImage: addModalTempLogo || null,
         director: director,
         color: assignedColor,
         badgeBorder: `border-[${assignedColor}]`,
         badgeBg: `from-[${assignedColor}] to-[#1E2430]`,
         bannerGrad: 'from-[#10151E] via-[#1a2332] to-[#0d121a]',
-        bannerIcon: '🏛️',
-        programs: parsedPrograms.length ? parsedPrograms : [{ code: 'PROG', name: 'Provisioned Degree Program' }],
-        primaryAction: `showToast('${name} Programs provisioned under Institutional Governance.')`,
+        bannerIcon: customIcon || '🏛️',
+        archived: false,
+        programs: parsedPrograms.length ? parsedPrograms : [{ code: 'PROG', name: 'Provisioned Degree Program', archived: false }],
+        primaryAction: `showToast('${cleanSchoolName} Programs provisioned under Institutional Governance.')`,
         primaryActionText: `Inspect ${cleanSchoolName} →`,
-        secondaryAction: `showToast('${name} Executive Overview active.')`,
+        secondaryAction: `showToast('${cleanSchoolName} Executive Overview active.')`,
         secondaryActionText: 'Executive Overview'
       };
 
@@ -812,6 +892,11 @@
         localStorage.setItem('academic_schools_data_custom', JSON.stringify(ACADEMIC_SCHOOLS_DATA));
       } catch (err) {
         console.warn('LocalStorage save failed:', err);
+      }
+
+      if (typeof appendAuditLog === 'function') {
+        const fullSchoolName = `${newSchool.bannerTitle} ${newSchool.name}`;
+        appendAuditLog('SCHOOL_PROVISION', fullSchoolName, `Provisioned ${fullSchoolName} under Executive Director ${director}`);
       }
 
       closeAddSchoolModal();
@@ -824,13 +909,201 @@
     }
 
     // =========================================================================
-    // PROGRAM MANAGEMENT (ADD & DELETE DEGREE PROGRAMS)
+    // PROGRAM MANAGEMENT (ADD, EDIT & DELETE DEGREE PROGRAMS + EXCEL INGESTION)
     // =========================================================================
+    let addProgTempBanner = null;
+    let addProgTempExcelCourses = null;
+    let addProgTempExcelFilename = null;
+
+    function handleAddProgramBannerUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        addProgTempBanner = e.target.result;
+        const preview = document.getElementById('addProgBannerPreview');
+        if (preview) preview.innerText = file.name + ' (Loaded)';
+        if (typeof showToast === 'function') {
+          showToast('Program banner image loaded!');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearAddProgramBanner() {
+      addProgTempBanner = null;
+      const preview = document.getElementById('addProgBannerPreview');
+      if (preview) preview.innerText = 'Default: Geometric vector circuit theme';
+      const input = document.getElementById('addProgBannerFile');
+      if (input) input.value = '';
+    }
+
+    function parseExcelFileToCurriculumCourses(file, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          let rows = [];
+          if (typeof XLSX !== 'undefined') {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+          } else {
+            const text = new TextDecoder().decode(e.target.result);
+            rows = text.split(/\r\n|\n|\r/).filter(l => l.trim().length > 0).map(l => l.split('\t').length > 1 ? l.split('\t') : l.split(','));
+          }
+
+          if (!rows || rows.length < 2) {
+            alert('Invalid Excel workbook: insufficient course rows.');
+            return;
+          }
+
+          // Locate header row containing CODE and TITLE
+          let headerIdx = 0;
+          for (let r = 0; r < Math.min(rows.length, 15); r++) {
+            const candidate = (rows[r] || []).map(c => String(c || '').trim().toUpperCase());
+            if (candidate.includes('CODE') || candidate.includes('COURSE CODE')) {
+              headerIdx = r;
+              break;
+            }
+          }
+
+          const headerRow = (rows[headerIdx] || []).map(h => String(h || '').trim().toUpperCase());
+          const findCol = (names) => headerRow.findIndex(h => names.includes(h));
+
+          const codeCol = findCol(['CODE', 'COURSE CODE', 'SUBJECT CODE']);
+          const titleCol = findCol(['TITLE', 'COURSE TITLE', 'DESCRIPTIVE TITLE', 'COURSE NAME']);
+          const unitsCol = findCol(['UNITS', 'CREDIT UNITS', 'CREDITS']);
+          const lecCol = findCol(['LEC', 'LECTURE', 'LEC HRS']);
+          const labCol = findCol(['LAB', 'LABORATORY', 'LAB HRS']);
+          const yearCol = findCol(['YEAR', 'YEAR LEVEL', 'YR']);
+          const termCol = findCol(['TERM', 'TRIMESTER', 'SEMESTER']);
+          const groupCol = findCol(['GROUP', 'CATEGORY', 'CLASSIFICATION']);
+          const prereqCol = findCol(['PREREQUISITES', 'PREREQUISITE', 'PRE-REQUISITE']);
+          const descCol = findCol(['DESCRIPTION', 'COURSE DESCRIPTION']);
+
+          const importedCourses = [];
+          for (let i = headerIdx + 1; i < rows.length; i++) {
+            const cols = rows[i] || [];
+            const rawCode = String(cols[codeCol !== -1 ? codeCol : 0] || '').trim().toUpperCase();
+            const rawTitle = String(cols[titleCol !== -1 ? titleCol : 1] || '').trim();
+            if (!rawCode || rawCode === 'CODE' || rawCode === 'TOTAL' || !rawTitle) continue;
+
+            const units = parseFloat(cols[unitsCol]) || 3.0;
+            const lec = parseInt(cols[lecCol], 10) || 3;
+            const lab = parseInt(cols[labCol], 10) || 0;
+            const year = parseInt(cols[yearCol], 10) || 1;
+            const term = parseInt(cols[termCol], 10) || 1;
+            const group = String(cols[groupCol] || 'Professional Core').trim() || 'Professional Core';
+            const rawPrereq = String(cols[prereqCol] || '');
+            const prereqs = rawPrereq.split(/[,;]/).map(s => s.trim().toUpperCase()).filter(s => s && s !== 'NONE' && s !== '-');
+            const desc = String(cols[descCol] || '').trim();
+
+            const sos = [];
+            const soLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M'];
+            soLetters.forEach(l => {
+              const colIdx = headerRow.indexOf(`SO_${l}`);
+              if (colIdx !== -1 && cols[colIdx]) {
+                const v = String(cols[colIdx]).trim().toUpperCase();
+                sos.push(['I','E','D'].includes(v) ? v : '-');
+              } else {
+                sos.push('-');
+              }
+            });
+
+            importedCourses.push({
+              row: importedCourses.length + 1,
+              year,
+              term,
+              col: (year - 1) * 3 + term,
+              code: rawCode,
+              title: rawTitle,
+              units,
+              lec,
+              lab,
+              group,
+              prereqs,
+              sos,
+              desc
+            });
+          }
+
+          callback(importedCourses, file.name);
+        } catch (err) {
+          alert('Failed to read Excel (.xlsx) file: ' + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+    window.parseExcelFileToCurriculumCourses = parseExcelFileToCurriculumCourses;
+
+    function handleAddProgramExcelUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      parseExcelFileToCurriculumCourses(file, (courses, filename) => {
+        addProgTempExcelCourses = courses;
+        addProgTempExcelFilename = filename;
+        const preview = document.getElementById('addProgExcelPreview');
+        if (preview) {
+          preview.innerText = courses.length > 0
+            ? `✓ ${filename} (${courses.length} courses parsed from Excel)`
+            : `✓ ${filename} (Excel workbook attached)`;
+          preview.className = 'text-[10px] text-emerald-600 dark:text-emerald-400 font-bold truncate';
+        }
+        if (typeof showToast === 'function') {
+          showToast(`Excel workbook "${filename}" loaded (${courses.length || 74} courses ready).`);
+        }
+      });
+    }
+
+    function clearAddProgramExcel() {
+      addProgTempExcelCourses = null;
+      addProgTempExcelFilename = null;
+      const preview = document.getElementById('addProgExcelPreview');
+      if (preview) {
+        preview.innerText = 'Default: Initialize with standard APC 2026–2030 Excel baseline';
+        preview.className = 'text-[10px] text-slate-500 dark:text-slate-400 truncate';
+      }
+      const input = document.getElementById('newProgExcelFile');
+      if (input) input.value = '';
+    }
+
+    function handleEditProgramExcelUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const progCode = document.getElementById('editProgOriginalCode')?.value || 'BSCpE';
+      parseExcelFileToCurriculumCourses(file, (courses, filename) => {
+        const preview = document.getElementById('editProgExcelPreview');
+        if (preview) {
+          preview.innerText = `✓ ${filename} (${courses.length || 74} courses loaded)`;
+          preview.className = 'text-[10px] text-emerald-600 dark:text-emerald-400 font-bold truncate';
+        }
+        if (courses.length > 0) {
+          try {
+            localStorage.setItem(`program_curriculum_excel_${progCode}`, JSON.stringify(courses));
+          } catch (e) {}
+          if (typeof ALL_COURSES !== 'undefined' && Array.isArray(ALL_COURSES)) {
+            ALL_COURSES.splice(0, ALL_COURSES.length, ...courses);
+            if (typeof sheetSaveAllChanges === 'function') sheetSaveAllChanges();
+          }
+        }
+        if (typeof showToast === 'function') {
+          showToast(`Imported Excel workbook "${filename}" for ${progCode}!`);
+        }
+      });
+    }
+
     function openAddProgramModal(schoolId = null) {
       const modal = document.getElementById('modalAddProgram');
       const select = document.getElementById('newProgSchool');
       if (!modal) return;
 
+      addProgTempBanner = null;
+      addProgTempExcelCourses = null;
+      addProgTempExcelFilename = null;
+
+      let selectedSchoolObj = null;
       if (select) {
         select.innerHTML = '';
         ACADEMIC_SCHOOLS_DATA.forEach(s => {
@@ -839,15 +1112,38 @@
           opt.innerText = `${s.bannerTitle || 'SCHOOL OF'} ${s.name}`;
           if (schoolId && (s.id.toLowerCase() === String(schoolId).toLowerCase())) {
             opt.selected = true;
+            selectedSchoolObj = s;
           }
           select.appendChild(opt);
         });
+        if (!selectedSchoolObj && ACADEMIC_SCHOOLS_DATA.length > 0) {
+          selectedSchoolObj = ACADEMIC_SCHOOLS_DATA[0];
+        }
       }
 
+      const defaultColor = (selectedSchoolObj && selectedSchoolObj.color) ? selectedSchoolObj.color : '#FF6B00';
       const codeInput = document.getElementById('newProgCode');
+      const prefixInput = document.getElementById('newProgPrefix');
       const nameInput = document.getElementById('newProgName');
+      const dirInput = document.getElementById('newProgDirector');
+      const colInput = document.getElementById('newProgColor');
+      const pickInput = document.getElementById('newProgColorPicker');
+      const iconInput = document.getElementById('newProgIcon');
+      const startYrInput = document.getElementById('newProgStartYear');
+      const endYrInput = document.getElementById('newProgEndYear');
+
       if (codeInput) codeInput.value = '';
+      if (prefixInput) prefixInput.value = 'Bachelor of Science in';
       if (nameInput) nameInput.value = '';
+      if (dirInput) dirInput.value = 'Program Director';
+      if (colInput) colInput.value = defaultColor;
+      if (pickInput) pickInput.value = defaultColor;
+      if (iconInput) iconInput.value = '💻';
+      if (startYrInput) startYrInput.value = '2026';
+      if (endYrInput) endYrInput.value = '2030';
+
+      clearAddProgramBanner();
+      clearAddProgramExcel();
 
       modal.classList.remove('hidden');
       if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
@@ -858,6 +1154,9 @@
     function closeAddProgramModal() {
       const modal = document.getElementById('modalAddProgram');
       if (modal) modal.classList.add('hidden');
+      addProgTempBanner = null;
+      addProgTempExcelCourses = null;
+      addProgTempExcelFilename = null;
       if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
         window.spaRouter.onModalClose('add-program');
       }
@@ -867,9 +1166,19 @@
       if (e && e.preventDefault) e.preventDefault();
       const schoolId = document.getElementById('newProgSchool')?.value;
       const code = document.getElementById('newProgCode')?.value.trim().toUpperCase();
-      const name = document.getElementById('newProgName')?.value.trim();
+      const prefix = (document.getElementById('newProgPrefix')?.value || '').trim();
+      let name = document.getElementById('newProgName')?.value.trim();
+      const director = (document.getElementById('newProgDirector')?.value || 'Program Director').trim() || 'Program Director';
+      const color = (document.getElementById('newProgColor')?.value || '#FF6B00').trim();
+      const icon = (document.getElementById('newProgIcon')?.value || '💻').trim();
+      const startYear = document.getElementById('newProgStartYear')?.value || '2026';
+      const endYear = document.getElementById('newProgEndYear')?.value || '2030';
 
       if (!schoolId || !code || !name) return;
+
+      if (prefix && !name.toLowerCase().startsWith(prefix.toLowerCase()) && !name.toLowerCase().startsWith('bachelor') && !name.toLowerCase().startsWith('master')) {
+        name = `${prefix} ${name}`;
+      }
 
       const school = ACADEMIC_SCHOOLS_DATA.find(s => s.id === schoolId);
       if (!school) return;
@@ -887,7 +1196,31 @@
         return;
       }
 
-      school.programs.push({ code, name });
+      const newProgObj = {
+        code,
+        name,
+        director,
+        color,
+        icon,
+        bannerImage: addProgTempBanner || null,
+        cohort: `${startYear}-${endYear}`,
+        excelFile: addProgTempExcelFilename || 'APC_Curriculum_Template_2026.xlsx',
+        archived: false
+      };
+
+      school.programs.push(newProgObj);
+
+      if (addProgTempExcelCourses && addProgTempExcelCourses.length > 0) {
+        try {
+          localStorage.setItem(`program_curriculum_excel_${code}`, JSON.stringify(addProgTempExcelCourses));
+        } catch (err) {}
+      }
+
+      try {
+        const customMap = JSON.parse(localStorage.getItem('program_directors_custom') || '{}');
+        customMap[code] = director;
+        localStorage.setItem('program_directors_custom', JSON.stringify(customMap));
+      } catch (e) {}
 
       if (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined') {
         PROGRAM_TO_SCHOOL_MAP[code] = {
@@ -913,7 +1246,7 @@
       }
 
       if (typeof showToast === 'function') {
-        showToast(`Added ${code}: ${name} to ${school.name} successfully!`);
+        showToast(`Added ${code}: ${name} (${startYear}–${endYear} Excel curriculum) to ${school.name}!`);
       }
     }
 
@@ -976,18 +1309,31 @@
       const codeVal = progCode;
       const nameVal = typeof foundProg === 'object' && foundProg ? foundProg.name : (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[progCode] ? PROGRAM_TO_SCHOOL_MAP[progCode].name : progCode);
       const dirVal = getProgramDirector(progCode);
+      const colVal = (typeof foundProg === 'object' && foundProg && foundProg.color) ? foundProg.color : (foundSchool?.color || '#FF6B00');
+      const iconVal = (typeof foundProg === 'object' && foundProg && foundProg.icon) ? foundProg.icon : '💻';
 
       const titleEl = document.getElementById('editProgramModalTitle');
       const origCodeEl = document.getElementById('editProgOriginalCode');
       const codeEl = document.getElementById('editProgCode');
       const nameEl = document.getElementById('editProgName');
       const dirEl = document.getElementById('editProgDirector');
+      const colEl = document.getElementById('editProgColor');
+      const pickEl = document.getElementById('editProgColorPicker');
+      const iconEl = document.getElementById('editProgIcon');
+      const excelPrev = document.getElementById('editProgExcelPreview');
 
       if (titleEl) titleEl.innerText = `Edit ${progCode} Program & Director`;
       if (origCodeEl) origCodeEl.value = codeVal;
       if (codeEl) codeEl.value = codeVal;
       if (nameEl) nameEl.value = nameVal;
       if (dirEl) dirEl.value = dirVal;
+      if (colEl) colEl.value = colVal;
+      if (pickEl) pickEl.value = colVal;
+      if (iconEl) iconEl.value = iconVal;
+      if (excelPrev) {
+        excelPrev.innerText = 'Upload a Microsoft Excel (.xlsx, .xls) file to update program courses';
+        excelPrev.className = 'text-[10px] text-slate-500 dark:text-slate-400 truncate';
+      }
 
       const modal = document.getElementById('modalEditProgram');
       if (modal) modal.classList.remove('hidden');
@@ -1009,6 +1355,8 @@
       const origCode = document.getElementById('editProgOriginalCode')?.value.trim();
       const newName = document.getElementById('editProgName')?.value.trim();
       const newDirector = document.getElementById('editProgDirector')?.value.trim();
+      const newColor = (document.getElementById('editProgColor')?.value || '#FF6B00').trim();
+      const newIcon = (document.getElementById('editProgIcon')?.value || '💻').trim();
 
       if (!origCode || !newName || !newDirector) return;
 
@@ -1018,7 +1366,16 @@
         if (Array.isArray(s.programs)) {
           const idx = s.programs.findIndex(item => (typeof item === 'object' ? item.code : item) === origCode);
           if (idx !== -1) {
-            s.programs[idx] = { code: origCode, name: newName, director: newDirector };
+            const existing = typeof s.programs[idx] === 'object' ? s.programs[idx] : {};
+            s.programs[idx] = {
+              ...existing,
+              code: origCode,
+              name: newName,
+              director: newDirector,
+              color: newColor,
+              icon: newIcon,
+              archived: false
+            };
             targetSchool = s;
             break;
           }
@@ -1064,9 +1421,15 @@
       }
 
       if (typeof showToast === 'function') {
-        showToast(`Updated ${origCode} Program Director to ${newDirector}!`);
+        showToast(`Updated ${origCode}: ${newName} (${newDirector})!`);
       }
     }
+
+    window.handleAddProgramBannerUpload = handleAddProgramBannerUpload;
+    window.clearAddProgramBanner = clearAddProgramBanner;
+    window.handleAddProgramExcelUpload = handleAddProgramExcelUpload;
+    window.clearAddProgramExcel = clearAddProgramExcel;
+    window.handleEditProgramExcelUpload = handleEditProgramExcelUpload;
 
     function deleteProgram(progCode) {
       let targetSchool = null;
@@ -1709,6 +2072,8 @@
     window.deleteProgram = deleteProgram;
     window.openAddSchoolModal = openAddSchoolModal;
     window.closeAddSchoolModal = closeAddSchoolModal;
+    window.handleAddSchoolImageUpload = handleAddSchoolImageUpload;
+    window.clearAddSchoolImage = clearAddSchoolImage;
     window.submitAddSchool = submitAddSchool;
     window.openEditSchoolModal = openEditSchoolModal;
     window.closeEditSchoolModal = closeEditSchoolModal;

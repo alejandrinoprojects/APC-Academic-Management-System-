@@ -941,7 +941,7 @@
       });
     }
 
-    function getProgramBannerConfig(progCode, progName, schoolColor = '#FF6B00') {
+    function getProgramBannerConfig(progCode, progName, schoolColor = '#FF6B00', progObj = null) {
       const code = String(progCode || '').trim();
       const name = String(progName || '').trim();
 
@@ -1184,23 +1184,29 @@
               </svg>`
           };
 
-        default:
+        default: {
+          const customColor = (typeof progObj === 'object' && progObj && progObj.color) ? progObj.color : (schoolColor || '#FF6B00');
+          const customIcon = (typeof progObj === 'object' && progObj && progObj.icon) ? progObj.icon : code.slice(0, 5);
+          const customBanner = (typeof progObj === 'object' && progObj && progObj.bannerImage) ? progObj.bannerImage : null;
           return {
             subTitle,
             title: title || code,
-            accentColor: schoolColor || '#FF6B00',
+            accentColor: customColor,
             bgClass: 'bg-[#101826]',
             titleColor: 'text-amber-400',
-            iconHtml: `<div class="w-8 h-8 rounded-sm bg-[#10151E] border border-slate-700 flex items-center justify-center text-xs font-mono font-bold mb-1 shadow-sm" style="color: ${schoolColor};">${code.slice(0, 5)}</div>`,
-            svgHtml: `
+            iconHtml: `<div class="relative z-10 w-8 h-8 rounded-sm bg-[#10151E] border border-slate-700 flex items-center justify-center text-xs font-mono font-bold mb-1 shadow-sm" style="color: ${customColor}; border-color: ${customColor}66;">${customIcon}</div>`,
+            svgHtml: customBanner
+              ? `<img src="${customBanner}" class="absolute inset-0 w-full h-full object-cover opacity-55 pointer-events-none" alt="${code}" /><div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent pointer-events-none"></div>`
+              : `
               <svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
                 <polygon points="0,0 130,0 80,120 0,120" fill="#1b2a47"/>
                 <polygon points="170,0 300,0 300,120 220,120" fill="#16233b"/>
-                <circle cx="60" cy="30" r="3" fill="${schoolColor}"/>
-                <circle cx="240" cy="90" r="3" fill="${schoolColor}"/>
-                <line x1="60" y1="30" x2="240" y2="90" stroke="${schoolColor}" stroke-width="1" stroke-opacity="0.4"/>
+                <circle cx="60" cy="30" r="3" fill="${customColor}"/>
+                <circle cx="240" cy="90" r="3" fill="${customColor}"/>
+                <line x1="60" y1="30" x2="240" y2="90" stroke="${customColor}" stroke-width="1" stroke-opacity="0.4"/>
               </svg>`
           };
+        }
       }
     }
     window.getProgramBannerConfig = getProgramBannerConfig;
@@ -1318,7 +1324,7 @@
 
         programsList.forEach(p => {
           const prog = typeof p === 'object' ? p : getProgramInfo(p);
-          const isArchived = prog.archived === true || (school.id === 'soe' && prog.code !== 'BSCpE');
+          const isArchived = prog.archived === true || (prog.archived === undefined && school.id === 'soe' && prog.code !== 'BSCpE');
           if (isArchived) {
             archivedProgs.push(prog);
           } else {
@@ -1326,8 +1332,8 @@
           }
         });
 
-        // Fail-safe guarantee: Computer Engineering (BSCpE) must ALWAYS be present
-        if (!activeProgs.some(p => p.code === 'BSCpE')) {
+        // Fail-safe guarantee: Computer Engineering (BSCpE) must ALWAYS be present in SoE
+        if (school.id === 'soe' && !activeProgs.some(p => p.code === 'BSCpE')) {
           activeProgs.unshift({
             code: 'BSCpE',
             name: 'Bachelor of Science in Computer Engineering',
@@ -1337,7 +1343,7 @@
         }
 
         function buildProgramCard(prog, isArchived) {
-          const banner = getProgramBannerConfig(prog.code, prog.name, schoolColor);
+          const banner = getProgramBannerConfig(prog.code, prog.name, prog.color || schoolColor, prog);
           const card = document.createElement('div');
           card.className = `program-card bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700/80 shadow-md flex flex-col justify-between overflow-hidden relative group cursor-pointer hover:border-[#E5A823] hover:shadow-xl hover:-translate-y-1 transition-all duration-200`;
           card.onclick = function() { selectProgram(prog.code, 'homePdProgramView'); };
@@ -1351,7 +1357,7 @@
                 <!-- Title Typography -->
                 <div class="relative z-10 leading-tight">
                   <span class="block text-[10px] font-black text-slate-200 tracking-widest uppercase drop-shadow-md banner-sub">${banner.subTitle}</span>
-                  <span class="block text-sm sm:text-base font-black ${banner.titleColor} group-hover:text-amber-300 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors banner-title">${banner.title}</span>
+                  <span class="block text-sm sm:text-base font-black ${banner.titleColor} group-hover:text-amber-300 tracking-wider uppercase drop-shadow-md mt-0.5 transition-colors banner-title" style="${prog.color ? `color: ${prog.color};` : ''}">${banner.title}</span>
                 </div>
                 ${isArchived ? '<span class="absolute top-2 right-2 text-[9px] font-mono px-1.5 py-0.5 bg-slate-900/90 text-amber-400 border border-amber-500/40 rounded z-20">Dev Freeze</span>' : ''}
               </div>
@@ -6012,6 +6018,47 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     function sheetSaveAllChanges() {
       promptSaveSpreadsheetChanges();
     }
+    function downloadArrayOfArraysAsExcel(aoa, sheetName, filenameBase) {
+      const safeFilename = filenameBase.replace(/\.(csv|xlsx|xls)$/i, '') + '.xlsx';
+      if (typeof XLSX !== 'undefined') {
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(aoa);
+        XLSX.utils.book_append_sheet(wb, ws, (sheetName || 'Curriculum').slice(0, 31));
+        XLSX.writeFile(wb, safeFilename);
+        return;
+      }
+      // Offline XML Spreadsheet 2003 (.xls) fallback
+      const xmlRows = aoa.map(row => {
+        const cells = row.map(val => {
+          const escaped = String(val == null ? '' : val)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+          const isNum = typeof val === 'number' || (/^\d+(\.\d+)?$/.test(String(val)) && String(val) !== '');
+          return `<Cell><Data ss:Type="${isNum ? 'Number' : 'String'}">${escaped}</Data></Cell>`;
+        }).join('');
+        return `<Row>${cells}</Row>`;
+      }).join('\n');
+      const xml = `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+ <Worksheet ss:Name="${(sheetName || 'Curriculum').slice(0, 31)}">
+  <Table>${xmlRows}</Table>
+ </Worksheet>
+</Workbook>`;
+      const blob = new Blob([xml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = safeFilename.replace(/\.xlsx$/i, '.xls');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
     function sheetExportCSV() {
       const headers = [
         'Code', 'Title', 'Units', 'Lec', 'Lab', 'Year', 'Term', 'Group', 'Prerequisites',
@@ -6019,12 +6066,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         'Description'
       ];
 
-      const escapeCSV = (val) => {
-        const s = String(val == null ? '' : val).replace(/"/g, '""');
-        return `"${s}"`;
-      };
-
-      const rows = [headers.map(escapeCSV).join(',')];
+      const aoa = [headers];
 
       ALL_COURSES.forEach(c => {
         const prereqStr = (c.prereqs || []).join('; ');
@@ -6043,72 +6085,73 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           row.push((c.sos && c.sos[i]) ? c.sos[i] : '-');
         }
         row.push(c.desc || '');
-        rows.push(row.map(escapeCSV).join(','));
+        aoa.push(row);
       });
 
-      const csvContent = "\uFEFF" + rows.join('\r\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `APC_BSCpE_Curriculum_Master_${new Date().toISOString().slice(0,10)}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      showToastNotification('Spreadsheet exported as CSV successfully.');
+      const progCode = (typeof currentSelectedProgram !== 'undefined' && currentSelectedProgram) ? currentSelectedProgram : 'BSCpE';
+      downloadArrayOfArraysAsExcel(aoa, `${progCode}_Master`, `APC_${progCode}_Curriculum_Master_${new Date().toISOString().slice(0,10)}.xlsx`);
+      showToastNotification('Spreadsheet exported as Microsoft Excel (.xlsx) workbook successfully.');
     }
+
+    function exportObeMatrixCSV() {
+      const headers = [
+        'Course Code', 'Course Title', 'Units', 'Year', 'Term', 'Category',
+        'SO_A', 'SO_B', 'SO_C', 'SO_D', 'SO_E', 'SO_F', 'SO_G', 'SO_H', 'SO_I', 'SO_J', 'SO_K', 'SO_L', 'SO_M'
+      ];
+      const aoa = [headers];
+      ALL_COURSES.forEach(c => {
+        const row = [c.code, c.title, c.units, c.year, c.term, c.group];
+        for (let i = 0; i < 13; i++) {
+          row.push((c.sos && c.sos[i]) ? c.sos[i] : '-');
+        }
+        aoa.push(row);
+      });
+      const progCode = (typeof currentSelectedProgram !== 'undefined' && currentSelectedProgram) ? currentSelectedProgram : 'BSCpE';
+      downloadArrayOfArraysAsExcel(aoa, 'OBE_SO_Matrix', `APC_${progCode}_OBE_Matrix_${new Date().toISOString().slice(0,10)}.xlsx`);
+      if (typeof showToast === 'function') {
+        showToast('Exported OBE Learning Progression Matrix as Excel (.xlsx) successfully.');
+      }
+    }
+    window.exportObeMatrixCSV = exportObeMatrixCSV;
 
     function exportCurrentDocAsSpreadsheet() {
       const activeTab = (typeof currentRegistrarTab !== 'undefined' ? currentRegistrarTab : 1);
       const docTitle = (typeof getRegistrarDocTitle === 'function') ? getRegistrarDocTitle(activeTab) : `Sheet_${activeTab}`;
       const cleanTitle = docTitle.replace(/[^a-zA-Z0-9_-]/g, '_');
       const activeYear = (typeof window.currentSidebarYear !== 'undefined' && window.currentSidebarYear) ? window.currentSidebarYear : null;
-      
+      const progCode = (typeof currentSelectedProgram !== 'undefined' && currentSelectedProgram) ? currentSelectedProgram : 'BSCpE';
+
       // 1. Check all tables in active spreadsheet grid
       const gridContainer = document.getElementById('regDocSpreadsheetGridContent');
       const tables = gridContainer ? gridContainer.querySelectorAll('.reg-doc-spreadsheet-table') : [];
       if (tables.length > 0) {
-        const rows = [];
+        const aoa = [];
         tables.forEach((tbl, tIdx) => {
-          // Find preceding title in container
           const cardEl = tbl.closest('.border');
           const titleEl = cardEl ? cardEl.querySelector('.font-extrabold') : null;
           const title = titleEl ? titleEl.innerText.trim() : `Section ${tIdx + 1}`;
-          rows.push(`"=== ${title} ==="`);
+          aoa.push([`=== ${title} ===`]);
 
           const trs = tbl.querySelectorAll('tr');
           trs.forEach(tr => {
-            // Skip the Excel letter header row (# A B C ...)
             if (tr.parentElement && tr.parentElement.tagName.toLowerCase() === 'thead' && tr.classList.contains('bg-slate-200')) {
               return;
             }
             const rowData = [];
-            // Skip first cell (# row index)
             const cells = Array.from(tr.querySelectorAll('th, td')).slice(1);
             cells.forEach(cell => {
-              let text = cell.innerText.trim().replace(/\r?\n+/g, ' ').replace(/"/g, '""');
-              rowData.push(`"${text}"`);
+              rowData.push(cell.innerText.trim().replace(/\r?\n+/g, ' '));
             });
             if (rowData.length > 0) {
-              rows.push(rowData.join(','));
+              aoa.push(rowData);
             }
           });
-          rows.push(''); // blank row separator between tables
+          aoa.push([]);
         });
 
-        if (rows.length > 0) {
-          const csvContent = "\uFEFF" + rows.join('\r\n');
-          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `APC_BSCpE_${cleanTitle}${activeYear ? `_Year${activeYear}` : ''}_${new Date().toISOString().slice(0,10)}.csv`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          showToast(`Exported ${docTitle} as complete multi-table spreadsheet successfully.`);
+        if (aoa.length > 0) {
+          downloadArrayOfArraysAsExcel(aoa, cleanTitle.slice(0, 31), `APC_${progCode}_${cleanTitle}${activeYear ? `_Year${activeYear}` : ''}_${new Date().toISOString().slice(0,10)}.xlsx`);
+          showToast(`Exported ${docTitle} as Microsoft Excel (.xlsx) workbook successfully.`);
           return;
         }
       }
@@ -6118,35 +6161,25 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const docTables = activeDocView ? activeDocView.querySelectorAll('table') : [];
 
       if (docTables.length > 0) {
-        const rows = [];
+        const aoa = [];
         docTables.forEach((tbl, tIdx) => {
-          rows.push(`"=== Table ${tIdx + 1} ==="`);
+          aoa.push([`=== Table ${tIdx + 1} ===`]);
           const trs = tbl.querySelectorAll('tr');
           trs.forEach(tr => {
             const rowData = [];
             tr.querySelectorAll('th, td').forEach(cell => {
-              const text = cell.innerText.trim().replace(/\r?\n+/g, ' ').replace(/"/g, '""');
-              rowData.push(`"${text}"`);
+              rowData.push(cell.innerText.trim().replace(/\r?\n+/g, ' '));
             });
             if (rowData.length > 0) {
-              rows.push(rowData.join(','));
+              aoa.push(rowData);
             }
           });
-          rows.push('');
+          aoa.push([]);
         });
 
-        if (rows.length > 0) {
-          const csvContent = "\uFEFF" + rows.join('\r\n');
-          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `APC_BSCpE_${cleanTitle}${activeYear ? `_Year${activeYear}` : ''}_${new Date().toISOString().slice(0,10)}.csv`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          showToast(`Exported ${docTitle} as spreadsheet successfully.`);
+        if (aoa.length > 0) {
+          downloadArrayOfArraysAsExcel(aoa, cleanTitle.slice(0, 31), `APC_${progCode}_${cleanTitle}${activeYear ? `_Year${activeYear}` : ''}_${new Date().toISOString().slice(0,10)}.xlsx`);
+          showToast(`Exported ${docTitle} as Microsoft Excel (.xlsx) workbook successfully.`);
           return;
         }
       }
@@ -6167,126 +6200,19 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const file = event.target.files && event.target.files[0];
       if (!file) return;
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const text = e.target.result;
-          const lines = text.split(/\r\n|\n|\r/).filter(l => l.trim().length > 0);
-          if (lines.length < 2) {
-            alert('Invalid CSV file: insufficient rows.');
+      if (typeof window.parseExcelFileToCurriculumCourses === 'function') {
+        window.parseExcelFileToCurriculumCourses(file, (importedCourses, filename) => {
+          if (!importedCourses || importedCourses.length === 0) {
+            alert('No valid course rows parsed from the Excel (.xlsx) workbook.');
             return;
           }
-
-          function parseCSVLine(text) {
-            const result = [];
-            let cur = '';
-            let inQuotes = false;
-            for (let i = 0; i < text.length; i++) {
-              const ch = text[i];
-              if (inQuotes) {
-                if (ch === '"') {
-                  if (i + 1 < text.length && text[i + 1] === '"') {
-                    cur += '"';
-                    i++;
-                  } else {
-                    inQuotes = false;
-                  }
-                } else {
-                  cur += ch;
-                }
-              } else {
-                if (ch === '"') {
-                  inQuotes = true;
-                } else if (ch === ',') {
-                  result.push(cur);
-                  cur = '';
-                } else {
-                  cur += ch;
-                }
-              }
-            }
-            result.push(cur);
-            return result;
-          }
-
-          const headerRow = parseCSVLine(lines[0]).map(h => h.trim().toUpperCase());
-          const codeCol = headerRow.indexOf('CODE');
-          const titleCol = headerRow.indexOf('TITLE');
-          const unitsCol = headerRow.indexOf('UNITS');
-          const lecCol = headerRow.indexOf('LEC');
-          const labCol = headerRow.indexOf('LAB');
-          const yearCol = headerRow.indexOf('YEAR');
-          const termCol = headerRow.indexOf('TERM');
-          const groupCol = headerRow.indexOf('GROUP');
-          const prereqCol = headerRow.indexOf('PREREQUISITES');
-          const descCol = headerRow.indexOf('DESCRIPTION');
-
-          if (codeCol === -1 || titleCol === -1) {
-            alert('CSV format error: Missing "Code" or "Title" headers.');
-            return;
-          }
-
-          const importedCourses = [];
-          for (let i = 1; i < lines.length; i++) {
-            const cols = parseCSVLine(lines[i]);
-            if (!cols[codeCol] || cols[codeCol].trim() === '') continue;
-
-            const code = cols[codeCol].trim().toUpperCase();
-            const title = cols[titleCol]?.trim() || '';
-            const units = parseFloat(cols[unitsCol]) || 3.0;
-            const lec = parseInt(cols[lecCol], 10) || 3;
-            const lab = parseInt(cols[labCol], 10) || 0;
-            const year = parseInt(cols[yearCol], 10) || 1;
-            const term = parseInt(cols[termCol], 10) || 1;
-            const group = cols[groupCol]?.trim() || 'Professional Core';
-            const rawPrereq = cols[prereqCol] || '';
-            const prereqs = rawPrereq.split(/[,;]/).map(s => s.trim().toUpperCase()).filter(Boolean);
-            const desc = cols[descCol]?.trim() || '';
-
-            const sos = [];
-            const soLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M'];
-            soLetters.forEach(l => {
-              const colIdx = headerRow.indexOf(`SO_${l}`);
-              if (colIdx !== -1 && cols[colIdx]) {
-                const v = cols[colIdx].trim().toUpperCase();
-                sos.push(['I','E','D'].includes(v) ? v : '-');
-              } else {
-                sos.push('-');
-              }
-            });
-
-            importedCourses.push({
-              row: i,
-              year: year,
-              term: term,
-              col: (year - 1) * 3 + term,
-              code: code,
-              title: title,
-              units: units,
-              lec: lec,
-              lab: lab,
-              group: group,
-              prereqs: prereqs,
-              sos: sos,
-              desc: desc
-            });
-          }
-
-          if (importedCourses.length === 0) {
-            alert('No valid course rows parsed from CSV.');
-            return;
-          }
-
-          if (confirm(`Successfully parsed ${importedCourses.length} courses from CSV.\nReplace current curriculum (${ALL_COURSES.length} courses) with imported sheet?`)) {
+          if (confirm(`Successfully parsed ${importedCourses.length} courses from Excel workbook "${filename}".\nReplace current curriculum (${ALL_COURSES.length} courses) with imported Excel sheet?`)) {
             ALL_COURSES = importedCourses;
             sheetSaveAllChanges();
-            showToastNotification(`Successfully imported and committed ${importedCourses.length} courses from CSV!`);
+            showToastNotification(`Successfully imported and committed ${importedCourses.length} courses from Excel (${filename})!`);
           }
-        } catch (err) {
-          alert(`Failed to import CSV: ${err.message}`);
-        }
-      };
-      reader.readAsText(file);
+        });
+      }
       event.target.value = '';
     }
 
