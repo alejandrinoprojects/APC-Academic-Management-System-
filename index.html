@@ -1951,39 +1951,39 @@
             </div>
 
             <!-- DETAIL DRAWER FOR HISTORICAL COURSES -->
-            <div id="pastFlowchartDetailDrawer" class="hidden bg-slate-900 text-white p-5 border border-slate-800 shadow-xl transition space-y-3">
-              <div class="flex flex-wrap items-start justify-between gap-4 border-b border-slate-800 pb-3">
+            <div id="pastFlowchartDetailDrawer" class="hidden bg-white dark:bg-slate-900 text-slate-900 dark:text-white p-5 border border-slate-300 dark:border-slate-800 shadow-xl transition space-y-3">
+              <div class="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
                 <div class="flex items-center space-x-3">
                   <div class="w-12 h-12 bg-amber-500 text-slate-950 flex items-center justify-center font-mono font-black text-lg shadow">
                     <span id="pastDrawerCourseCode">CALCONE</span>
                   </div>
                   <div>
-                    <h3 id="pastDrawerCourseTitle" class="text-base font-bold text-white leading-tight">Calculus 1</h3>
-                    <p id="pastDrawerCourseMeta" class="text-xs text-slate-400 mt-0.5">Year 1 • Term 1 • 3.0 Units (3 Lec / 0 Lab) • Basic Engineering</p>
+                    <h3 id="pastDrawerCourseTitle" class="text-base font-bold text-slate-900 dark:text-white leading-tight">Calculus 1</h3>
+                    <p id="pastDrawerCourseMeta" class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Year 1 • Term 1 • 3.0 Units (3 Lec / 0 Lab) • Basic Engineering</p>
                   </div>
                 </div>
 
                 <div class="flex items-center space-x-2">
-                  <span class="px-2.5 py-1 bg-slate-800 text-slate-300 font-mono text-xs border border-slate-700">Archived Specification</span>
-                  <button type="button" onclick="closePastFlowchartDrawer()" class="text-slate-400 hover:text-white text-lg px-2 cursor-pointer">&times;</button>
+                  <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-xs border border-slate-300 dark:border-slate-700">Archived Specification</span>
+                  <button type="button" onclick="closePastFlowchartDrawer()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-lg px-2 cursor-pointer">&times;</button>
                 </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <div class="bg-slate-800/80 p-3 border border-slate-700 space-y-1">
-                  <p class="font-bold text-blue-400 uppercase tracking-wider text-[11px]">↳ Pre-requisites (Upstream Feeders):</p>
-                  <div id="pastDrawerPrereqsList" class="font-mono text-slate-200">None (Entry Subject)</div>
+                <div class="bg-slate-50 dark:bg-slate-800/80 p-3 border border-slate-200 dark:border-slate-700 space-y-1">
+                  <p class="font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider text-[11px]">↳ Pre-requisites (Upstream Feeders):</p>
+                  <div id="pastDrawerPrereqsList" class="font-mono text-slate-800 dark:text-slate-200">None (Entry Subject)</div>
                 </div>
 
-                <div class="bg-slate-800/80 p-3 border border-slate-700 space-y-1">
-                  <p class="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">↳ Unlocks (Downstream Dependents):</p>
-                  <div id="pastDrawerDependentsList" class="font-mono text-slate-200">CALCTWO, PHYENLC, PHYENLB</div>
+                <div class="bg-slate-50 dark:bg-slate-800/80 p-3 border border-slate-200 dark:border-slate-700 space-y-1">
+                  <p class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider text-[11px]">↳ Unlocks (Downstream Dependents):</p>
+                  <div id="pastDrawerDependentsList" class="font-mono text-slate-800 dark:text-slate-200">CALCTWO, PHYENLC, PHYENLB</div>
                 </div>
               </div>
 
-              <div class="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3 border border-slate-800/60">
-                <span class="font-bold text-amber-400">Archived Syllabus Scope: </span>
-                <span id="pastDrawerDescriptionText">Official course syllabus scope text from historical curriculum record.</span>
+              <div class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-950/60 p-3 border border-slate-200 dark:border-slate-800/60">
+                <span class="font-bold text-amber-600 dark:text-amber-400">Archived Course Scope: </span>
+                <span id="pastDrawerDescriptionText">Official course scope text from historical curriculum record.</span>
               </div>
             </div>
 
@@ -2137,15 +2137,15 @@
 
 
             <!-- DETAIL DRAWER -->
-            <div id="flowchartDetailDrawer" class="hidden bg-slate-900 text-white rounded-none p-5 border border-slate-800 shadow-xl transition space-y-3">
-              <div class="flex flex-wrap items-start justify-between gap-4 border-b border-slate-800 pb-3">
+            <div id="flowchartDetailDrawer" class="hidden bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-none p-5 border border-slate-300 dark:border-slate-800 shadow-xl transition space-y-3">
+              <div class="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
                 <div class="flex items-center space-x-3">
                   <div class="min-w-12 px-3 h-12 rounded-none bg-amber-500 text-slate-950 flex items-center justify-center font-mono font-black text-sm shadow">
                     <span id="drawerCourseCode">CALCONE</span>
                   </div>
                   <div>
-                    <h3 id="drawerCourseTitle" class="text-base font-bold text-white leading-tight">Calculus 1</h3>
-                    <p id="drawerCourseMeta" class="text-xs text-slate-400 mt-0.5">Year 1 • Term 1 • 3.0 Units (3 Lec / 0 Lab) • Basic Engineering Sciences</p>
+                    <h3 id="drawerCourseTitle" class="text-base font-bold text-slate-900 dark:text-white leading-tight">Calculus 1</h3>
+                    <p id="drawerCourseMeta" class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Year 1 • Term 1 • 3.0 Units (3 Lec / 0 Lab) • Basic Engineering Sciences</p>
                   </div>
                 </div>
 
@@ -2154,30 +2154,30 @@
                     <span>✏️</span>
                     <span>Edit Course</span>
                   </button>
-                  <button type="button" onclick="closeDetailDrawer()" class="text-slate-400 hover:text-white text-lg px-2">&times;</button>
+                  <button type="button" onclick="closeDetailDrawer()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-lg px-2 cursor-pointer">&times;</button>
                 </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div class="bg-slate-800/80 p-3 rounded-none border border-slate-700 space-y-1">
-                  <p class="font-bold text-blue-400 uppercase tracking-wider text-[11px]">↳ Pre-requisites (Upstream Feeders):</p>
-                  <div id="drawerPrereqsList" class="font-mono text-slate-200">None (Entry Subject)</div>
+                <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-none border border-slate-200 dark:border-slate-700 space-y-1">
+                  <p class="font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider text-[11px]">↳ Pre-requisites (Upstream Feeders):</p>
+                  <div id="drawerPrereqsList" class="font-mono text-slate-800 dark:text-slate-200">None (Entry Subject)</div>
                 </div>
 
-                <div class="bg-slate-800/80 p-3 rounded-none border border-slate-700 space-y-1">
-                  <p class="font-bold text-emerald-400 uppercase tracking-wider text-[11px]">↳ Unlocks (Downstream Dependents):</p>
-                  <div id="drawerDependentsList" class="font-mono text-slate-200">CALCTWO, PHYENLC, PHYENLB, ENGDATA, DISCMAT</div>
+                <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-none border border-slate-200 dark:border-slate-700 space-y-1">
+                  <p class="font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider text-[11px]">↳ Unlocks (Downstream Dependents):</p>
+                  <div id="drawerDependentsList" class="font-mono text-slate-800 dark:text-slate-200">CALCTWO, PHYENLC, PHYENLB, ENGDATA, DISCMAT</div>
                 </div>
 
-                <div class="bg-slate-800/80 p-3 rounded-none border border-slate-700 space-y-1">
-                  <p class="font-bold text-purple-400 uppercase tracking-wider text-[11px]">🎯 CHED Outcomes (SO a–m):</p>
-                  <div id="drawerSoList" class="font-mono text-slate-200">SO-a [I], SO-e [I]</div>
+                <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-none border border-slate-200 dark:border-slate-700 space-y-1">
+                  <p class="font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider text-[11px]">🎯 CHED Outcomes (SO a–m):</p>
+                  <div id="drawerSoList" class="font-mono text-slate-800 dark:text-slate-200">SO-a [I], SO-e [I]</div>
                 </div>
               </div>
 
-              <div class="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-none border border-slate-800/60">
-                <span class="font-bold text-amber-400">Course Syllabus Scope: </span>
-                <span id="drawerDescriptionText">Official course syllabus scope text goes here.</span>
+              <div class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-950/60 p-3 rounded-none border border-slate-200 dark:border-slate-800/60">
+                <span class="font-bold text-amber-600 dark:text-amber-400">Course Scope & Overview: </span>
+                <span id="drawerDescriptionText">Official course scope and description text goes here.</span>
               </div>
             </div>
 
@@ -3525,12 +3525,12 @@
       <!-- Modal Header -->
       <div class="bg-gradient-to-r from-apc-blue to-apc-navy text-white px-6 py-4 flex items-center justify-between shrink-0 border-b border-apc-navy">
         <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-none bg-amber-400 text-slate-950 flex items-center justify-center font-mono font-black text-base shadow">
+          <div class="min-w-10 px-2.5 h-10 rounded-none bg-amber-400 text-slate-950 flex items-center justify-center font-mono font-black text-sm tracking-wider shadow">
             <span id="editModalCodeIcon">CPE</span>
           </div>
           <div>
             <div class="flex items-center space-x-2">
-              <h3 id="editModalTitle" class="font-extrabold text-base text-white leading-tight">Edit Curricular Course</h3>
+              <h3 id="editModalTitle" class="font-extrabold text-base text-white leading-tight" style="color: #ffffff !important;">Edit Curricular Course</h3>
               <span id="editModalModeBadge" class="text-[11px] font-mono px-2 py-0.5 rounded-none bg-amber-400/20 text-amber-300 font-bold border border-amber-400/40">Editing Active</span>
             </div>
             <p class="text-[11px] text-slate-300 mt-0.5">Modify course parameters, units, prerequisite graph linkages, and OBE outcome mappings.</p>

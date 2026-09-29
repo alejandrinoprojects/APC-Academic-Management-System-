@@ -1152,8 +1152,16 @@
       color: #f8fafc !important;
     }
 
-    /* Drawers in Dark Mode */
+    /* Drawers in Light & Dark Mode */
+    #flowchartDetailDrawer,
+    #pastFlowchartDetailDrawer {
+      background-color: #ffffff;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+
     .dark #flowchartDetailDrawer,
+    .dark #pastFlowchartDetailDrawer,
     .dark #personalAiAgentDrawer {
       background-color: #111722 !important;
       border-color: #e5a823 !important;
@@ -1170,18 +1178,17 @@
     html:not(.dark) #modalAssignTask > div,
     html:not(.dark) #createCurriculumModal > div,
     html:not(.dark) #editPillarsModal > div,
-    html:not(.dark) #courseEditModal > div,
-    html:not(.dark) #batchModal > div,
-    html:not(.dark) #cycleModal > div,
-    html:not(.dark) #categoryManagerModal > div,
-    html:not(.dark) #aiImportModal > div,
-    html:not(.dark) #pillarModal > div,
-    html:not(.dark) #loginModal > div,
-    html:not(.dark) #auditDiffModal > div {
+    html:not(.dark) #courseEditModal > div {
       background-color: #ffffff !important;
       border-color: #e5a823 !important;
       color: #0f172a !important;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    #courseEditModal #editModalTitle,
+    #courseEditModal .bg-gradient-to-r h3,
+    #courseEditModal .bg-gradient-to-r p {
+      color: #ffffff !important;
     }
     html:not(.dark) #modalAddSchool .bg-\[\#10151E\],
     html:not(.dark) #modalEditSchool .bg-\[\#10151E\],

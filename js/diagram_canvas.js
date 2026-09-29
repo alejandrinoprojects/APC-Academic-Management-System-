@@ -722,7 +722,7 @@
       if (Array.isArray(course.prereqs) && course.prereqs.length > 0) {
         prereqsEl.innerHTML = course.prereqs.map(p => {
           const pCode = (typeof p === 'object' && p !== null && p.code) ? p.code : String(p).trim();
-          return `<button type="button" onclick="window.highlightPrereqChain('${pCode}')" class="inline-block px-2 py-0.5 bg-blue-900/80 text-blue-200 border border-blue-700 text-xs font-mono mr-1 mb-1 hover:bg-blue-800 transition cursor-pointer">← ${pCode}</button>`;
+          return `<button type="button" onclick="window.highlightPrereqChain('${pCode}')" class="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 border border-blue-300 dark:bg-blue-900/80 dark:text-blue-200 dark:border-blue-700 text-xs font-mono mr-1 mb-1 hover:bg-blue-200 dark:hover:bg-blue-800 transition cursor-pointer">← ${pCode}</button>`;
         }).join('');
       } else {
         prereqsEl.innerText = 'None (Entry Subject)';
@@ -735,7 +735,7 @@
     if (dependentsEl) {
       if (dependents.length > 0) {
         dependentsEl.innerHTML = dependents.map(d => {
-          return `<button type="button" onclick="window.highlightPrereqChain('${d}')" class="inline-block px-2 py-0.5 bg-emerald-900/80 text-emerald-200 border border-emerald-700 text-xs font-mono mr-1 mb-1 hover:bg-emerald-800 transition cursor-pointer">${d} ➔</button>`;
+          return `<button type="button" onclick="window.highlightPrereqChain('${d}')" class="inline-block px-2 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-900/80 dark:text-emerald-200 dark:border-emerald-700 text-xs font-mono mr-1 mb-1 hover:bg-emerald-200 dark:hover:bg-emerald-800 transition cursor-pointer">${d} ➔</button>`;
         }).join('');
       } else {
         dependentsEl.innerText = 'None (Terminal Subject)';

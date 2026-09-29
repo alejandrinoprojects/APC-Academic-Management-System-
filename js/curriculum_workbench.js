@@ -6273,7 +6273,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (modeBadge) modeBadge.innerText = isNew ? 'Creating New Course' : (isAssigned ? 'Editing Active Node' : 'View-Only Mode');
 
       const codeIcon = document.getElementById('editModalCodeIcon');
-      if (codeIcon) codeIcon.innerText = isNew ? 'NEW' : editingCourseCodeOriginal.substring(0, 4);
+      if (codeIcon) codeIcon.innerText = isNew ? 'NEW' : (editingCourseCodeOriginal || 'CPE');
 
       const deleteBtn = document.getElementById('btnDeleteCourse');
       if (deleteBtn) {
