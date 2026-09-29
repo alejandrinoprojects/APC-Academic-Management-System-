@@ -3222,22 +3222,12 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const sheetWrapper = document.getElementById('regDocSpreadsheetWrapper');
       const btnDoc = document.getElementById('btnRegViewDoc');
       const btnSheet = document.getElementById('btnRegViewSheet');
-      const btnDocTab = document.getElementById('btnRegViewDoc_tab');
-      const btnSheetTab = document.getElementById('btnRegViewSheet_tab');
-
-      const activeToolbarStyle = 'px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
-      const inactiveToolbarStyle = 'px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none';
-      const activeTabStyle = 'px-2.5 py-1 text-xs font-bold transition flex items-center gap-1 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
-      const inactiveTabStyle = 'px-2.5 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1 cursor-pointer rounded-none';
-
       if (currentRegistrarViewFormat === 'sheet') {
         if (docWrapper) docWrapper.classList.add('hidden');
         if (sheetWrapper) sheetWrapper.classList.remove('hidden');
 
         if (btnDoc) btnDoc.className = inactiveToolbarStyle;
         if (btnSheet) btnSheet.className = activeToolbarStyle;
-        if (btnDocTab) btnDocTab.className = inactiveTabStyle;
-        if (btnSheetTab) btnSheetTab.className = activeTabStyle;
 
         renderRegistrarSpreadsheetGrid(currentRegistrarTab || 1);
       } else {
@@ -3246,8 +3236,6 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
         if (btnDoc) btnDoc.className = activeToolbarStyle;
         if (btnSheet) btnSheet.className = inactiveToolbarStyle;
-        if (btnDocTab) btnDocTab.className = activeTabStyle;
-        if (btnSheetTab) btnSheetTab.className = inactiveTabStyle;
 
         if (currentRegistrarTab === 1) {
           setTimeout(drawPrintArrows, 60);
