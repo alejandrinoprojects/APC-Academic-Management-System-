@@ -3037,11 +3037,14 @@
                 <h2 class="font-extrabold text-slate-900 dark:text-white text-xl tracking-tight">Faculty &amp; Cluster Delegations</h2>
               </div>
               <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Return to Program Director Workbench">
+                  <span>&larr;</span>
+                  <span>Back to Workbench</span>
+                </button>
                 <button type="button" id="btnOpenAddFacultyModal" onclick="openAddFacultyModal()" class="px-3.5 py-2 bg-[#047857] hover:bg-[#065f46] text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 cursor-pointer">
                   <span>+</span>
                   <span>Add Faculty Member</span>
                 </button>
-
               </div>
             </div>
 
@@ -3172,6 +3175,12 @@
                 </h2>
                 <p class="text-xs text-slate-500">Chronological record of all curriculum updates and verifications.</p>
               </div>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-none border border-slate-300 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Return to Program Director Workbench">
+                  <span>&larr;</span>
+                  <span>Back to Workbench</span>
+                </button>
+              </div>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3 border border-slate-200">
@@ -3208,6 +3217,14 @@
                   <!-- Populated dynamically via renderAuditTable() -->
                 </tbody>
               </table>
+            </div>
+
+            <!-- Footer Return Strip -->
+            <div class="pt-3 border-t border-slate-100 flex justify-end text-xs">
+              <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="font-bold text-[#002855] hover:underline flex items-center gap-1.5 cursor-pointer">
+                <span>&larr;</span>
+                <span>Return to Program Director Workbench</span>
+              </button>
             </div>
           </div>
         </section>

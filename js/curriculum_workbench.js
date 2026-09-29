@@ -5363,11 +5363,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             </td>
             <td class="py-2.5 px-3 text-right">
               <div class="flex items-center justify-end space-x-1.5">
-                <button type="button" onclick="openAssignTaskModal('${(f.cluster || '').replace(/'/g, "\\'")}', '${f.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#E5A823]/80 font-black text-xs transition cursor-pointer shadow-xs">
+                <button type="button" onclick="openAssignTaskModal('${(f.cluster || '').replace(/'/g, "\\'")}', '${f.name.replace(/'/g, "\\'")}')" class="h-7 px-3 inline-flex items-center justify-center bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#E5A823]/80 font-bold text-[11px] whitespace-nowrap transition cursor-pointer shadow-xs">
                   Assign Task
                 </button>
                 ${hasActiveDelegation ? `
-                  <button type="button" onclick="terminateFacultyDelegation('${f.id}')" class="px-2.5 py-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-bold transition cursor-pointer shadow-xs" title="Revoke delegation and spreadsheet authoring access">
+                  <button type="button" onclick="terminateFacultyDelegation('${f.id}')" class="h-7 px-3 inline-flex items-center justify-center bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-[11px] font-bold whitespace-nowrap transition cursor-pointer shadow-xs" title="Revoke delegation and spreadsheet authoring access">
                     Terminate
                   </button>
                 ` : ''}
