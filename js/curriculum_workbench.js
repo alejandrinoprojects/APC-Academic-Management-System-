@@ -5363,7 +5363,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             </td>
             <td class="py-2.5 px-3 text-right">
               <div class="flex items-center justify-end space-x-1.5">
-                <button type="button" onclick="openAssignTaskModal('${(Array.isArray(f.courses) ? f.courses.join(', ') : f.cluster) || ''}', '${f.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#E5A823]/80 font-black text-xs transition cursor-pointer shadow-xs">
+                <button type="button" onclick="openAssignTaskModal('${(f.cluster || '').replace(/'/g, "\\'")}', '${f.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#E5A823]/80 font-black text-xs transition cursor-pointer shadow-xs">
                   Assign Task
                 </button>
                 ${hasActiveDelegation ? `
@@ -6882,19 +6882,27 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       if (facultyInput && facultyTitle) facultyInput.value = facultyTitle;
 
-      // Determine initial courses from courseTitle or from faculty member's existing courses
       let initialCodes = [];
+      let targetCluster = courseTitle || 'Hardware & Embedded Systems';
+
       if (facultyTitle) {
         const existingFac = (window.FACULTY_MEMBERS || []).find(f => f.name.toLowerCase() === facultyTitle.toLowerCase());
-        if (existingFac && Array.isArray(existingFac.courses) && existingFac.courses.length > 0) {
-          initialCodes = existingFac.courses;
+        if (existingFac) {
+          if (existingFac.cluster) targetCluster = existingFac.cluster;
+          if (Array.isArray(existingFac.courses) && existingFac.courses.length > 0) {
+            initialCodes = existingFac.courses;
+          }
         }
       }
-      if (!initialCodes.length && courseTitle) {
+      
+      // If courseTitle looks like a comma-separated list of course codes rather than a cluster name
+      if (courseTitle && !initialCodes.length && /^[A-Z0-9,\s]+$/.test(courseTitle) && courseTitle.includes(',')) {
         initialCodes = String(courseTitle).split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+        targetCluster = 'Hardware & Embedded Systems';
       }
-      if (clusterInput && courseTitle) {
-        clusterInput.value = courseTitle;
+
+      if (clusterInput) {
+        clusterInput.value = targetCluster;
       }
 
       // Populate courses checklist

@@ -1187,7 +1187,11 @@
 
     #courseEditModal #editModalTitle,
     #courseEditModal .bg-gradient-to-r h3,
-    #courseEditModal .bg-gradient-to-r p {
+    #courseEditModal .bg-gradient-to-r p,
+    #modalAssignTask .bg-\[\#002855\] h3,
+    #modalAssignTask .bg-\[\#002855\] p,
+    #modalAddFaculty .bg-\[\#002855\] h3,
+    #modalAddFaculty .bg-\[\#002855\] p {
       color: #ffffff !important;
     }
     html:not(.dark) #modalAddSchool .bg-\[\#10151E\],
