@@ -3443,7 +3443,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const cb = currentRevisionModalCallback;
       closeSaveRevisionModal();
       if (typeof cb === 'function') {
-        cb(notes);
+        try {
+          cb(notes);
+        } catch (err) {
+          console.error('Error executing save revision callback:', err);
+          if (typeof showToast === 'function') {
+            showToast('⚠️ Note: Changes saved to memory, but an error occurred updating views.');
+          }
+        }
       }
     }
 
@@ -5964,12 +5971,12 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         syncInd.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span><span class="text-emerald-400 font-bold">Synced</span>`;
       }
 
-      if (typeof renderFlowchartDiagram === 'function') renderFlowchartDiagram();
-      if (typeof drawAllArrows === 'function') setTimeout(drawAllArrows, 80);
-      if (typeof renderFlowchartTable === 'function') renderFlowchartTable();
-      if (typeof filterCoursesTable === 'function') filterCoursesTable();
-      if (typeof renderObeMatrix === 'function') renderObeMatrix();
-      if (typeof calculateCompliance === 'function') calculateCompliance();
+      try { if (typeof renderFlowchartDiagram === 'function') renderFlowchartDiagram(); } catch(e) { console.warn(e); }
+      try { if (typeof drawAllArrows === 'function') setTimeout(drawAllArrows, 80); } catch(e) { console.warn(e); }
+      try { if (typeof renderFlowchartTable === 'function') renderFlowchartTable(); } catch(e) { console.warn(e); }
+      try { if (typeof filterCoursesTable === 'function') filterCoursesTable(); } catch(e) { console.warn(e); }
+      try { if (typeof renderObeMatrix === 'function') renderObeMatrix(); } catch(e) { console.warn(e); }
+      try { if (typeof calculateCompliance === 'function') calculateCompliance(); } catch(e) { console.warn(e); }
 
       const userObj = typeof getCurrentGenericUser === 'function' ? getCurrentGenericUser() : { user: 'Program Director', role: 'Program Director' };
       const now = new Date();
@@ -5995,8 +6002,17 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         ]
       };
 
-      appendAuditLog(newEntry);
-      renderSpreadsheetGrid();
+      try {
+        appendAuditLog(newEntry);
+      } catch (e) {
+        console.warn('Audit log error:', e);
+      }
+
+      try {
+        renderSpreadsheetGrid();
+      } catch (e) {
+        console.warn('renderSpreadsheetGrid error:', e);
+      }
 
       if (typeof showToast === 'function') {
         showToast(`✓ Master Spreadsheet saved and recorded in System Audit Trail!`);
