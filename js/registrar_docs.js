@@ -3113,8 +3113,8 @@ Microprocessors Laboratory</td>
       <div class="border-b-2 border-slate-900 pb-3 mb-4 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 class="font-black text-base uppercase tracking-wider text-slate-900">ASIA PACIFIC COLLEGE · SCHOOL OF ENGINEERING</h1>
-          <h2 class="font-bold text-xs text-slate-800">Outcome-Based Education (OBE) Curriculum Mapping Matrix</h2>
-          <p class="text-[11px] font-mono text-slate-500">BS Computer Engineering (BSCpE) · CHED CMO No. 87 / 92 Series</p>
+          <h2 id="reg-obe-title" class="font-bold text-xs text-slate-800">Outcome-Based Education (OBE) Curriculum Mapping Matrix (OBE 2026)</h2>
+          <p id="reg-obe-sub" class="text-[11px] font-mono text-slate-500">BS Computer Engineering (BSCpE) · Curriculum Year 2026 · Version 2026</p>
         </div>
         <div class="flex items-center gap-3 text-xs bg-slate-100 px-3 py-1.5 rounded-none border border-slate-300">
           <span class="font-bold text-slate-700">Map Legend:</span>

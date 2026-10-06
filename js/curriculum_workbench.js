@@ -2944,6 +2944,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.currentSidebarYear = null;
     window.setSidebarYear = function(year) {
       window.currentSidebarYear = year;
+      const yMap = { 1: '2026', 2: '2025', 3: '2024', 4: '2023', '1': '2026', '2': '2025', '3': '2024', '4': '2023' };
+      if (yMap[year] && typeof window.setObeActiveYear === 'function') {
+        window.setObeActiveYear(yMap[year], false);
+      }
     };
 
     function toggleCurriculumManagementFolder(progCode) {
@@ -3173,6 +3177,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (typeof filterCoursesTable === 'function') filterCoursesTable();
       } else if (viewId === 'obe') {
         if (typeof renderObeMatrix === 'function') renderObeMatrix();
+        if (typeof updateAllObeVersionBadges === 'function') updateAllObeVersionBadges();
       } else if (viewId === 'registrar') {
         const tab = typeof currentRegistrarTab !== 'undefined' ? currentRegistrarTab : 1;
         if (typeof switchRegistrarDocTab === 'function') {
@@ -3341,6 +3346,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       // Redraw arrows if switching to Tab 1
       if (tabIdx === 1) {
         setTimeout(drawPrintArrows, 60);
+      } else if (tabIdx === 5) {
+        if (typeof updateAllObeVersionBadges === 'function') {
+          setTimeout(updateAllObeVersionBadges, 20);
+        }
       }
     }
 
@@ -7448,16 +7457,243 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
 
     // =========================================================================
-    // OUTCOMES-BASED EDUCATION (OBE) MATRIX & TAB CONTROLLERS
+    // OUTCOMES-BASED EDUCATION (OBE) MULTI-YEAR VERSIONING ENGINE
+    // Tracks curriculum year versions (e.g. 2026, 2025, 2024, 2023)
+    // and mid-year revisions (e.g. 2026 -> 2026.a -> 2026.b)
+    // Synchronizes Mission, Vision, Values, GAs, PEOs, SOs, and Matrices.
     // =========================================================================
-    function switchObeTab(tabKey) {
-      const tabMatrix = document.getElementById('tab-obe-matrix');
-      const tabPeoSo = document.getElementById('tab-obe-peo-so');
-      const tabVmg = document.getElementById('tab-obe-vmg');
 
-      const btnMatrix = document.getElementById('obe-btn-matrix');
-      const btnPeoSo = document.getElementById('obe-btn-peo-so');
-      const btnVmg = document.getElementById('obe-btn-vmg');
+    const DEFAULT_OBE_CONFIG = {
+      activeYear: '2026',
+      revisions: {
+        '2026': { subCount: 0, lastUpdated: new Date().toISOString() },
+        '2025': { subCount: 0, lastUpdated: new Date().toISOString() },
+        '2024': { subCount: 0, lastUpdated: new Date().toISOString() },
+        '2023': { subCount: 0, lastUpdated: new Date().toISOString() }
+      }
+    };
+
+    function getObeConfig() {
+      try {
+        const stored = localStorage.getItem('apc_obe_versions');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          return Object.assign({}, DEFAULT_OBE_CONFIG, parsed, {
+            revisions: Object.assign({}, DEFAULT_OBE_CONFIG.revisions, parsed.revisions || {})
+          });
+        }
+      } catch (e) {
+        console.warn('Failed reading apc_obe_versions:', e);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_OBE_CONFIG));
+    }
+
+    function saveObeConfig(cfg) {
+      try {
+        localStorage.setItem('apc_obe_versions', JSON.stringify(cfg));
+      } catch (e) {
+        console.warn('Failed saving apc_obe_versions:', e);
+      }
+    }
+
+    function getActiveObeYear() {
+      if (window.currentSidebarYear) {
+        const yMap = { 1: '2026', 2: '2025', 3: '2024', 4: '2023', '1': '2026', '2': '2025', '3': '2024', '4': '2023' };
+        if (yMap[window.currentSidebarYear]) {
+          return yMap[window.currentSidebarYear];
+        }
+      }
+      const cfg = getObeConfig();
+      return cfg.activeYear || '2026';
+    }
+
+    function getObeVersionString(year) {
+      const yr = year ? String(year) : getActiveObeYear();
+      const cfg = getObeConfig();
+      const revData = (cfg.revisions && cfg.revisions[yr]) ? cfg.revisions[yr] : { subCount: 0 };
+      if (!revData.subCount || revData.subCount <= 0) {
+        return yr;
+      }
+      const letter = String.fromCharCode(96 + Math.min(revData.subCount, 26)); // 1 -> 'a', 2 -> 'b'
+      return `${yr}.${letter}`;
+    }
+
+    function setObeActiveYear(year, showUserToast = true) {
+      const yrStr = String(year);
+      const cfg = getObeConfig();
+      cfg.activeYear = yrStr;
+      if (!cfg.revisions[yrStr]) {
+        cfg.revisions[yrStr] = { subCount: 0, lastUpdated: new Date().toISOString() };
+      }
+      saveObeConfig(cfg);
+
+      const reverseMap = { '2026': 1, '2025': 2, '2024': 3, '2023': 4 };
+      if (reverseMap[yrStr]) {
+        window.currentSidebarYear = reverseMap[yrStr];
+      }
+
+      updateAllObeVersionBadges();
+      renderObeMatrix();
+
+      if (showUserToast && typeof showToast === 'function') {
+        showToast(`Switched active OBE Map to Curriculum Year ${yrStr} (Version: ${getObeVersionString(yrStr)})`);
+      }
+    }
+
+    function bumpCurrentObeRevision(reason = 'Mid-year modification') {
+      const activeYr = getActiveObeYear();
+      const cfg = getObeConfig();
+      if (!cfg.revisions[activeYr]) {
+        cfg.revisions[activeYr] = { subCount: 0 };
+      }
+      cfg.revisions[activeYr].subCount = (cfg.revisions[activeYr].subCount || 0) + 1;
+      cfg.revisions[activeYr].lastUpdated = new Date().toISOString();
+      saveObeConfig(cfg);
+
+      const newVer = getObeVersionString(activeYr);
+      updateAllObeVersionBadges();
+
+      if (typeof recordAuditEntry === 'function') {
+        recordAuditEntry('OBE Version Bump', 'Curriculum', `OBE map updated mid-year to version ${newVer} (${reason})`);
+      }
+
+      if (typeof showToast === 'function') {
+        showToast(`⚡ OBE Version bumped mid-year to ${newVer} (${reason})`);
+      }
+      return newVer;
+    }
+
+    function resetCurrentObeRevision() {
+      const activeYr = getActiveObeYear();
+      const cfg = getObeConfig();
+      if (cfg.revisions[activeYr]) {
+        cfg.revisions[activeYr].subCount = 0;
+        cfg.revisions[activeYr].lastUpdated = new Date().toISOString();
+        saveObeConfig(cfg);
+      }
+      updateAllObeVersionBadges();
+      if (typeof showToast === 'function') {
+        showToast(`Reset OBE version for ${activeYr} to baseline (${activeYr})`);
+      }
+    }
+
+    function updateAllObeVersionBadges() {
+      const activeYr = getActiveObeYear();
+      const verStr = getObeVersionString(activeYr);
+
+      // 1. OBE Toolbar Pills
+      const pillsContainers = [document.getElementById('obe-year-pills'), document.getElementById('obe-year-pills-layer')];
+      pillsContainers.forEach(container => {
+        if (!container) return;
+        const availableYears = ['2026', '2025', '2024', '2023'];
+        let html = '';
+        availableYears.forEach(y => {
+          const isActive = (y === activeYr);
+          const yVer = getObeVersionString(y);
+          const activeClasses = isActive
+            ? 'bg-[#002855] text-[#E5A823] font-bold border-[#002855] shadow-xs'
+            : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-300 dark:border-slate-700 font-medium';
+          html += `
+            <button type="button" onclick="setObeActiveYear('${y}')" class="px-2.5 py-1 text-xs border -ml-[1px] first:ml-0 transition cursor-pointer ${activeClasses}">
+              CPE${y} <span class="font-mono text-[10px] opacity-80">(v${yVer})</span>
+            </button>
+          `;
+        });
+        container.innerHTML = html;
+      });
+
+      // 2. Active Version Badges
+      ['obe-active-version-badge', 'obe-active-version-badge-layer'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = `OBE Version: ${verStr}`;
+      });
+
+      // 3. Tab Labels
+      const tabLblMatrix = document.getElementById('obe-tab-label-matrix');
+      if (tabLblMatrix) tabLblMatrix.textContent = `Course-to-SO Learning Progression Matrix (SO ${verStr})`;
+
+      const tabLblPeo = document.getElementById('obe-tab-label-peo');
+      if (tabLblPeo) tabLblPeo.textContent = `PEO-to-SO Relational Schedule (PEO ${verStr} • SO ${verStr})`;
+
+      const tabLblVision = document.getElementById('obe-tab-label-vision');
+      if (tabLblVision) tabLblVision.textContent = `Vision, Mission, Goal & Graduate Attributes (GA ${verStr})`;
+
+      // 4. Component Section Badges
+      const badgePeo = document.getElementById('obe-badge-peo');
+      if (badgePeo) badgePeo.textContent = `PEO ${verStr}`;
+
+      const badgeSo = document.getElementById('obe-badge-so');
+      if (badgeSo) badgeSo.textContent = `SO ${verStr}`;
+
+      const badgePeoSoMatrix = document.getElementById('obe-badge-peo-so-matrix');
+      if (badgePeoSoMatrix) badgePeoSoMatrix.textContent = `Matrix ${verStr}`;
+
+      const badgeVision = document.getElementById('obe-badge-vision');
+      if (badgeVision) badgeVision.textContent = `Vision ${verStr}`;
+
+      const badgeMission = document.getElementById('obe-badge-mission');
+      if (badgeMission) badgeMission.textContent = `Mission ${verStr}`;
+
+      const badgeGoal = document.getElementById('obe-badge-goal');
+      if (badgeGoal) badgeGoal.textContent = `Goal ${verStr}`;
+
+      const badgeValues = document.getElementById('obe-badge-values');
+      if (badgeValues) badgeValues.textContent = `Values ${verStr}`;
+
+      const badgeGa = document.getElementById('obe-badge-ga');
+      if (badgeGa) badgeGa.textContent = `GA ${verStr}`;
+
+      const badgePeoGaMatrix = document.getElementById('obe-badge-peo-ga-matrix');
+      if (badgePeoGaMatrix) badgePeoGaMatrix.textContent = `Matrix ${verStr}`;
+
+      // 5. Card Badges: PEO 1..5
+      for (let i = 1; i <= 5; i++) {
+        const peoCard = document.getElementById(`peo-card-tag-${i}`);
+        if (peoCard) peoCard.textContent = `PEO ${i} (${verStr})`;
+        const peoHdr = document.getElementById(`peo-matrix-hdr-${i}`);
+        if (peoHdr) {
+          const sub = peoHdr.querySelector('span');
+          const subHtml = sub ? sub.outerHTML : '';
+          peoHdr.innerHTML = `PEO ${i} <span class="font-mono text-[10px] text-blue-700 dark:text-blue-300 font-bold">(${verStr})</span><br>${subHtml}`;
+        }
+      }
+
+      // 6. Card Badges: SO a..m
+      const soLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+      soLetters.forEach(l => {
+        const soCard = document.getElementById(`so-card-tag-${l}`);
+        if (soCard) soCard.textContent = `SO-${l} (${verStr})`;
+        const colHdr = document.getElementById(`matrix-col-hdr-${l}`);
+        if (colHdr) colHdr.title = `SO ${l} (${verStr})`;
+      });
+
+      // 7. Card Badges: GA A..I
+      const gaLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+      gaLetters.forEach(l => {
+        const gaCard = document.getElementById(`ga-card-tag-${l}`);
+        if (gaCard) gaCard.textContent = `GA ${l} (${verStr})`;
+        const gaHdr = document.getElementById(`ga-matrix-hdr-${l}`);
+        if (gaHdr) gaHdr.title = `GA ${l} (${verStr})`;
+      });
+
+      // 8. Registrar Sheet 5
+      const regDocObe = document.getElementById('regDocView_5');
+      if (regDocObe) {
+        const rTitle = regDocObe.querySelector('#reg-obe-title');
+        if (rTitle) rTitle.textContent = `Outcome-Based Education (OBE) Curriculum Mapping Matrix (OBE ${verStr})`;
+        const rSub = regDocObe.querySelector('#reg-obe-sub');
+        if (rSub) rSub.textContent = `BS Computer Engineering (BSCpE) · Curriculum Year ${activeYr} · Version ${verStr}`;
+      }
+    }
+
+    function switchObeTab(tabKey) {
+      const tabMatrix = document.getElementById('obe-content-matrix') || document.getElementById('tab-obe-matrix');
+      const tabPeoSo = document.getElementById('obe-content-peo') || document.getElementById('tab-obe-peo-so');
+      const tabVmg = document.getElementById('obe-content-vision') || document.getElementById('tab-obe-vmg');
+
+      const btnMatrix = document.getElementById('obe-tab-matrix') || document.getElementById('obe-btn-matrix');
+      const btnPeoSo = document.getElementById('obe-tab-peo') || document.getElementById('obe-btn-peo-so');
+      const btnVmg = document.getElementById('obe-tab-vision') || document.getElementById('obe-btn-vmg');
 
       if (!tabMatrix || !tabPeoSo || !tabVmg) return;
 
@@ -7469,25 +7705,29 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       // Reset button styles
       [btnMatrix, btnPeoSo, btnVmg].forEach(btn => {
         if (!btn) return;
-        btn.className = 'obe-tab-btn px-4 py-2 font-bold text-xs border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-colors uppercase tracking-wider flex items-center space-x-1.5';
+        btn.className = 'pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer text-xs font-bold';
       });
 
       if (tabKey === 'matrix') {
         tabMatrix.classList.remove('hidden');
-        if (btnMatrix) btnMatrix.className = 'obe-tab-btn px-4 py-2 font-bold text-xs border-b-2 border-[#002855] text-[#002855] transition-colors uppercase tracking-wider flex items-center space-x-1.5';
+        if (btnMatrix) btnMatrix.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold';
         renderObeMatrix();
-      } else if (tabKey === 'peo-so') {
+      } else if (tabKey === 'peo' || tabKey === 'peo-so') {
         tabPeoSo.classList.remove('hidden');
-        if (btnPeoSo) btnPeoSo.className = 'obe-tab-btn px-4 py-2 font-bold text-xs border-b-2 border-[#002855] text-[#002855] transition-colors uppercase tracking-wider flex items-center space-x-1.5';
-      } else if (tabKey === 'vmg') {
+        if (btnPeoSo) btnPeoSo.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold';
+      } else if (tabKey === 'vision' || tabKey === 'vmg') {
         tabVmg.classList.remove('hidden');
-        if (btnVmg) btnVmg.className = 'obe-tab-btn px-4 py-2 font-bold text-xs border-b-2 border-[#002855] text-[#002855] transition-colors uppercase tracking-wider flex items-center space-x-1.5';
+        if (btnVmg) btnVmg.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold';
       }
+      updateAllObeVersionBadges();
     }
 
     function renderObeMatrix() {
-      const tbody = document.getElementById('obe-matrix-tbody');
+      const tbody = document.getElementById('matrixTableBody') || document.getElementById('obe-matrix-tbody');
       if (!tbody) return;
+
+      const activeYr = getActiveObeYear();
+      const verStr = getObeVersionString(activeYr);
 
       const filterCategoryEl = document.getElementById('obe-filter-category');
       const filterYearEl = document.getElementById('obe-filter-year');
@@ -7497,7 +7737,6 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const filterYear = filterYearEl ? filterYearEl.value : 'all';
       const searchQuery = searchInputEl ? searchInputEl.value.trim().toLowerCase() : '';
 
-      // Use OFFICIAL_BASELINE_74_COURSES
       const dataset = (window.OFFICIAL_BASELINE_74_COURSES && window.OFFICIAL_BASELINE_74_COURSES.length > 0)
         ? window.OFFICIAL_BASELINE_74_COURSES
         : (typeof OFFICIAL_BASELINE_74_COURSES !== 'undefined' ? OFFICIAL_BASELINE_74_COURSES : []);
@@ -7514,7 +7753,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       });
 
       const countEl = document.getElementById('obe-course-count');
-      if (countEl) countEl.textContent = `${filtered.length} courses loaded`;
+      if (countEl) countEl.textContent = `${filtered.length} courses loaded (OBE v${verStr})`;
 
       if (filtered.length === 0) {
         tbody.innerHTML = `<tr><td colspan="17" class="p-8 text-center text-slate-400 italic">No courses match the current filter criteria.</td></tr>`;
@@ -7525,30 +7764,30 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       let rowsHtml = '';
       filtered.forEach((course, idx) => {
-        const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60';
+        const rowBg = idx % 2 === 0 ? 'bg-white dark:bg-[#111722]' : 'bg-slate-50/60 dark:bg-[#0D131C]';
         const sos = course.sos || ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
 
         let cellsHtml = '';
         SO_LABELS.forEach((soLetter, soIdx) => {
           const val = (sos[soIdx] || '-').trim().toUpperCase();
-          let badgeClass = 'text-slate-300 font-light';
+          let badgeClass = 'text-slate-300 dark:text-slate-600 font-light';
           let displayVal = '-';
 
           if (val === 'I') {
-            badgeClass = 'bg-emerald-100 text-emerald-800 font-bold border border-emerald-300 shadow-2xs';
+            badgeClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-300 dark:border-emerald-700 shadow-2xs';
             displayVal = 'I';
           } else if (val === 'E') {
-            badgeClass = 'bg-amber-100 text-amber-800 font-bold border border-amber-300 shadow-2xs';
+            badgeClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-700 shadow-2xs';
             displayVal = 'E';
           } else if (val === 'D') {
-            badgeClass = 'bg-indigo-100 text-indigo-800 font-bold border border-indigo-300 shadow-2xs';
+            badgeClass = 'bg-indigo-100 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 font-bold border border-indigo-300 dark:border-indigo-700 shadow-2xs';
             displayVal = 'D';
           }
 
           cellsHtml += `
-            <td class="p-1 text-center border border-slate-200">
-              <button onclick="cycleObeProgression('${course.code}', ${soIdx})" 
-                      title="Click to cycle I -> E -> D -> '-' for SO (${soLetter})"
+            <td class="p-1 text-center border border-slate-200 dark:border-slate-800">
+              <button type="button" onclick="cycleObeProgression('${course.code}', ${soIdx})" 
+                      title="Click to cycle I -> E -> D -> '-' for SO (${soLetter}) [v${verStr}]"
                       class="w-7 h-7 inline-flex items-center justify-center font-mono text-[11px] rounded-none cursor-pointer hover:ring-2 hover:ring-apc-blue/50 transition-all ${badgeClass}">
                 ${displayVal}
               </button>
@@ -7557,11 +7796,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         });
 
         rowsHtml += `
-          <tr class="${rowBg} hover:bg-blue-50/50 transition-colors">
-            <td class="p-2 font-mono font-bold text-slate-900 border border-slate-200 text-xs">${course.code}</td>
-            <td class="p-2 text-slate-800 border border-slate-200 text-xs font-medium">${course.title}</td>
-            <td class="p-2 font-mono font-bold text-center text-slate-700 border border-slate-200 text-xs">${course.units !== undefined ? course.units : 3}</td>
-            <td class="p-2 font-mono text-center text-slate-600 border border-slate-200 text-xs">Y${course.year} T${course.term}</td>
+          <tr class="${rowBg} hover:bg-blue-50/50 dark:hover:bg-slate-800/40 transition-colors">
+            <td class="p-2 font-mono font-bold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs">${course.code}</td>
+            <td class="p-2 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 text-xs font-medium">${course.title}</td>
+            <td class="p-2 font-mono font-bold text-center text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs">${course.units !== undefined ? course.units : 3}</td>
+            <td class="p-2 font-mono text-center text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 text-xs">Y${course.year} T${course.term}</td>
             ${cellsHtml}
           </tr>
         `;
@@ -7592,24 +7831,35 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         });
       }
 
+      // Mid-year change automatically increments revision (e.g. 2026 -> 2026.a -> 2026.b)
+      const newRev = bumpCurrentObeRevision(`Course ${courseCode} SO mapping changed`);
+
       renderObeMatrix();
       if (typeof showToast === 'function') {
         const soLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
-        showToast(`Updated ${courseCode} SO (${soLetters[soIndex]}) to '${course.sos[soIndex]}'`);
+        showToast(`Updated ${courseCode} SO (${soLetters[soIndex]}) to '${course.sos[soIndex]}' — OBE Revision bumped to ${newRev}`);
       }
     }
 
+    window.getObeConfig = getObeConfig;
+    window.getActiveObeYear = getActiveObeYear;
+    window.getObeVersionString = getObeVersionString;
+    window.setObeActiveYear = setObeActiveYear;
+    window.bumpCurrentObeRevision = bumpCurrentObeRevision;
+    window.resetCurrentObeRevision = resetCurrentObeRevision;
+    window.updateAllObeVersionBadges = updateAllObeVersionBadges;
     window.switchObeTab = switchObeTab;
     window.renderObeMatrix = renderObeMatrix;
     window.cycleObeProgression = cycleObeProgression;
 
-        // Initialize categories, legend, role state, and audit trail on load
+    // Initialize categories, legend, role state, and audit trail on load
     try {
       renderFlowchartLegend();
       populateCategoryDropdowns();
       renderAuditTable();
       switchRole('admin', false);
       applyRolePermissions();
+      updateAllObeVersionBadges();
     } catch (e) {
       console.warn('Initial setup warning:', e);
     }

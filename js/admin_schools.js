@@ -650,9 +650,10 @@
       if (!modal || !title || !content) return;
 
       const data = getPillarsData();
+      const verTag = (typeof window.getObeVersionString === 'function') ? ` (${window.getObeVersionString()})` : '';
 
       if (pillar === 'mission') {
-        title.innerText = 'Institutional Mission';
+        title.innerText = `Institutional Mission${verTag}`;
         const lines = (data.mission || '').split('\n').filter(l => l.trim());
         const lead = lines.shift() || 'Our Mission';
         content.innerHTML = `
@@ -661,7 +662,7 @@
           ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-700 dark:text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
         `;
       } else if (pillar === 'vision') {
-        title.innerText = 'Institutional Vision';
+        title.innerText = `Institutional Vision${verTag}`;
         const lines = (data.vision || '').split('\n').filter(l => l.trim());
         const lead = lines.shift() || 'Our Vision';
         content.innerHTML = `
@@ -670,7 +671,7 @@
           ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-700 dark:text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
         `;
       } else if (pillar === 'gas' || pillar === 'attributes') {
-        title.innerText = 'Institutional Graduate Attributes (9 GAs)';
+        title.innerText = `Institutional Graduate Attributes (GA${verTag})`;
         const gasList = (data.gas && Array.isArray(data.gas)) ? data.gas : DEFAULT_PILLARS.gas;
         const gaCards = gasList.map(ga => `
           <div class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/60">
@@ -696,7 +697,7 @@
           </div>
         `;
       } else {
-        title.innerText = 'Institutional Core Values';
+        title.innerText = `Institutional Core Values${verTag}`;
         const rawValues = (data.values || '').split('\n').filter(l => l.trim());
         const valCards = rawValues.map(v => {
           const parts = v.split(':');
@@ -787,6 +788,12 @@
       try {
         localStorage.setItem('apc_custom_pillars', JSON.stringify(updated));
       } catch (e) {}
+
+      // Bump mid-year revision for active OBE year
+      if (typeof window.bumpCurrentObeRevision === 'function') {
+        window.bumpCurrentObeRevision('Institutional Statements / Graduate Attributes updated mid-year');
+      }
+
       closeEditPillarsModal();
       if (typeof showToast === 'function') {
         showToast('Institutional statements and Graduate Attributes saved successfully!');
