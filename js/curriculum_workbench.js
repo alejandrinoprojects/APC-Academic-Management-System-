@@ -3070,9 +3070,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (!viewId) viewId = 'flowchart';
 
       // Normalize merged views
-      if (viewId === 'catalog') {
-        viewId = 'spreadsheet';
-      } else if (viewId === 'compliance') {
+      if (viewId === 'compliance') {
         viewId = 'dashboard';
         setTimeout(() => switchDashboardTab('compliance'), 15);
       } else if (viewId === 'homePdProgramView' || viewId === 'workbench') {
@@ -3156,6 +3154,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         else if (viewId === 'obe') topPill.innerText = 'Schools > SoE > BSCpE > OBE Map';
         else if (viewId === 'syllabus') topPill.innerText = 'Schools > SoE > BSCpE > Syllabus Management';
         else if (viewId === 'course') topPill.innerText = 'Schools > SoE > BSCpE > Course Management';
+        else if (viewId === 'catalog') topPill.innerText = 'Schools > SoE > BSCpE > Course Catalog';
         else topPill.innerText = 'Schools > ' + viewId.toUpperCase();
       }
 
@@ -7797,8 +7796,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
         rowsHtml += `
           <tr class="${rowBg} hover:bg-blue-50/50 dark:hover:bg-slate-800/40 transition-colors">
-            <td class="p-2 font-mono font-bold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs">${course.code}</td>
-            <td class="p-2 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 text-xs font-medium">${course.title}</td>
+            <td class="p-2 font-mono font-bold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs sticky left-0 ${rowBg} z-10 min-w-[100px] shadow-xs">${course.code}</td>
+            <td class="p-2 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 text-xs font-medium sticky left-[100px] ${rowBg} z-10 min-w-[220px] shadow-xs">${course.title}</td>
             <td class="p-2 font-mono font-bold text-center text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs">${course.units !== undefined ? course.units : 3}</td>
             <td class="p-2 font-mono text-center text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 text-xs">Y${course.year} T${course.term}</td>
             ${cellsHtml}

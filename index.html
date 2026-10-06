@@ -1978,14 +1978,86 @@
         </section>
 
         <!-- ========================================================================= -->
-        <!-- VIEW: SYLLABUS MANAGEMENT (OUTSIDE SCOPE - EMPTY)                          -->
+        <!-- VIEW: SYLLABUS MANAGEMENT SYSTEM (SMS)                                    -->
         <!-- ========================================================================= -->
-        <section id="view-syllabus" class="hidden font-sans"></section>
+        <section id="view-syllabus" class="hidden space-y-4 font-sans">
+          <div class="bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-800 p-8 shadow-xs text-center space-y-5">
+            <div class="w-16 h-16 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 mx-auto flex items-center justify-center text-3xl shadow-xs">
+              📑
+            </div>
+            <div class="space-y-1">
+              <h2 class="font-black text-xl text-slate-900 dark:text-white uppercase tracking-tight">Syllabus Management System (SMS)</h2>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Outcomes-Based Course Syllabus Authoring &amp; Assessment Mapping</p>
+            </div>
+            <div class="max-w-2xl mx-auto p-5 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-3 text-left">
+              <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span class="font-bold text-slate-800 dark:text-slate-200">OBE Syllabus Authoring Features:</span>
+                <span class="text-blue-700 dark:text-blue-400 font-mono text-[11px] font-bold">Academic Suite &bull; BSCpE 2026 Baseline</span>
+              </div>
+              <ul class="list-disc list-inside space-y-1.5 text-slate-600 dark:text-slate-300">
+                <li>Automated Course Intended Learning Outcomes (CILOs) aligned to CHED SO a–m.</li>
+                <li>14-Week Instructional schedule with modular rubrics and grading criteria.</li>
+                <li>Direct linkage with Bloom's Taxonomy cognitive progression and assessment artifacts.</li>
+                <li>One-click import from AI Syllabus Importer modal and LMS export format.</li>
+              </ul>
+            </div>
+            <div class="pt-2 flex items-center justify-center flex-wrap gap-3">
+              <button onclick="openAiSyllabusModal()" class="px-4 py-2 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white text-xs font-bold rounded-none shadow-xs transition inline-flex items-center gap-2 cursor-pointer">
+                <span>🤖</span>
+                <span>Open AI Syllabus Importer</span>
+              </button>
+              <button onclick="navigateView('obe')" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition inline-flex items-center gap-2 cursor-pointer">
+                <span>📊</span>
+                <span>View OBE Map Alignment</span>
+              </button>
+              <button onclick="navigateView('flowchart')" class="px-4 py-2 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] text-xs font-bold border border-[#E5A823]/40 transition inline-flex items-center gap-2 cursor-pointer">
+                <span>&larr;</span>
+                <span>Return to Flowchart</span>
+              </button>
+            </div>
+          </div>
+        </section>
 
         <!-- ========================================================================= -->
-        <!-- VIEW: COURSE MANAGEMENT (OUTSIDE SCOPE - EMPTY)                            -->
+        <!-- VIEW: COURSE MANAGEMENT SYSTEM (CMS)                                      -->
         <!-- ========================================================================= -->
-        <section id="view-course" class="hidden font-sans"></section>
+        <section id="view-course" class="hidden space-y-4 font-sans">
+          <div class="bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-800 p-8 shadow-xs text-center space-y-5">
+            <div class="w-16 h-16 bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 mx-auto flex items-center justify-center text-3xl shadow-xs">
+              👥
+            </div>
+            <div class="space-y-1">
+              <h2 class="font-black text-xl text-slate-900 dark:text-white uppercase tracking-tight">Course Management System (CMS)</h2>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Faculty Loading, Section Scheduling &amp; Term Offerings</p>
+            </div>
+            <div class="max-w-2xl mx-auto p-5 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-3 text-left">
+              <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span class="font-bold text-slate-800 dark:text-slate-200">Course Administration Capabilities:</span>
+                <span class="text-amber-700 dark:text-amber-400 font-mono text-[11px] font-bold">Faculty Scheduling &bull; Room Allocation</span>
+              </div>
+              <ul class="list-disc list-inside space-y-1.5 text-slate-600 dark:text-slate-300">
+                <li>Term-by-term section loading with lecture/laboratory conflict detection.</li>
+                <li>Faculty qualifications and specialization cluster matching.</li>
+                <li>Class capacity tracking and lab workstation allocation.</li>
+                <li>Synchronized course offering records with Registrar's Master Curriculum.</li>
+              </ul>
+            </div>
+            <div class="pt-2 flex items-center justify-center flex-wrap gap-3">
+              <button onclick="navigateView('delegation')" class="px-4 py-2 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] text-xs font-bold border border-[#E5A823]/40 transition inline-flex items-center gap-2 cursor-pointer">
+                <span>📋</span>
+                <span>Open Cluster Delegations</span>
+              </button>
+              <button onclick="navigateView('spreadsheet')" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition inline-flex items-center gap-2 cursor-pointer">
+                <span>📊</span>
+                <span>Open Master Spreadsheet</span>
+              </button>
+              <button onclick="navigateView('flowchart')" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition inline-flex items-center gap-2 cursor-pointer">
+                <span>&larr;</span>
+                <span>Return to Flowchart</span>
+              </button>
+            </div>
+          </div>
+        </section>
 
         <section id="view-flowchart" class="hidden space-y-4 font-sans">
           <div class="bg-white dark:bg-[#131923] rounded-none border border-slate-300 dark:border-slate-700 p-5 shadow-xs space-y-4">
@@ -2173,10 +2245,91 @@
 
 
         <!-- =================================================================== -->
-        <!-- VIEW 2: COURSE CATALOG & INGESTION WORKBENCH (ALL 74 COURSES) -->
+        <!-- VIEW 2: COURSE CATALOG & INGESTION WORKBENCH (ALL 74 COURSES)       -->
         <!-- =================================================================== -->
-        <!-- Course Catalog merged into Curriculum Spreadsheet (view-spreadsheet) -->
-        <section id="view-catalog" class="hidden"></section>
+        <section id="view-catalog" class="hidden space-y-5">
+          <div class="bg-white dark:bg-[#111722] rounded-none border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+            
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+              <div>
+                <h2 class="font-extrabold text-slate-900 dark:text-white text-lg tracking-tight">Authentic BSCpE Course Catalog Management</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Official Asia Pacific College 2026 Curriculum Baseline &bull; 74 Curricular Subjects</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="openIntegratedSpreadsheet('master', 'catalog')" class="px-3.5 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 border border-[#E5A823]/40 cursor-pointer" title="Open Integrated Spreadsheet for tabular mass editing">
+                  <span>📊</span>
+                  <span>Mass Edit in Spreadsheet</span>
+                </button>
+                <button type="button" onclick="openCategoryManagerModal()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 transition flex items-center gap-1.5 cursor-pointer" title="Create, modify, or rename course categories &amp; groupings">
+                  <span>🏷️</span>
+                  <span>Manage Categories &amp; Groupings</span>
+                </button>
+                <button onclick="openCourseEditModal('')" class="px-3.5 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs font-bold rounded-none shadow transition flex items-center gap-1.5 cursor-pointer">
+                  <span>➕ Add New Course</span>
+                </button>
+                <button onclick="exportCurriculumJSON()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 transition flex items-center gap-1.5 cursor-pointer" title="Export updated curriculum data as JSON file">
+                  <span>💾 Export JSON</span>
+                </button>
+                <button onclick="document.getElementById('importJsonInput').click()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 transition flex items-center gap-1.5 cursor-pointer" title="Import previously edited curriculum JSON">
+                  <span>📥 Import JSON</span>
+                </button>
+                <input type="file" id="importJsonInput" onchange="importCurriculumJSON(event)" accept=".json" class="hidden">
+                <button onclick="resetCurriculumToBaseline()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-rose-100 text-slate-600 hover:text-rose-700 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 transition flex items-center gap-1.5 cursor-pointer" title="Reset all changes back to official 2026 Registrar baseline">
+                  <span>↺ Reset Baseline</span>
+                </button>
+                <button onclick="openBatchModal()" class="px-3.5 py-2 bg-[#002855] hover:bg-[#001f42] text-white text-xs font-bold rounded-none shadow transition flex items-center gap-1.5 cursor-pointer">
+                  <span>📊 Batch Import</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <input type="text" id="courseSearchInput" onkeyup="filterCoursesTable()" placeholder="Search by code or title (e.g. CALCONE, USERINX, Operating Systems)..." class="w-full px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0E141F] text-slate-900 dark:text-slate-100 rounded-none focus:outline-none focus:ring-2 focus:ring-apc-blue shadow-inner">
+              
+              <select id="groupingFilter" onchange="filterCoursesTable()" class="w-full px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0E141F] text-slate-800 dark:text-slate-200 rounded-none focus:outline-none focus:ring-2 focus:ring-apc-blue cursor-pointer">
+                <option value="all">All Course Groupings</option>
+                <option value="General Education">General Education (GE)</option>
+                <option value="Basic Engineering">Basic Engineering and Sciences</option>
+                <option value="Allied">Allied Engineering Courses</option>
+                <option value="Professional Core">Professional Core Courses</option>
+                <option value="Technical Electives">Technical Electives / Cognates</option>
+                <option value="Institutional">Institutional Courses (PE / NSTP / EXCOMP)</option>
+              </select>
+
+              <select id="termFilter" onchange="filterCoursesTable()" class="w-full px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0E141F] text-slate-800 dark:text-slate-200 rounded-none focus:outline-none focus:ring-2 focus:ring-apc-blue cursor-pointer">
+                <option value="all">All Academic Years (1 to 4)</option>
+                <option value="1">First Year Courses</option>
+                <option value="2">Second Year Courses</option>
+                <option value="3">Third Year Courses</option>
+                <option value="4">Fourth Year Courses</option>
+              </select>
+            </div>
+
+            <!-- Courses Table -->
+            <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-none shadow-sm">
+              <table id="coursesTable" class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                <thead class="bg-slate-50 dark:bg-[#0E141F] text-slate-700 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800 uppercase tracking-wider text-[11px]">
+                  <tr>
+                    <th class="py-3 px-3">Code</th>
+                    <th class="py-3 px-3">Descriptive Title</th>
+                    <th class="py-3 px-2 text-center">Lec</th>
+                    <th class="py-3 px-2 text-center">Lab</th>
+                    <th class="py-3 px-2 text-center">Units</th>
+                    <th class="py-3 px-3">Year / Term</th>
+                    <th class="py-3 px-3">Course Grouping</th>
+                    <th class="py-3 px-3">Pre-requisites</th>
+                    <th class="py-3 px-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="courseTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </section>
 
         <!-- =================================================================== -->
         <!-- VIEW: CURRICULUM SPREADSHEET (Merged Catalog & Spreadsheet Workbench) -->
@@ -2487,6 +2640,36 @@
 
             <!-- TAB 1: COURSE-TO-SO MATRIX -->
             <div id="obe-content-matrix" class="space-y-3">
+              <!-- OBE Course Search & Multi-Criteria Filtering Controls -->
+              <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 p-3 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800">
+                <div class="sm:col-span-2">
+                  <input type="text" id="obe-search-input" oninput="renderObeMatrix()" placeholder="Search courses by code or title (e.g. CALCONE, SOFTDES, COMNETS)..." class="w-full px-3 py-1.5 text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#111722] text-slate-800 dark:text-slate-200 rounded-none focus:outline-none focus:ring-1 focus:ring-apc-blue shadow-inner">
+                </div>
+                <div>
+                  <select id="obe-filter-year" onchange="renderObeMatrix()" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#111722] text-slate-800 dark:text-slate-200 rounded-none focus:outline-none focus:ring-1 focus:ring-apc-blue cursor-pointer">
+                    <option value="all">All Curriculum Years (1–4)</option>
+                    <option value="1">First Year Courses</option>
+                    <option value="2">Second Year Courses</option>
+                    <option value="3">Third Year Courses</option>
+                    <option value="4">Fourth Year Courses</option>
+                  </select>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <select id="obe-filter-category" onchange="renderObeMatrix()" class="w-full px-2.5 py-1.5 text-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#111722] text-slate-800 dark:text-slate-200 rounded-none focus:outline-none focus:ring-1 focus:ring-apc-blue cursor-pointer">
+                    <option value="all">All Course Groupings</option>
+                    <option value="Basic Engineering">Basic Engineering</option>
+                    <option value="Professional Core">Professional Core</option>
+                    <option value="General Education">General Education</option>
+                    <option value="Allied">Allied Engineering</option>
+                    <option value="Technical Electives">Technical Electives</option>
+                    <option value="Institutional">Institutional Courses</option>
+                  </select>
+                  <button type="button" onclick="document.getElementById('obe-search-input').value='';document.getElementById('obe-filter-year').value='all';document.getElementById('obe-filter-category').value='all';renderObeMatrix();" class="px-2.5 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs rounded-none transition font-semibold shrink-0 cursor-pointer" title="Reset Filters">
+                    Reset
+                  </button>
+                </div>
+              </div>
+
               <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-none shadow-sm max-h-[620px]">
                 <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
                   <thead class="bg-slate-50 dark:bg-[#0E141F] text-slate-700 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20">
