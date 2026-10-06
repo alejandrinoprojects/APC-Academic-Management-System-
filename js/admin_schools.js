@@ -190,12 +190,16 @@
       const schoolThemes = {
         soe: {
           svgShapes: `<svg class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40" preserveAspectRatio="none" viewBox="0 0 300 120" fill="none">
-            <polygon points="0,0 140,0 90,120 0,120" fill="#381e10"/>
-            <polygon points="120,0 300,0 300,120 180,120" fill="#25140b"/>
-            <circle cx="70" cy="35" r="22" stroke="#FF6B00" stroke-width="1.5" stroke-dasharray="4 2"/>
-            <circle cx="70" cy="35" r="10" stroke="#FF6B00" stroke-width="1.5"/>
-            <line x1="70" y1="13" x2="70" y2="57" stroke="#FF6B00" stroke-width="1.5"/>
-            <line x1="48" y1="35" x2="92" y2="35" stroke="#FF6B00" stroke-width="1.5"/>
+            <polygon points="0,0 140,0 90,120 0,120" fill="#2d170b" fill-opacity="0.9"/>
+            <polygon points="120,0 300,0 300,120 180,120" fill="#1b120c" fill-opacity="0.9"/>
+            <line x1="20" y1="25" x2="80" y2="25" stroke="#FF6B00" stroke-width="1.5"/>
+            <line x1="80" y1="25" x2="100" y2="45" stroke="#FF6B00" stroke-width="1.5"/>
+            <circle cx="20" cy="25" r="3" fill="#FF6B00"/>
+            <circle cx="100" cy="45" r="2.5" fill="#FF6B00"/>
+            <line x1="190" y1="95" x2="250" y2="95" stroke="#E5A823" stroke-width="1.5"/>
+            <line x1="250" y1="95" x2="270" y2="75" stroke="#E5A823" stroke-width="1.5"/>
+            <circle cx="250" cy="95" r="3" fill="#E5A823"/>
+            <circle cx="270" cy="75" r="2.5" fill="#E5A823"/>
           </svg>`
         },
         socit: {

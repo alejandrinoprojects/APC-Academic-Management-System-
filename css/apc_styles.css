@@ -702,12 +702,16 @@
     /* 1. SOE - Engineering (Orange) */
     html:not(.dark) #schoolCard_0 .h-28,
     html:not(.dark) [data-school="soe"] .h-28 {
-      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%) !important;
-      border-bottom: 1px solid #fed7aa !important;
+      background: #101826 !important;
+      border-bottom: 2px solid #FF6B00 !important;
+    }
+    html:not(.dark) #schoolCard_0 .h-28 span:first-child,
+    html:not(.dark) [data-school="soe"] .h-28 span:first-child {
+      color: #e2e8f0 !important;
     }
     html:not(.dark) #schoolCard_0 .h-28 span:last-child,
     html:not(.dark) [data-school="soe"] .h-28 span:last-child {
-      color: #c2410c !important;
+      color: #FF6B00 !important;
     }
 
     /* 2. SOCIT - Computing & IT (Blue) */
