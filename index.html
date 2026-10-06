@@ -3873,7 +3873,7 @@
       </div>
 
       <p class="text-xs text-slate-600">
-        Simulate testing for circular prerequisite conflicts. Attempt to link an advanced course as a prerequisite of an earlier course to observe real-time loop detection in action.
+        Simulate circular prerequisite conflicts to observe real-time loop detection.
       </p>
 
       <div class="bg-slate-50 p-3.5 rounded-none border border-slate-300 space-y-3 text-xs">
@@ -3908,7 +3908,7 @@
           CALCONE ➔ CALCTWO ➔ DIEQUAT ➔ NUMERCL ➔ FDCONTS ➔ DIGSPRO ➔ DATCOMS ➔ COMNETS ➔ CALCONE
         </div>
         <p class="text-[11px] text-rose-700">
-          The operation has been cancelled. Courses cannot depend on later courses that require them.
+          Operation cancelled. Courses cannot depend on later courses that require them.
         </p>
       </div>
 
@@ -3935,7 +3935,7 @@
       <label class="block border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-none p-7 text-center bg-slate-50 dark:bg-[#10151E] hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition cursor-pointer">
         <div class="text-3xl mb-2">📊</div>
         <p class="text-xs font-bold text-slate-800 dark:text-slate-100">Click to upload or drag and drop Excel Workbook</p>
-        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Accepts standardized Microsoft Excel (.xlsx, .xls) workbooks</p>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Accepts Microsoft Excel (.xlsx, .xls) workbooks</p>
         <p class="text-[11px] text-amber-600 dark:text-amber-400 font-medium mt-2 font-mono">Template: Proposed_BS_CpE_Curriculum_2026_Final_Registrars_Copy.xlsx</p>
         <input type="file" accept=".xlsx,.xls" class="hidden" onchange="sheetImportCSV(event); simulateUpload()" />
       </label>
@@ -4004,7 +4004,7 @@
               <h3 id="editModalTitle" class="font-extrabold text-base text-white leading-tight" style="color: #ffffff !important;">Edit Curricular Course</h3>
               <span id="editModalModeBadge" class="text-[11px] font-mono px-2 py-0.5 rounded-none bg-amber-400/20 text-amber-300 font-bold border border-amber-400/40">Editing Active</span>
             </div>
-            <p class="text-[11px] text-slate-300 mt-0.5">Modify course parameters, units, prerequisite graph linkages, and OBE outcome mappings.</p>
+            <p class="text-[11px] text-slate-300 mt-0.5">Course parameters, units, requisites &amp; OBE mappings.</p>
           </div>
         </div>
 
@@ -4020,7 +4020,7 @@
             <span id="editDagStatusIcon" class="text-base">✓</span>
             <div>
               <span id="editDagStatusTitle" class="font-bold block leading-tight">Prerequisites Verified</span>
-              <span id="editDagStatusSubtitle" class="text-[11px] text-emerald-800">No circular prerequisites detected. Prerequisite flow is clean.</span>
+              <span id="editDagStatusSubtitle" class="text-[11px] text-emerald-800">No circular prerequisites detected.</span>
             </div>
           </div>
           <span class="px-2 py-0.5 rounded-none font-mono font-bold bg-emerald-200 text-emerald-900 text-[11px]">0 CONFLICTS</span>
@@ -4032,7 +4032,7 @@
             <span class="text-base">🔒</span>
             <div>
               <span id="editCourseFacultyNoticeTitle" class="font-bold block leading-tight">View-Only Course Mode</span>
-              <span id="editCourseFacultyNoticeDesc" class="text-[11px] text-amber-800">This course is outside your assigned subject clusters. Editing is restricted to delegated cluster leads.</span>
+              <span id="editCourseFacultyNoticeDesc" class="text-[11px] text-amber-800">This course is outside your assigned cluster.</span>
             </div>
           </div>
           <span class="px-2 py-0.5 rounded-none font-mono font-bold bg-amber-200 text-amber-950 text-[10px] uppercase">READ-ONLY</span>
@@ -4042,20 +4042,18 @@
         <div class="bg-slate-50 p-4 rounded-none border border-slate-300 space-y-3">
           <div class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5 text-apc-navy">
             <span>🏷️</span>
-            <span>1. Course Identification & Academic Cluster</span>
+            <span>1. Course Identification &amp; Academic Cluster</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label class="block text-[11px] font-bold text-slate-700 mb-1">Course Code *</label>
               <input type="text" id="editCourseCodeInput" placeholder="e.g. CPE101" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-none font-mono font-bold text-slate-900 uppercase focus:ring-2 focus:ring-apc-blue shadow-xs">
-              <span class="text-[11px] text-slate-400 mt-0.5 block">Unique course identifier</span>
             </div>
 
             <div class="sm:col-span-2">
               <label class="block text-[11px] font-bold text-slate-700 mb-1">Descriptive Course Title *</label>
               <input type="text" id="editCourseTitleInput" placeholder="e.g. Computer Engineering Practice and Design" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-none text-slate-900 font-semibold focus:ring-2 focus:ring-apc-blue shadow-xs">
-              <span class="text-[11px] text-slate-400 mt-0.5 block">Full official registrar title</span>
             </div>
           </div>
 
@@ -4112,7 +4110,7 @@
           <div class="flex items-center justify-between">
             <div class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5 text-apc-navy">
               <span>⏱️</span>
-              <span>2. Credit Units & Contact Hours Allocation</span>
+              <span>2. Credit Units &amp; Contact Hours Allocation</span>
             </div>
             <div class="flex items-center gap-1.5 text-[11px]">
               <label class="text-slate-500 font-semibold cursor-pointer flex items-center gap-1">
@@ -4126,13 +4124,13 @@
             <div class="bg-white p-3 rounded-none border border-slate-200 text-center">
               <label class="block text-[11px] font-bold text-slate-600 mb-1">Lecture Units (Lec)</label>
               <input type="number" id="editCourseLecInput" min="0" max="10" step="1" value="3" oninput="calculateEditUnits()" class="w-20 mx-auto text-center px-2 py-1.5 text-base font-mono font-bold border border-slate-300 rounded-none">
-              <span class="text-[11px] text-slate-400 mt-1 block font-mono">1 hr/wk = 1.0 unit</span>
+              <span class="text-[11px] text-slate-400 mt-1 block font-mono">1 hr/wk = 1 unit</span>
             </div>
 
             <div class="bg-white p-3 rounded-none border border-slate-200 text-center">
               <label class="block text-[11px] font-bold text-slate-600 mb-1">Laboratory Units (Lab)</label>
               <input type="number" id="editCourseLabInput" min="0" max="18" step="1" value="0" oninput="calculateEditUnits()" class="w-20 mx-auto text-center px-2 py-1.5 text-base font-mono font-bold border border-slate-300 rounded-none">
-              <span class="text-[11px] text-slate-400 mt-1 block font-mono">3 hrs/wk = 1.0 unit</span>
+              <span class="text-[11px] text-slate-400 mt-1 block font-mono">3 hrs/wk = 1 unit</span>
             </div>
 
             <div class="bg-amber-50 p-3 rounded-none border border-amber-200 text-center">
@@ -4148,9 +4146,8 @@
           <div class="flex items-center justify-between">
             <div class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5 text-apc-navy">
               <span>⛓️</span>
-              <span>3. Prerequisites & Requisite Classification</span>
+              <span>3. Prerequisites &amp; Requisite Classification</span>
             </div>
-            <span class="text-[11px] text-slate-500">Links flowchart arrows &amp; prerequisite checks</span>
           </div>
 
           <!-- Currently selected prerequisites chips -->
@@ -4439,7 +4436,7 @@
           <span class="text-[#E5A823] font-bold text-base">👥</span>
           <div>
             <h3 class="font-black text-sm tracking-wider uppercase" style="color: #ffffff !important;">Assign Task &amp; Spreadsheet Access</h3>
-            <p class="text-[11px]" style="color: #cbd5e1 !important;">Authorize faculty editing access to the curriculum spreadsheet</p>
+            <p class="text-[11px]" style="color: #cbd5e1 !important;">Faculty curriculum spreadsheet delegation</p>
           </div>
         </div>
         <button type="button" onclick="closeAssignTaskModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
@@ -4478,7 +4475,6 @@
             <div id="assignTaskCoursesChecklist" class="max-h-48 overflow-y-auto border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-[#10151E] p-2 divide-y divide-slate-200 dark:divide-slate-800">
               <!-- Dynamically populated course checkboxes -->
             </div>
-            <p class="text-[10.5px] text-slate-500 dark:text-slate-400 mt-1">Check all courses this faculty member is authorized to author or modify.</p>
           </div>
 
           <!-- Start Date and End Date of Access -->
@@ -4507,7 +4503,7 @@
           <!-- Informational Note -->
           <div class="p-2.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-[11px] text-blue-900 dark:text-blue-200 flex items-start gap-2">
             <span>ℹ️</span>
-            <span>Faculty will be delegated editing access to the Curriculum Spreadsheet for all checked courses throughout the authorized date window.</span>
+            <span>Editing access active for selected courses during authorized window.</span>
           </div>
         </div>
 
@@ -4541,7 +4537,7 @@
           <span class="text-[#E5A823] font-bold text-base">👤</span>
           <div>
             <h3 class="font-black text-sm tracking-wider uppercase" style="color: #ffffff !important;">Add Faculty Member</h3>
-            <p class="text-[11px]" style="color: #cbd5e1 !important;">Register faculty, assign Academic School, Entra ID account, &amp; cluster</p>
+            <p class="text-[11px]" style="color: #cbd5e1 !important;">Register faculty member and cluster assignment</p>
           </div>
         </div>
         <button type="button" onclick="closeAddFacultyModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
@@ -4561,7 +4557,6 @@
               <option value="som">School of Management (SoM)</option>
               <option value="soad">School of Architecture and Design (SoAD)</option>
             </select>
-            <p class="text-[10.5px] text-slate-400 mt-0.5">Determines faculty affiliation and departmental governance structure.</p>
           </div>
 
           <!-- Field 2: Faculty Full Name -->
@@ -4578,7 +4573,6 @@
               Entra ID Account / Official Email <span class="text-rose-500">*</span>
             </label>
             <input type="email" id="addFacultyAccount" placeholder="e.g. faculty3@apc.edu.ph" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none text-slate-900 dark:text-white font-mono focus:border-[#002855] dark:focus:border-[#E5A823] focus:outline-none" />
-            <p class="text-[10.5px] text-slate-400 mt-0.5">Used for federated Microsoft Entra ID single sign-on authentication.</p>
           </div>
 
           <!-- Field 4: Academic Rank / Designation & Cluster -->
@@ -4628,7 +4622,6 @@
             <div id="addFacultyCoursesChecklist" class="max-h-48 overflow-y-auto border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-2 divide-y divide-slate-200 dark:divide-slate-800">
               <!-- Dynamically populated course checkboxes -->
             </div>
-            <p class="text-[10.5px] text-slate-400 mt-1">Courses outside this selection will be read-only in curriculum authoring tools.</p>
           </div>
         </div>
 
@@ -4719,7 +4712,7 @@
               <h3 class="font-black text-base text-white tracking-wide">AI Agent Curriculum Data Parser & Ingestion</h3>
               <span class="px-2 py-0.5 bg-[#E5A823] text-slate-950 text-[11px] font-black uppercase tracking-wider">AI Powered</span>
             </div>
-            <p class="text-[11px] text-slate-300 mt-0.5">Automated entity extraction for existing syllabi, curriculum matrices, and prerequisite tables.</p>
+            <p class="text-[11px] text-slate-300 mt-0.5">Automated entity extraction for curriculum matrices and syllabi.</p>
           </div>
         </div>
         <button onclick="closeAiImportModal()" class="text-slate-300 hover:text-white p-1 text-2xl font-bold leading-none">&times;</button>
@@ -4760,7 +4753,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div class="flex items-center justify-between bg-slate-100 p-3 border border-slate-200">
           <div class="text-[11px] text-slate-600">
             <span class="font-bold text-slate-900">Extraction Engine:</span>
-            <span>Intelligent multi-pattern entity recognizer (Codes, Units, Hard/Co/Soft Requisites, SO Outcomes).</span>
+            <span>Multi-pattern entity recognizer (Codes, Units, Requisites, SO Outcomes).</span>
           </div>
           <button type="button" onclick="executeAiDataParser()" class="px-4 py-2 bg-[#002855] hover:bg-[#0a3a70] text-[#E5A823] font-black text-xs rounded-none border border-[#E5A823] shadow flex items-center gap-1.5">
             <span>⚡ Parse with AI Agent</span>
@@ -4842,7 +4835,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="text-amber-400 text-base">&#127991;</span>
           <div>
             <h3 class="font-extrabold text-sm tracking-tight text-white uppercase">Curriculum Categories &amp; Groupings Manager</h3>
-            <p class="text-[11px] text-slate-300">Modify, rename, or create custom course groupings (CHED / ABET / Institutional)</p>
+            <p class="text-[11px] text-slate-300">Manage course groupings and classifications</p>
           </div>
         </div>
         <button type="button" onclick="closeCategoryManagerModal()" class="text-slate-300 hover:text-white text-lg font-bold p-1 cursor-pointer">&times;</button>
@@ -4917,7 +4910,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
       <!-- Modal Footer -->
       <div class="bg-slate-100 px-5 py-3 border-t border-slate-200 flex items-center justify-between text-xs">
-        <span class="text-slate-500 text-[11px]">All modified categories immediately synchronize across Spreadsheet, Flowchart &amp; Catalog.</span>
+        <span class="text-slate-500 text-[11px]">Synchronizes across Spreadsheet, Flowchart &amp; Catalog.</span>
         <button type="button" onclick="closeCategoryManagerModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold rounded-none transition cursor-pointer">Close</button>
       </div>
     </div>
@@ -4970,7 +4963,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="text-[#E5A823] text-base font-bold">✎</span>
           <div>
             <h3 class="font-black text-sm tracking-wider text-[#E5A823] uppercase">Edit Institutional Statements</h3>
-            <p class="text-[11px] text-slate-400">Modify Mission, Vision, and Core Values displayed in the Executive Banner</p>
+            <p class="text-[11px] text-slate-400">Institutional Mission, Vision, Values &amp; Graduate Attributes</p>
           </div>
         </div>
         <button type="button" onclick="closeEditPillarsModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
@@ -4995,10 +4988,9 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <span class="text-[10px] text-amber-400 font-mono">Format: GA X: Title - Description</span>
           </div>
           <textarea id="editPillarGasInput" rows="4" class="w-full px-3 py-2 bg-[#10151E] border border-slate-700 text-slate-200 outline-none focus:border-[#E5A823] font-mono text-[11px] leading-relaxed resize-y" placeholder="GA A: Solution Provider - Creates innovative, proactive and impactful strategies..."></textarea>
-          <p class="text-[10px] text-slate-400 mt-0.5">Defined at the institutional level; program directors cascade PEOs to these GAs without modifying them.</p>
         </div>
         <div class="p-3 bg-[#10151E] border border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-          <span>Changes are saved persistently to your institutional configuration.</span>
+          <span>Saved persistently to institutional configuration.</span>
           <button type="button" onclick="resetPillarsToDefault()" class="text-rose-400 hover:text-rose-300 underline cursor-pointer">Reset Defaults</button>
         </div>
         <div class="pt-2 border-t border-slate-700/80 flex items-center justify-end gap-2.5">
@@ -5020,7 +5012,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="w-7 h-7 bg-[#E5A823] text-slate-950 font-black text-sm flex items-center justify-center rounded-none shadow-xs">✨</span>
           <div>
             <h3 class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Initialize New Curriculum Revision</h3>
-            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Degree Curriculum Setup</p>
+            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Curriculum Setup</p>
           </div>
         </div>
         <button type="button" onclick="closeCreateCurriculumModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
@@ -5062,33 +5054,31 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
               <input type="radio" name="curricTemplate" value="clone" checked class="mt-0.5" />
               <div>
                 <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Clone Active Baseline (CPE2026 Curriculum)</div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400">Duplicate courses, prerequisite links, and catalog mappings from active curriculum.</div>
               </div>
             </label>
             <label class="flex items-start gap-2 p-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 cursor-pointer">
               <input type="radio" name="curricTemplate" value="ched" class="mt-0.5" />
               <div>
                 <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Official CHED CMO 92 Baseline</div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400">Start with national standard minimum course requirement template.</div>
               </div>
             </label>
             <label class="flex items-start gap-2 p-2.5 border border-emerald-300 dark:border-emerald-700/70 bg-emerald-50/40 dark:bg-emerald-950/20 cursor-pointer">
               <input type="radio" name="curricTemplate" value="excel" id="curricTemplateExcelRadio" class="mt-0.5" />
               <div class="w-full">
                 <div class="font-bold text-slate-900 dark:text-slate-100 text-xs flex items-center justify-between">
-                  <span>Upload Microsoft Excel Workbook (.xlsx, .xls)</span>
+                  <span>Import Excel Workbook (.xlsx, .xls)</span>
                   <span class="px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-[9px] font-mono uppercase">Excel</span>
                 </div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400 mb-2">Import courses, units, prerequisites &amp; SO mappings directly from an Excel workbook.</div>
-                <input type="file" id="newCurricExcelFile" accept=".xlsx,.xls" onchange="document.getElementById('curricTemplateExcelRadio').checked = true; sheetImportCSV(event)" class="text-[11px] text-slate-700 dark:text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:border file:border-emerald-500/50 file:text-[10px] file:font-bold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 file:cursor-pointer" />
+                <div class="mt-1.5">
+                  <input type="file" id="newCurricExcelFile" accept=".xlsx,.xls" onchange="document.getElementById('curricTemplateExcelRadio').checked = true; sheetImportCSV(event)" class="text-[11px] text-slate-700 dark:text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:border file:border-emerald-500/50 file:text-[10px] file:font-bold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 file:cursor-pointer" />
+                </div>
               </div>
             </label>
           </div>
         </div>
 
-        <div class="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700/60 text-amber-900 dark:text-amber-300 text-[11px] space-y-1">
-          <div class="font-bold">⚡ Automated Verification</div>
-          <div>All prerequisite flowcharts and registrar 7-sheet official documents will be auto-generated upon revision creation.</div>
+        <div class="p-2.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700/60 text-amber-900 dark:text-amber-300 text-[11px] flex items-center justify-between">
+          <span class="font-bold">⚡ Prerequisite flowcharts and official registrar documentation will be auto-generated.</span>
         </div>
 
         <!-- Footer -->
@@ -5111,7 +5101,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black flex items-center justify-center text-sm">+</span>
           <div>
             <h3 class="font-black text-sm tracking-wider text-white uppercase" style="color: #ffffff !important;">Add Academic Degree Program</h3>
-            <p class="text-[11px] text-slate-300">Provision a new degree program, director, theme assets &amp; Excel curriculum</p>
+            <p class="text-[11px] text-slate-300">Degree program configuration and curriculum assets</p>
           </div>
         </div>
         <button type="button" onclick="closeAddProgramModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer leading-none">&times;</button>
@@ -5216,7 +5206,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <div class="bg-white dark:bg-[#181D26] p-3 border border-emerald-200 dark:border-slate-800 flex items-center justify-between gap-2">
             <div class="truncate">
               <div class="font-bold text-slate-800 dark:text-slate-200 text-[11px]">Curriculum Master Excel File (.xlsx, .xls)</div>
-              <div id="addProgExcelPreview" class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Default: Initialize with standard APC CPE2026 Curriculum Excel baseline</div>
+              <div id="addProgExcelPreview" class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Default: Standard APC CPE2026 Curriculum Excel baseline</div>
             </div>
             <div class="flex items-center space-x-1.5 shrink-0">
               <label class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] cursor-pointer transition shadow-2xs">
@@ -5246,7 +5236,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black flex items-center justify-center text-sm">✎</span>
           <div>
             <h3 id="editProgramModalTitle" class="font-black text-sm tracking-wider text-white uppercase" style="color: #ffffff !important;">Edit Program &amp; Director</h3>
-            <p class="text-[11px] text-slate-300">Modify program metadata, director assignment, theme assets &amp; Excel curriculum</p>
+            <p class="text-[11px] text-slate-300">Program metadata, director assignment, and curriculum assets</p>
           </div>
         </div>
         <button type="button" onclick="closeEditProgramModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer leading-none">&times;</button>
@@ -5296,7 +5286,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <div class="bg-white dark:bg-[#181D26] p-2.5 border border-emerald-200 dark:border-slate-800 flex items-center justify-between gap-2">
             <div class="truncate">
               <div class="font-bold text-slate-800 dark:text-slate-200 text-[11px]">Import / Replace Curriculum from Excel</div>
-              <div id="editProgExcelPreview" class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Upload a Microsoft Excel (.xlsx, .xls) file to update program courses</div>
+              <div id="editProgExcelPreview" class="text-[10px] text-slate-500 dark:text-slate-400 truncate">Upload Excel (.xlsx, .xls) to update program courses</div>
             </div>
             <label class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] cursor-pointer transition shrink-0 shadow-2xs">
               Upload Excel (.xlsx)
@@ -5330,7 +5320,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black flex items-center justify-center text-sm">+</span>
           <div>
             <h3 class="font-black text-sm tracking-wider text-white uppercase" style="color: #ffffff !important;">Add Academic School / Division</h3>
-            <p class="text-[11px] text-slate-300">Provision a new school, executive director, theme assets &amp; degree programs</p>
+            <p class="text-[11px] text-slate-300">Academic division and executive setup</p>
           </div>
         </div>
         <button type="button" onclick="closeAddSchoolModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer leading-none">&times;</button>
@@ -5411,7 +5401,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <span class="text-[11px] text-amber-600 dark:text-amber-400 font-mono font-semibold">Hyperlinks auto-generated</span>
           </div>
           <textarea id="newSchoolPrograms" rows="4" required class="w-full p-2.5 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823] leading-relaxed" placeholder="BSCS: Bachelor of Science in Computer Science&#10;BSIT: Bachelor of Science in Information Technology"></textarea>
-          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Example format: <code class="text-[#002855] dark:text-amber-300 font-mono font-bold">BSCS: Bachelor of Science in Computer Science</code>. Each line becomes a direct program link on the school card.</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Example: <code class="text-[#002855] dark:text-amber-300 font-mono font-bold">BSCS: Bachelor of Science in Computer Science</code></p>
         </div>
 
         <!-- Modal Actions -->
@@ -5514,7 +5504,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <span class="text-[11px] text-amber-600 dark:text-amber-400 font-mono font-semibold">Hyperlinks auto-generated</span>
           </div>
           <textarea id="editSchoolPrograms" rows="4" required class="w-full p-2.5 bg-white dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono text-xs outline-none focus:border-[#002855] dark:focus:border-[#E5A823] leading-relaxed" placeholder="BSCpE: Bachelor of Science in Computer Engineering&#10;BSCE: Bachelor of Science in Civil Engineering&#10;BSECE: Bachelor of Science in Electronics Engineering"></textarea>
-          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Example format: <code class="text-[#002855] dark:text-amber-300 font-mono font-bold">BSCS: Bachelor of Science in Computer Science</code>. Each line becomes an instant navigation hyperlink on the card.</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Example: <code class="text-[#002855] dark:text-amber-300 font-mono font-bold">BSCS: Bachelor of Science in Computer Science</code></p>
         </div>
 
         <!-- Modal Actions: Delete option + Cancel + Save -->
@@ -5586,7 +5576,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <span id="revisionModalTarget" class="font-mono text-xs text-slate-500 dark:text-slate-400 font-bold">Curriculum Record</span>
           </div>
           <h3 id="revisionModalTitle" class="text-sm font-bold text-slate-900 dark:text-white mt-1">Save &amp; Sync Revision Notes</h3>
-          <p id="revisionModalSubtitle" class="text-[11px] text-slate-500 dark:text-slate-400">Provide description notes for the permanent System Audit Trail.</p>
+          <p id="revisionModalSubtitle" class="text-[11px] text-slate-500 dark:text-slate-400">System Audit Trail change description</p>
         </div>
         <button type="button" onclick="closeSaveRevisionModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xl font-bold cursor-pointer">&times;</button>
       </div>
