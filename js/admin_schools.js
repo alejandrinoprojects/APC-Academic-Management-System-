@@ -690,10 +690,7 @@
               <p class="font-bold text-[#002855] dark:text-[#E5A823] text-sm">Asia Pacific College Graduate Attributes</p>
               <p class="text-[11px] text-slate-500 dark:text-slate-400">Institutional-level attributes established at the System Administrator tier. All degree programs cascade PEOs from these GAs.</p>
             </div>
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] border border-amber-300 dark:border-amber-700">System Admin Tier</span>
-              <button type="button" onclick="closePillarModal()" class="px-2.5 py-1 bg-slate-200 hover:bg-rose-600 hover:text-white dark:bg-slate-800 dark:hover:bg-rose-600 text-slate-800 dark:text-slate-200 text-xs font-bold transition border border-slate-300 dark:border-slate-700 cursor-pointer shadow-xs">✕ Close</button>
-            </div>
+            <span class="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] border border-amber-300 dark:border-amber-700">System Admin Tier</span>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[55vh] overflow-y-auto pr-1">
             ${gaCards}
