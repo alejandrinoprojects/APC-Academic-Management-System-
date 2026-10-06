@@ -621,7 +621,18 @@
     const DEFAULT_PILLARS = {
       mission: 'Asia Pacific College is committed to bridging the gap between industry and academia by developing high-performing, professionally competent, and socially responsible professionals.\n\n• Delivering industry-integrated and project-based educational frameworks.\n• Instilling ethical, rigorous engineering principles and lifelong learning habits.\n• Promoting collaborative, real-world solutions that impact community and industry.',
       vision: 'Asia Pacific College envisions itself as a leading educational institution recognized globally for academic excellence, digital transformation, and producing pioneering industry leaders.\n\n• Pioneering Outcomes-Based Engineering curricula compliant with CHED and international standards.\n• Driving digital curriculum topology, agile syllabus design, and verified prerequisite graphs.\n• Empowering graduates to lead technological innovations across the ASEAN region.',
-      values: 'Integrity: Uncompromising commitment to truth, ethical conduct, and academic honesty.\nIndustry: Deep integration with global industry standards and technological demands.\nInnovation: Fostering creative problem-solving, research curiosity, and entrepreneurial drive.\nInclusion: Embracing diverse perspectives, collaborative teams, and equitable access.'
+      values: 'Integrity: Uncompromising commitment to truth, ethical conduct, and academic honesty.\nIndustry: Deep integration with global industry standards and technological demands.\nInnovation: Fostering creative problem-solving, research curiosity, and entrepreneurial drive.\nInclusion: Embracing diverse perspectives, collaborative teams, and equitable access.',
+      gas: [
+        { code: 'GA A', title: 'Solution Provider', category: 'Innovation', desc: 'Creates innovative, proactive and impactful strategies with a willingness to challenge the status quo using emerging technologies aligned with organizational goals and within a global context' },
+        { code: 'GA B', title: 'Committed', category: 'Dedication', desc: 'Personifies reliability, unwavering dedication to responsibilities and resiliency to overcome unexpected challenges' },
+        { code: 'GA C', title: 'IT Enabled', category: 'Technology', desc: 'Pioneers in utilizing emerging technologies aiming for digital inclusivity' },
+        { code: 'GA D', title: 'Customer-oriented Professional', category: 'Service & Empathy', desc: 'Practices sensitivity and respect for cultural and disciplinary diversity; and advocates empathy and compassion (malasakit) to enhance cultural experience of customers' },
+        { code: 'GA E', title: 'Team Player', category: 'Collaboration', desc: 'Demonstrates leadership to inspire the achievement of team goals with open collaboration and respect for new ideas' },
+        { code: 'GA F', title: 'Good Communicator', category: 'Dialogue', desc: 'Expresses ideas in an organized manner with clarity, listening respectfully to diverse audience needs leading to meaningful dialogue' },
+        { code: 'GA G', title: 'Ethical', category: 'Integrity', desc: 'Practices fairness and empathy in dealing with all levels of the organization guided by a moral compass' },
+        { code: 'GA H', title: 'Contributor to Nation Building', category: 'Civic Impact', desc: 'Participates actively in socio-economic and environmental issues leading towards sustainability; and contributes positively to national and global development' },
+        { code: 'GA I', title: 'Lifelong Learner', category: 'Growth', desc: 'Undertakes continuous, independent learning charting a path in pursuit of self-actualization' }
+      ]
     };
 
     function getPillarsData() {
@@ -657,6 +668,32 @@
           <p class="font-bold text-[#002855] dark:text-[#E5A823] text-base mb-2">Our Vision</p>
           <p class="text-slate-800 dark:text-slate-200 mb-3 leading-relaxed">${lead}</p>
           ${lines.length ? `<ul class="list-disc pl-5 space-y-1.5 text-slate-700 dark:text-slate-300 text-xs">${lines.map(l => `<li>${l.replace(/^[•\-\*]\s*/, '')}</li>`).join('')}</ul>` : ''}
+        `;
+      } else if (pillar === 'gas' || pillar === 'attributes') {
+        title.innerText = 'Institutional Graduate Attributes (9 GAs)';
+        const gasList = (data.gas && Array.isArray(data.gas)) ? data.gas : DEFAULT_PILLARS.gas;
+        const gaCards = gasList.map(ga => `
+          <div class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/60">
+            <div class="flex items-center justify-between mb-1">
+              <span class="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 font-mono font-bold text-[10px] border border-blue-200 dark:border-blue-700">${ga.code}</span>
+              <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">${ga.category || ''}</span>
+            </div>
+            <div class="font-bold text-[#002855] dark:text-[#E5A823] text-xs mb-1">${ga.title}</div>
+            <div class="text-slate-700 dark:text-slate-300 text-[11px] leading-relaxed">${ga.desc}</div>
+          </div>
+        `).join('');
+
+        content.innerHTML = `
+          <div class="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700/70 pb-2">
+            <div>
+              <p class="font-bold text-[#002855] dark:text-[#E5A823] text-sm">Asia Pacific College Graduate Attributes</p>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">Institutional-level attributes established at the System Administrator tier. All degree programs cascade PEOs from these GAs.</p>
+            </div>
+            <span class="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] border border-amber-300 dark:border-amber-700">System Admin Tier</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[55vh] overflow-y-auto pr-1">
+            ${gaCards}
+          </div>
         `;
       } else {
         title.innerText = 'Institutional Core Values';
@@ -702,9 +739,14 @@
       const mInput = document.getElementById('editPillarMissionInput');
       const vInput = document.getElementById('editPillarVisionInput');
       const valInput = document.getElementById('editPillarValuesInput');
+      const gasInput = document.getElementById('editPillarGasInput');
       if (mInput) mInput.value = data.mission;
       if (vInput) vInput.value = data.vision;
       if (valInput) valInput.value = data.values;
+      if (gasInput) {
+        const gasList = (data.gas && Array.isArray(data.gas)) ? data.gas : DEFAULT_PILLARS.gas;
+        gasInput.value = gasList.map(g => `${g.code}: ${g.title} - ${g.desc}`).join('\n');
+      }
       modal.classList.remove('hidden');
     }
 
@@ -718,17 +760,36 @@
       const mInput = document.getElementById('editPillarMissionInput');
       const vInput = document.getElementById('editPillarVisionInput');
       const valInput = document.getElementById('editPillarValuesInput');
+      const gasInput = document.getElementById('editPillarGasInput');
+      
+      let parsedGas = DEFAULT_PILLARS.gas;
+      if (gasInput && gasInput.value.trim()) {
+        const lines = gasInput.value.split('\n').filter(l => l.trim());
+        if (lines.length > 0) {
+          parsedGas = lines.map((l, i) => {
+            const parts = l.split(':');
+            const code = parts.length > 1 ? parts[0].trim() : `GA ${String.fromCharCode(65 + i)}`;
+            const rest = parts.length > 1 ? parts.slice(1).join(':').trim() : l.trim();
+            const dashParts = rest.split(' - ');
+            const title = dashParts[0] ? dashParts[0].trim() : `Attribute ${code}`;
+            const desc = dashParts.length > 1 ? dashParts.slice(1).join(' - ').trim() : title;
+            return { code, title, desc, category: 'Institutional' };
+          });
+        }
+      }
+
       const updated = {
         mission: mInput ? mInput.value.trim() : DEFAULT_PILLARS.mission,
         vision: vInput ? vInput.value.trim() : DEFAULT_PILLARS.vision,
-        values: valInput ? valInput.value.trim() : DEFAULT_PILLARS.values
+        values: valInput ? valInput.value.trim() : DEFAULT_PILLARS.values,
+        gas: parsedGas
       };
       try {
         localStorage.setItem('apc_custom_pillars', JSON.stringify(updated));
       } catch (e) {}
       closeEditPillarsModal();
       if (typeof showToast === 'function') {
-        showToast('Institutional statements saved successfully!');
+        showToast('Institutional statements and Graduate Attributes saved successfully!');
       }
     }
 
@@ -739,9 +800,13 @@
       const mInput = document.getElementById('editPillarMissionInput');
       const vInput = document.getElementById('editPillarVisionInput');
       const valInput = document.getElementById('editPillarValuesInput');
+      const gasInput = document.getElementById('editPillarGasInput');
       if (mInput) mInput.value = DEFAULT_PILLARS.mission;
       if (vInput) vInput.value = DEFAULT_PILLARS.vision;
       if (valInput) valInput.value = DEFAULT_PILLARS.values;
+      if (gasInput) {
+        gasInput.value = DEFAULT_PILLARS.gas.map(g => `${g.code}: ${g.title} - ${g.desc}`).join('\n');
+      }
       if (typeof showToast === 'function') {
         showToast('Reset statements to institutional defaults.');
       }
@@ -1064,7 +1129,7 @@
       addProgTempExcelFilename = null;
       const preview = document.getElementById('addProgExcelPreview');
       if (preview) {
-        preview.innerText = 'Default: Initialize with standard APC 2026–2030 Excel baseline';
+        preview.innerText = 'Default: Initialize with standard APC CPE2026 Curriculum Excel baseline';
         preview.className = 'text-[10px] text-slate-500 dark:text-slate-400 truncate';
       }
       const input = document.getElementById('newProgExcelFile');
@@ -1545,7 +1610,7 @@
                   By Academic Year
                 </div>
 
-                <!-- 1st Year (2026–2030) -->
+                <!-- CPE2026 Curriculum -->
                 <div>
                   <button type="button" onclick="setSidebarYear(1); toggleFolderAccordion('cpeY1Cont', 'cpeY1Chev')"
                     class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
@@ -1556,7 +1621,7 @@
                       <svg class="w-3 h-3 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                       </svg>
-                      <span class="truncate text-[11px] font-semibold text-slate-200">1st Year (2026–2030)</span>
+                      <span class="truncate text-[11px] font-semibold text-slate-200">CPE2026 Curriculum</span>
                     </span>
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" title="Active Baseline"></span>
                   </button>
@@ -1600,7 +1665,7 @@
                   </div>
                 </div>
 
-                <!-- 2nd Year (2025–2029) -->
+                <!-- CPE2025 Curriculum -->
                 <div>
                   <button type="button" onclick="setSidebarYear(2); toggleFolderAccordion('cpeY2Cont', 'cpeY2Chev')"
                     class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
@@ -1611,7 +1676,7 @@
                       <svg class="w-3 h-3 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                       </svg>
-                      <span class="truncate text-[11px] font-semibold text-slate-200">2nd Year (2025–2029)</span>
+                      <span class="truncate text-[11px] font-semibold text-slate-200">CPE2025 Curriculum</span>
                     </span>
                   </button>
                   <div id="cpeY2Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
@@ -1653,7 +1718,7 @@
                   </div>
                 </div>
 
-                <!-- 3rd Year (2024–2028) -->
+                <!-- CPE2024 Curriculum -->
                 <div>
                   <button type="button" onclick="setSidebarYear(3); toggleFolderAccordion('cpeY3Cont', 'cpeY3Chev')"
                     class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
@@ -1664,7 +1729,7 @@
                       <svg class="w-3 h-3 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                       </svg>
-                      <span class="truncate text-[11px] font-semibold text-slate-200">3rd Year (2024–2028)</span>
+                      <span class="truncate text-[11px] font-semibold text-slate-200">CPE2024 Curriculum</span>
                     </span>
                   </button>
                   <div id="cpeY3Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
@@ -1706,7 +1771,7 @@
                   </div>
                 </div>
 
-                <!-- 4th Year (2023–2027) -->
+                <!-- CPE2023 Curriculum -->
                 <div>
                   <button type="button" onclick="setSidebarYear(4); toggleFolderAccordion('cpeY4Cont', 'cpeY4Chev')"
                     class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
@@ -1717,7 +1782,7 @@
                       <svg class="w-3 h-3 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                       </svg>
-                      <span class="truncate text-[11px] font-semibold text-slate-200">4th Year (2023–2027)</span>
+                      <span class="truncate text-[11px] font-semibold text-slate-200">CPE2023 Curriculum</span>
                     </span>
                   </button>
                   <div id="cpeY4Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
@@ -1883,7 +1948,7 @@
                       <svg class="w-3 h-3 text-amber-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
                       </svg>
-                      <span class="truncate text-[11px] font-bold text-amber-300">2026–2030</span>
+                      <span class="truncate text-[11px] font-bold text-amber-300">CPE2026</span>
                     </span>
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" title="Active Baseline"></span>
                   </button>

@@ -270,7 +270,7 @@
       ...(isExdUp ? [{ category: 'Schools', title: 'School of Engineering (SoE)', subtitle: 'Executive Directorate • School of Engineering', icon: '🏫', action: () => window.goToSchoolExd('soe') }] : []),
 
       // Academic Degree Programs — active BSCpE for development focus
-      { category: 'Programs', title: 'BS Computer Engineering (BSCpE)', subtitle: 'Program Director Workbench • Curriculum 2026-2030', icon: '🎓', action: () => window.selectProgram('BSCpE', 'homePdProgramView') },
+      { category: 'Programs', title: 'BS Computer Engineering (BSCpE)', subtitle: 'Program Director Workbench • CPE2026 Curriculum', icon: '🎓', action: () => window.selectProgram('BSCpE', 'homePdProgramView') },
 
       // Workbench Tools & Views
       { category: 'Views', title: 'Curriculum Prerequisite Flowchart', subtitle: '74-Course Sequence Matrix • Swimlane Routing', icon: '🗺️', action: () => window.selectProgram('BSCpE', 'flowchart') },
