@@ -3869,7 +3869,7 @@
   <!-- ========================================================================= -->
   <!-- CYCLE DETECTION SIMULATOR MODAL (CONFLICT SIMULATOR) -->
   <!-- ========================================================================= -->
-  <div id="cycleModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  <div id="cycleModal" onclick="if(event.target === this) closeCycleSimulatorModal()" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-none max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
       <div class="flex justify-between items-center border-b border-slate-100 pb-3">
         <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
@@ -3929,7 +3929,7 @@
   <!-- ========================================================================= -->
   <!-- BATCH INGESTION MODAL DIALOG -->
   <!-- ========================================================================= -->
-  <div id="batchModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  <div id="batchModal" onclick="if(event.target === this) closeBatchModal()" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white dark:bg-[#181D26] rounded-none max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
       <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
         <h3 class="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
@@ -3996,7 +3996,7 @@
   <!-- ========================================================================= -->
   <!-- COURSE DATA EDITOR MODAL (User-Friendly Curriculum Editing Suite)          -->
   <!-- ========================================================================= -->
-  <div id="courseEditModal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+  <div id="courseEditModal" onclick="if(event.target === this) closeCourseEditModal()" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-none max-w-4xl w-full shadow-2xl border-2 border-[#002855] overflow-hidden flex flex-col my-auto max-h-[94vh]">
       
       <!-- Modal Header -->
@@ -4840,8 +4840,8 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- ========================================================================= -->
   <!-- CATEGORY & GROUPING MANAGER MODAL -->
   <!-- ========================================================================= -->
-  <div id="categoryManagerModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white border-2 border-[#002855] shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col rounded-none overflow-hidden">
+  <div id="categoryManagerModal" onclick="if(event.target === this) closeCategoryManagerModal()" class="hidden fixed inset-0 z-50 bg-slate-950/70 flex items-center justify-center p-4 backdrop-blur-xs no-print overflow-y-auto">
+    <div class="bg-white border-2 border-[#002855] shadow-2xl w-full max-w-2xl max-h-[90vh] my-auto flex flex-col rounded-none overflow-hidden">
       <!-- Modal Header -->
       <div class="bg-[#002855] text-white px-5 py-3 flex items-center justify-between border-b-2 border-[#E5A823]">
         <div class="flex items-center space-x-2.5">
@@ -4932,19 +4932,19 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- ========================================================================= -->
   <!-- MISSION, VISION & VALUES MODAL -->
   <!-- ========================================================================= -->
-  <div id="pillarModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden">
+  <div id="pillarModal" onclick="if(event.target === this) closePillarModal()" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print overflow-y-auto">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-4xl flex flex-col rounded-none overflow-hidden max-h-[92vh] my-auto">
       <!-- Modal Header -->
-      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/80">
+      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/80 shrink-0">
         <div class="flex items-center space-x-3">
           <img src="assets/apc_seal.png" class="w-7 h-7 object-contain" alt="APC Seal">
           <h3 id="pillarModalTitle" class="font-black text-sm tracking-wider text-[#002855] dark:text-[#E5A823] uppercase">Institutional Mission</h3>
         </div>
-        <button type="button" onclick="closePillarModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <button type="button" onclick="closePillarModal()" class="w-8 h-8 flex items-center justify-center bg-slate-200 hover:bg-rose-600 hover:text-white dark:bg-slate-800 dark:hover:bg-rose-600 text-slate-700 dark:text-slate-200 text-lg font-black transition cursor-pointer border border-slate-300 dark:border-slate-700" title="Close Modal (Esc)">&times;</button>
       </div>
 
       <!-- Modal Body -->
-      <div class="p-6 space-y-4 text-slate-800 dark:text-slate-200">
+      <div class="p-6 space-y-4 text-slate-800 dark:text-slate-200 flex-1 overflow-y-auto min-h-0">
         <div id="pillarModalContent" class="text-sm leading-relaxed">
           <!-- Populated by showPillarModal -->
         </div>
@@ -4954,19 +4954,22 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       </div>
 
       <!-- Modal Footer -->
-      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between shrink-0">
         <button type="button" onclick="openEditPillarsModal()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-xs">
           <span>✎</span>
           <span>Edit Statements</span>
         </button>
-        <button type="button" onclick="closePillarModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white text-xs font-bold transition cursor-pointer border border-slate-300 dark:border-slate-700">Close</button>
+        <button type="button" onclick="closePillarModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-700 dark:hover:bg-slate-600 text-xs font-black transition cursor-pointer border border-slate-700 shadow-sm flex items-center gap-1.5">
+          <span>✕</span>
+          <span>Close Window</span>
+        </button>
       </div>
     </div>
   </div>
 
   <!-- EDIT INSTITUTIONAL PILLARS MODAL (Mission, Vision & Values Editor) -->
-  <div id="editPillarsModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-2xl flex flex-col rounded-none overflow-hidden max-h-[90vh]">
+  <div id="editPillarsModal" onclick="if(event.target === this) closeEditPillarsModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print overflow-y-auto">
+    <div class="bg-[#181D26] text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-2xl flex flex-col rounded-none overflow-hidden max-h-[92vh] my-auto">
       <!-- Header -->
       <div class="bg-[#10151E] px-5 py-3.5 flex items-center justify-between border-b border-slate-700/80">
         <div class="flex items-center space-x-3">
