@@ -513,8 +513,8 @@
         padding: 0 !important;
         margin: 0 auto !important;
       }
-      /* Landscape Letter for Sheet 1, Sheet 5, Sheet 6 */
-      #regDocView_1, #regDocView_5, #regDocView_6 {
+      /* Landscape Letter for Sheet 1 (Flowchart) */
+      #regDocView_1 {
         page-break-after: avoid !important;
         break-after: avoid !important;
         page-break-inside: avoid !important;
@@ -526,8 +526,8 @@
       @page :right {
         size: letter;
       }
-      /* Multi-page sheets paginate cleanly */
-      #regDocView_2, #regDocView_3, #regDocView_4, #regDocView_7 {
+      /* Multi-page sheets paginate cleanly (Sheets 2 to 7) */
+      #regDocView_2, #regDocView_3, #regDocView_4, #regDocView_5, #regDocView_6, #regDocView_7 {
         page-break-after: auto !important;
         break-after: auto !important;
         page-break-inside: auto !important;

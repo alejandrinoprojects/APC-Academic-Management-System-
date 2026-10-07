@@ -3844,32 +3844,34 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
         // ONLY Flowchart (Sheet 1) is landscape. Everything else (Sheets 2 to 7) is Letter Portrait Narrow Margin!
         const isLandscape = (idx === 1);
+        const isLargeSheet = (idx === 3 || idx === 4 || idx === 6);
+        const renderScale = (idx === 1) ? 1.0 : (isLargeSheet ? 0.95 : 1.1);
 
         if (docWrapper && !isRegistrarEditingActive) {
           docWrapper.classList.remove('hidden');
-          docWrapper.style.position = 'absolute';
-          docWrapper.style.left = '0px';
-          docWrapper.style.top = '0px';
-          docWrapper.style.visibility = 'hidden';
+          docWrapper.style.position = 'fixed';
+          docWrapper.style.left = '-99999px';
+          docWrapper.style.top = '0';
+          docWrapper.style.opacity = '0';
           docWrapper.style.pointerEvents = 'none';
-          docWrapper.style.zIndex = '-9999';
-          docWrapper.style.width = isLandscape ? '1056px' : '816px';
+          docWrapper.style.zIndex = '-1';
+          docWrapper.style.visibility = '';
+          docWrapper.style.width = '';
         }
 
         activeDoc.classList.remove('hidden');
-        activeDoc.style.width = isLandscape ? '1056px' : '816px';
+        activeDoc.style.visibility = '';
+        activeDoc.style.width = '';
 
         const opt = {
           margin: [0.2, 0.25, 0.2, 0.25], // Narrow margin
           filename: `APC_Curriculum_Sheet_${idx}.pdf`,
           image: { type: 'jpeg', quality: 0.92 },
           html2canvas: { 
-            scale: 1.0, 
+            scale: renderScale, 
             useCORS: true, 
             logging: false,
-            scrollY: 0,
-            width: isLandscape ? 1056 : 816,
-            windowWidth: isLandscape ? 1056 : 816
+            scrollY: 0
           },
           jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
           pagebreak: { mode: ['css', 'legacy'] }
@@ -3893,7 +3895,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         } else {
           if (loader) loader.classList.add('hidden');
         }
-      }, 100);
+      }, 50);
     }
 
     function downloadCurrentPdfDoc() {
@@ -3910,11 +3912,13 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const activeDoc = document.getElementById('regDocView_' + idx);
       if (!activeDoc) return;
       const isLandscape = (idx === 1);
+      const isLargeSheet = (idx === 3 || idx === 4 || idx === 6);
+      const renderScale = (idx === 1) ? 1.0 : (isLargeSheet ? 0.95 : 1.1);
       const opt = {
         margin: [0.2, 0.25, 0.2, 0.25], // Narrow margin
         filename: `APC_Curriculum_Sheet_${idx}.pdf`,
         image: { type: 'jpeg', quality: 0.92 },
-        html2canvas: { scale: 1.0, useCORS: true, logging: false },
+        html2canvas: { scale: renderScale, useCORS: true, logging: false, scrollY: 0 },
         jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
         pagebreak: { mode: ['css', 'legacy'] }
       };
