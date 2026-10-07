@@ -3867,256 +3867,158 @@
             </div>
           </div>
 
-          <!-- Section Switcher Tabs -->
-          <div class="flex items-center space-x-1 border-b border-slate-200 dark:border-slate-700 pb-1">
-            <button type="button" id="dashTabAnalytics" onclick="switchDashboardTab('analytics')" class="px-4 py-2 text-xs font-black uppercase tracking-wider transition border-b-2 bg-[#002855] text-[#E5A823] border-[#E5A823] cursor-pointer shadow-xs">
-              📊 Visual Analytics &amp; Version Registry
-            </button>
-            <button type="button" id="dashTabChed" onclick="switchDashboardTab('compliance')" class="px-4 py-2 text-xs font-black uppercase tracking-wider transition border-b-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-transparent hover:text-slate-900 dark:hover:text-white cursor-pointer shadow-xs">
-              ⚖️ CHED CMO No. 92 Compliance Audit
-            </button>
-          </div>
+          <!-- Section Switcher Tabs REMOVED: Single consolidated page scoped to active curriculum -->
 
-          <!-- TAB 1: VISUAL ANALYTICS & VERSION REGISTRY -->
+          <!-- SINGLE CONSOLIDATED CURRICULUM DASHBOARD PAGE -->
           <div id="dashContentAnalytics" class="space-y-5">
-            <!-- Top Metric Cards -->
+            <!-- Active Curriculum Hero & Key Metric Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div class="bg-white rounded-none p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+              <div class="bg-white dark:bg-[#131923] p-5 border border-slate-300 dark:border-slate-700 shadow-sm flex items-center justify-between">
                 <div>
-                  <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Baseline</p>
-                  <h3 class="text-xl font-bold text-slate-900 mt-1">2026 Revision Draft</h3>
-                  <p class="text-xs text-emerald-600 font-medium mt-1 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-none bg-emerald-500"></span> In Review Phase
+                  <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Curriculum Edition</p>
+                  <h3 id="dashCurricEditionName" class="text-xl font-bold text-slate-900 dark:text-white mt-1">CPE2026 Curriculum</h3>
+                  <p id="dashCurricStatusBadge" class="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 bg-emerald-500"></span> Active Standard Baseline
                   </p>
                 </div>
-                <div class="w-12 h-12 rounded-none bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-lg">
+                <div class="w-12 h-12 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-lg">
                   📋
                 </div>
               </div>
 
-              <div class="bg-white rounded-none p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+              <div class="bg-white dark:bg-[#131923] p-5 border border-slate-300 dark:border-slate-700 shadow-sm flex items-center justify-between">
                 <div>
                   <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Credit Units</p>
-                  <h3 class="text-xl font-bold text-slate-900 mt-1">172 Units</h3>
-                  <p class="text-xs text-emerald-600 font-medium mt-1">170 Min Standard (CHED Passed)</p>
+                  <h3 id="dashCurricTotalUnits" class="text-xl font-bold text-slate-900 dark:text-white mt-1">172.0 Units</h3>
+                  <p class="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1">170 Min Standard (CHED Passed)</p>
                 </div>
-                <div class="w-12 h-12 rounded-none bg-amber-50 text-amber-700 flex items-center justify-center font-bold text-lg">
+                <div class="w-12 h-12 bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 flex items-center justify-center font-bold text-lg">
                   ⚖️
                 </div>
               </div>
 
-              <div class="bg-white rounded-none p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+              <div class="bg-white dark:bg-[#131923] p-5 border border-slate-300 dark:border-slate-700 shadow-sm flex items-center justify-between">
                 <div>
                   <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">CHED SO Coverage</p>
-                  <h3 class="text-xl font-bold text-slate-900 mt-1">13 / 13 Mapped</h3>
-                  <p class="text-xs text-emerald-600 font-medium mt-1">100% Developmental I-E-D</p>
+                  <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">13 / 13 Mapped</h3>
+                  <p class="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1">100% Developmental I-E-D</p>
                 </div>
-                <div class="w-12 h-12 rounded-none bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-lg">
+                <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-lg">
                   🎯
                 </div>
               </div>
 
-              <div class="bg-white rounded-none p-5 border border-slate-200 shadow-sm flex items-center justify-between">
+              <div class="bg-white dark:bg-[#131923] p-5 border border-slate-300 dark:border-slate-700 shadow-sm flex items-center justify-between">
                 <div>
-                  <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prerequisites</p>
-                  <h3 class="text-xl font-bold text-slate-900 mt-1">74 Courses / 0 Conflicts</h3>
-                  <p class="text-xs text-blue-600 font-medium mt-1">Flow Verified</p>
+                  <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prerequisite Topology</p>
+                  <h3 id="dashCurricCoursesCount" class="text-xl font-bold text-slate-900 dark:text-white mt-1">74 Courses / 0 Conflicts</h3>
+                  <p class="text-xs text-blue-600 dark:text-blue-400 font-medium mt-1">Directed Acyclic Flow Verified</p>
                 </div>
-                <div class="w-12 h-12 rounded-none bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-lg">
+                <div class="w-12 h-12 bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 flex items-center justify-center font-bold text-lg">
                   🕸️
                 </div>
               </div>
             </div>
 
-            <!-- Quick Action Bar -->
-            <div class="bg-gradient-to-r from-apc-blue to-apc-navy rounded-none p-5 text-white flex flex-wrap items-center justify-between gap-4 shadow-sm">
-              <div>
-                <h2 class="text-lg font-bold">BSCpE Curriculum Revision Workbench</h2>
-                <p class="text-xs text-slate-300 mt-0.5">Manage program iterations, review prerequisite topology, and compile CHED CMO No. 92 accreditation dossiers.</p>
-              </div>
-              <div class="flex items-center space-x-3">
-                <button onclick="navigateView('flowchart')" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-bold rounded-none shadow transition flex items-center gap-1.5 cursor-pointer">
-                  <span>📊</span>
-                  <span>Open Dynamic Flowchart</span>
-                </button>
-                <button onclick="navigateView('spreadsheet'); openBatchModal();" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-none border border-white/20 transition flex items-center gap-1.5 cursor-pointer">
-                  <span>📥</span>
-                  <span>Batch Ingestion (.xlsx)</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Curriculum Version Registry Table -->
-            <div class="bg-white rounded-none border border-slate-300 shadow-sm overflow-hidden">
-              <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+            <!-- CHED CMO No. 92 Curricular Compliance Audit -->
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-5">
+              <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
                 <div>
-                  <h3 class="font-bold text-slate-900 text-sm">Curriculum Version Registry</h3>
-                  <p class="text-xs text-slate-500">Historical snapshots and active revision drafts for Bachelor of Science in Computer Engineering.</p>
+                  <h4 class="font-extrabold text-slate-900 dark:text-white text-base tracking-tight flex items-center gap-2">
+                    <span>⚖️</span>
+                    <span>CHED CMO No. 92 Curricular Compliance Audit</span>
+                  </h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Automated credit unit distribution audit across statutory engineering categories.</p>
                 </div>
-                <span class="text-xs text-slate-400 font-mono">3 Versions Registered</span>
-              </div>
-
-              <table class="w-full text-left text-xs text-slate-600">
-                <thead class="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
-                  <tr>
-                    <th class="py-3 px-4">Version ID</th>
-                    <th class="py-3 px-4">Effective Years</th>
-                    <th class="py-3 px-4">Total Units</th>
-                    <th class="py-3 px-4">Author / Lead</th>
-                    <th class="py-3 px-4">Approval State</th>
-                    <th class="py-3 px-4">Last Audit Event</th>
-                    <th class="py-3 px-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 font-medium">
-                  <tr class="hover:bg-amber-50/40 transition">
-                    <td class="py-3.5 px-4 font-mono font-bold text-apc-navy">BSCpE-2026-REV3</td>
-                    <td class="py-3.5 px-4">CPE2026 Curriculum</td>
-                    <td class="py-3.5 px-4 font-bold text-slate-900">172 Units</td>
-                    <td class="py-3.5 px-4">Program Director</td>
-                    <td class="py-3.5 px-4">
-                      <span class="px-2.5 py-1 rounded-none bg-amber-100 text-amber-800 text-[11px] font-bold border border-amber-200">
-                        UNDER REVIEW
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 text-slate-500 text-[11px]">Sep 10, 2026</td>
-                    <td class="py-3.5 px-4 text-right space-x-2">
-                      <button onclick="navigateView('flowchart')" class="text-blue-600 hover:text-blue-800 font-semibold text-xs cursor-pointer">View Graph</button>
-                      <button onclick="navigateView('obe')" class="text-emerald-600 hover:text-emerald-800 font-semibold text-xs cursor-pointer">Edit Matrix</button>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-slate-50 transition">
-                    <td class="py-3.5 px-4 font-mono font-bold text-slate-700">BSCpE-2021-BASE</td>
-                    <td class="py-3.5 px-4">AY 2021–2025</td>
-                    <td class="py-3.5 px-4">170 Units</td>
-                    <td class="py-3.5 px-4">Faculty Member 1</td>
-                    <td class="py-3.5 px-4">
-                      <span class="px-2.5 py-1 rounded-none bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-200">
-                        APPROVED BASELINE
-                      </span>
-                    </td>
-                    <td class="py-3.5 px-4 text-slate-500 text-[11px]">Aug 14, 2021</td>
-                    <td class="py-3.5 px-4 text-right space-x-2">
-                      <button class="text-slate-500 hover:text-slate-800 text-xs">View Only</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- TAB 2: CHED CMO NO. 92 COMPLIANCE AUDIT -->
-          <div id="dashContentChed" class="hidden space-y-5">
-            <div class="bg-white rounded-none border border-slate-200 p-5 shadow-sm space-y-5">
-              <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-3">
-                <div>
-                  <h2 class="font-extrabold text-slate-900 text-lg tracking-tight">CHED CMO No. 92 Curricular Compliance Audit</h2>
-                  <p class="text-xs text-slate-500">Automated credit unit distribution audit for Bachelor of Science in Computer Engineering (BSCpE).</p>
-                </div>
-                <button onclick="showToast('Exporting CHED Compliance Dossier (.pdf)...')" class="px-3.5 py-2 bg-apc-navy hover:bg-apc-blue text-white text-xs font-bold rounded-none shadow transition cursor-pointer">
-                  📄 Export Compliance Dossier (PDF)
+                <button type="button" onclick="showToast('Exporting CHED Compliance Dossier (.pdf)...')" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/40 shadow-xs transition cursor-pointer flex items-center gap-1.5">
+                  <span>📄</span>
+                  <span>Export Compliance Dossier (PDF)</span>
                 </button>
               </div>
 
               <!-- Compliance Gauge Grid -->
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 
-                <div class="bg-slate-50 p-4 rounded-none border border-slate-300 space-y-2">
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 border border-slate-300 dark:border-slate-700 space-y-2">
                   <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-slate-800">General Education (GE)</span>
-                    <span class="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-none text-[11px]">100% COMPLIANT</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200">General Education (GE)</span>
+                    <span class="text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-100 dark:bg-emerald-950/70 px-2 py-0.5 text-[11px]">100% COMPLIANT</span>
                   </div>
                   <div class="flex items-baseline space-x-2">
-                    <span class="text-2xl font-black text-slate-900">36</span>
-                    <span class="text-xs text-slate-500">/ 36 Min Units Required</span>
+                    <span class="text-2xl font-black text-slate-900 dark:text-white">36</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">/ 36 Min Units Required</span>
                   </div>
-                  <div class="w-full bg-slate-200 rounded-none h-2 overflow-hidden">
-                    <div class="bg-emerald-500 h-2 rounded-none w-full"></div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 overflow-hidden">
+                    <div class="bg-emerald-500 h-2 w-full"></div>
                   </div>
                 </div>
 
-                <div class="bg-slate-50 p-4 rounded-none border border-slate-300 space-y-2">
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 border border-slate-300 dark:border-slate-700 space-y-2">
                   <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-slate-800">Basic Engineering &amp; Sciences</span>
-                    <span class="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-none text-[11px]">100% COMPLIANT</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200">Basic Engineering &amp; Sciences</span>
+                    <span class="text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-100 dark:bg-emerald-950/70 px-2 py-0.5 text-[11px]">100% COMPLIANT</span>
                   </div>
                   <div class="flex items-baseline space-x-2">
-                    <span class="text-2xl font-black text-slate-900">28</span>
-                    <span class="text-xs text-slate-500">/ 28 Min Units Required</span>
+                    <span class="text-2xl font-black text-slate-900 dark:text-white">28</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">/ 28 Min Units Required</span>
                   </div>
-                  <div class="w-full bg-slate-200 rounded-none h-2 overflow-hidden">
-                    <div class="bg-emerald-500 h-2 rounded-none w-full"></div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 overflow-hidden">
+                    <div class="bg-emerald-500 h-2 w-full"></div>
                   </div>
                 </div>
 
-                <div class="bg-slate-50 p-4 rounded-none border border-slate-300 space-y-2">
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 border border-slate-300 dark:border-slate-700 space-y-2">
                   <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-slate-800">Allied Engineering Courses</span>
-                    <span class="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-none text-[11px]">100% COMPLIANT</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200">Allied Engineering Courses</span>
+                    <span class="text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-100 dark:bg-emerald-950/70 px-2 py-0.5 text-[11px]">100% COMPLIANT</span>
                   </div>
                   <div class="flex items-baseline space-x-2">
-                    <span class="text-2xl font-black text-slate-900">10</span>
-                    <span class="text-xs text-slate-500">/ 10 Min Units Required</span>
+                    <span class="text-2xl font-black text-slate-900 dark:text-white">10</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">/ 10 Min Units Required</span>
                   </div>
-                  <div class="w-full bg-slate-200 rounded-none h-2 overflow-hidden">
-                    <div class="bg-emerald-500 h-2 rounded-none w-full"></div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 overflow-hidden">
+                    <div class="bg-emerald-500 h-2 w-full"></div>
                   </div>
                 </div>
 
-                <div class="bg-slate-50 p-4 rounded-none border border-slate-300 space-y-2">
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 border border-slate-300 dark:border-slate-700 space-y-2">
                   <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-slate-800">Professional Core Courses</span>
-                    <span class="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-none text-[11px]">100% COMPLIANT</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200">Professional Core Courses</span>
+                    <span class="text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-100 dark:bg-emerald-950/70 px-2 py-0.5 text-[11px]">100% COMPLIANT</span>
                   </div>
                   <div class="flex items-baseline space-x-2">
-                    <span class="text-2xl font-black text-slate-900">54</span>
-                    <span class="text-xs text-slate-500">/ 54 Min Units Required</span>
+                    <span class="text-2xl font-black text-slate-900 dark:text-white">54</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">/ 54 Min Units Required</span>
                   </div>
-                  <div class="w-full bg-slate-200 rounded-none h-2 overflow-hidden">
-                    <div class="bg-emerald-500 h-2 rounded-none w-full"></div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 overflow-hidden">
+                    <div class="bg-emerald-500 h-2 w-full"></div>
                   </div>
                 </div>
 
-                <div class="bg-slate-50 p-4 rounded-none border border-slate-300 space-y-2">
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-4 border border-slate-300 dark:border-slate-700 space-y-2">
                   <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-slate-800">Technical Electives / Cognates</span>
-                    <span class="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-none text-[11px]">100% COMPLIANT</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200">Technical Electives / Cognates</span>
+                    <span class="text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-100 dark:bg-emerald-950/70 px-2 py-0.5 text-[11px]">100% COMPLIANT</span>
                   </div>
                   <div class="flex items-baseline space-x-2">
-                    <span class="text-2xl font-black text-slate-900">12</span>
-                    <span class="text-xs text-slate-500">/ 12 Min Units Required</span>
+                    <span class="text-2xl font-black text-slate-900 dark:text-white">12</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">/ 12 Min Units Required</span>
                   </div>
-                  <div class="w-full bg-slate-200 rounded-none h-2 overflow-hidden">
-                    <div class="bg-emerald-500 h-2 rounded-none w-full"></div>
+                  <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 overflow-hidden">
+                    <div class="bg-emerald-500 h-2 w-full"></div>
                   </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-apc-navy to-slate-900 p-4 rounded-none text-white space-y-2">
+                <div class="bg-gradient-to-br from-[#002855] to-slate-900 p-4 text-white space-y-2 border border-slate-800 shadow-sm">
                   <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-amber-300">Total Program Credits</span>
+                    <span class="font-bold text-[#E5A823]">Total Program Credits</span>
                     <span class="text-emerald-400 font-bold text-[11px]">PASSED AUDIT</span>
                   </div>
                   <div class="flex items-baseline space-x-2">
-                    <span class="text-2xl font-black text-white">172</span>
+                    <span id="dashCurricTotalCreditsAudit" class="text-2xl font-black text-white">172.0</span>
                     <span class="text-xs text-slate-300">/ 170 Min Standard</span>
                   </div>
-                  <p class="text-[11px] text-slate-300">Institutional surplus for capstone immersion.</p>
-                </div>
-              </div>
-
-              <!-- Executive Approval Sign-off Box -->
-              <div id="executiveApprovalBox" class="p-5 bg-amber-50 rounded-none border border-amber-200 flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <h4 class="font-bold text-amber-900 text-sm">Executive Review Gate (Executive Director)</h4>
-                  <p class="text-xs text-amber-800">The 2026 Revision Draft is validated against CHED CMO No. 92 statutory minimums and ready for official sign-off.</p>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <button onclick="showToast('Revision returned to Program Director with feedback notes.')" class="px-3.5 py-2 bg-white hover:bg-slate-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-none transition cursor-pointer">
-                    Return with Feedback
-                  </button>
-                  <button onclick="showToast('Curriculum Baseline Approved & Officially Locked!')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-none shadow transition cursor-pointer">
-                    ✓ Approve &amp; Lock Baseline
-                  </button>
+                  <p class="text-[11px] text-slate-300">Institutional surplus for industry capstone immersion.</p>
                 </div>
               </div>
             </div>

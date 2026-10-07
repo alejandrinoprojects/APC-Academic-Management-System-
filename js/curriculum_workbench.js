@@ -753,18 +753,56 @@
       // 6. Check for Year-level targeting (Unified Synchronous State Machine)
       const effectiveYear = (yearNum !== undefined && yearNum !== null)
         ? yearNum
-        : (['spreadsheet', 'flowchart', 'registrar'].includes(viewType) && window.currentSidebarYear ? window.currentSidebarYear : null);
+        : (['spreadsheet', 'flowchart', 'registrar', 'dashboard', 'obe'].includes(viewType) && window.currentSidebarYear ? window.currentSidebarYear : null);
 
       if (effectiveYear) {
         window.currentSidebarYear = effectiveYear;
+        const is2027 = String(effectiveYear) === '2027' || String(effectiveYear) === '0';
+        const targetContId = is2027 ? `${progId}Y2027Cont` : null;
+        const targetChevId = is2027 ? `${progId}Y2027Chev` : null;
         const clampedYear = Math.max(1, Math.min(4, parseInt(effectiveYear, 10) || 1));
         const targetOrd = 'Y' + clampedYear;
         const yearOrdinals = ['Y1', 'Y2', 'Y3', 'Y4'];
 
+        // Handle 2027 container
+        const y2027Cont = document.getElementById(`${progId}Y2027Cont`);
+        const y2027Chev = document.getElementById(`${progId}Y2027Chev`);
+        if (is2027) {
+          if (y2027Cont) {
+            y2027Cont.classList.remove('hidden');
+            y2027Cont.querySelectorAll('button, a').forEach(btn => {
+              const oc = btn.getAttribute('onclick') || '';
+              const hr = btn.getAttribute('href') || '';
+              let isMatch = false;
+              if (viewType === 'dashboard') {
+                isMatch = oc.includes("navigateView('dashboard')") || oc.includes('navigateView("dashboard")');
+              } else if (viewType === 'obe') {
+                isMatch = oc.includes('openCurriculumMapForCurriculum') || oc.includes("navigateView('obe')");
+              } else if (viewType === 'flowchart') {
+                isMatch = oc.includes('openFlowchartForYear') || hr.includes('flowchart');
+              } else if (viewType === 'spreadsheet') {
+                isMatch = oc.includes('openSpreadsheetForYear') || hr.includes('spreadsheet');
+              }
+              if (isMatch) {
+                btn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+              } else {
+                btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+              }
+            });
+          }
+          if (y2027Chev) {
+            y2027Chev.classList.add('rotate-90');
+            y2027Chev.classList.remove('rotate-180');
+          }
+        } else {
+          if (y2027Cont) y2027Cont.classList.add('hidden');
+          if (y2027Chev) y2027Chev.classList.remove('rotate-90', 'rotate-180');
+        }
+
         yearOrdinals.forEach(ord => {
           const yCont = document.getElementById(`${progId}${ord}Cont`);
           const yChev = document.getElementById(`${progId}${ord}Chev`);
-          if (ord === targetOrd) {
+          if (!is2027 && ord === targetOrd) {
             if (yCont) {
               yCont.classList.remove('hidden');
               if (viewType === 'registrar') {
@@ -777,9 +815,9 @@
                   offDocsYearChev.classList.remove('rotate-180');
                 }
 
-                // Clear direct flowchart/spreadsheet highlights in year container
-                yCont.querySelectorAll('button').forEach(btn => {
-                  if (btn.getAttribute('onclick')?.includes('openFlowchartForYear') || btn.getAttribute('onclick')?.includes('openSpreadsheetForYear')) {
+                // Clear direct flowchart/spreadsheet/dashboard highlights in year container
+                yCont.querySelectorAll('button, a').forEach(btn => {
+                  if (btn.getAttribute('onclick')?.includes('openFlowchartForYear') || btn.getAttribute('onclick')?.includes('openSpreadsheetForYear') || btn.getAttribute('onclick')?.includes('dashboard')) {
                     btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
                   }
                 });
@@ -799,10 +837,20 @@
                   });
                 }
               } else {
-                const activeType = subItemType || (viewType === 'flowchart' ? 'flowchart' : 'spreadsheet');
-                const fnName = activeType === 'flowchart' ? 'openFlowchartForYear' : 'openSpreadsheetForYear';
-                yCont.querySelectorAll('button').forEach(btn => {
-                  if (btn.getAttribute('onclick')?.includes(fnName)) {
+                yCont.querySelectorAll('button, a').forEach(btn => {
+                  const oc = btn.getAttribute('onclick') || '';
+                  const hr = btn.getAttribute('href') || '';
+                  let isMatch = false;
+                  if (viewType === 'dashboard') {
+                    isMatch = oc.includes("navigateView('dashboard')") || oc.includes('navigateView("dashboard")');
+                  } else if (viewType === 'obe') {
+                    isMatch = oc.includes('openCurriculumMapForCurriculum') || oc.includes("navigateView('obe')");
+                  } else if (viewType === 'flowchart') {
+                    isMatch = oc.includes('openFlowchartForYear') || hr.includes('flowchart');
+                  } else if (viewType === 'spreadsheet') {
+                    isMatch = oc.includes('openSpreadsheetForYear') || hr.includes('spreadsheet');
+                  }
+                  if (isMatch) {
                     btn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
                   } else {
                     btn.classList.remove('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
@@ -3496,35 +3544,56 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     // ROBUST INSTITUTIONAL VIEW NAVIGATION CONTROLLER
     // =========================================================================
-    function switchDashboardTab(tabName) {
-      const tabChed = document.getElementById('dashTabChed');
-      const tabAnalytics = document.getElementById('dashTabAnalytics');
-      const contentChed = document.getElementById('dashContentChed');
-      const contentAnalytics = document.getElementById('dashContentAnalytics');
+    function updateCurriculumDashboardInfo() {
+      const year = window.currentSidebarYear || 1;
+      const yStr = String(year);
+      let edName = 'CPE2026 Curriculum';
+      let statusBadge = '<span class="w-1.5 h-1.5 bg-emerald-500"></span> Active Standard Baseline';
+      let totalUnits = '172.0 Units';
+      let totalAudit = '172.0';
 
-      if (tabName === 'compliance' || tabName === 'ched') {
-        if (contentChed) contentChed.classList.remove('hidden');
-        if (contentAnalytics) contentAnalytics.classList.add('hidden');
-        if (tabChed) {
-          tabChed.classList.add('bg-[#002855]', 'text-[#E5A823]', 'border-[#E5A823]');
-          tabChed.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-        }
-        if (tabAnalytics) {
-          tabAnalytics.classList.remove('bg-[#002855]', 'text-[#E5A823]', 'border-[#E5A823]');
-          tabAnalytics.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-        }
-      } else {
-        if (contentChed) contentChed.classList.add('hidden');
-        if (contentAnalytics) contentAnalytics.classList.remove('hidden');
-        if (tabAnalytics) {
-          tabAnalytics.classList.add('bg-[#002855]', 'text-[#E5A823]', 'border-[#E5A823]');
-          tabAnalytics.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-        }
-        if (tabChed) {
-          tabChed.classList.remove('bg-[#002855]', 'text-[#E5A823]', 'border-[#E5A823]');
-          tabChed.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
-        }
+      if (yStr === '2027' || yStr === '0') {
+        edName = 'CPE2027 Curriculum';
+        statusBadge = '<span class="w-1.5 h-1.5 bg-amber-500"></span> Unlocked Draft (In Review)';
+        totalUnits = '184.0 Units';
+        totalAudit = '184.0';
+      } else if (yStr === '1' || yStr === '2026') {
+        edName = 'CPE2026 Curriculum';
+        statusBadge = '<span class="w-1.5 h-1.5 bg-emerald-500"></span> Active Standard Baseline';
+        totalUnits = '172.0 Units';
+        totalAudit = '172.0';
+      } else if (yStr === '2' || yStr === '2025') {
+        edName = 'CPE2025 Curriculum';
+        statusBadge = '<span class="w-1.5 h-1.5 bg-slate-400"></span> Historical Baseline (AY 2025–2029)';
+        totalUnits = '184.0 Units';
+        totalAudit = '184.0';
+      } else if (yStr === '3' || yStr === '2024') {
+        edName = 'CPE2024 Curriculum';
+        statusBadge = '<span class="w-1.5 h-1.5 bg-slate-400"></span> Historical Baseline (AY 2024–2028)';
+        totalUnits = '180.0 Units';
+        totalAudit = '180.0';
+      } else if (yStr === '4' || yStr === '2023') {
+        edName = 'CPE2023 Curriculum';
+        statusBadge = '<span class="w-1.5 h-1.5 bg-slate-400"></span> Historical Baseline (AY 2023–2027)';
+        totalUnits = '178.0 Units';
+        totalAudit = '178.0';
       }
+
+      const elName = document.getElementById('dashCurricEditionName');
+      const elStatus = document.getElementById('dashCurricStatusBadge');
+      const elUnits = document.getElementById('dashCurricTotalUnits');
+      const elAudit = document.getElementById('dashCurricTotalCreditsAudit');
+
+      if (elName) elName.innerText = edName;
+      if (elStatus) elStatus.innerHTML = statusBadge;
+      if (elUnits) elUnits.innerText = totalUnits;
+      if (elAudit) elAudit.innerText = totalAudit;
+    }
+    window.updateCurriculumDashboardInfo = updateCurriculumDashboardInfo;
+
+    function switchDashboardTab(tabName) {
+      // Kept for backwards compatibility if invoked anywhere
+      updateCurriculumDashboardInfo();
     }
     window.switchDashboardTab = switchDashboardTab;
 
@@ -3691,6 +3760,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (typeof switchRegistrarDocTab === 'function') {
           switchRegistrarDocTab(tab);
         }
+      } else if (viewId === 'dashboard') {
+        if (typeof updateCurriculumDashboardInfo === 'function') updateCurriculumDashboardInfo();
       } else if (viewId === 'spreadsheet') {
         if (typeof renderSpreadsheetGrid === 'function') renderSpreadsheetGrid();
         if (typeof updateSpreadsheetCalculations === 'function') updateSpreadsheetCalculations();
