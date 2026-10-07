@@ -23,8 +23,8 @@
   // Safely get courses from window.ALL_COURSES
   function getCourses() {
     if (typeof window.ALL_COURSES !== 'undefined' && Array.isArray(window.ALL_COURSES)) {
-      const activeCohort = window.currentFlowchartCohort || window.currentActiveSidebarYear || 1;
-      const filtered = window.ALL_COURSES.filter(c => !c.cohort || String(c.cohort) === String(activeCohort));
+      const activeBatchYear = window.currentFlowchartBatchYear || window.currentActiveSidebarYear || 1;
+      const filtered = window.ALL_COURSES.filter(c => !c.batchYear && !c.edition || String(c.batchYear || c.edition) === String(activeBatchYear));
       return filtered.length > 0 ? filtered : window.ALL_COURSES.slice(0, 74);
     }
     return [];
@@ -78,6 +78,69 @@
   }
 
   // =========================================================================
+  // DAG CYCLE VALIDATION (Directed Acyclic Graph Integrity Validator)
+  // =========================================================================
+  let detectedDagCycleEdges = [];
+  function validateFlowchartDagCycles(courses) {
+    const adj = {};
+    const codeMap = {};
+    courses.forEach(c => {
+      codeMap[c.code] = c;
+      adj[c.code] = [];
+      if (Array.isArray(c.prereqs)) {
+        c.prereqs.forEach(p => {
+          const pCode = (typeof p === 'object' && p !== null && p.code) ? p.code : String(p).trim();
+          if (pCode && pCode !== '-' && pCode !== 'NONE') {
+            adj[c.code].push(pCode);
+          }
+        });
+      }
+    });
+
+    const state = {}; // 0 = unvisited, 1 = visiting, 2 = visited
+    const cycleEdges = [];
+
+    function dfs(node, path) {
+      state[node] = 1;
+      const neighbors = adj[node] || [];
+      for (const neighbor of neighbors) {
+        if (!codeMap[neighbor]) continue;
+        if (state[neighbor] === 1) {
+          const cyclePath = [...path, neighbor];
+          cycleEdges.push({ from: neighbor, to: node, path: cyclePath });
+        } else if (!state[neighbor]) {
+          dfs(neighbor, [...path, neighbor]);
+        }
+      }
+      state[node] = 2;
+    }
+
+    Object.keys(adj).forEach(node => {
+      if (!state[node]) {
+        dfs(node, [node]);
+      }
+    });
+
+    detectedDagCycleEdges = cycleEdges;
+
+    const badge = document.getElementById('flowchartDagValidationBadge');
+    if (badge) {
+      if (cycleEdges.length > 0) {
+        const loopPreview = cycleEdges[0].path.slice(-3).join(' ➔ ');
+        badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-800 shadow-xs cursor-pointer';
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span><span>⚠️ DAG Cycle: ${loopPreview}</span>`;
+        badge.title = `Prerequisite cycle detected in ${cycleEdges.length} relation(s).`;
+      } else {
+        badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 shadow-xs';
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>✓ DAG Validated: Acyclic (${courses.length} Nodes)</span>`;
+        badge.title = 'Topological sort verified: All course prerequisite flows are acyclic with no circular dependencies.';
+      }
+    }
+
+    return cycleEdges;
+  }
+
+  // =========================================================================
   // MATRIX TABLE RENDERER
   // =========================================================================
 
@@ -90,9 +153,12 @@
     const courses = getCourses();
     if (courses.length === 0) return;
 
-    const activeCohort = window.currentFlowchartCohort || window.currentActiveSidebarYear || 1;
+    // Validate DAG cycles
+    validateFlowchartDagCycles(courses);
+
+    const activeBatchYear = window.currentFlowchartBatchYear || window.currentActiveSidebarYear || 1;
     const baseAyMap = { 1: 2026, 2: 2025, 3: 2024, 4: 2023 };
-    const baseAy = baseAyMap[activeCohort] || 2026;
+    const baseAy = baseAyMap[activeBatchYear] || 2026;
 
     // Academic Year meta
     const yearHeaders = [
@@ -243,11 +309,43 @@
     }
     tbodyHtml += '</tbody>';
 
-    // 3. TFOOT: Total Units Summary Row (Matching Official Registrar Matrix Format)
+    // 3. TFOOT: Comprehensive Unit Summary Rows (Lecture Units, Lab Units, and Total Units Breakdown)
     let tfootHtml = '<tfoot class="border-t-2 border-slate-300 dark:border-slate-700 font-mono text-xs select-none bg-slate-50 dark:bg-slate-900">';
     
-    // Total Units Row
-    tfootHtml += '<tr class="font-bold text-slate-800 dark:text-slate-200">';
+    // Row A: Lecture Units
+    tfootHtml += '<tr class="text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">';
+    tfootHtml += '<td class="flow-col-no py-1.5 text-center text-[10px] font-bold bg-slate-100 dark:bg-slate-800/80 border-r border-slate-300 dark:border-slate-700">Lec</td>';
+    activeCols.forEach(col => {
+      const year = Math.ceil(col / 3);
+      const term = ((col - 1) % 3) + 1;
+      const termCourses = courses.filter(c => (c.col === col) || (c.year === year && c.term === term));
+      const termLec = termCourses.reduce((sum, c) => sum + (parseFloat(c.lec) || 0), 0);
+      tfootHtml += `
+        <td class="flow-col-term py-1 px-2.5 text-center border-r border-slate-300 dark:border-slate-700 text-[10.5px]">
+          <span class="font-medium text-slate-700 dark:text-slate-300">${termLec.toFixed(1)} <span class="text-[9px] text-slate-400">Lec</span></span>
+        </td>
+      `;
+    });
+    tfootHtml += '</tr>';
+
+    // Row B: Laboratory Units / Hours
+    tfootHtml += '<tr class="text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">';
+    tfootHtml += '<td class="flow-col-no py-1.5 text-center text-[10px] font-bold bg-slate-100 dark:bg-slate-800/80 border-r border-slate-300 dark:border-slate-700">Lab</td>';
+    activeCols.forEach(col => {
+      const year = Math.ceil(col / 3);
+      const term = ((col - 1) % 3) + 1;
+      const termCourses = courses.filter(c => (c.col === col) || (c.year === year && c.term === term));
+      const termLab = termCourses.reduce((sum, c) => sum + (parseFloat(c.lab) || 0), 0);
+      tfootHtml += `
+        <td class="flow-col-term py-1 px-2.5 text-center border-r border-slate-300 dark:border-slate-700 text-[10.5px]">
+          <span class="font-medium text-slate-700 dark:text-slate-300">${termLab.toFixed(1)} <span class="text-[9px] text-slate-400">Lab</span></span>
+        </td>
+      `;
+    });
+    tfootHtml += '</tr>';
+
+    // Row C: Total Credit Units
+    tfootHtml += '<tr class="font-bold text-slate-800 dark:text-slate-200 bg-slate-100/80 dark:bg-slate-800/90">';
     tfootHtml += '<td class="flow-col-no py-2 text-center text-[10px] bg-slate-200 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-700">Tot</td>';
     
     activeCols.forEach(col => {
@@ -554,7 +652,14 @@
       path.setAttribute('stroke-linecap', 'round');
       path.setAttribute('stroke-linejoin', 'round');
 
-      if (reqType === 'co') {
+      const isCycleEdge = detectedDagCycleEdges.some(e => (e.from === src.code && e.to === tgt.code) || (e.from === tgt.code && e.to === src.code));
+
+      if (isCycleEdge) {
+        path.setAttribute('stroke', '#f43f5e');
+        path.setAttribute('stroke-width', '2.6');
+        path.setAttribute('stroke-dasharray', '5,3');
+        path.setAttribute('marker-end', 'url(#diag-arrow-cycle)');
+      } else if (reqType === 'co') {
         path.setAttribute('stroke', '#d97706');
         path.setAttribute('stroke-width', '2');
         path.setAttribute('stroke-dasharray', '5,4');

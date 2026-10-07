@@ -1021,11 +1021,23 @@
       reader.onload = function(e) {
         try {
           let rows = [];
+          let hasMergedCells = false;
+          let mergeRanges = [];
+          let mergeCount = 0;
+
           if (typeof XLSX !== 'undefined') {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
+
+            // 1. Transactional check for prohibited merged cells (Engr. Peruda Tabular Import Policy)
+            if (worksheet && worksheet['!merges'] && worksheet['!merges'].length > 0) {
+              hasMergedCells = true;
+              mergeCount = worksheet['!merges'].length;
+              mergeRanges = worksheet['!merges'].slice(0, 5).map(m => XLSX.utils.encode_range(m));
+            }
+
             rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
           } else {
             const text = new TextDecoder().decode(e.target.result);
@@ -1033,7 +1045,15 @@
           }
 
           if (!rows || rows.length < 2) {
-            alert('Invalid Excel workbook: insufficient course rows.');
+            const emptyList = [];
+            emptyList.hasMergedCells = hasMergedCells;
+            emptyList.mergeRanges = mergeRanges;
+            emptyList.mergeCount = mergeCount;
+            emptyList.missingColumns = ['Course Code', 'Course Title'];
+            emptyList.excessColumns = [];
+            emptyList.totalErrors = 1;
+            emptyList.filename = file.name;
+            if (typeof callback === 'function') callback(emptyList, file.name);
             return;
           }
 
@@ -1041,7 +1061,7 @@
           let headerIdx = 0;
           for (let r = 0; r < Math.min(rows.length, 15); r++) {
             const candidate = (rows[r] || []).map(c => String(c || '').trim().toUpperCase());
-            if (candidate.includes('CODE') || candidate.includes('COURSE CODE')) {
+            if (candidate.includes('CODE') || candidate.includes('COURSE CODE') || candidate.includes('SUBJECT CODE')) {
               headerIdx = r;
               break;
             }
@@ -1061,18 +1081,65 @@
           const prereqCol = findCol(['PREREQUISITES', 'PREREQUISITE', 'PRE-REQUISITE']);
           const descCol = findCol(['DESCRIPTION', 'COURSE DESCRIPTION']);
 
+          // Check column coverage
+          const missingColumns = [];
+          if (codeCol === -1) missingColumns.push('Course Code (CODE)');
+          if (titleCol === -1) missingColumns.push('Descriptive Title (TITLE)');
+
+          const standardHeaderNames = ['CODE', 'COURSE CODE', 'SUBJECT CODE', 'TITLE', 'COURSE TITLE', 'DESCRIPTIVE TITLE', 'COURSE NAME', 'UNITS', 'CREDIT UNITS', 'CREDITS', 'LEC', 'LECTURE', 'LEC HRS', 'LAB', 'LABORATORY', 'LAB HRS', 'YEAR', 'YEAR LEVEL', 'YR', 'TERM', 'TRIMESTER', 'SEMESTER', 'GROUP', 'CATEGORY', 'CLASSIFICATION', 'PREREQUISITES', 'PREREQUISITE', 'PRE-REQUISITE', 'DESCRIPTION', 'COURSE DESCRIPTION', 'NO', 'ITEM'];
+          const excessColumns = headerRow.filter(h => h && !standardHeaderNames.includes(h) && !h.startsWith('SO_'));
+
           const importedCourses = [];
+          const seenCodes = {};
+          let totalErrors = hasMergedCells ? 1 : 0;
+
           for (let i = headerIdx + 1; i < rows.length; i++) {
             const cols = rows[i] || [];
             const rawCode = String(cols[codeCol !== -1 ? codeCol : 0] || '').trim().toUpperCase();
             const rawTitle = String(cols[titleCol !== -1 ? titleCol : 1] || '').trim();
-            if (!rawCode || rawCode === 'CODE' || rawCode === 'TOTAL' || !rawTitle) continue;
+            
+            // Skip pure empty rows or sum rows
+            if (!rawCode && !rawTitle) continue;
+            if (rawCode === 'TOTAL' || rawCode === 'GRAND TOTAL' || rawCode === 'CODE') continue;
 
-            const units = parseFloat(cols[unitsCol]) || 3.0;
-            const lec = parseInt(cols[lecCol], 10) || 3;
+            const rowErrors = [];
+
+            // Duplicate course code check
+            if (!rawCode) {
+              rowErrors.push('Missing course code');
+            } else if (seenCodes[rawCode]) {
+              rowErrors.push(`Duplicate course code "${rawCode}" (already defined at Row ${seenCodes[rawCode]})`);
+            } else {
+              seenCodes[rawCode] = i + 1;
+            }
+
+            // Title check
+            if (!rawTitle) {
+              rowErrors.push('Missing course title');
+            }
+
+            // Units check
+            const rawUnits = parseFloat(cols[unitsCol]);
+            let units = isNaN(rawUnits) ? 3.0 : rawUnits;
+            if (isNaN(rawUnits) || units <= 0) {
+              rowErrors.push(`Invalid credit units (${cols[unitsCol] || 'empty'})`);
+            }
+
+            // Year and term checks
+            const rawYear = parseInt(cols[yearCol], 10);
+            let year = isNaN(rawYear) ? 1 : rawYear;
+            if (year < 1 || year > 5) {
+              rowErrors.push(`Year level ${year} out of range (1–5)`);
+            }
+
+            const rawTerm = parseInt(cols[termCol], 10);
+            let term = isNaN(rawTerm) ? 1 : rawTerm;
+            if (term < 1 || term > 3) {
+              rowErrors.push(`Term ${term} out of range (1–3)`);
+            }
+
+            const lec = parseInt(cols[lecCol], 10) || (units >= 1 ? Math.min(units, 3) : 1);
             const lab = parseInt(cols[labCol], 10) || 0;
-            const year = parseInt(cols[yearCol], 10) || 1;
-            const term = parseInt(cols[termCol], 10) || 1;
             const group = String(cols[groupCol] || 'Professional Core').trim() || 'Professional Core';
             const rawPrereq = String(cols[prereqCol] || '');
             const prereqs = rawPrereq.split(/[,;]/).map(s => s.trim().toUpperCase()).filter(s => s && s !== 'NONE' && s !== '-');
@@ -1090,7 +1157,13 @@
               }
             });
 
+            if (rowErrors.length > 0) {
+              totalErrors += rowErrors.length;
+            }
+
             importedCourses.push({
+              stgId: 'stg_' + (i + 1) + '_' + Math.random().toString(36).substring(2, 6),
+              rowNumber: i + 1,
               row: importedCourses.length + 1,
               year,
               term,
@@ -1103,9 +1176,19 @@
               group,
               prereqs,
               sos,
-              desc
+              desc,
+              errors: rowErrors
             });
           }
+
+          // Attach transactional staging metadata
+          importedCourses.hasMergedCells = hasMergedCells;
+          importedCourses.mergeRanges = mergeRanges;
+          importedCourses.mergeCount = mergeCount;
+          importedCourses.missingColumns = missingColumns;
+          importedCourses.excessColumns = excessColumns;
+          importedCourses.totalErrors = totalErrors;
+          importedCourses.filename = file.name;
 
           callback(importedCourses, file.name);
         } catch (err) {
@@ -1609,9 +1692,50 @@
                   <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                 </button>
 
+                <!-- Versioning History Button (Under Management Homepage) -->
+                <button type="button" id="nav-versioning-history" onclick="navigateView('versioning-history')"
+                  class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                  <span class="text-amber-400">📜</span>
+                  <span class="font-semibold text-slate-300 group-hover:text-amber-300">Versioning History</span>
+                </button>
+
                 <!-- By Year Section Header -->
                 <div class="px-2 pt-1 pb-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
                   By Academic Year
+                </div>
+
+                <!-- CPE2027 Curriculum (Draft / Unlocked) -->
+                <div>
+                  <button type="button" onclick="setSidebarYear('2027'); toggleFolderAccordion('cpeY2027Cont', 'cpeY2027Chev')"
+                    class="w-full flex items-center justify-between px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                    <span class="flex items-center space-x-2 truncate">
+                      <svg id="cpeY2027Chev" class="w-2.5 h-2.5 text-slate-500 group-hover:text-slate-300 transition-transform duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                      </svg>
+                      <svg class="w-3 h-3 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                      </svg>
+                      <span class="truncate text-[11px] font-semibold text-slate-200">CPE2027 Curriculum</span>
+                    </span>
+                    <span class="px-1.5 py-0.2 text-[9px] font-bold rounded bg-amber-400/20 text-amber-400 border border-amber-400/40 shrink-0" title="Unlocked Draft">✏️ Draft</span>
+                  </button>
+                  <div id="cpeY2027Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                    <button type="button" onclick="setSidebarYear('2027'); navigateView('obe')"
+                      class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                      <span class="text-amber-400">🗺️</span>
+                      <span class="truncate">OBE Map (2027 Unlocked)</span>
+                    </button>
+                    <button type="button" onclick="setSidebarYear('2027'); openFlowchartForYear(1)"
+                      class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                      <span class="text-sky-400">📊</span>
+                      <span class="truncate">Flowchart (2027 Draft)</span>
+                    </button>
+                    <button type="button" onclick="setSidebarYear('2027'); openSpreadsheetForYear(1)"
+                      class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                      <span class="text-emerald-400">📑</span>
+                      <span class="truncate">Spreadsheet (2027 Draft)</span>
+                    </button>
+                  </div>
                 </div>
 
                 <!-- CPE2026 Curriculum -->

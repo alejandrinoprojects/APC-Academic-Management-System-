@@ -2944,7 +2944,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.currentSidebarYear = null;
     window.setSidebarYear = function(year) {
       window.currentSidebarYear = year;
-      const yMap = { 1: '2026', 2: '2025', 3: '2024', 4: '2023', '1': '2026', '2': '2025', '3': '2024', '4': '2023' };
+      const yMap = { 0: '2027', '0': '2027', 2027: '2027', '2027': '2027', 1: '2026', 2: '2025', 3: '2024', 4: '2023', '1': '2026', '2': '2025', '3': '2024', '4': '2023' };
       if (yMap[year] && typeof window.setObeActiveYear === 'function') {
         window.setObeActiveYear(yMap[year], false);
       }
@@ -3174,8 +3174,25 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (viewId === 'curriculum-home' && typeof renderAuditTable === 'function') {
           renderAuditTable();
         }
-        if (viewId === 'versioning-history' && typeof renderVersioningHistoryView === 'function') {
-          renderVersioningHistoryView();
+        const vhBtn = document.getElementById('nav-versioning-history');
+        if (vhBtn) {
+          if (viewId === 'versioning-history') {
+            vhBtn.classList.add('bg-slate-800', 'text-amber-300', 'font-bold');
+            vhBtn.classList.remove('text-slate-400');
+          } else {
+            vhBtn.classList.remove('bg-slate-800', 'text-amber-300', 'font-bold');
+            vhBtn.classList.add('text-slate-400');
+          }
+        }
+
+        if (viewId === 'versioning-history') {
+          const cpeFolder = document.getElementById('cpeFolderCont');
+          if (cpeFolder) cpeFolder.classList.remove('hidden');
+          const cpeCurric = document.getElementById('cpeCurricCont');
+          if (cpeCurric) cpeCurric.classList.remove('hidden');
+          if (typeof renderVersioningHistoryView === 'function') {
+            renderVersioningHistoryView();
+          }
         }
       }
 
@@ -7668,11 +7685,12 @@ ${worksheetsXml}
     }
 
     function getActiveObeYear() {
-      return '2026';
+      const cfg = getObeConfig();
+      return cfg.activeYear || '2026';
     }
 
     function getObeVersionString(year) {
-      const yr = '2026';
+      const yr = String(year || getActiveObeYear() || '2026');
       const cfg = getObeConfig();
       const revData = (cfg.revisions && cfg.revisions[yr]) ? cfg.revisions[yr] : { subCount: 0 };
       if (!revData.subCount || revData.subCount <= 0) {
@@ -7683,20 +7701,34 @@ ${worksheetsXml}
     }
 
     function setObeActiveYear(year, showUserToast = true) {
-      const yrStr = '2026';
+      const yrStr = String(year || '2026');
       const cfg = getObeConfig();
       cfg.activeYear = yrStr;
       if (!cfg.revisions[yrStr]) {
         cfg.revisions[yrStr] = { subCount: 0, lastUpdated: new Date().toISOString() };
       }
       saveObeConfig(cfg);
-      window.currentSidebarYear = 1;
+
+      if (yrStr === '2027') {
+        window.currentActiveCurriculumMap = 'CM-BSCpE-2027';
+        window.currentSidebarYear = '2027';
+      } else {
+        window.currentActiveCurriculumMap = 'CM-BSCpE-2026';
+        window.currentSidebarYear = 1;
+      }
 
       updateAllObeVersionBadges();
       renderObeMatrix();
+      if (typeof window.renderFlowGraph === 'function') {
+        window.renderFlowGraph();
+      }
+      if (typeof window.renderCurriculumMapHierarchy === 'function') {
+        window.renderCurriculumMapHierarchy();
+      }
 
       if (showUserToast && typeof showToast === 'function') {
-        showToast(`Active OBE Map: Curriculum Year 2026 (Version: ${getObeVersionString(yrStr)})`);
+        const isLocked = typeof window.isCurriculumLocked === 'function' && window.isCurriculumLocked();
+        showToast(`Active OBE Map: Curriculum Year ${yrStr} (v${getObeVersionString(yrStr)}) — ${isLocked ? '🔒 Locked (Baseline)' : '✏️ Unlocked (Draft Mode - Full Editing Enabled)'}`);
       }
     }
 
@@ -7740,19 +7772,26 @@ ${worksheetsXml}
     function updateAllObeVersionBadges() {
       const activeYr = getActiveObeYear();
       const verStr = getObeVersionString(activeYr);
+      const isCurrentlyLocked = typeof window.isCurriculumLocked === 'function' && window.isCurriculumLocked();
 
       // 1. OBE Toolbar Pills
       const pillsContainers = [document.getElementById('obe-year-pills'), document.getElementById('obe-year-pills-layer')];
       pillsContainers.forEach(container => {
         if (!container) return;
-        const availableYears = ['2026'];
+        const availableYears = ['2026', '2027'];
         let html = '';
         availableYears.forEach(y => {
           const yVer = getObeVersionString(y);
-          const activeClasses = 'bg-[#002855] text-[#E5A823] font-bold border-[#002855] shadow-xs';
+          const isActive = (y === activeYr);
+          const isDraft = (y === '2027');
+          const badgeIcon = isDraft ? '✏️ Unlocked' : '🔒 Locked';
+          const activeClasses = isActive
+            ? 'bg-[#002855] text-[#E5A823] font-bold border-[#002855] shadow-xs ring-1 ring-[#E5A823]'
+            : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-300 dark:border-slate-600';
           html += `
-            <button type="button" onclick="setObeActiveYear('${y}')" class="px-2.5 py-1 text-xs border -ml-[1px] first:ml-0 transition cursor-pointer ${activeClasses}">
-              CPE${y} <span class="font-mono text-[10px] opacity-80">(v${yVer})</span>
+            <button type="button" onclick="setObeActiveYear('${y}')" class="px-2.5 py-1 text-xs border -ml-[1px] first:ml-0 transition cursor-pointer flex items-center space-x-1 ${activeClasses}" title="${isDraft ? 'CPE2027: Unlocked Editable Draft' : 'CPE2026: Locked Active Baseline'}">
+              <span>CPE${y} <span class="font-mono text-[10px] opacity-80">(v${yVer})</span></span>
+              <span class="text-[9px] px-1 py-0.2 rounded font-semibold ${isDraft ? 'bg-amber-400/20 text-amber-500' : 'bg-slate-400/20 text-slate-400'}">${badgeIcon}</span>
             </button>
           `;
         });
@@ -7762,7 +7801,9 @@ ${worksheetsXml}
       // 2. Active Version Badges
       ['obe-active-version-badge', 'obe-active-version-badge-layer'].forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.textContent = `OBE Version: ${verStr}`;
+        if (el) {
+          el.innerHTML = `OBE Version: ${verStr} <span class="ml-1 text-[10px] font-semibold ${isCurrentlyLocked ? 'text-emerald-300' : 'text-amber-300'}">(${isCurrentlyLocked ? '🔒 Locked Active Baseline' : '✏️ Unlocked Draft Mode'})</span>`;
+        }
       });
 
       // 3. Tab Labels
@@ -7910,23 +7951,23 @@ ${worksheetsXml}
       },
       {
         id: 'CM-BSCpE-2027',
-        name: 'BSCpE 2027–2031 Next Year Batch',
+        name: 'BSCpE 2027–2031 Next Year Batch (Unlocked Draft)',
         curriculumVersion: 'CPE 2027',
         curriculumLabel: 'CPE 2027 (AY 2027–2031)',
-        soVersion: 'SO 2026',
+        soVersion: 'SO 2027',
         soCount: 13,
         peoVersion: 'PEO 2027',
         peoCount: 5,
-        gaVersion: 'GA 2024',
+        gaVersion: 'GA 2027',
         gaCount: 9,
         mvvVersion: 'MVV 2025',
-        mapRevision: 'Map 2027',
-        status: 'DRAFT (PENDING EXD APPROVAL)',
+        mapRevision: 'Map 2027 (Draft v1)',
+        status: 'UNLOCKED DRAFT',
         statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         createdAt: '2027-03-10',
         program: 'BSCpE',
-        notes: 'Annual batch update with PEO 2027 AI engineering electives.',
-        approvedBy: 'Pending ExD Review'
+        notes: 'Annual batch update with PEO 2027 AI engineering electives. Unlocked for Program Director & faculty editing.',
+        approvedBy: 'Draft in Progress (Unlocked)'
       },
       {
         id: 'CM-BSCpE-2025',
@@ -7973,7 +8014,19 @@ ${worksheetsXml}
     window.CURRICULUM_MAPS = (function() {
       try {
         const stored = localStorage.getItem('apc_curriculum_maps');
-        if (stored) return JSON.parse(stored);
+        if (stored) {
+          const list = JSON.parse(stored);
+          const c27 = list.find(m => m.id === 'CM-BSCpE-2027');
+          if (c27) {
+            c27.status = 'UNLOCKED DRAFT';
+            c27.statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
+            c27.name = 'BSCpE 2027–2031 Next Year Batch (Unlocked Draft)';
+            c27.approvedBy = 'Draft in Progress (Unlocked)';
+          } else {
+            list.splice(1, 0, DEFAULT_CURRICULUM_MAPS[1]);
+          }
+          return list;
+        }
       } catch(e) {}
       return DEFAULT_CURRICULUM_MAPS;
     })();
@@ -8326,7 +8379,18 @@ ${worksheetsXml}
         createdAt: new Date().toISOString().split('T')[0],
         program: 'BSCpE',
         notes: notes,
-        approvedBy: (status === 'ACTIVE BATCH') ? 'Executive Director' : 'Pending ExD Review'
+        approvedBy: (status === 'ACTIVE BATCH') ? 'Executive Director' : 'Draft in Progress',
+        courses: JSON.parse(JSON.stringify(window.OFFICIAL_BASELINE_74_COURSES || [])),
+        peoSoLinks: JSON.parse(JSON.stringify(window.getPeoSoLinks() || {})),
+        peoGaLinks: JSON.parse(JSON.stringify(window.getPeoGaLinks() || {})),
+        soDefs: JSON.parse(JSON.stringify(window.FLOW_SO_DEFS || [])),
+        peoDefs: JSON.parse(JSON.stringify(window.FLOW_PEO_DEFS || [])),
+        gaDefs: JSON.parse(JSON.stringify(window.FLOW_GA_DEFS || [])),
+        mvv: {
+          version: 'MVV 2025',
+          vision: "Asia Pacific College envisions itself to be the preferred Higher Education Institution bridging academe and industry with its programs founded on the concepts and applications of IT, guided by the core values of integrity, industry, and innovation that works.",
+          mission: "Asia Pacific College, powered by education and industry professionals as faculty and a balanced curriculum, aims to provide business and the ICT industry lifelong learning graduates anchored on integrity and professionalism."
+        }
       };
 
       if (!window.CURRICULUM_MAPS) window.CURRICULUM_MAPS = [];
@@ -8389,6 +8453,14 @@ ${worksheetsXml}
 
     window.activateInspectedVersion = function() {
       const mapId = window.currentInspectedVersionId || window.currentActiveCurriculumMap || 'CM-BSCpE-2026';
+      if (mapId === 'CM-BSCpE-2027') {
+        window.setObeActiveYear('2027');
+        navigateView('obe');
+        if (typeof showToast === 'function') {
+          showToast('Switched to CPE2027 Unlocked Draft map! Full editing enabled.');
+        }
+        return;
+      }
       window.approveCurriculumMapVersion(mapId);
     };
 
@@ -8960,6 +9032,8 @@ ${worksheetsXml}
           let actionBtn = '';
           if (isActive) {
             actionBtn = `<span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Active Baseline</span>`;
+          } else if (m.id === 'CM-BSCpE-2027' || m.status === 'UNLOCKED DRAFT') {
+            actionBtn = `<button type="button" onclick="setObeActiveYear('2027'); navigateView('obe');" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-[10px] cursor-pointer shadow-xs transition" title="Open and edit 2027 draft map">✏️ Edit Draft</button>`;
           } else if (role === 'exd') {
             actionBtn = `<button type="button" onclick="approveCurriculumMapVersion('${m.id}')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] cursor-pointer shadow-xs transition" title="Approve & Activate Version as Executive Director">✅ Approve (ExD)</button>`;
           } else {
@@ -9037,6 +9111,13 @@ ${worksheetsXml}
             actBtn.innerHTML = `<span>✓</span><span>Currently Active Baseline</span>`;
             actBtn.className = 'px-3 py-1.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold border border-emerald-300 dark:border-emerald-700 flex items-center gap-1.5 cursor-default';
             actBtn.onclick = null;
+          } else if (targetMap.id === 'CM-BSCpE-2027' || targetMap.status === 'UNLOCKED DRAFT') {
+            actBtn.innerHTML = `<span>✏️</span><span>Open &amp; Edit Unlocked 2027 Draft</span>`;
+            actBtn.className = 'px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 text-xs font-bold border border-amber-600 flex items-center gap-1.5 cursor-pointer shadow-xs transition';
+            actBtn.onclick = () => {
+              window.setObeActiveYear('2027');
+              navigateView('obe');
+            };
           } else if (role === 'exd') {
             actBtn.innerHTML = `<span>✅</span><span>Approve & Set Active (ExD)</span>`;
             actBtn.className = 'px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold border border-emerald-500 flex items-center gap-1.5 cursor-pointer shadow-xs transition';
@@ -9182,6 +9263,37 @@ ${worksheetsXml}
           </div>
         `).join('');
       }
+
+      // Populate Inspector Subtab 5: Institutional MVV
+      const mvvContainer = document.getElementById('vh-content-mvv');
+      if (mvvContainer && targetMap) {
+        const is2020 = targetMap.mvvVersion === 'MVV 2020';
+        mvvContainer.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🏛️ Institutional Vision</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">${targetMap.mvvVersion || 'MVV 2025'}</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${is2020 ? 'Asia Pacific College aims to be a leading IT and business educational institution developing professional graduates.' : 'Asia Pacific College envisions itself to be the preferred Higher Education Institution bridging academe and industry with its programs founded on the concepts and applications of IT, guided by the core values of integrity, industry, and innovation that works.'}</p>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🚀 Institutional Mission</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">${targetMap.mvvVersion || 'MVV 2025'}</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${is2020 ? 'Asia Pacific College delivers quality technological education anchored on industry partnerships.' : 'Asia Pacific College, powered by education and industry professionals as faculty and a balanced curriculum, aims to provide business and the ICT industry lifelong learning graduates anchored on integrity and professionalism.'}</p>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🎯 School of Engineering Goal</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">${targetMap.curriculumVersion}</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${targetMap.curriculumVersion === 'CPE 2027' ? 'To develop world-class Computer Engineers with deep foundations in embedded systems, AI engineering, and resilient cyber-physical infrastructure bridging academia and industry.' : 'To produce competent computer engineers equipped with technical expertise, professional ethics, multidisciplinary teamwork capabilities, and lifelong learning attitudes.'}</p>
+            </div>
+          </div>
+        `;
+      }
     };
 
     window.switchVhInspectorTab = function(tabId) {
@@ -9216,7 +9328,11 @@ ${worksheetsXml}
     window.flowWheelIndices = { ga: 0, peo: 0, so: 0, course: 0 };
 
     window.isCurriculumLocked = function() {
-      const activeMapId = window.currentActiveCurriculumMap || 'CM-BSCpE-2026';
+      const activeYr = (typeof getActiveObeYear === 'function') ? getActiveObeYear() : '2026';
+      const activeMapId = window.currentActiveCurriculumMap || (activeYr === '2027' ? 'CM-BSCpE-2027' : 'CM-BSCpE-2026');
+      if (activeYr === '2027' || activeMapId === 'CM-BSCpE-2027') {
+        return false;
+      }
       const map = (window.CURRICULUM_MAPS || []).find(m => m.id === activeMapId);
       if (!map) return true;
       return map.status === 'ACTIVE BATCH' || map.status === 'PREV BATCH' || map.status === 'ARCHIVED';
@@ -9339,16 +9455,31 @@ ${worksheetsXml}
       if (tr && tr.type && tr.id !== null) {
         const { linkedGas, linkedPeos, linkedSos, linkedCourses } = window.getLinkedItemIds(tr.type, tr.id);
 
-        if (tr.type !== 'ga' && linkedGas.size > 0) {
+        // Tier 1: GA
+        if (tr.type === 'ga') {
+          gaList = gaList.filter(g => String(g.id) === String(tr.id));
+        } else {
           gaList = gaList.filter(g => linkedGas.has(g.id));
         }
-        if (tr.type !== 'peo' && linkedPeos.size > 0) {
+
+        // Tier 2: PEO
+        if (tr.type === 'peo') {
+          peoList = peoList.filter(p => String(p.id) === String(tr.id));
+        } else {
           peoList = peoList.filter(p => linkedPeos.has(p.id));
         }
-        if (tr.type !== 'so' && linkedSos.size > 0) {
+
+        // Tier 3: SO
+        if (tr.type === 'so') {
+          soList = soList.filter(s => String(s.id).toLowerCase() === String(tr.id).toLowerCase());
+        } else {
           soList = soList.filter(s => linkedSos.has(s.id));
         }
-        if (tr.type !== 'course') {
+
+        // Tier 4: Course
+        if (tr.type === 'course') {
+          courseList = courseList.filter(c => String(c.code).toUpperCase() === String(tr.id).toUpperCase());
+        } else {
           courseList = courseList.filter(c => linkedCourses.has(c.code));
         }
       }
@@ -9547,7 +9678,7 @@ ${worksheetsXml}
       if (posGA) {
         const isFocus = (tr && tr.type === 'ga');
         if (isTree) {
-          posGA.textContent = isTraceActive ? (isFocus ? '★ Focus' : `${lists.ga.length} linked`) : `${lists.ga.length} items`;
+          posGA.innerHTML = isTraceActive ? (isFocus ? '<button type="button" onclick="clearFlowTrace()" class="px-1.5 py-0.2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-[9px] rounded-none cursor-pointer" title="Clear filter and show all GAs">★ 1 Focus (✕ Show All)</button>' : `${lists.ga.length} linked`) : `${lists.ga.length} items`;
         } else {
           const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
           posGA.textContent = lists.ga.length ? `${window.flowWheelIndices.ga + 1} / ${lists.ga.length}${suffix}` : '0 / 0';
@@ -9557,7 +9688,7 @@ ${worksheetsXml}
       if (posPEO) {
         const isFocus = (tr && tr.type === 'peo');
         if (isTree) {
-          posPEO.textContent = isTraceActive ? (isFocus ? '★ Focus' : `${lists.peo.length} linked`) : `${lists.peo.length} items`;
+          posPEO.innerHTML = isTraceActive ? (isFocus ? '<button type="button" onclick="clearFlowTrace()" class="px-1.5 py-0.2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-[9px] rounded-none cursor-pointer" title="Clear filter and show all PEOs">★ 1 Focus (✕ Show All)</button>' : `${lists.peo.length} linked`) : `${lists.peo.length} items`;
         } else {
           const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
           posPEO.textContent = lists.peo.length ? `${window.flowWheelIndices.peo + 1} / ${lists.peo.length}${suffix}` : '0 / 0';
@@ -9567,7 +9698,7 @@ ${worksheetsXml}
       if (posSO) {
         const isFocus = (tr && tr.type === 'so');
         if (isTree) {
-          posSO.textContent = isTraceActive ? (isFocus ? '★ Focus' : `${lists.so.length} linked`) : `${lists.so.length} items`;
+          posSO.innerHTML = isTraceActive ? (isFocus ? '<button type="button" onclick="clearFlowTrace()" class="px-1.5 py-0.2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[9px] rounded-none cursor-pointer" title="Clear filter and show all SOs">★ 1 Focus (✕ Show All)</button>' : `${lists.so.length} linked`) : `${lists.so.length} items`;
         } else {
           const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
           posSO.textContent = lists.so.length ? `${window.flowWheelIndices.so + 1} / ${lists.so.length}${suffix}` : '0 / 0';
@@ -9577,7 +9708,7 @@ ${worksheetsXml}
       if (posCourse) {
         const isFocus = (tr && tr.type === 'course');
         if (isTree) {
-          posCourse.textContent = isTraceActive ? (isFocus ? '★ Focus' : `${lists.course.length} linked`) : `${lists.course.length} items`;
+          posCourse.innerHTML = isTraceActive ? (isFocus ? '<button type="button" onclick="clearFlowTrace()" class="px-1.5 py-0.2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[9px] rounded-none cursor-pointer" title="Clear filter and show all courses">★ 1 Focus (✕ Show All)</button>' : `${lists.course.length} linked`) : `${lists.course.length} items`;
         } else {
           const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
           posCourse.textContent = lists.course.length ? `${window.flowWheelIndices.course + 1} / ${lists.course.length}${suffix}` : '0 / 0';
@@ -9626,7 +9757,7 @@ ${worksheetsXml}
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-1.5">
                   <span class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
-                  ${isFocus ? '<span class="px-1 bg-amber-200 dark:bg-amber-900/60 text-amber-950 dark:text-amber-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                  ${isFocus ? '<span class="px-1.5 py-0.5 bg-amber-200 dark:bg-amber-900/60 text-amber-950 dark:text-amber-200 font-mono text-[9px] font-bold">★ FOCUS &bull; Click to reset</span>' : ''}
                   ${ga.cat || ga.domain ? `<span class="px-1 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[9px] truncate max-w-[90px]">${ga.cat || ga.domain}</span>` : ''}
                 </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-slate-300 dark:border-slate-700">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('ga', ${ga.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit GA">✏️</button>`}
@@ -9656,7 +9787,7 @@ ${worksheetsXml}
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-1.5">
                   <span class="font-mono font-bold text-xs text-purple-800 dark:text-purple-300">${peo.code}</span>
-                  ${isFocus ? '<span class="px-1 bg-purple-200 dark:bg-purple-900/60 text-purple-950 dark:text-purple-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                  ${isFocus ? '<span class="px-1.5 py-0.5 bg-purple-200 dark:bg-purple-900/60 text-purple-950 dark:text-purple-200 font-mono text-[9px] font-bold">★ FOCUS &bull; Click to reset</span>' : ''}
                   ${peo.domain ? `<span class="px-1 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[9px] truncate max-w-[90px]">${peo.domain}</span>` : ''}
                 </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-purple-300 dark:border-purple-800">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('peo', ${peo.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit PEO">✏️</button>`}
@@ -9695,7 +9826,7 @@ ${worksheetsXml}
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-1.5">
                   <span class="font-mono font-bold text-xs text-indigo-800 dark:text-indigo-300">${so.code}</span>
-                  ${isFocus ? '<span class="px-1 bg-indigo-200 dark:bg-indigo-900/60 text-indigo-950 dark:text-indigo-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                  ${isFocus ? '<span class="px-1.5 py-0.5 bg-indigo-200 dark:bg-indigo-900/60 text-indigo-950 dark:text-indigo-200 font-mono text-[9px] font-bold">★ FOCUS &bull; Click to reset</span>' : ''}
                   ${so.domain ? `<span class="px-1 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[9px] truncate max-w-[90px]">${so.domain}</span>` : ''}
                 </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-indigo-300 dark:border-indigo-800">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('so', '${so.id}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-200 hover:bg-[#002855] hover:text-[#E5A823] border border-indigo-300 dark:border-indigo-800 transition cursor-pointer" title="Edit SO">✏️</button>`}
@@ -9745,7 +9876,7 @@ ${worksheetsXml}
                 <div class="flex items-center gap-1.5">
                   <span class="font-mono font-bold text-xs text-emerald-900 dark:text-emerald-300">${c.code}</span>
                   <span class="text-[9px] font-mono text-slate-500">Y${c.year} T${c.term}</span>
-                  ${isFocus ? '<span class="px-1 bg-emerald-200 dark:bg-emerald-900/60 text-emerald-950 dark:text-emerald-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                  ${isFocus ? '<span class="px-1.5 py-0.5 bg-emerald-200 dark:bg-emerald-900/60 text-emerald-950 dark:text-emerald-200 font-mono text-[9px] font-bold">★ FOCUS &bull; Click to reset</span>' : ''}
                 </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-emerald-300 dark:border-emerald-800">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('course', '${c.code}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-[#002855] hover:text-[#E5A823] border border-emerald-300 dark:border-emerald-800 transition cursor-pointer" title="Edit SOs">+ SOs</button>`}
               </div>
