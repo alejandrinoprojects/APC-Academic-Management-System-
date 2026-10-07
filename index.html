@@ -1801,7 +1801,7 @@
                       <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Version ID</th>
                       <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Map Revision</th>
                       <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Status</th>
-                      <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Batch</th>
+                      <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Curriculum</th>
                       <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">GA</th>
                       <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">PEO</th>
                       <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">SO</th>
@@ -5744,10 +5744,10 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </div>
           <div class="flex items-center gap-2">
             <select id="newCurricMapSelect" onchange="updateNewCurricMapPreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono font-bold">
-              <option value="CM-BSCpE-2026" selected>CM-BSCpE-2026 &bull; Active Baseline [ACTIVE BATCH]</option>
-              <option value="CM-BSCpE-2027">CM-BSCpE-2027 &bull; Next Year Batch [UNLOCKED DRAFT]</option>
-              <option value="CM-BSCpE-2025">CM-BSCpE-2025 &bull; Previous Batch [PREV BATCH]</option>
-              <option value="CM-BSCpE-2021">CM-BSCpE-2021 &bull; Historical Baseline [ARCHIVED]</option>
+              <option value="CM-BSCpE-2026" selected>CM-BSCpE-2026 • BSCpE 2026–2030 • ACTIVE</option>
+              <option value="CM-BSCpE-2027">CM-BSCpE-2027 • BSCpE 2027–2031 • UNLOCKED DRAFT</option>
+              <option value="CM-BSCpE-2025">CM-BSCpE-2025 • BSCpE 2025–2029 • ARCHIVED</option>
+              <option value="CM-BSCpE-2021">CM-BSCpE-2021 • BSCpE 2021–2025 • ARCHIVED</option>
             </select>
             <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs whitespace-nowrap border border-[#E5A823]/60 cursor-pointer" title="Create a new Curriculum Map file">
               <span>+ New Map</span>
@@ -5847,10 +5847,8 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Status</label>
             <select id="snapshotMapStatus" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs cursor-pointer">
-              <option value="DRAFT (PENDING EXD APPROVAL)" selected>DRAFT • Pending ExD Approval</option>
-              <option value="ACTIVE BATCH" id="snapshotOptionActive">ACTIVE BATCH • ExD Approval Required</option>
-              <option value="NEXT YEAR BATCH">NEXT YEAR BATCH</option>
-              <option value="PREV BATCH">PREVIOUS BATCH</option>
+              <option value="DRAFT" selected>DRAFT • Pending ExD Approval</option>
+              <option value="ACTIVE" id="snapshotOptionActive">ACTIVE • ExD Approval Required</option>
               <option value="ARCHIVED">ARCHIVED</option>
             </select>
           </div>
@@ -5996,9 +5994,9 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Initial Status</label>
           <select id="domainStatusSelect" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs">
-            <option value="UNLOCKED DRAFT" selected>UNLOCKED DRAFT &bull; Recommended for authoring</option>
-            <option value="DRAFT (PENDING EXD APPROVAL)">DRAFT &bull; Pending ExD Approval</option>
-            <option value="ACTIVE BATCH" id="domainActiveOption">ACTIVE BATCH &bull; ExD Authority Required</option>
+            <option value="UNLOCKED DRAFT" selected>UNLOCKED DRAFT • Recommended for authoring</option>
+            <option value="DRAFT">DRAFT • Pending ExD Approval</option>
+            <option value="ACTIVE" id="domainActiveOption">ACTIVE • ExD Authority Required</option>
           </select>
         </div>
 

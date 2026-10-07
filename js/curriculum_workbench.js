@@ -1671,16 +1671,16 @@
         const map = (window.CURRICULUM_MAPS || []).find(m => m.id === id);
         if (map) {
           (window.CURRICULUM_MAPS || []).forEach(m => {
-            if (m.status === 'ACTIVE BATCH') {
-              m.status = 'PREV BATCH';
+            if (m.status === 'ACTIVE' || m.status === 'ACTIVE BATCH') {
+              m.status = 'ARCHIVED';
               m.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
             }
           });
-          map.status = 'ACTIVE BATCH';
+          map.status = 'ACTIVE';
           map.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
           map.approvedBy = 'Executive Director';
           map.approvedAt = today;
-          if (decisionNotes) map.notes = `${map.notes} [ExD Note: ${decisionNotes}]`;
+          if (decisionNotes) map.notes = `${map.notes} • ExD Note: ${decisionNotes}`;
           try { localStorage.setItem('apc_curriculum_maps', JSON.stringify(window.CURRICULUM_MAPS)); } catch(e) {}
           window.currentActiveCurriculumMap = id;
         }
@@ -1688,12 +1688,12 @@
         const curric = (window.CURRIC_EDITIONS_REGISTRY || []).find(c => c.id === id);
         if (curric) {
           (window.CURRIC_EDITIONS_REGISTRY || []).forEach(c => {
-            if (c.status === 'ACTIVE BATCH') {
-              c.status = 'PREV BATCH';
+            if (c.status === 'ACTIVE' || c.status === 'ACTIVE BATCH') {
+              c.status = 'ARCHIVED';
               c.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
             }
           });
-          curric.status = 'ACTIVE BATCH';
+          curric.status = 'ACTIVE';
           curric.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
           curric.approvedBy = 'Executive Director';
           curric.approvedAt = today;
@@ -1702,7 +1702,7 @@
           // Also activate the associated Curriculum Map for this curriculum batch if present
           (window.CURRICULUM_MAPS || []).forEach(m => {
             if (m.id.includes(curric.id) || (m.curriculumVersion && m.curriculumVersion.includes(curric.code || curric.id))) {
-              m.status = 'ACTIVE BATCH';
+              m.status = 'ACTIVE';
               m.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
               m.approvedBy = 'Executive Director';
               m.approvedAt = today;
@@ -1714,12 +1714,12 @@
         const so = (window.SO_VERSION_REGISTRY || []).find(s => s.id === id);
         if (so) {
           (window.SO_VERSION_REGISTRY || []).forEach(s => {
-            if (s.status === 'ACTIVE BATCH') {
-              s.status = 'PREV BATCH';
+            if (s.status === 'ACTIVE' || s.status === 'ACTIVE BATCH') {
+              s.status = 'ARCHIVED';
               s.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
             }
           });
-          so.status = 'ACTIVE BATCH';
+          so.status = 'ACTIVE';
           so.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
           so.approvedBy = 'Executive Director';
           so.approvedAt = today;
@@ -1747,7 +1747,7 @@
       if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView(id);
 
       if (typeof showToast === 'function') {
-        showToast(`✓ Executive Approval Granted! '${id}' is now ACTIVE BATCH.`);
+        showToast(`✓ Executive Approval Granted! '${id}' is now ACTIVE.`);
       }
     }
 
@@ -3440,7 +3440,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         gaCount: 9,
         mvvVersion: 'MVV 2025',
         mapRevision: `Map ${startYr}`,
-        status: 'NEXT YEAR BATCH',
+        status: 'UNLOCKED DRAFT',
         statusClass: 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700',
         createdAt: new Date().toISOString().split('T')[0],
         program: prog,
@@ -4250,12 +4250,12 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       const titles = [
         'Sheet 1: Official Flowchart & Trimester Schedule',
-        'Sheet 2: Official Curriculum Prospectus (12 Trimesters & Unit Audit)',
+        'Sheet 2: Official Curriculum Prospectus • 12 Trimesters & Unit Audit',
         'Sheet 3: Course Catalog Directory & Descriptive Syllabi',
-        'Sheet 4: Official Program of Study (12 Trimesters)',
-        'Sheet 5: OBE Curriculum Map Matrix (4 Assessment Tables)',
-        'Sheet 6: CHED CMO No. 87 / 92 Comparative Summary (106 Compliance Rows)',
-        'Sheet 7: Summary of Credit Units Audit (Curricular Classification)'
+        'Sheet 4: Official Program of Study • 12 Trimesters',
+        'Sheet 5: OBE Curriculum Map Matrix • 4 Assessment Tables',
+        'Sheet 6: CHED CMO No. 87 / 92 Comparative Summary • 106 Compliance Rows',
+        'Sheet 7: Summary of Credit Units Audit • Curricular Classification'
       ];
       if (titleBadge) titleBadge.textContent = titles[sheetIdx - 1] || `Sheet ${sheetIdx}`;
       if (searchInput) searchInput.value = '';
@@ -4266,249 +4266,75 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         mountRegistrarDocs();
       }
 
-      let html = '';
-      let totalDataRows = 0;
-      let totalTables = 0;
+      // Retrieve authentic document HTML with original merged cells (colspans and rowspans intact)
+      let docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[sheetIdx])
+        ? window.REGISTRAR_DOCS[sheetIdx]
+        : (document.getElementById(`regDocView_${sheetIdx}`)?.innerHTML || '');
 
-      const courses = (Array.isArray(ALL_COURSES) && ALL_COURSES.length > 0)
-        ? [...ALL_COURSES].sort((a, b) => ((a.year || 1) * 10 + (a.term || 1)) - ((b.year || 1) * 10 + (b.term || 1)) || (a.code || '').localeCompare(b.code || ''))
-        : [];
-
-      if (sheetIdx === 1) {
-        // Sheet 1: Flowchart & Trimester Schedule
-        // Table 1: Complete 4-Year Flowchart Schedule Grid
-        const headers1 = ['Year Level', 'Trimester', 'Course Code', 'Descriptive Course Title', 'Lec Hrs', 'Lab Hrs', 'Credit Units', 'Pre-Requisites', 'Co-Requisites', 'Curricular Area'];
-        const rows1 = courses.map(c => [
-          `Year ${c.year || 1}`,
-          `Term ${c.term || 1}`,
-          c.code || '',
-          c.title || '',
-          c.lec != null ? String(c.lec) : String(c.units || 3),
-          c.lab != null ? String(c.lab) : '0',
-          (parseFloat(c.units) || 0).toFixed(1),
-          Array.isArray(c.prereqs) ? c.prereqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.prereqs || 'None'),
-          Array.isArray(c.coreqs) ? c.coreqs.map(p => (typeof p === 'string' ? p : p.code)).join(', ') || 'None' : (c.coreqs || 'None'),
-          c.group || 'Core Engineering'
-        ]);
-        html += renderExcelTableBlock('4-Year Flowchart Course Schedule (74 Courses)', headers1, rows1, 1, 'Schedule');
-        totalDataRows += rows1.length;
-        totalTables++;
-
-        // Table 2: Term-by-Term Units Summary Matrix (12 Terms)
-        const headers2 = ['Academic Year', 'Trimester', 'Lecture Units', 'Laboratory Units', 'Total Term Units', 'Cumulative Units'];
-        const termUnitsData = [
-          ['Year 1', 'Term 1', '14.0', '2.0', '16.0', '16.0'],
-          ['Year 1', 'Term 2', '15.0', '2.0', '17.0', '33.0'],
-          ['Year 1', 'Term 3', '15.0', '2.0', '17.0', '50.0'],
-          ['Year 2', 'Term 1', '15.0', '2.0', '17.0', '67.0'],
-          ['Year 2', 'Term 2', '16.0', '2.0', '18.0', '85.0'],
-          ['Year 2', 'Term 3', '18.0', '3.0', '21.0', '106.0'],
-          ['Year 3', 'Term 1', '15.0', '3.0', '18.0', '124.0'],
-          ['Year 3', 'Term 2', '15.0', '3.0', '18.0', '142.0'],
-          ['Year 3', 'Term 3', '15.0', '2.0', '17.0', '159.0'],
-          ['Year 4', 'Term 1', '6.0', '0.0', '6.0', '165.0'],
-          ['Year 4', 'Term 2', '6.0', '0.0', '6.0', '171.0'],
-          ['Year 4', 'Term 3', '13.0', '0.0', '13.0', '184.0'],
-          ['ALL YEARS', 'PROGRAM DEGREE TOTAL', '163.0', '21.0', '184.0 Units', '184.0 Units']
-        ];
-        html += renderExcelTableBlock('Term-by-Term Credit Units Matrix (12 Trimesters)', headers2, termUnitsData, 1, 'Units Audit');
-        totalDataRows += termUnitsData.length;
-        totalTables++;
-
-        // Table 3: Curricular Credit Units Distribution Summary
-        const headers3 = ['Curricular Classification', 'Component Subject Area', 'Required Units', 'Share of Total (%)', 'Statutory Status'];
-        const distData = [
-          ['I. Technical Courses', 'A. Mathematics (Calculus, Differential Equations, EDA)', '12.0', '6.5%', 'COMPLIANT'],
-          ['I. Technical Courses', 'B. Physical Sciences (Chemistry, Physics for Engineers)', '8.0', '4.3%', 'COMPLIANT'],
-          ['I. Technical Courses', 'C. Basic Engineering Sciences (Computer Concepts, Drafting)', '7.0', '3.8%', 'COMPLIANT'],
-          ['I. Technical Courses', 'D. Allied Engineering Subjects (Electrical Circuits, Electronics)', '8.0', '4.3%', 'COMPLIANT'],
-          ['I. Technical Courses', 'E. Professional Core Courses (CpE Core, Embedded, Networks)', '90.0', '48.9%', 'COMPLIANT (EXCEEDS)'],
-          ['I. Technical Courses', 'F. Technical Electives / Cognates (AI, IoT, Cloud)', '9.0', '4.9%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'A. Social Sciences & Humanities (General Education)', '24.0', '13.0%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'B. General Education Electives (GEC Electives)', '9.0', '4.9%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'C. Mandated Institutional Course (Life and Works of Rizal)', '3.0', '1.6%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'D. Physical Education (PE 1 to PE 4)', '8.0', '4.3%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'E. National Service Training Program (NSTP 1 & 2)', '6.0', '3.3%', 'COMPLIANT'],
-          ['TOTAL DEGREE PROGRAM', 'OFFICIAL STATUTORY BSCpE CURRICULUM TOTAL', '184.0 Units', '100.0%', 'PASSED AUDIT']
-        ];
-        html += renderExcelTableBlock('Curricular Credit Units Distribution (184 Total Degree Units)', headers3, distData, 1, 'Distribution');
-        totalDataRows += distData.length;
-        totalTables++;
-
-        if (countBadge) countBadge.textContent = `(3 Tables • ${totalDataRows} Rows • Complete Flowchart)`;
-
-      } else if (sheetIdx === 2) {
-        // Sheet 2: Official Prospectus
-        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[2]) ? window.REGISTRAR_DOCS[2] : (document.getElementById('regDocView_2')?.innerHTML || '');
-        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
-        const titles2 = [
-          'FIRST YEAR — 1st Trimester (18 Units)',
-          'FIRST YEAR — 2nd Trimester (17 Units)',
-          'FIRST YEAR — 3rd Trimester (17 Units)',
-          'SECOND YEAR — 1st Trimester (17 Units)',
-          'SECOND YEAR — 2nd Trimester (18 Units)',
-          'SECOND YEAR — 3rd Trimester (21 Units)',
-          'THIRD YEAR — 1st Trimester (18 Units)',
-          'THIRD YEAR — 2nd Trimester (18 Units)',
-          'THIRD YEAR — 3rd Trimester (17 Units)',
-          'FOURTH YEAR — 1st Trimester (6 Units)',
-          'FOURTH YEAR — 2nd Trimester (6 Units)',
-          'FOURTH YEAR — 3rd Trimester (6 Units)'
-        ];
-
-        tableMatches.forEach((tHtml, tIdx) => {
-          const tRows = parseHtmlTableRows(tHtml);
-          if (tRows.length > 0) {
-            const h = tRows[0];
-            const d = tRows.slice(1);
-            html += renderExcelTableBlock(titles2[tIdx] || `Trimester ${tIdx + 1}`, h, d, 1, `Term ${tIdx + 1}`);
-            totalDataRows += d.length;
-            totalTables++;
-          }
-        });
-
-        // Summary of Units Distribution Table
-        const headersDist = ['Curricular Classification', 'Component Subject Area', 'Required Units', 'Distribution (%)', 'Audit Status'];
-        const rowsDist = [
-          ['I. Technical Courses', 'A. Mathematics', '12.0', '6.5%', 'COMPLIANT'],
-          ['I. Technical Courses', 'B. Physical Sciences', '8.0', '4.3%', 'COMPLIANT'],
-          ['I. Technical Courses', 'C. Basic Engineering Sciences', '7.0', '3.8%', 'COMPLIANT'],
-          ['I. Technical Courses', 'D. Allied Subjects', '8.0', '4.3%', 'COMPLIANT'],
-          ['I. Technical Courses', 'E. Professional Core Courses', '90.0', '48.9%', 'COMPLIANT'],
-          ['I. Technical Courses', 'F. Cognates / Electives', '9.0', '4.9%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'A. Social Sciences', '24.0', '13.0%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'B. GEC Electives', '9.0', '4.9%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'C. Mandated Course', '3.0', '1.6%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'D. Physical Education', '8.0', '4.3%', 'COMPLIANT'],
-          ['II. Non-Technical Courses', 'E. National Service Training Program', '6.0', '3.3%', 'COMPLIANT'],
-          ['PROGRAM TOTAL', 'TOTAL PROGRAM DEGREE CREDIT UNITS', '184.0 Units', '100.0%', 'PASSED AUDIT']
-        ];
-        html += renderExcelTableBlock('Curricular Credit Units Distribution Summary', headersDist, rowsDist, 1, 'Units Audit');
-        totalDataRows += rowsDist.length;
-        totalTables++;
-
-        if (countBadge) countBadge.textContent = `(${totalTables} Tables • ${totalDataRows} Rows • Complete Prospectus)`;
-
-      } else if (sheetIdx === 3) {
-        // Sheet 3: Course Catalog Directory
-        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[3]) ? window.REGISTRAR_DOCS[3] : (document.getElementById('regDocView_3')?.innerHTML || '');
-        const pattern = /<span[^>]*class="[^"]*text-apc-blue[^"]*"[^>]*>\s*([^<]+?)\s*<\/span>\s*<span[^>]*class="[^"]*font-extrabold[^"]*"[^>]*>\s*([^<]+?)\s*<\/span>[\s\S]*?(?:Pre-requisite:<\/span>\s*<span[^>]*>([^<]*?)<\/span>)?[\s\S]*?<p[^>]*class="[^"]*text-slate-700[^"]*"[^>]*>([\s\S]*?)<\/p>/gi;
-        const catalogRows = [];
-        let m;
-        while ((m = pattern.exec(docHtml)) !== null) {
-          const code = m[1].trim();
-          const title = m[2].trim();
-          const prereq = (m[3] || 'None').trim();
-          const desc = m[4].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-          // Find matching course for units and group
-          const matched = courses.find(c => (c.code || '').toUpperCase() === code.toUpperCase());
-          const units = matched ? (parseFloat(matched.units) || 3).toFixed(1) : '3.0';
-          const group = matched ? (matched.group || 'Core Engineering') : 'Engineering Syllabus';
-          catalogRows.push([code, title, units, prereq, 'None', group, desc]);
-        }
-
-        const headersCat = ['Course Code', 'Descriptive Course Title', 'Units', 'Pre-Requisite(s)', 'Co-Requisite(s)', 'Curricular Group', 'Official Catalog Syllabus & Course Description'];
-        html += renderExcelTableBlock('Official Course Catalog Directory & Descriptive Syllabi (81 Courses)', headersCat, catalogRows, 1, 'Directory');
-        totalDataRows += catalogRows.length;
-        totalTables = 1;
-
-        if (countBadge) countBadge.textContent = `(1 Table • ${totalDataRows} Course Syllabi • Complete Catalog)`;
-
-      } else if (sheetIdx === 4) {
-        // Sheet 4: Program of Study Matrix
-        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[4]) ? window.REGISTRAR_DOCS[4] : (document.getElementById('regDocView_4')?.innerHTML || '');
-        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
-        const titles4 = [
-          'FIRST YEAR — 1st Trimester (18 Units)',
-          'FIRST YEAR — 2nd Trimester (17 Units)',
-          'FIRST YEAR — 3rd Trimester (17 Units)',
-          'SECOND YEAR — 1st Trimester (17 Units)',
-          'SECOND YEAR — 2nd Trimester (18 Units)',
-          'SECOND YEAR — 3rd Trimester (21 Units)',
-          'THIRD YEAR — 1st Trimester (18 Units)',
-          'THIRD YEAR — 2nd Trimester (18 Units)',
-          'THIRD YEAR — 3rd Trimester (17 Units)',
-          'FOURTH YEAR — 1st Trimester (6 Units)',
-          'FOURTH YEAR — 2nd Trimester (6 Units)',
-          'FOURTH YEAR — 3rd Trimester (6 Units)'
-        ];
-
-        tableMatches.forEach((tHtml, tIdx) => {
-          const tRows = parseHtmlTableRows(tHtml);
-          if (tRows.length > 0) {
-            const h = tRows[0];
-            const d = tRows.slice(1);
-            html += renderExcelTableBlock(titles4[tIdx] || `Program of Study Term ${tIdx + 1}`, h, d, 1, `Term ${tIdx + 1}`);
-            totalDataRows += d.length;
-            totalTables++;
-          }
-        });
-
-        if (countBadge) countBadge.textContent = `(${totalTables} Tables • ${totalDataRows} Rows • Complete Program of Study)`;
-
-      } else if (sheetIdx === 5) {
-        // Sheet 5: OBE Curriculum Map Matrix
-        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[5]) ? window.REGISTRAR_DOCS[5] : (document.getElementById('regDocView_5')?.innerHTML || '');
-        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
-        const titles5 = [
-          'Course Learning Outcomes to Student Outcomes (SO-a through SO-m) Matrix',
-          'Student Outcomes Statements, Competency Descriptors & Course Counts',
-          'Summary of Learning Progression (I - E - D) Across Curricular Classifications',
-          'Curricular Category vs Outcome Attainment Breakdown'
-        ];
-        const badges5 = ['OBE Map', 'Descriptors', 'Progression', 'Categories'];
-
-        tableMatches.forEach((tHtml, tIdx) => {
-          const tRows = parseHtmlTableRows(tHtml);
-          if (tRows.length > 0) {
-            const h = tRows[0];
-            const d = tRows.slice(1);
-            html += renderExcelTableBlock(titles5[tIdx] || `OBE Table ${tIdx + 1}`, h, d, 1, badges5[tIdx] || 'OBE');
-            totalDataRows += d.length;
-            totalTables++;
-          }
-        });
-
-        if (countBadge) countBadge.textContent = `(${totalTables} Tables • ${totalDataRows} Rows • Complete OBE Map)`;
-
-      } else if (sheetIdx === 6) {
-        // Sheet 6: Comparative Summary
-        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[6]) ? window.REGISTRAR_DOCS[6] : (document.getElementById('regDocView_6')?.innerHTML || '');
-        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
-
-        tableMatches.forEach((tHtml, tIdx) => {
-          const tRows = parseHtmlTableRows(tHtml);
-          if (tRows.length > 0) {
-            const h = tRows[0];
-            const d = tRows.slice(1);
-            html += renderExcelTableBlock('CHED CMO No. 87 / 92 Curriculum Comparison vs APC Proposed BSCpE Offerings', h, d, 1, 'CMO 87 Audit');
-            totalDataRows += d.length;
-            totalTables++;
-          }
-        });
-
-        if (countBadge) countBadge.textContent = `(${totalTables} Table • ${totalDataRows} Rows • Complete CMO 87 vs APC Audit)`;
-
-      } else {
-        // Sheet 7: Summary of Units
-        const docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[7]) ? window.REGISTRAR_DOCS[7] : (document.getElementById('regDocView_7')?.innerHTML || '');
-        const tableMatches = docHtml.match(/<table[\s\S]*?<\/table>/gi) || [];
-
-        tableMatches.forEach((tHtml, tIdx) => {
-          const tRows = parseHtmlTableRows(tHtml);
-          if (tRows.length > 0) {
-            const h = tRows[0];
-            const d = tRows.slice(1);
-            html += renderExcelTableBlock('Summary of Credit Units & Statutory Curricular Classification Audit', h, d, 1, 'Unit Audit');
-            totalDataRows += d.length;
-            totalTables++;
-          }
-        });
-
-        if (countBadge) countBadge.textContent = `(${totalTables} Table • ${totalDataRows} Rows • Complete Curricular Audit)`;
+      if (!docHtml) {
+        container.innerHTML = `<div class="p-8 text-center text-slate-400 font-mono text-xs">No spreadsheet data loaded for Sheet ${sheetIdx}</div>`;
+        return;
       }
 
-      container.innerHTML = html;
+      // Inject the authentic merged-cell table inside a styled spreadsheet card wrapper
+      let sheetCardHtml = `
+        <div class="border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs mb-6 rounded-none">
+          <div class="bg-slate-800 text-white px-3 py-2 text-xs font-bold flex flex-wrap items-center justify-between gap-2 border-b border-slate-700">
+            <div class="flex items-center gap-2">
+              <span class="px-1.5 py-0.5 bg-emerald-600 text-white font-mono text-[10px] uppercase font-bold">Official Copy</span>
+              <span class="text-xs font-extrabold text-white">${titles[sheetIdx - 1] || `Sheet ${sheetIdx}`}</span>
+            </div>
+            <span class="text-slate-300 font-mono text-[11px] font-semibold">Authentic Registrar Format • Merged Cells Preserved</span>
+          </div>
+          <div class="overflow-x-auto reg-doc-spreadsheet-scroll p-2">
+            ${docHtml}
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = sheetCardHtml;
+
+      // Enhance all tables and cells in the rendered container to support interactive spreadsheet inspection
+      const tables = container.querySelectorAll('table');
+      let totalRows = 0;
+
+      tables.forEach((tbl) => {
+        tbl.classList.add('reg-doc-spreadsheet-table', 'w-full', 'border-collapse');
+        const trs = tbl.querySelectorAll('tr');
+        totalRows += trs.length;
+
+        trs.forEach((tr, rIdx) => {
+          tr.classList.add('reg-doc-grid-row');
+          const rowNum = rIdx + 1;
+          const cells = tr.querySelectorAll('td, th');
+          let colIndex = 0;
+
+          cells.forEach((cell) => {
+            const coord = `${colLetter(colIndex)}${rowNum}`;
+            cell.setAttribute('data-coord', coord);
+            cell.setAttribute('tabindex', '0');
+            cell.classList.add('cursor-cell', 'transition');
+
+            // Cell click & focus inspects into formula bar and highlights active cell
+            cell.addEventListener('click', function(e) {
+              inspectRegistrarSpreadsheetCell(coord, this);
+            });
+            cell.addEventListener('focus', function(e) {
+              inspectRegistrarSpreadsheetCell(coord, this);
+            });
+            cell.addEventListener('input', function(e) {
+              onRegistrarCellInput(this, coord);
+            });
+
+            const colSpan = parseInt(cell.getAttribute('colspan') || '1', 10);
+            colIndex += isNaN(colSpan) ? 1 : colSpan;
+          });
+        });
+      });
+
+      if (countBadge) {
+        countBadge.textContent = `${totalRows} Rows • Merged Cells Active`;
+      }
     }
 
     function filterRegistrarSpreadsheetRows(query) {
@@ -8501,7 +8327,7 @@ ${worksheetsXml}
       },
       {
         id: 'CM-BSCpE-2021',
-        name: 'BSCpE 2021–2025 Historical Baseline',
+        name: 'BSCpE 2021–2025',
         curriculumVersion: 'CPE 2021',
         curriculumLabel: 'CPE 2021 • AY 2021–2025',
         soVersion: 'SO 2021',
@@ -8526,15 +8352,40 @@ ${worksheetsXml}
         const stored = localStorage.getItem('apc_curriculum_maps');
         if (stored) {
           const list = JSON.parse(stored);
+          const c26 = list.find(m => m.id === 'CM-BSCpE-2026');
+          if (c26) {
+            c26.name = 'BSCpE 2026–2030';
+            c26.status = 'ACTIVE';
+            c26.curriculumLabel = 'CPE 2026 • AY 2026–2030';
+          }
           const c27 = list.find(m => m.id === 'CM-BSCpE-2027');
           if (c27) {
             c27.status = 'UNLOCKED DRAFT';
             c27.statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
             c27.name = 'BSCpE 2027–2031';
+            c27.curriculumLabel = 'CPE 2027 • AY 2027–2031';
             c27.approvedBy = 'Draft in Progress';
           } else {
             list.splice(1, 0, DEFAULT_CURRICULUM_MAPS[1]);
           }
+          const c25 = list.find(m => m.id === 'CM-BSCpE-2025');
+          if (c25) {
+            c25.name = 'BSCpE 2025–2029';
+            c25.status = 'ARCHIVED';
+            c25.curriculumLabel = 'CPE 2025 • AY 2025–2029';
+          }
+          const c21 = list.find(m => m.id === 'CM-BSCpE-2021');
+          if (c21) {
+            c21.name = 'BSCpE 2021–2025';
+            c21.status = 'ARCHIVED';
+            c21.curriculumLabel = 'CPE 2021 • AY 2021–2025';
+          }
+          // Sanitize any remaining batch suffixes
+          list.forEach(m => {
+            if (m.name) m.name = m.name.replace(/\s*(Active Batch|Next Year Batch|Previous Batch|Historical Baseline)/gi, '').trim();
+            if (m.status === 'ACTIVE BATCH') m.status = 'ACTIVE';
+            if (m.status === 'PREV BATCH') m.status = 'ARCHIVED';
+          });
           return list;
         }
       } catch(e) {}
@@ -8613,8 +8464,8 @@ ${worksheetsXml}
           const badge = el.querySelector('.node-active-badge');
           if (badge) {
             const is2027 = item.id.includes('2027');
-            badge.className = 'node-active-badge inline-block mt-0.5 px-1.5 py-0.2 text-[9px] font-mono ' + (is2027 ? 'bg-blue-100 text-blue-800' : 'bg-slate-200 text-slate-600');
-            badge.textContent = is2027 ? 'NEXT BATCH' : 'PREV BATCH';
+            badge.className = 'node-active-badge inline-block mt-0.5 px-1.5 py-0.2 text-[9px] font-mono ' + (is2027 ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-600');
+            badge.textContent = is2027 ? 'UNLOCKED DRAFT' : 'ARCHIVED';
           }
         }
       });
@@ -8639,7 +8490,7 @@ ${worksheetsXml}
           const badge = el.querySelector('.node-active-badge');
           if (badge) {
             badge.className = 'node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-500';
-            badge.textContent = 'PREV BATCH';
+            badge.textContent = 'ARCHIVED';
           }
         }
       });
@@ -8664,8 +8515,8 @@ ${worksheetsXml}
           const badge = el.querySelector('.node-active-badge');
           if (badge) {
             const is2027 = item.id.includes('2027');
-            badge.className = 'node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono ' + (is2027 ? 'bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300' : 'bg-slate-200 dark:bg-slate-800 text-slate-500');
-            badge.textContent = is2027 ? 'NEXT BATCH' : 'PREV BATCH';
+            badge.className = 'node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono ' + (is2027 ? 'bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300' : 'bg-slate-200 dark:bg-slate-800 text-slate-500');
+            badge.textContent = is2027 ? 'UNLOCKED DRAFT' : 'ARCHIVED';
           }
         }
       });
@@ -8722,7 +8573,7 @@ ${worksheetsXml}
       const sel = document.getElementById('curriculumMapSelect');
       if (!sel) return;
       sel.innerHTML = (window.CURRICULUM_MAPS || []).map(m => `
-        <option value="${m.id}">${m.curriculumVersion} &bull; ${m.mapRevision} [${m.status}]</option>
+        <option value="${m.id}">${m.curriculumVersion} &bull; ${m.mapRevision} &bull; ${m.status}</option>
       `).join('');
       if (window.currentActiveCurriculumMap) sel.value = window.currentActiveCurriculumMap;
     };
@@ -8799,7 +8650,7 @@ ${worksheetsXml}
       const currentId = window.currentActiveCurriculumMap || (maps[0] ? maps[0].id : '');
       sel.innerHTML = maps.map(m => `
         <option value="${m.id}" ${m.id === currentId ? 'selected' : ''}>
-          ${m.id} &bull; ${m.name} [${m.status}]
+          ${m.id} &bull; ${m.name} &bull; ${m.status}
         </option>
       `).join('');
     };
@@ -8831,18 +8682,18 @@ ${worksheetsXml}
         if (role === 'exd') {
           if (activeOption) {
             activeOption.disabled = false;
-            activeOption.textContent = 'ACTIVE BATCH • Executive Director Approved';
+            activeOption.textContent = 'ACTIVE • Executive Director Approved';
           }
           if (alertEl) {
             alertEl.className = 'py-1 px-2.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5';
-            alertEl.innerHTML = '<span class="font-bold uppercase tracking-wider text-[10px]">ExD Authority:</span> As Executive Director, you can approve and activate curriculum maps directly into <strong>ACTIVE BATCH</strong> status.';
+            alertEl.innerHTML = '<span class="font-bold uppercase tracking-wider text-[10px]">ExD Authority:</span> As Executive Director, you can approve and activate curriculum maps directly into <strong>ACTIVE</strong> status.';
           }
         } else {
           if (activeOption) {
             activeOption.disabled = true;
-            activeOption.textContent = 'ACTIVE BATCH • Requires Executive Director Approval';
+            activeOption.textContent = 'ACTIVE • Requires Executive Director Approval';
           }
-          statusSelect.value = 'DRAFT (PENDING EXD APPROVAL)';
+          statusSelect.value = 'DRAFT • PENDING EXD APPROVAL';
           if (alertEl) {
             alertEl.className = 'py-1 px-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-800 dark:text-amber-300 flex items-center gap-1.5';
             alertEl.innerHTML = '<span class="font-bold uppercase tracking-wider text-[10px]">Governance Policy:</span> Only the Executive Director can approve a curriculum map for active status. Submissions are saved as draft.';
@@ -8860,10 +8711,10 @@ ${worksheetsXml}
     window.handleSaveCurriculumMapSubmit = function(e) {
       if (e) e.preventDefault();
       const role = (window.currentActiveRole || 'admin').toLowerCase();
-      const name = document.getElementById('snapshotMapName')?.value || 'BSCpE Next Batch Curriculum Map';
+      const name = document.getElementById('snapshotMapName')?.value || 'BSCpE Curriculum Map';
       const mapVer = document.getElementById('snapshotMapVersion')?.value || ('Map ' + (new Date().getFullYear() + 1));
       const cVer = document.getElementById('snapshotCurricVer')?.value || ('CPE ' + (new Date().getFullYear() + 1));
-      let status = document.getElementById('snapshotMapStatus')?.value || 'DRAFT (PENDING EXD APPROVAL)';
+      let status = document.getElementById('snapshotMapStatus')?.value || 'DRAFT • PENDING EXD APPROVAL';
       const soVer = document.getElementById('snapshotSoVer')?.value || 'SO 2026';
       const peoVer = document.getElementById('snapshotPeoVer')?.value || 'PEO 2027';
       const gaVer = document.getElementById('snapshotGaVer')?.value || 'GA 2024';
@@ -8872,8 +8723,8 @@ ${worksheetsXml}
       const baseMap = (window.CURRICULUM_MAPS || []).find(m => m.id === baseMapId);
 
       // Enforce ExD Governance Rule
-      if (status === 'ACTIVE BATCH' && role !== 'exd') {
-        status = 'DRAFT (PENDING EXD APPROVAL)';
+      if ((status === 'ACTIVE' || status === 'ACTIVE BATCH') && role !== 'exd') {
+        status = 'DRAFT • PENDING EXD APPROVAL';
         if (typeof showToast === 'function') {
           showToast('🔒 Only the Executive Director can activate. Saved as Draft pending ExD approval.');
         }
@@ -8884,17 +8735,18 @@ ${worksheetsXml}
       const newId = `CM-BSCpE-${yr}`;
 
       // If active, demote previous active maps
-      if (status === 'ACTIVE BATCH' && role === 'exd') {
+      if ((status === 'ACTIVE' || status === 'ACTIVE BATCH') && role === 'exd') {
         (window.CURRICULUM_MAPS || []).forEach(m => {
-          if (m.status === 'ACTIVE BATCH') {
-            m.status = 'PREV BATCH';
+          if (m.status === 'ACTIVE' || m.status === 'ACTIVE BATCH') {
+            m.status = 'ARCHIVED';
             m.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
           }
         });
       }
 
       let statusClass = 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700';
-      if (status === 'ACTIVE BATCH') {
+      if (status === 'ACTIVE' || status === 'ACTIVE BATCH') {
+        status = 'ACTIVE';
         statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
       } else if (status.includes('DRAFT')) {
         statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
@@ -8917,7 +8769,7 @@ ${worksheetsXml}
         id: newId,
         name: name,
         curriculumVersion: cVer,
-        curriculumLabel: `${cVer} (AY ${yr}–${parseInt(yr, 10) + 4})`,
+        curriculumLabel: `${cVer} • AY ${yr}–${parseInt(yr, 10) + 4}`,
         soVersion: soVer,
         soCount: soDefsToClone.length || 13,
         peoVersion: peoVer,
@@ -8932,7 +8784,7 @@ ${worksheetsXml}
         program: 'BSCpE',
         notes: notes,
         clonedFrom: baseMapId || 'system-baseline',
-        approvedBy: (status === 'ACTIVE BATCH') ? 'Executive Director' : 'Draft in Progress',
+        approvedBy: (status === 'ACTIVE') ? 'Executive Director' : 'Draft in Progress',
         courses: coursesToClone,
         peoSoLinks: peoSoLinksToClone,
         peoGaLinks: peoGaLinksToClone,
@@ -8957,7 +8809,7 @@ ${worksheetsXml}
       if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
       closeSaveCurriculumMapModal();
       if (typeof showToast === 'function') {
-        showToast(`✓ Saved Curriculum Map '${name}' (${status}) successfully!`);
+        showToast(`✓ Saved Curriculum Map '${name}' • ${status} successfully!`);
       }
       renderCurriculumMapHierarchy();
       if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView(newId);
@@ -8976,13 +8828,13 @@ ${worksheetsXml}
 
       // Demote existing active maps
       (window.CURRICULUM_MAPS || []).forEach(m => {
-        if (m.status === 'ACTIVE BATCH') {
-          m.status = 'PREV BATCH';
+        if (m.status === 'ACTIVE' || m.status === 'ACTIVE BATCH') {
+          m.status = 'ARCHIVED';
           m.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
         }
       });
 
-      map.status = 'ACTIVE BATCH';
+      map.status = 'ACTIVE';
       map.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
       map.approvedBy = 'Executive Director';
       map.approvedAt = new Date().toISOString().split('T')[0];
@@ -9586,7 +9438,7 @@ ${worksheetsXml}
         name: 'Student Outcomes 2026',
         standard: 'CHED CMO 92 s.2017 (Standard Engineering a–m)',
         count: 13,
-        status: 'ACTIVE BATCH',
+        status: 'ACTIVE',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: 'AY 2026–2030',
         notes: 'Active accreditation baseline with 13 official CHED student outcomes.',
@@ -9629,7 +9481,7 @@ ${worksheetsXml}
         id: 'PEO-2026',
         name: 'Program Educational Objectives 2026',
         count: 5,
-        status: 'ACTIVE BATCH',
+        status: 'ACTIVE',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: 'AY 2026–2030',
         notes: 'Active baseline for BSCpE 3 to 5 years after graduation.',
@@ -9669,7 +9521,7 @@ ${worksheetsXml}
         id: 'GA-2024',
         name: 'Graduate Attributes 2024',
         count: 9,
-        status: 'ACTIVE BATCH',
+        status: 'ACTIVE',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: 'AY 2024–Present',
         notes: 'Current APC institutional graduate profile (GA A through GA I).',
@@ -9693,7 +9545,7 @@ ${worksheetsXml}
       {
         id: 'MVV-2025',
         name: 'APC Institutional MVV 2025–2030',
-        status: 'ACTIVE BATCH',
+        status: 'ACTIVE',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: '2025–2030',
         notes: 'Active institutional mission, vision, core values, and School of Engineering goals.',
@@ -9727,7 +9579,7 @@ ${worksheetsXml}
         status: 'UNLOCKED DRAFT',
         statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         effective: 'AY 2027–2031',
-        notes: 'Annual batch update with PEO 2027 AI engineering electives. Unlocked for editing.'
+        notes: 'Annual update with PEO 2027 AI engineering electives. Unlocked for editing.'
       },
       {
         id: 'CPE-2026',
@@ -9736,10 +9588,10 @@ ${worksheetsXml}
         units: '184.0',
         courses: 74,
         terms: 12,
-        status: 'ACTIVE BATCH',
+        status: 'ACTIVE',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: 'AY 2026–2030',
-        notes: 'Official active batch baseline with 184.0 units across 12 trimesters.'
+        notes: 'Official active curriculum baseline with 184.0 units across 12 trimesters.'
       },
       {
         id: 'CPE-2025',
@@ -9881,7 +9733,7 @@ ${worksheetsXml}
       if (!grid) return;
 
       const editions = (window.CURRIC_EDITIONS_REGISTRY || []).filter(e => e.status !== 'HISTORICAL');
-      const activeBatch = editions.find(e => e.status === 'ACTIVE BATCH') || editions[0];
+      const activeBatch = editions.find(e => e.status === 'ACTIVE' || e.status === 'ACTIVE BATCH') || editions[0];
       const batchTag = document.getElementById('curricSequenceBatchTag');
       if (batchTag && activeBatch) {
         const cleanActiveLabel = (activeBatch.code || activeBatch.id).replace(/\s*\([^)]*\)/g, '').trim();
@@ -9948,7 +9800,7 @@ ${worksheetsXml}
         const isDraft = ed.status === 'UNLOCKED DRAFT' || ed.status.includes('DRAFT');
         const badgeColor = isDraft
           ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700'
-          : (ed.status === 'ACTIVE BATCH'
+          : (ed.status === 'ACTIVE' || ed.status === 'ACTIVE BATCH'
             ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700'
             : 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700');
         
@@ -9963,7 +9815,7 @@ ${worksheetsXml}
             <div class="space-y-3">
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 bg-[#E5A823] text-slate-950 font-black text-xs font-mono">Next Year Batch</span>
+                  <span class="px-2.5 py-0.5 bg-[#E5A823] text-slate-950 font-black text-xs font-mono">${cohortTag}</span>
                   <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">${cleanCode}</span>
                 </div>
                 <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${badgeColor}">
@@ -10151,7 +10003,7 @@ ${worksheetsXml}
     // --- DOMAIN 1: CURRICULUM MAPS RENDERER ---
     window.renderVersioningHistoryView = function(inspectedId) {
       const maps = window.CURRICULUM_MAPS || [];
-      const activeMap = maps.find(m => m.status === 'ACTIVE BATCH') || maps[0];
+      const activeMap = maps.find(m => m.status === 'ACTIVE' || m.status === 'ACTIVE BATCH') || maps[0];
       const targetId = inspectedId || window.currentInspectedVersionId || (activeMap ? activeMap.id : 'CM-BSCpE-2026');
       window.currentInspectedVersionId = targetId;
       const targetMap = maps.find(m => m.id === targetId) || activeMap || maps[0];
@@ -10172,10 +10024,10 @@ ${worksheetsXml}
         const role = (window.currentActiveRole || 'admin').toLowerCase();
         regBody.innerHTML = maps.map(m => {
           const isInspecting = (m.id === targetId);
-          const isActive = (m.status === 'ACTIVE BATCH');
+          const isActive = (m.status === 'ACTIVE' || m.status === 'ACTIVE BATCH');
           let actionBtn = '';
           if (isActive) {
-            actionBtn = `<span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Active Baseline</span>`;
+            actionBtn = `<span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Active</span>`;
           } else if (m.id === 'CM-BSCpE-2027' || m.status === 'UNLOCKED DRAFT') {
             actionBtn = `<button type="button" onclick="setObeActiveYear('2027'); navigateView('obe');" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-[10px] cursor-pointer shadow-xs transition" title="Open and edit 2027 draft map">✏️ Edit Draft</button>`;
           } else if (role === 'exd') {
@@ -10882,11 +10734,11 @@ ${worksheetsXml}
       if (activeOpt) {
         if (role === 'exd') {
           activeOpt.disabled = false;
-          activeOpt.textContent = 'ACTIVE BATCH (Executive Director Approved)';
+          activeOpt.textContent = 'ACTIVE • Executive Director Approved';
         } else {
           activeOpt.disabled = true;
-          activeOpt.textContent = 'ACTIVE BATCH (Requires Executive Director Approval)';
-          if (statusSelect && statusSelect.value === 'ACTIVE BATCH') {
+          activeOpt.textContent = 'ACTIVE • Requires Executive Director Approval';
+          if (statusSelect && (statusSelect.value === 'ACTIVE BATCH' || statusSelect.value === 'ACTIVE')) {
             statusSelect.value = 'UNLOCKED DRAFT';
           }
         }
@@ -10943,7 +10795,7 @@ ${worksheetsXml}
           const peoList = window.PEO_VERSION_REGISTRY || [];
           parentSelect.innerHTML = peoList.map(p => `
             <option value="${p.id}">
-              ${p.id} &bull; ${p.name} [${p.status}]
+              ${p.id} &bull; ${p.name} &bull; ${p.status}
             </option>
           `).join('');
         }
@@ -10963,7 +10815,7 @@ ${worksheetsXml}
           const gaList = window.GA_VERSION_REGISTRY || [];
           parentSelect.innerHTML = gaList.map(g => `
             <option value="${g.id}">
-              ${g.id} &bull; ${g.name} [${g.status}]
+              ${g.id} &bull; ${g.name} &bull; ${g.status}
             </option>
           `).join('');
         }
@@ -10983,7 +10835,7 @@ ${worksheetsXml}
           const mvvList = window.MVV_VERSION_REGISTRY || [];
           parentSelect.innerHTML = mvvList.map(m => `
             <option value="${m.id}">
-              ${m.id} &bull; ${m.name} [${m.status}]
+              ${m.id} &bull; ${m.name} &bull; ${m.status}
             </option>
           `).join('');
         }
@@ -11012,7 +10864,7 @@ ${worksheetsXml}
           const soList = window.SO_VERSION_REGISTRY || [];
           parentSelect.innerHTML = soList.map(s => `
             <option value="${s.id}">
-              ${s.id} &bull; ${s.name} [${s.status}]
+              ${s.id} &bull; ${s.name} &bull; ${s.status}
             </option>
           `).join('');
         }
@@ -11026,12 +10878,12 @@ ${worksheetsXml}
         let baseOptionsHtml = `<option value="none">-- Start Fresh (No Base Clone) --</option>`;
         baseOptionsHtml += registry.map(item => `
           <option value="${item.id}">
-            ${item.id} &bull; ${item.name || item.code} [${item.status || 'Archived'}]
+            ${item.id} &bull; ${item.name || item.code} &bull; ${item.status || 'Archived'}
           </option>
         `).join('');
         baseSelect.innerHTML = baseOptionsHtml;
         // Default to active or first item
-        const active = registry.find(r => r.status === 'ACTIVE BATCH') || registry[0];
+        const active = registry.find(r => r.status === 'ACTIVE' || r.status === 'ACTIVE BATCH') || registry[0];
         if (active) baseSelect.value = active.id;
       }
 
@@ -11101,15 +10953,16 @@ ${worksheetsXml}
       }
 
       // Enforce ExD rule on active
-      if (status === 'ACTIVE BATCH' && role !== 'exd') {
-        status = 'DRAFT (PENDING EXD APPROVAL)';
+      if ((status === 'ACTIVE' || status === 'ACTIVE BATCH') && role !== 'exd') {
+        status = 'DRAFT • PENDING EXD APPROVAL';
         if (typeof showToast === 'function') {
           showToast('🔒 Only the Executive Director can activate. Saved as Draft pending ExD approval.');
         }
       }
 
       let statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
-      if (status === 'ACTIVE BATCH') {
+      if (status === 'ACTIVE' || status === 'ACTIVE BATCH') {
+        status = 'ACTIVE';
         statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
       }
 
@@ -11252,7 +11105,7 @@ ${worksheetsXml}
       }
       const map = (window.CURRICULUM_MAPS || []).find(m => m.id === activeMapId);
       if (!map) return true;
-      return map.status === 'ACTIVE BATCH' || map.status === 'PREV BATCH' || map.status === 'ARCHIVED';
+      return map.status === 'ACTIVE' || map.status === 'ACTIVE BATCH' || map.status === 'PREV BATCH' || map.status === 'ARCHIVED';
     };
 
     window.getLinkedItemIds = function(type, id) {
@@ -12025,7 +11878,7 @@ ${worksheetsXml}
 
     window.openFlowLinkEditor = function(type, id) {
       if (typeof isCurriculumLocked === 'function' && isCurriculumLocked()) {
-        if (typeof showToast === 'function') showToast('🔒 Locked: Active enrolled batch is read-only. Edits apply to Next Year Batch (2027).');
+        if (typeof showToast === 'function') showToast('🔒 Locked: Active curriculum is read-only. Edits apply to 2027 draft.');
         return;
       }
       window.flowEditTarget = { type, id };
@@ -12369,7 +12222,7 @@ ${worksheetsXml}
 
     function cycleObeProgression(courseCode, soIndex) {
       if (typeof isCurriculumLocked === 'function' && isCurriculumLocked()) {
-        if (typeof showToast === 'function') showToast('🔒 Locked: Active enrolled batch is read-only. Edits apply to Next Year Batch (2027).');
+        if (typeof showToast === 'function') showToast('🔒 Locked: Active curriculum is read-only. Edits apply to 2027 draft.');
         return;
       }
       const course = (window.OFFICIAL_BASELINE_74_COURSES || []).find(c => c.code === courseCode);
