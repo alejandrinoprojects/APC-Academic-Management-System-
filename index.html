@@ -4593,7 +4593,7 @@
           </div>
 
           <!-- DOCUMENT PAGES CONTAINER (Staged off-screen for editing and PDF generation) -->
-          <div id="allRegistrarDocsWrapper" class="w-full flex justify-center py-4 bg-slate-200/60 dark:bg-slate-950/40" style="position: fixed; left: -99999px; top: 0; opacity: 0; pointer-events: none; z-index: -1;">
+          <div id="allRegistrarDocsWrapper" class="w-full flex justify-center py-4 bg-slate-200/60 dark:bg-slate-950/40" style="position: fixed; left: 0px; top: 0px; opacity: 1; pointer-events: none; z-index: -9999;">
             <div id="regDocView_1" class="reg-doc-page reg-doc-letter-landscape bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
             <div id="regDocView_2" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
             <div id="regDocView_3" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
@@ -4783,8 +4783,7 @@
 
   <!-- ========================================================================= -->
   <!-- JAVASCRIPT CONTROLLERS & GRAPH ENGINE -->
-  <!-- Note: registrar_docs.js and past_flowchart_engine.js are code-split & loaded dynamically on-demand -->
-  <!-- ========================================================================= -->
+  <script src="js/registrar_docs.js" defer></script>
   <script src="js/admin_schools.js"></script>
   <script src="js/official_excel_sheets.js"></script>
   <script src="js/curriculum_workbench.js"></script>
