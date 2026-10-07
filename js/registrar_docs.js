@@ -547,6 +547,7 @@ Physics for Engineers Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-apc-navy text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>SECOND YEAR</span>
@@ -935,6 +936,7 @@ Embedded System Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-apc-navy text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>FOURTH YEAR</span>
@@ -2572,6 +2574,7 @@ Physics for Engineers Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-apc-blue text-white px-4 py-2 font-black text-xs uppercase tracking-wider">
             SECOND YEAR
@@ -3007,6 +3010,7 @@ Microprocessors Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-apc-blue text-white px-4 py-2 font-black text-xs uppercase tracking-wider">
             FOURTH YEAR
