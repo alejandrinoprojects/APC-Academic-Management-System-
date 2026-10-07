@@ -1612,26 +1612,40 @@
     }
     window.closeExdReviewProposalModal = closeExdReviewProposalModal;
 
-    function exdInspectProposalWorkspace() {
+    function exdViewCurriculum() {
       if (!currentExdReviewingProposal) return;
       const prop = currentExdReviewingProposal;
       closeExdReviewProposalModal();
 
-      if (prop.type === 'map') {
-        window.setObeActiveYear('2027');
-        navigateView('obe');
-      } else if (prop.type === 'curric') {
-        window.switchVhDomain('curric');
-        navigateView('versioning-history');
-        if (typeof window.renderVhCurricDomain === 'function') window.renderVhCurricDomain(prop.id);
-      } else if (prop.type === 'so') {
-        window.switchVhDomain('so');
-        navigateView('versioning-history');
-        if (typeof window.renderVhSoDomain === 'function') window.renderVhSoDomain(prop.id);
+      // Navigate to curriculum view (spreadsheet / flowchart)
+      if (typeof selectCurriculumBatchOption === 'function') {
+        selectCurriculumBatchOption(prop.id);
       }
+      navigateView('spreadsheet');
       if (typeof showToast === 'function') {
-        showToast(`Opening '${prop.id}' in workspace for executive inspection.`);
+        showToast(`Viewing Curriculum for ${prop.title || prop.id}.`);
       }
+    }
+    window.exdViewCurriculum = exdViewCurriculum;
+
+    function exdViewCurriculumMap() {
+      if (!currentExdReviewingProposal) return;
+      const prop = currentExdReviewingProposal;
+      closeExdReviewProposalModal();
+
+      // Navigate to curriculum map (OBE view)
+      if (typeof window.setObeActiveYear === 'function') {
+        window.setObeActiveYear('2027');
+      }
+      navigateView('obe');
+      if (typeof showToast === 'function') {
+        showToast(`Viewing Curriculum Map for ${prop.title || prop.id}.`);
+      }
+    }
+    window.exdViewCurriculumMap = exdViewCurriculumMap;
+
+    function exdInspectProposalWorkspace() {
+      exdViewCurriculum();
     }
     window.exdInspectProposalWorkspace = exdInspectProposalWorkspace;
 
@@ -5797,18 +5811,34 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     function renderFacultyDirectory() {
       const tbody = document.getElementById('facultyDirectoryTableBody');
+      const badge = document.getElementById('delegationSummaryBadge');
       if (!tbody) return;
+
+      // Populate draft selector if options needed
+      const draftSelect = document.getElementById('delegationDraftSelect');
+      if (draftSelect && window.CURRIC_EDITIONS_REGISTRY) {
+        const drafts = (window.CURRIC_EDITIONS_REGISTRY || []).filter(c => c.status === 'UNLOCKED DRAFT' || c.status.includes('DRAFT'));
+        if (drafts.length > 0) {
+          draftSelect.innerHTML = drafts.map(d => `<option value="${d.id}" ${d.id === 'CPE-2027' ? 'selected' : ''}>${d.name} (${d.status})</option>`).join('');
+        }
+      }
 
       if (!window.FACULTY_MEMBERS || window.FACULTY_MEMBERS.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-400 dark:text-slate-500 italic">No registered faculty members found in directory.</td></tr>';
         return;
       }
 
+      const activeCount = window.FACULTY_MEMBERS.filter(f => f.status === 'Active' && Array.isArray(f.courses) && f.courses.length > 0).length;
+      if (badge) badge.textContent = `${activeCount} Active`;
+
       tbody.innerHTML = window.FACULTY_MEMBERS.map((f, idx) => {
         const schoolName = FACULTY_SCHOOL_LABELS[f.school] || f.school?.toUpperCase() || 'SoE';
         const courseCount = Array.isArray(f.courses) ? f.courses.length : 0;
         const initial = (f.name || 'F').charAt(0).toUpperCase();
-        const hasActiveDelegation = f.status === 'Active' && f.cluster && f.cluster !== 'Unassigned' && f.cluster !== 'None';
+        const hasActiveDelegation = f.status === 'Active' && courseCount > 0;
+        const courseTags = Array.isArray(f.courses) && f.courses.length > 0
+          ? f.courses.slice(0, 5).map(c => `<span class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[10px] font-mono font-bold text-[#002855] dark:text-amber-400">${c}</span>`).join(' ') + (f.courses.length > 5 ? `<span class="text-[10px] text-slate-400 font-mono">+${f.courses.length - 5} more</span>` : '')
+          : '<span class="text-[11px] text-slate-400 italic">No courses assigned yet</span>';
 
         return `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
@@ -5832,8 +5862,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
               ${f.rank || 'Faculty Member'}
             </td>
             <td class="py-2.5 px-3">
-              <div class="font-semibold text-slate-900 dark:text-white text-xs">${f.cluster || 'Unassigned'}</div>
-              <div class="text-[10px] text-slate-400">${courseCount} courses</div>
+              <div class="flex items-center gap-1.5 flex-wrap">${courseTags}</div>
+              <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-mono">${courseCount} courses delegated for SO I-E-D mapping</div>
             </td>
             <td class="py-2.5 px-3">
               ${hasActiveDelegation ? `
@@ -5844,18 +5874,18 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
               ` : `
                 <span class="inline-flex items-center gap-1.5 text-xs text-slate-400 font-semibold">
                   <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
-                  <span>No Delegation</span>
+                  <span>Unassigned</span>
                 </span>
               `}
             </td>
             <td class="py-2.5 px-3 text-right">
               <div class="flex items-center justify-end space-x-1.5">
                 <button type="button" onclick="openAssignTaskModal('${(f.cluster || '').replace(/'/g, "\\'")}', '${f.name.replace(/'/g, "\\'")}')" class="h-7 px-3 inline-flex items-center justify-center bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#E5A823]/80 font-bold text-[11px] whitespace-nowrap transition cursor-pointer shadow-xs">
-                  Assign Task
+                  Assign Courses
                 </button>
                 ${hasActiveDelegation ? `
-                  <button type="button" onclick="terminateFacultyDelegation('${f.id}')" class="h-7 px-3 inline-flex items-center justify-center bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-[11px] font-bold whitespace-nowrap transition cursor-pointer shadow-xs" title="Revoke delegation and spreadsheet authoring access">
-                    Terminate
+                  <button type="button" onclick="terminateFacultyDelegation('${f.id}')" class="h-7 px-3 inline-flex items-center justify-center bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-[11px] font-bold whitespace-nowrap transition cursor-pointer shadow-xs" title="Revoke course delegations">
+                    Revoke
                   </button>
                 ` : ''}
               </div>
@@ -5864,6 +5894,59 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         `;
       }).join('');
     }
+
+    function onDelegationDraftSelectChange(draftId) {
+      if (typeof showToast === 'function') {
+        showToast(`Delegations now targeting curriculum draft: ${draftId}`);
+      }
+    }
+    window.onDelegationDraftSelectChange = onDelegationDraftSelectChange;
+
+    function quickAssignAllCourses() {
+      const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
+      if (isFaculty) {
+        showToastNotification('⛔ Access Restricted: Task delegation is reserved for Program Directors.');
+        return;
+      }
+
+      if (!window.FACULTY_MEMBERS || window.FACULTY_MEMBERS.length === 0) {
+        showToastNotification('No faculty members registered in directory.');
+        return;
+      }
+
+      const allCourses = (typeof ALL_COURSES !== 'undefined' && Array.isArray(ALL_COURSES)) ? ALL_COURSES : [];
+      if (allCourses.length === 0) {
+        showToastNotification('No courses available in curriculum draft.');
+        return;
+      }
+
+      const draftSelect = document.getElementById('delegationDraftSelect');
+      const draftName = draftSelect ? draftSelect.options[draftSelect.selectedIndex]?.text : 'BSCpE 2027–2031';
+
+      if (!confirm(`Quick Assign All: Distribute all ${allCourses.length} courses across ${window.FACULTY_MEMBERS.length} faculty members for ${draftName}?`)) {
+        return;
+      }
+
+      // Evenly distribute courses round-robin to all faculty
+      const numFac = window.FACULTY_MEMBERS.length;
+      window.FACULTY_MEMBERS.forEach(f => {
+        f.courses = [];
+        f.status = 'Active';
+      });
+
+      allCourses.forEach((c, cIdx) => {
+        const fac = window.FACULTY_MEMBERS[cIdx % numFac];
+        fac.courses.push(c.code.toUpperCase());
+      });
+
+      try {
+        localStorage.setItem('apc_faculty_directory', JSON.stringify(window.FACULTY_MEMBERS));
+      } catch (e) {}
+
+      renderFacultyDirectory();
+      showToastNotification(`✓ Successfully delegated all ${allCourses.length} courses across ${numFac} faculty members for ${draftName}.`);
+    }
+    window.quickAssignAllCourses = quickAssignAllCourses;
 
     function terminateFacultyDelegation(facId) {
       const isFaculty = (currentActiveRole === 'faculty' || currentActiveRole === 'f');
@@ -7493,11 +7576,21 @@ ${worksheetsXml}
       const startInput = document.getElementById('assignTaskStartDate');
       const endInput = document.getElementById('assignTaskEndDate');
       const clusterInput = document.getElementById('assignTaskCourseTitle');
+      const draftSelect = document.getElementById('assignTaskCurricDraft');
+      const mainDraftSelect = document.getElementById('delegationDraftSelect');
+
+      if (draftSelect && window.CURRIC_EDITIONS_REGISTRY) {
+        const drafts = (window.CURRIC_EDITIONS_REGISTRY || []).filter(c => c.status === 'UNLOCKED DRAFT' || c.status.includes('DRAFT'));
+        if (drafts.length > 0) {
+          const currentVal = mainDraftSelect?.value || 'CPE-2027';
+          draftSelect.innerHTML = drafts.map(d => `<option value="${d.id}" ${d.id === currentVal ? 'selected' : ''}>${d.name} (${d.status})</option>`).join('');
+        }
+      }
 
       if (facultyInput && facultyTitle) facultyInput.value = facultyTitle;
 
       let initialCodes = [];
-      let targetCluster = courseTitle || 'Hardware & Embedded Systems';
+      let targetCluster = courseTitle || 'Curriculum SO Mapping';
 
       if (facultyTitle) {
         const existingFac = (window.FACULTY_MEMBERS || []).find(f => f.name.toLowerCase() === facultyTitle.toLowerCase());

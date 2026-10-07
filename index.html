@@ -4113,98 +4113,39 @@
             <!-- Suite Header -->
             <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
               <div>
-                <h2 class="font-extrabold text-slate-900 dark:text-white text-xl tracking-tight">Faculty &amp; Cluster Delegations</h2>
+                <h2 class="font-extrabold text-slate-900 dark:text-white text-xl tracking-tight">Delegations</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Assign course Student Outcome (SO) to I-E-D mapping to faculty members for curriculum drafts.</p>
               </div>
               <div class="flex flex-wrap items-center gap-2">
-                <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Return to Program Director Workbench">
-                  <span>&larr;</span>
-                  <span>Back to Workbench</span>
+                <!-- Target Curriculum Draft Selector -->
+                <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/80 px-2.5 py-1.5 border border-slate-300 dark:border-slate-700">
+                  <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Curriculum Draft:</span>
+                  <select id="delegationDraftSelect" onchange="onDelegationDraftSelectChange(this.value)" class="text-xs font-mono font-bold bg-white dark:bg-slate-900 text-[#002855] dark:text-amber-400 px-2 py-0.5 border border-slate-300 dark:border-slate-700 outline-none cursor-pointer">
+                    <option value="CPE-2027" selected>BSCpE 2027–2031 (Unlocked Draft)</option>
+                  </select>
+                </div>
+                <button type="button" id="btnQuickAssignAll" onclick="quickAssignAllCourses()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Quickly distribute unassigned courses across active faculty">
+                  <span>⚡</span>
+                  <span>Quick Assign All</span>
                 </button>
                 <button type="button" id="btnOpenAddFacultyModal" onclick="openAddFacultyModal()" class="px-3.5 py-2 bg-[#047857] hover:bg-[#065f46] text-white text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 cursor-pointer">
                   <span>+</span>
                   <span>Add Faculty Member</span>
                 </button>
+                <button type="button" onclick="selectProgram('BSCpE', 'homePdProgramView')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Return to Program Director Workbench">
+                  <span>&larr;</span>
+                  <span>Back to Workbench</span>
+                </button>
               </div>
             </div>
 
-            <!-- SECTION 1: ACTIVE CURRICULUM CLUSTER DELEGATIONS -->
+            <!-- REGISTERED FACULTY DELEGATIONS DIRECTORY -->
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <h3 class="font-extrabold text-sm text-slate-900 dark:text-white flex items-center gap-2">
-                  <span>Cluster Delegations</span>
-                  <span class="px-2 py-0.5 bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-mono font-bold">2 Active</span>
+                  <span>Faculty SO Mapping Delegations</span>
+                  <span id="delegationSummaryBadge" class="px-2 py-0.5 bg-blue-100 text-blue-900 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-mono font-bold">2 Active</span>
                 </h3>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <!-- Cluster 1 Card -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4 space-y-2.5 shadow-xs">
-                  <div class="flex items-start justify-between gap-3">
-                    <div class="space-y-1">
-                      <span class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[9px] font-mono font-bold uppercase">Cluster 1</span>
-                      <h4 class="font-bold text-slate-900 dark:text-white text-sm">Hardware &amp; Embedded Systems</h4>
-                      <p class="text-[11px] text-slate-500 font-mono">4 Courses: LOGCDES, EMICROS, EMBEDDS, COMAROR</p>
-                    </div>
-                    <span class="px-2 py-0.5 rounded-none bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 text-[10px] font-bold shrink-0 border border-blue-200 dark:border-blue-800">
-                      Pending
-                    </span>
-                  </div>
-
-                  <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex flex-wrap items-center justify-between gap-2 text-[11px]">
-                    <div class="flex items-center gap-2">
-                      <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span>
-                      <span class="font-medium text-slate-700 dark:text-slate-300">Lead: Faculty Member 2</span>
-                      <span class="text-slate-400">&bull;</span>
-                      <span class="text-slate-500 font-mono">Expires Nov 01, 2026</span>
-                    </div>
-                    <div class="flex items-center space-x-1.5">
-                      <button type="button" id="btnReassignCluster1" onclick="openAssignTaskModal('Hardware &amp; Embedded Systems', 'Faculty Member 2')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
-                        Reassign
-                      </button>
-                      <button type="button" onclick="terminateClusterDelegation('Hardware &amp; Embedded Systems')" class="px-2.5 py-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-bold transition cursor-pointer shadow-xs" title="Revoke cluster delegation">
-                        Terminate
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Cluster 2 Card -->
-                <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 p-4 space-y-2.5 shadow-xs">
-                  <div class="flex items-start justify-between gap-3">
-                    <div class="space-y-1">
-                      <span class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[9px] font-mono font-bold uppercase">Cluster 2</span>
-                      <h4 class="font-bold text-slate-900 dark:text-white text-sm">Computer Networks &amp; Security</h4>
-                      <p class="text-[11px] text-slate-500 font-mono">3 Courses: DATCOMS, COMNETS, NETSLAB</p>
-                    </div>
-                    <span class="px-2 py-0.5 rounded-none bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold shrink-0 border border-emerald-200 dark:border-emerald-800">
-                      Active
-                    </span>
-                  </div>
-
-                  <div class="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex flex-wrap items-center justify-between gap-2 text-[11px]">
-                    <div class="flex items-center gap-2">
-                      <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span>
-                      <span class="font-medium text-slate-700 dark:text-slate-300">Lead: Faculty Member 1</span>
-                      <span class="text-slate-400">&bull;</span>
-                      <span class="text-slate-500 font-mono">Expires Oct 15, 2026</span>
-                    </div>
-                    <div class="flex items-center space-x-1.5">
-                      <button type="button" id="btnReassignCluster2" onclick="openAssignTaskModal('Computer Networks &amp; Security', 'Faculty Member 1')" class="px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[#002855] dark:text-[#E5A823] text-xs font-bold transition cursor-pointer shadow-xs">
-                        Reassign
-                      </button>
-                      <button type="button" onclick="terminateClusterDelegation('Computer Networks &amp; Security')" class="px-2.5 py-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-bold transition cursor-pointer shadow-xs" title="Revoke cluster delegation">
-                        Terminate
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SECTION 2: REGISTERED FACULTY DIRECTORY & SCHOOL ASSIGNMENTS -->
-            <div class="space-y-3 pt-3 border-t border-slate-200 dark:border-slate-800">
-              <div class="flex items-center justify-between">
-                <h3 class="font-extrabold text-sm text-slate-900 dark:text-white">Faculty Directory</h3>
               </div>
 
               <!-- Faculty Table Container -->
@@ -4212,11 +4153,11 @@
                 <table class="w-full text-left text-xs text-slate-700 dark:text-slate-200">
                   <thead class="bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider select-none">
                     <tr>
-                      <th class="py-2.5 px-3">Faculty</th>
+                      <th class="py-2.5 px-3">Faculty Member</th>
                       <th class="py-2.5 px-3">School</th>
                       <th class="py-2.5 px-3">Rank</th>
-                      <th class="py-2.5 px-3">Cluster</th>
-                      <th class="py-2.5 px-3">Status</th>
+                      <th class="py-2.5 px-3">Assigned Courses (SO ➔ I-E-D)</th>
+                      <th class="py-2.5 px-3">Delegation Status</th>
                       <th class="py-2.5 px-3 text-right">Actions</th>
                     </tr>
                   </thead>
@@ -5050,8 +4991,8 @@
         <div class="flex items-center space-x-2.5">
           <span class="text-[#E5A823] font-bold text-base">👥</span>
           <div>
-            <h3 class="font-black text-sm tracking-wider uppercase" style="color: #ffffff !important;">Assign Task &amp; Spreadsheet Access</h3>
-            <p class="text-[11px]" style="color: #cbd5e1 !important;">Faculty curriculum spreadsheet delegation</p>
+            <h3 class="font-black text-sm tracking-wider uppercase" style="color: #ffffff !important;">Assign Course SO Mapping Delegation</h3>
+            <p class="text-[11px]" style="color: #cbd5e1 !important;">Delegate course Student Outcome (SO) to I-E-D mapping to faculty</p>
           </div>
         </div>
         <button type="button" onclick="closeAssignTaskModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer" aria-label="Close">&times;</button>
@@ -5060,23 +5001,28 @@
       <!-- Form Body -->
       <form id="assignTaskForm" onsubmit="submitAssignTask(event)" class="flex flex-col flex-1 overflow-hidden text-xs">
         <div class="p-6 space-y-4 overflow-y-auto flex-1">
+          <!-- Target Curriculum Draft -->
+          <div>
+            <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider text-[11px]">Target Curriculum Draft</label>
+            <select id="assignTaskCurricDraft" onchange="onAssignTaskDraftChange(this.value)" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]">
+              <option value="CPE-2027" selected>BSCpE 2027–2031 (Draft AI &amp; Cloud Track)</option>
+            </select>
+          </div>
+
           <!-- Faculty Member Title -->
           <div>
-            <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Faculty Member (Role / Title)</label>
+            <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider">Faculty Member</label>
             <input type="text" id="assignTaskFacultyTitle" value="Faculty Member" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-semibold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" />
           </div>
 
-          <!-- Assigned Cluster Name / Target Scope -->
-          <div>
-            <label class="block text-slate-700 dark:text-slate-200 font-bold uppercase tracking-wider text-[11px] mb-1">Assigned Cluster / Subject Area</label>
-            <input type="text" id="assignTaskCourseTitle" value="Hardware &amp; Embedded Systems" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]" placeholder="e.g. Hardware &amp; Embedded Systems, Computer Networks, etc." />
-          </div>
+          <!-- Hidden cluster field to maintain compatibility -->
+          <input type="hidden" id="assignTaskCourseTitle" value="Curriculum SO Mapping" />
 
           <!-- Multi-Select Course Codes via Checkbox Grid -->
           <div>
             <div class="flex items-center justify-between mb-1">
               <label class="block text-slate-700 dark:text-slate-200 font-bold uppercase tracking-wider text-[11px]">
-                Assigned Course Scope (<span id="assignTaskSelectedCount" class="text-[#002855] dark:text-[#E5A823] font-bold">0</span> selected)
+                Assigned Courses for SO ➔ I-E-D Mapping (<span id="assignTaskSelectedCount" class="text-[#002855] dark:text-[#E5A823] font-bold">0</span> selected)
               </label>
               <div class="flex items-center space-x-2">
                 <button type="button" onclick="selectAllCoursesInAssignTask(true)" class="text-[10.5px] font-bold text-[#002855] dark:text-[#E5A823] hover:underline cursor-pointer">Select All</button>
@@ -6882,9 +6828,13 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       <!-- Footer Bar -->
       <div class="bg-slate-100 dark:bg-[#101722] px-5 py-3 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 shrink-0">
         <div class="flex items-center gap-2">
-          <button type="button" id="exdReviewInspectWorkspaceBtn" onclick="exdInspectProposalWorkspace()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center gap-1.5 cursor-pointer">
-            <span>🔍</span>
-            <span>Inspect in Workspace</span>
+          <button type="button" id="exdReviewViewCurriculumBtn" onclick="exdViewCurriculum()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs">
+            <span>📚</span>
+            <span>View Curriculum</span>
+          </button>
+          <button type="button" id="exdReviewViewCurriculumMapBtn" onclick="exdViewCurriculumMap()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs">
+            <span>🗺️</span>
+            <span>View Curriculum Map</span>
           </button>
         </div>
         <div class="flex items-center space-x-2">
