@@ -7870,6 +7870,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const titleEl = document.getElementById('curricMapActiveTitle');
       if (titleEl) titleEl.textContent = `${map.name} (${map.id})`;
 
+      const mapVerEl = document.getElementById('curricMapActiveVer');
+      if (mapVerEl) mapVerEl.textContent = map.mapRevision;
+
       // Update flowchart labels
       const gGA = document.getElementById('graphLabelGA');
       if (gGA) gGA.textContent = map.gaVersion;
@@ -7995,6 +7998,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.handleSaveCurriculumMapSubmit = function(e) {
       if (e) e.preventDefault();
       const name = document.getElementById('snapshotMapName')?.value || 'New Custom Curriculum Map';
+      const mapVer = document.getElementById('snapshotMapVersion')?.value || ('Map v' + new Date().getFullYear() + 'b');
       const cVer = document.getElementById('snapshotCurricVer')?.value || 'CURv2027';
       const status = document.getElementById('snapshotMapStatus')?.value || 'DRAFT';
       const soVer = document.getElementById('snapshotSoVer')?.value || 'SOv2026b';
@@ -8015,7 +8019,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         gaVersion: gaVer,
         gaCount: 9,
         mvvVersion: 'MVVv2025',
-        mapRevision: `Map v${new Date().getFullYear()}b`,
+        mapRevision: mapVer,
         status: status,
         statusClass: status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300',
         createdAt: new Date().toISOString().split('T')[0],
