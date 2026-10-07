@@ -2061,7 +2061,6 @@
                       </svg>
                       <span class="truncate text-[11px] font-semibold text-slate-200">CPE2027 Curriculum</span>
                     </span>
-                    <span class="px-1.5 py-0.2 text-[9px] font-bold rounded bg-amber-400/20 text-amber-400 border border-amber-400/40 shrink-0" title="Unlocked Draft">✏️ Draft</span>
                   </button>
                   <div id="cpeY2027Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
                     <button type="button" onclick="setSidebarYear('2027'); navigateView('obe')"
@@ -2095,7 +2094,6 @@
                       </svg>
                       <span class="truncate text-[11px] font-semibold text-slate-200">CPE2026 Curriculum</span>
                     </span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" title="Active Baseline"></span>
                   </button>
                   <div id="cpeY1Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
                     <!-- 1st Year Direct Tools -->
