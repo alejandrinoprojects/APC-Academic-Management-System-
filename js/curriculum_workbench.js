@@ -3783,8 +3783,12 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         } else if (window.REGISTRAR_DOCS) {
           for (let i = 1; i <= 7; i++) {
             const el = document.getElementById('regDocView_' + i);
-            if (el && window.REGISTRAR_DOCS[i] && !el.innerHTML.trim()) {
-              el.innerHTML = window.REGISTRAR_DOCS[i];
+            if (el && window.REGISTRAR_DOCS[i]) {
+              if (!el.innerHTML.trim() || !el.querySelector('.reg-doc-sheet')) {
+                el.innerHTML = (typeof paginateDocHtml === 'function')
+                  ? paginateDocHtml(window.REGISTRAR_DOCS[i], i)
+                  : window.REGISTRAR_DOCS[i];
+              }
             }
           }
         }
@@ -8532,7 +8536,7 @@ ${worksheetsXml}
       if (cCurricName) cCurricName.textContent = map.curriculumLabel;
 
       const cCurricStatus = document.getElementById('cardCurricStatus');
-      if (cCurricStatus) cCurricStatus.textContent = map.status;
+      if (cCurricStatus) cCurricStatus.textContent = '';
 
       const cCurricSpan = document.getElementById('cardCurricSpan');
       if (cCurricSpan) {
