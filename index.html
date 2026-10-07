@@ -2764,11 +2764,20 @@
                       </div>
                     </div>
 
-                    <!-- Arrow SO -> Curriculum -->
-                    <div class="flex flex-col items-center justify-center shrink-0 text-slate-400 px-1">
-                      <span class="text-xs font-mono text-slate-400">&larr;</span>
-                      <div class="w-8 h-0.5 bg-[#002855] dark:bg-amber-400"></div>
-                      <span class="text-[9px] font-mono text-slate-500 mt-1">maps to</span>
+                    <!-- I-E-D Competency Bridge (SO -> Curriculum/Courses) -->
+                    <div class="flex flex-col items-center justify-center shrink-0 px-1 space-y-1">
+                      <div class="p-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-center shadow-xs">
+                        <span class="px-1.5 py-0.5 bg-emerald-800 text-white text-[9px] font-mono font-bold block">I-E-D Matrix</span>
+                        <div class="flex items-center gap-1 mt-1 font-mono text-[8px] font-bold">
+                          <span class="px-1 bg-emerald-100 text-emerald-800 border border-emerald-300" title="Introductory (e.g. CALCONE on SO-a)">I</span>
+                          <span class="px-1 bg-amber-100 text-amber-800 border border-amber-300" title="Enabling">E</span>
+                          <span class="px-1 bg-indigo-100 text-indigo-800 border border-indigo-300" title="Demonstrative">D</span>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-1 text-slate-400">
+                        <div class="w-6 h-0.5 bg-[#002855] dark:bg-amber-400"></div>
+                        <span class="text-xs font-mono">&rarr;</span>
+                      </div>
                     </div>
 
                     <!-- Right: Curriculum Editions -->
@@ -2851,6 +2860,68 @@
                   </div>
                 </div>
 
+              </div>
+
+              <!-- Curriculum Map I-E-D Competency Mapping Layer (Courses -> SO a-m) -->
+              <div class="p-4 bg-white dark:bg-[#111722] border-2 border-emerald-600/70 shadow-xs space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2.5">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-emerald-700 text-white font-mono font-bold text-[10px] uppercase">Curriculum Map I-E-D Layer</span>
+                    <h5 class="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">
+                      Course-to-Outcome Competency Progression (I &bull; E &bull; D)
+                    </h5>
+                  </div>
+                  <button type="button" onclick="switchObeTab('matrix')" class="px-3 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                    <span>🎯</span>
+                    <span>View / Edit Full I-E-D Matrix (74 Courses)</span>
+                  </button>
+                </div>
+
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  This Curriculum Map stores not just the static hierarchy, but also the specific <strong>I-E-D competency ratings</strong> linking every course in the curriculum to each Student Outcome (<span class="font-mono font-bold">SO a–m</span>):
+                </p>
+
+                <!-- I-E-D Tier Cards / Examples -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div class="p-3 bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                      <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 font-mono font-bold text-[10px] border border-emerald-300 dark:border-emerald-700">I &bull; Introductory</span>
+                      <span class="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">Foundational</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-300">
+                      Introduces fundamental concepts, definitions, and theories without prerequisite mastery.
+                    </p>
+                    <div class="text-[10px] font-mono text-slate-500 pt-1 border-t border-emerald-200/60 dark:border-emerald-800/60">
+                      Example: <span class="font-bold text-slate-800 dark:text-slate-200">CALCONE (Calculus 1)</span> &rarr; <span class="text-emerald-700 dark:text-emerald-400 font-bold">[I] on SO-a &amp; SO-e</span>
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                      <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] border border-amber-300 dark:border-amber-700">E &bull; Enabling</span>
+                      <span class="text-[10px] font-mono text-amber-700 dark:text-amber-400 font-bold">Intermediate</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-300">
+                      Synthesizes foundational skills with core engineering principles, laboratory work, and design exercises.
+                    </p>
+                    <div class="text-[10px] font-mono text-slate-500 pt-1 border-t border-amber-200/60 dark:border-amber-800/60">
+                      Example: <span class="font-bold text-slate-800 dark:text-slate-200">HEALTHS (Basic OSH)</span> &rarr; <span class="text-amber-700 dark:text-amber-400 font-bold">[E] on SO-c, SO-h, SO-j</span>
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                      <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-mono font-bold text-[10px] border border-indigo-300 dark:border-indigo-700">D &bull; Demonstrative</span>
+                      <span class="text-[10px] font-mono text-indigo-700 dark:text-indigo-400 font-bold">Capstone / Mastery</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 dark:text-slate-300">
+                      Evaluates comprehensive student competency, capstone defense, and professional engineering practice.
+                    </p>
+                    <div class="text-[10px] font-mono text-slate-500 pt-1 border-t border-indigo-200/60 dark:border-indigo-800/60">
+                      Example: <span class="font-bold text-slate-800 dark:text-slate-200">CPEDES2 &amp; INTERN1</span> &rarr; <span class="text-indigo-700 dark:text-indigo-400 font-bold">[D] across SO a–m</span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Requisite Rule Enforcement Matrix -->
@@ -5336,6 +5407,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             </div>
             
             <!-- Visual hierarchy chain: GA > PEO > SO > Courses -->
+            <!-- Visual hierarchy chain: GA > PEO > SO > I-E-D Matrix > Courses -->
             <div class="flex items-center gap-1 font-mono text-[11px] overflow-x-auto py-1.5">
               <div class="flex items-center p-1 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700">
                 <span class="text-[9px] text-slate-400 font-bold uppercase mr-1">Curriculum Map:</span>
@@ -5346,6 +5418,11 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
                 <span class="px-1.5 py-0.5 bg-indigo-900 text-indigo-100 font-bold text-[10px]" id="previewModalSo">SOv2026a</span>
               </div>
               <span class="text-[#E5A823] font-bold text-sm mx-1">&gt;</span>
+              <div class="p-1 bg-emerald-900/40 text-emerald-300 border border-emerald-600/60 flex items-center gap-1 shrink-0">
+                <span class="text-[9px] font-bold uppercase">I-E-D Matrix</span>
+                <span class="text-[9px]">(I &bull; E &bull; D)</span>
+              </div>
+              <span class="text-[#E5A823] font-bold text-sm mx-1">&gt;</span>
               <div class="p-1 bg-[#002855] text-white border border-[#E5A823]/60 flex items-center gap-1 shrink-0">
                 <span class="text-[9px] text-[#E5A823] font-bold uppercase">Curriculum:</span>
                 <span class="font-bold text-[#E5A823] text-[10px]" id="previewModalCurricCode">CPE2027</span>
@@ -5354,7 +5431,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             </div>
 
             <p class="text-[10px] text-slate-500 dark:text-slate-400 italic">
-              All courses in this curriculum will inherit and map directly to the <strong>13 Student Outcomes</strong> defined inside this Curriculum Map file.
+              All courses in this curriculum will inherit and map directly to the <strong>13 Student Outcomes</strong> defined inside this Curriculum Map file using the <strong>I-E-D Competency Matrix</strong> (Introductory, Enabling, Demonstrative).
             </p>
           </div>
         </div>
@@ -5413,7 +5490,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black text-sm flex items-center justify-center rounded-none shadow-xs">🗺️</span>
           <div>
             <h3 class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Save New Curriculum Map</h3>
-            <p class="text-[10px] text-amber-300 font-mono">Hierarchy Snapshot &bull; Curriculum &rarr; SO &rarr; PEO &rarr; GA</p>
+            <p class="text-[10px] text-amber-300 font-mono">Hierarchy Snapshot &bull; GA &rarr; PEO &rarr; SO &rarr; I-E-D Competency Matrix</p>
           </div>
         </div>
         <button type="button" onclick="closeSaveCurriculumMapModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
