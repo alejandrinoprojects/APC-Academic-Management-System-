@@ -741,10 +741,6 @@ Software Design Laboratory</td>
             </div>
           </div>
         </div>
-        
-        <!-- PAGE BREAK (LETTER PAGE 2: YEARS 3 & 4) -->
-        <div class="doc-page-break"></div>
-
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-apc-navy text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>THIRD YEAR</span>
@@ -1877,7 +1873,6 @@ Embedded System Laboratory</td>
             </div>
           </div>
         </div>
-        <div class="doc-page-break"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>TECHNICAL ELECTIVES</span>
@@ -2251,7 +2246,6 @@ Embedded System Laboratory</td>
             </div>
           </div>
         </div>
-        <div class="doc-page-break"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>PHYSICAL EDUCATION</span>
@@ -2790,7 +2784,6 @@ Software Design Laboratory</td>
             </div>
           </div>
         </div>
-        <div class="doc-page-break"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-apc-blue text-white px-4 py-2 font-black text-xs uppercase tracking-wider">
             THIRD YEAR
@@ -3374,28 +3367,6 @@ Microprocessors Laboratory</td>
           <td class="p-1.5 font-mono font-bold text-center text-slate-900 border border-slate-200">1</td>
           <td class="p-1 text-center border border-slate-200 font-mono text-[11px] bg-amber-100 text-amber-800 font-bold">E</td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] bg-amber-100 text-amber-800 font-bold">E</td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] bg-amber-100 text-amber-800 font-bold">E</td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] text-slate-300 font-light"></td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] text-slate-300 font-light"></td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] text-slate-300 font-light"></td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] text-slate-300 font-light"></td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] bg-amber-100 text-amber-800 font-bold">E</td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] bg-emerald-100 text-emerald-800 font-bold">I</td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] text-slate-300 font-light"></td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] text-slate-300 font-light"></td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] text-slate-300 font-light"></td><td class="p-1 text-center border border-slate-200 font-mono text-[11px] text-slate-300 font-light"></td>
         </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="doc-page-break"></div>
-      <div class="border-b-2 border-slate-900 pb-3 mb-4 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 class="font-black text-base uppercase tracking-wider text-slate-900">ASIA PACIFIC COLLEGE &bull; SCHOOL OF ENGINEERING</h1>
-          <h2 class="font-bold text-xs text-slate-800">Outcome-Based Education (OBE) Curriculum Mapping Matrix &bull; Page 2</h2>
-          <p class="text-[11px] font-mono text-slate-500">BS Computer Engineering (BSCpE) &bull; Curriculum Year 2026</p>
-        </div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-[11px] border border-slate-300">
-          <thead class="bg-apc-navy text-white sticky top-0">
-            <tr>
-              <th class="p-1.5 font-bold border border-slate-400 w-16">Code</th>
-              <th class="p-1.5 font-bold border border-slate-400">Course / Subject Title</th>
-              <th class="p-1.5 font-bold border border-slate-400 text-center w-10">Units</th>
-              <th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-a</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-b</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-c</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-d</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-e</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-f</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-g</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-h</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-i</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-j</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-k</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-l</th><th class="p-1.5 font-bold border border-slate-400 text-center w-8 uppercase">SO-m</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200 bg-white">
         <tr class="hover:bg-slate-50">
           <td class="p-1.5 font-mono font-bold text-slate-900 border border-slate-200">P-13</td>
           <td class="p-1.5 text-slate-800 border border-slate-200">Embedded Systems Lecture</td>
@@ -4518,46 +4489,6 @@ Microprocessors Laboratory</td>
               <td class="p-1 border border-slate-200 text-center font-mono">0</td>
               <td class="p-1 border border-slate-200 text-center font-mono font-black text-apc-blue">9</td>
             </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="doc-page-break"></div>
-      <div class="border-b-2 border-slate-900 pb-3 mb-4 flex items-center justify-between">
-        <div>
-          <h1 class="font-black text-sm uppercase tracking-wider text-slate-900">ASIA PACIFIC COLLEGE &bull; SCHOOL OF ENGINEERING</h1>
-          <h2 class="font-bold text-xs text-slate-800">CHED CMO No. 87 / 92 Comparative Summary &bull; Page 2</h2>
-        </div>
-        <span class="text-[10px] font-mono text-slate-500">BSCpE &bull; Curriculum Year 2026</span>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-[9px] border border-slate-300">
-          <thead class="bg-slate-900 text-white">
-            <tr>
-              <th colspan="4" class="p-2 border border-slate-700 text-center font-black bg-slate-800">CHEd CMO. 87 s. 2017 (BS CpE)</th>
-              <th colspan="4" class="p-2 border border-slate-700 text-center font-black bg-slate-900">APC BS CpE AY 2018-2019</th>
-              <th colspan="4" class="p-2 border border-slate-700 text-center font-black bg-apc-blue">APC Proposed BS CpE 2026</th>
-            </tr>
-            <tr class="bg-slate-200 text-slate-900 text-[8.5px] font-bold">
-              <th rowspan="2" class="p-1.5 border border-slate-300 align-middle">Classification / Course</th>
-              <th colspan="2" class="p-1 border border-slate-300 text-center bg-slate-100">Hours / Week</th>
-              <th rowspan="2" class="p-1.5 border border-slate-300 text-center align-middle bg-amber-100 text-amber-950">Credit<br>Units</th>
-              <th rowspan="2" class="p-1.5 border border-slate-300 align-middle">Classification / Course</th>
-              <th colspan="2" class="p-1 border border-slate-300 text-center bg-slate-100">Hours / Week</th>
-              <th rowspan="2" class="p-1.5 border border-slate-300 text-center align-middle bg-amber-100 text-amber-950">Credit<br>Units</th>
-              <th rowspan="2" class="p-1.5 border border-slate-300 align-middle">Classification / Course</th>
-              <th colspan="2" class="p-1 border border-slate-300 text-center bg-blue-100 text-apc-blue">Hours / Week</th>
-              <th rowspan="2" class="p-1.5 border border-slate-300 text-center align-middle bg-blue-200 text-apc-blue font-black">Credit<br>Units</th>
-            </tr>
-            <tr class="bg-slate-100 text-slate-700 text-[8px]">
-              <th class="p-0.5 border border-slate-300 text-center" title="Lecture Hours per Week">Lec Hrs</th>
-              <th class="p-0.5 border border-slate-300 text-center font-bold text-slate-900 bg-amber-50" title="Laboratory & Practicum Hours (Includes 240 hrs OJT)">Lab / OJT Hrs</th>
-              <th class="p-0.5 border border-slate-300 text-center" title="Lecture Hours per Week">Lec Hrs</th>
-              <th class="p-0.5 border border-slate-300 text-center font-bold text-slate-900 bg-amber-50" title="Laboratory & Practicum Hours (Includes 1,040 hrs Internships)">Lab / OJT Hrs</th>
-              <th class="p-0.5 border border-slate-300 text-center" title="Lecture Hours per Week">Lec Hrs</th>
-              <th class="p-0.5 border border-slate-300 text-center font-bold text-apc-blue bg-blue-50" title="Laboratory & Practicum Hours (Includes 1,560 hrs across 3 Internships)">Lab / OJT Hrs</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200">
             <tr class="bg-slate-100 font-black text-slate-900 text-[11px]">
               <td colspan="12" class="p-2 border border-slate-300 uppercase tracking-wider">II. Non-Technical Courses</td>
             </tr>
@@ -5211,53 +5142,14 @@ Microprocessors Laboratory</td>
       `,
 };
 
-// Authentic Letter Paper Pagination Engine
-function paginateDocHtml(rawHtml, sheetNum) {
-  if (!rawHtml) return '';
-  sheetNum = parseInt(sheetNum) || 1;
-  const isLandscape = (sheetNum === 1 || sheetNum === 5 || sheetNum === 6);
-  const orientationClass = isLandscape ? 'reg-doc-sheet-landscape' : 'reg-doc-sheet-portrait';
-  const orientationLabel = isLandscape ? 'LANDSCAPE' : 'PORTRAIT';
-
-  // If already wrapped in .reg-doc-sheet, return as is
-  if (rawHtml.includes('class="reg-doc-sheet') || rawHtml.includes("class='reg-doc-sheet")) {
-    return rawHtml;
-  }
-
-  // Split on doc-page-break markers
-  const parts = rawHtml.split(/<div class=["']doc-page-break["'][^>]*><\/div>/i);
-  if (parts.length <= 1) {
-    return `<div class="reg-doc-sheet ${orientationClass}">${rawHtml}</div>`;
-  }
-
-  const totalPages = parts.length;
-  let paginated = '';
-  parts.forEach((partHtml, idx) => {
-    const pageNum = idx + 1;
-    if (idx > 0) {
-      paginated += `
-        <div class="doc-page-break-gap ${isLandscape ? 'landscape' : ''}">
-          <span class="doc-page-break-pill">
-            <span>📄</span>
-            <span>PAGE BREAK &bull; PAGE ${pageNum} OF ${totalPages} (${orientationLabel})</span>
-          </span>
-        </div>
-      `;
-    }
-    paginated += `<div class="reg-doc-sheet ${orientationClass}">${partHtml}</div>`;
-  });
-  return paginated;
-}
-window.paginateDocHtml = paginateDocHtml;
-
 // Auto-mount registrar documents when DOM is ready
 (function() {
   function mountRegistrarDocs() {
     for (let i = 1; i <= 7; i++) {
       const el = document.getElementById('regDocView_' + i);
       if (el && window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[i]) {
-        if (!el.innerHTML.trim() || !el.querySelector('.reg-doc-sheet')) {
-          el.innerHTML = paginateDocHtml(window.REGISTRAR_DOCS[i], i);
+        if (!el.innerHTML.trim()) {
+          el.innerHTML = window.REGISTRAR_DOCS[i];
         }
       }
     }

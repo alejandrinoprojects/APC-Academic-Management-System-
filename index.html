@@ -3323,6 +3323,26 @@
               </div>
             </div>
 
+            <!-- OBE HIERARCHY TABS -->
+            <div class="flex border-b border-slate-200 dark:border-slate-800 space-x-6 text-xs font-bold overflow-x-auto">
+              <button onclick="switchObeTab('hierarchy')" id="obe-tab-hierarchy" class="pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer whitespace-nowrap">
+                <span id="obe-tab-label-hierarchy">Curriculum Map</span>
+              </button>
+              <button onclick="switchObeTab('matrix')" id="obe-tab-matrix" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
+                <span id="obe-tab-label-matrix">SO to Course</span>
+              </button>
+              <button onclick="switchObeTab('peo')" id="obe-tab-peo" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
+                <span id="obe-tab-label-peo">PEO to SO</span>
+              </button>
+              <button onclick="switchObeTab('vision')" id="obe-tab-vision" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
+                <span id="obe-tab-label-vision">Graduate Attributes (GA)</span>
+              </button>
+              <button onclick="navigateView('versioning-history')" id="obe-tab-versioning" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap flex items-center gap-1.5" title="Open Master Versioning History Registry">
+                <span>📜</span>
+                <span>Versioning History</span>
+              </button>
+            </div>
+
             <!-- TAB 0: CURRICULUM MAP HIERARCHY & VERSION REGISTRY -->
             <div id="obe-content-hierarchy" class="space-y-4">
               <!-- Curriculum Map Control Strip -->
@@ -3333,16 +3353,17 @@
                     BSCpE 2026–2030
                   </h3>
                   <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700" id="curricMapActiveVer">Map 2026</span>
+                  <span id="curricMapActiveTag" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE &bull; LOCKED</span>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
                   <div class="flex items-center gap-1.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 px-2.5 py-1">
                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Select Map:</span>
                     <select id="curriculumMapSelect" onchange="selectCurriculumMap(this.value)" class="bg-transparent text-xs font-mono font-bold text-[#002855] dark:text-amber-400 outline-none cursor-pointer">
-                      <option value="CM-BSCpE-2026">CPE 2026 • Map 2026</option>
-                      <option value="CM-BSCpE-2027">CPE 2027 • Map 2027</option>
-                      <option value="CM-BSCpE-2025">CPE 2025 • Map 2025</option>
-                      <option value="CM-BSCpE-2021">CPE 2021 • Map 2021</option>
+                      <option value="CM-BSCpE-2026">CPE 2026 • Map 2026 • Active • Locked</option>
+                      <option value="CM-BSCpE-2027">CPE 2027 • Map 2027 • Editable Draft</option>
+                      <option value="CM-BSCpE-2025">CPE 2025 • Map 2025 • Archived • Locked</option>
+                      <option value="CM-BSCpE-2021">CPE 2021 • Map 2021 • Historical • Locked</option>
                     </select>
                   </div>
                   <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs" title="Create a new Curriculum Map version">
@@ -3359,6 +3380,7 @@
                 <div onclick="navigateView('flowchart')" class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-amber-400 transition group" title="View Prerequisite Flowchart">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-[#002855] dark:text-[#E5A823]">Tier 4 &bull; Curriculum</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardCurricStatus">ACTIVE</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardCurricId">CPE 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardCurricName">BS Computer Engineering • 184.0 Units</p>
@@ -3372,6 +3394,7 @@
                 <div onclick="switchObeTab('matrix')" class="p-4 bg-white dark:bg-[#111722] border-2 border-indigo-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-indigo-500 transition group" title="View SO to Course Matrix">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-indigo-700 dark:text-indigo-400">Tier 3 &bull; Student Outcomes</span>
+                    <span class="px-1.5 py-0.2 bg-indigo-100 text-indigo-800 font-mono text-[9px] font-bold" id="cardSoStatus">ACTIVE</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardSoId">SO 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardSoName">13 CHED CMO 92 Outcomes (SO a–m)</p>
@@ -3385,6 +3408,7 @@
                 <div onclick="switchObeTab('peo')" class="p-4 bg-white dark:bg-[#111722] border-2 border-purple-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-purple-500 transition group" title="View PEO to SO Schedule">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-purple-700 dark:text-purple-400">Tier 2 &bull; Program Objectives</span>
+                    <span class="px-1.5 py-0.2 bg-purple-100 text-purple-800 font-mono text-[9px] font-bold" id="cardPeoStatus">ACTIVE</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardPeoId">PEO 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardPeoName">5 Program Educational Objectives</p>
@@ -3398,6 +3422,7 @@
                 <div onclick="switchObeTab('vision')" class="p-4 bg-white dark:bg-[#111722] border-2 border-slate-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-slate-400 transition group" title="View Graduate Attributes">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-slate-700 dark:text-slate-300">Tier 1 &bull; Graduate Attributes</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardGaStatus">ACTIVE</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardGaId">GA 2024</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardGaName">9 Institutional Graduate Attributes</p>
@@ -3552,13 +3577,6 @@
 
             <!-- TAB 1: COURSE-TO-SO MATRIX -->
             <div id="obe-content-matrix" class="hidden space-y-3">
-              <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-                <button type="button" onclick="switchObeTab('hierarchy')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-                  <span>←</span>
-                  <span>Back to Curriculum Map</span>
-                </button>
-                <span class="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider font-mono">Tier 3 • Course to Student Outcomes (SO) Matrix</span>
-              </div>
               <!-- OBE Course Search & Multi-Criteria Filtering Controls -->
               <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 p-3 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800">
                 <div class="sm:col-span-2">
@@ -3635,13 +3653,6 @@
 
             <!-- TAB 2: PEO-TO-SO RELATIONAL SCHEDULE -->
             <div id="obe-content-peo" class="hidden space-y-5 text-xs">
-              <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-                <button type="button" onclick="switchObeTab('hierarchy')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-                  <span>←</span>
-                  <span>Back to Curriculum Map</span>
-                </button>
-                <span class="text-xs font-bold text-purple-700 dark:text-purple-400 uppercase tracking-wider font-mono">Tier 2 • PEO to Student Outcomes (SO) Schedule</span>
-              </div>
               
               <!-- Section 1: Program Educational Objectives (PEOs) -->
               <div class="p-5 bg-white dark:bg-[#111722] rounded-none border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
@@ -3737,13 +3748,6 @@
 
             <!-- TAB 3: GRADUATE ATTRIBUTES (GA) -->
             <div id="obe-content-vision" class="hidden space-y-5 text-xs">
-              <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-                <button type="button" onclick="switchObeTab('hierarchy')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-                  <span>←</span>
-                  <span>Back to Curriculum Map</span>
-                </button>
-                <span class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider font-mono">Tier 1 • Graduate Attributes (GA) and PEO Mapping</span>
-              </div>
               
               <!-- Section 1: APC Graduate Attributes (GA A to GA I) -->
               <div class="p-5 bg-white dark:bg-[#111722] rounded-none border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
@@ -4353,14 +4357,14 @@
           </div>
 
           <!-- DOCUMENT PAGES CONTAINER (Printable Official Paper Layout) -->
-          <div id="allRegistrarDocsWrapper" class="w-full flex flex-col items-center py-8 px-2 sm:px-4 bg-slate-300/80 dark:bg-slate-900/90 min-h-screen">
-            <div id="regDocView_1" class="reg-doc-container w-full flex flex-col items-center print-page-wrapper"></div>
-            <div id="regDocView_2" class="reg-doc-container hidden w-full flex flex-col items-center print-page-wrapper"></div>
-            <div id="regDocView_3" class="reg-doc-container hidden w-full flex flex-col items-center print-page-wrapper"></div>
-            <div id="regDocView_4" class="reg-doc-container hidden w-full flex flex-col items-center print-page-wrapper"></div>
-            <div id="regDocView_5" class="reg-doc-container hidden w-full flex flex-col items-center print-page-wrapper"></div>
-            <div id="regDocView_6" class="reg-doc-container hidden w-full flex flex-col items-center print-page-wrapper"></div>
-            <div id="regDocView_7" class="reg-doc-container hidden w-full flex flex-col items-center print-page-wrapper"></div>
+          <div id="allRegistrarDocsWrapper" class="w-full flex justify-center py-4 bg-slate-200/60 dark:bg-slate-950/40">
+            <div id="regDocView_1" class="reg-doc-page reg-doc-letter-landscape bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_2" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_3" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_4" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_5" class="reg-doc-page reg-doc-letter-landscape hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_6" class="reg-doc-page reg-doc-letter-landscape hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+            <div id="regDocView_7" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
           </div>
 
           <!-- SPREADSHEET GRID CONTAINER (Structured Grid View Matching Official Sheet Export Format) -->

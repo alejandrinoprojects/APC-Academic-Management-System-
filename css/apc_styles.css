@@ -389,35 +389,20 @@
     /* OFFICIAL REGISTRAR DOCUMENT VISUAL LETTER PAPER STYLING & PRINT RULES     */
     /* ========================================================================= */
     /* Visual Letter Paper Presentation on Screen (Authentic 8.5in x 11in Ratio) */
-    /* Container holding the physical Letter pages */
-    .reg-doc-container {
-      width: 100% !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      background: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-
-    /* Individual Physical Letter Paper Sheet (Standard US Letter @ 96dpi) */
-    .reg-doc-sheet {
+    .reg-doc-page {
       background-color: #ffffff !important;
       color: #0f172a !important;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
-      border: 1px solid #cbd5e1 !important;
+      box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.16), 0 2px 8px -1px rgba(0, 0, 0, 0.1) !important;
+      border: 1px solid #94a3b8 !important;
       border-radius: 0 !important;
-      margin: 0 auto 2rem auto !important;
+      margin: 1.5rem auto !important;
       box-sizing: border-box !important;
-      position: relative !important;
       overflow-x: auto !important;
     }
 
     /* Standard Letter Landscape: 11in x 8.5in (1056px @ 96dpi) */
-    .reg-doc-sheet-landscape,
-    .reg-doc-letter-landscape {
+    .reg-doc-letter-landscape,
+    #regDocView_1, #regDocView_5, #regDocView_6 {
       max-width: 1056px !important;
       width: 100% !important;
       min-height: 816px !important;
@@ -425,80 +410,36 @@
     }
 
     /* Standard Letter Portrait: 8.5in x 11in (816px @ 96dpi) */
-    .reg-doc-sheet-portrait,
-    .reg-doc-letter-portrait {
+    .reg-doc-letter-portrait,
+    #regDocView_2, #regDocView_3, #regDocView_4, #regDocView_7 {
       max-width: 816px !important;
       width: 100% !important;
       min-height: 1056px !important;
       padding: 0.5in 0.5in !important;
     }
 
-    /* Visual Onscreen Page Break Separator Between Letter Paper Sheets */
-    .doc-page-break-gap {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: 100% !important;
-      max-width: 816px !important;
-      margin: 0.5rem auto 2.5rem auto !important;
-      position: relative !important;
-      user-select: none !important;
-    }
-    .doc-page-break-gap.landscape {
-      max-width: 1056px !important;
-    }
-    .doc-page-break-gap::before {
-      content: "" !important;
-      position: absolute !important;
-      left: 0 !important;
-      right: 0 !important;
-      top: 50% !important;
-      border-top: 2px dashed #94a3b8 !important;
-      z-index: 1 !important;
-    }
-    .doc-page-break-pill {
-      position: relative !important;
-      z-index: 2 !important;
-      background: #0f172a !important;
-      color: #f8fafc !important;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-      font-size: 11px !important;
-      font-weight: 800 !important;
-      letter-spacing: 0.1em !important;
-      padding: 5px 18px !important;
-      border-radius: 9999px !important;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.25) !important;
-      border: 1px solid #475569 !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 8px !important;
-      text-transform: uppercase !important;
-    }
-
-    /* Fallback inner page break marker */
+    /* Visual Onscreen Page Break Indicator (Simulating Sheet Multi-Page Separation) */
     .doc-page-break {
       page-break-before: always !important;
       break-before: page !important;
-      margin-top: 2.5rem !important;
-      padding-top: 2rem !important;
+      margin-top: 2rem !important;
+      padding-top: 1.5rem !important;
       border-top: 2px dashed #94a3b8 !important;
-      position: relative !important;
+      position: relative;
     }
     .doc-page-break::before {
       content: "— PAGE BREAK (LETTER) —";
       position: absolute;
-      top: -12px;
+      top: -10px;
       left: 50%;
       transform: translateX(-50%);
-      background: #0f172a;
-      color: #f8fafc;
-      font-family: ui-monospace, monospace;
-      font-size: 10px;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 9px;
       font-weight: 700;
       letter-spacing: 0.1em;
-      padding: 2px 12px;
-      border-radius: 9999px;
-      border: 1px solid #475569;
+      padding: 1px 8px;
+      border: 1px solid #cbd5e1;
     }
     @media print {
       .doc-page-break {
@@ -506,17 +447,8 @@
         margin-top: 0 !important;
         padding-top: 0 !important;
       }
-      .doc-page-break::before,
-      .doc-page-break-gap {
+      .doc-page-break::before {
         display: none !important;
-      }
-      .reg-doc-sheet {
-        box-shadow: none !important;
-        border: none !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-        page-break-after: always !important;
-        break-after: page !important;
       }
     }
 
@@ -573,8 +505,8 @@
         padding: 0 !important;
         margin: 0 auto !important;
       }
-      /* Landscape Letter for Sheet 1 */
-      #regDocView_1 {
+      /* Landscape Letter for Sheet 1, Sheet 5, Sheet 6 */
+      #regDocView_1, #regDocView_5, #regDocView_6 {
         page-break-after: avoid !important;
         break-after: avoid !important;
         page-break-inside: avoid !important;
@@ -587,7 +519,7 @@
         size: letter;
       }
       /* Multi-page sheets paginate cleanly */
-      #regDocView_2, #regDocView_3, #regDocView_4, #regDocView_5, #regDocView_6, #regDocView_7 {
+      #regDocView_2, #regDocView_3, #regDocView_4, #regDocView_7 {
         page-break-after: auto !important;
         break-after: auto !important;
         page-break-inside: auto !important;
