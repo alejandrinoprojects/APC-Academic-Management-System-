@@ -1462,16 +1462,17 @@
         if (isPending && !pendingList.some(p => p.id === c.id)) {
           // Find matching curriculum map if any
           const matchingMap = (window.CURRICULUM_MAPS || []).find(m => m.id.includes(c.id) || (m.curriculumVersion && m.curriculumVersion.includes(c.code)));
+          const cleanTitle = (c.name || '').replace(/\s*\([^)]*\)/g, '').replace(/\s*\[[^\]]*\]/g, '').trim();
           pendingList.push({
             type: 'curric',
             id: c.id,
-            title: c.name,
+            title: cleanTitle,
             domain: 'Curriculum',
             cohort: c.effective || 'AY 2027–2031',
             status: c.status,
             statusClass: c.statusClass || 'bg-amber-100 text-amber-800 border-amber-300',
             author: 'Program Director',
-            notes: c.notes || 'Degree batch curriculum structure.',
+            notes: (c.notes || 'Degree curriculum structure.').replace(/\s*\([^)]*\)/g, '').replace(/\s*\[[^\]]*\]/g, '').trim(),
             units: `${c.units || '184.0'} Units • ${c.courses || 74} Courses`,
             mvv: matchingMap?.mvvVersion || 'MVV 2025',
             ga: matchingMap?.gaVersion || 'GA 2027',
@@ -4267,9 +4268,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // Retrieve authentic document HTML with original merged cells (colspans and rowspans intact)
-      let docHtml = (window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[sheetIdx])
-        ? window.REGISTRAR_DOCS[sheetIdx]
-        : (document.getElementById(`regDocView_${sheetIdx}`)?.innerHTML || '');
+      let docHtml = (window.OFFICIAL_EXCEL_SHEETS && window.OFFICIAL_EXCEL_SHEETS[sheetIdx])
+        ? window.OFFICIAL_EXCEL_SHEETS[sheetIdx]
+        : ((window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[sheetIdx])
+            ? window.REGISTRAR_DOCS[sheetIdx]
+            : (document.getElementById(`regDocView_${sheetIdx}`)?.innerHTML || ''));
 
       if (!docHtml) {
         container.innerHTML = `<div class="p-8 text-center text-slate-400 font-mono text-xs">No spreadsheet data loaded for Sheet ${sheetIdx}</div>`;
@@ -9625,8 +9628,14 @@ ${worksheetsXml}
       if (savedEditions) {
         const parsed = JSON.parse(savedEditions);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          // Keep only legitimate editions; strip out temporary 2028 draft duplicates
-          const cleaned = parsed.filter(x => !String(x.id).includes('2028') && !String(x.code).includes('2028') && !String(x.name).includes('2028'));
+          // Keep only legitimate editions; strip out temporary 2028 draft duplicates and sanitize titles
+          const cleaned = parsed
+            .filter(x => !String(x.id).includes('2028') && !String(x.code).includes('2028') && !String(x.name).includes('2028'))
+            .map(x => {
+              if (x.name) x.name = String(x.name).replace(/\s*\([^)]*\)/g, '').replace(/\s*\[[^\]]*\]/g, '').trim();
+              if (x.notes) x.notes = String(x.notes).replace(/\s*\([^)]*\)/g, '').replace(/\s*\[[^\]]*\]/g, '').trim();
+              return x;
+            });
           window.CURRIC_EDITIONS_REGISTRY = cleaned.length > 0 ? cleaned : window.CURRIC_EDITIONS_REGISTRY;
           try {
             localStorage.setItem('apc_curric_editions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY));
@@ -10028,10 +10037,12 @@ ${worksheetsXml}
           let actionBtn = '';
           if (isActive) {
             actionBtn = `<span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Active</span>`;
+          } else if (m.status === 'ARCHIVED' || m.status === 'HISTORICAL' || m.id === 'CM-BSCpE-2025' || m.id === 'CM-BSCpE-2021') {
+            actionBtn = `<span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[10px] font-bold border border-slate-300 dark:border-slate-700">Archived</span>`;
           } else if (m.id === 'CM-BSCpE-2027' || m.status === 'UNLOCKED DRAFT') {
             actionBtn = `<button type="button" onclick="setObeActiveYear('2027'); navigateView('obe');" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-[10px] cursor-pointer shadow-xs transition" title="Open and edit 2027 draft map">✏️ Edit Draft</button>`;
           } else if (role === 'exd') {
-            actionBtn = `<button type="button" onclick="approveCurriculumMapVersion('${m.id}')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] cursor-pointer shadow-xs transition" title="Approve & Activate Version as Executive Director">✅ Approve (ExD)</button>`;
+            actionBtn = `<button type="button" onclick="approveCurriculumMapVersion('${m.id}')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] cursor-pointer shadow-xs transition" title="Approve & Activate Version as Executive Director">✅ Approve</button>`;
           } else {
             actionBtn = `<button type="button" onclick="showToast('🔒 Only the Executive Director can approve and activate curriculum maps.')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 font-bold text-[10px] border border-slate-300 dark:border-slate-700 cursor-pointer" title="Only Executive Director can activate">🔒 Needs ExD</button>`;
           }
@@ -10795,7 +10806,7 @@ ${worksheetsXml}
           const peoList = window.PEO_VERSION_REGISTRY || [];
           parentSelect.innerHTML = peoList.map(p => `
             <option value="${p.id}">
-              ${p.id} &bull; ${p.name} &bull; ${p.status}
+              ${p.id} &bull; ${p.name}
             </option>
           `).join('');
         }
@@ -10815,7 +10826,7 @@ ${worksheetsXml}
           const gaList = window.GA_VERSION_REGISTRY || [];
           parentSelect.innerHTML = gaList.map(g => `
             <option value="${g.id}">
-              ${g.id} &bull; ${g.name} &bull; ${g.status}
+              ${g.id} &bull; ${g.name}
             </option>
           `).join('');
         }
@@ -10835,7 +10846,7 @@ ${worksheetsXml}
           const mvvList = window.MVV_VERSION_REGISTRY || [];
           parentSelect.innerHTML = mvvList.map(m => `
             <option value="${m.id}">
-              ${m.id} &bull; ${m.name} &bull; ${m.status}
+              ${m.id} &bull; ${m.name}
             </option>
           `).join('');
         }
@@ -10864,7 +10875,7 @@ ${worksheetsXml}
           const soList = window.SO_VERSION_REGISTRY || [];
           parentSelect.innerHTML = soList.map(s => `
             <option value="${s.id}">
-              ${s.id} &bull; ${s.name} &bull; ${s.status}
+              ${s.id} &bull; ${s.name}
             </option>
           `).join('');
         }
@@ -10878,7 +10889,7 @@ ${worksheetsXml}
         let baseOptionsHtml = `<option value="none">-- Start Fresh (No Base Clone) --</option>`;
         baseOptionsHtml += registry.map(item => `
           <option value="${item.id}">
-            ${item.id} &bull; ${item.name || item.code} &bull; ${item.status || 'Archived'}
+            ${item.id} &bull; ${item.name || item.code}
           </option>
         `).join('');
         baseSelect.innerHTML = baseOptionsHtml;
