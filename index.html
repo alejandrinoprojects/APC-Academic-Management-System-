@@ -865,6 +865,58 @@
               </div>
 
               <!-- ========================================================================= -->
+              <!-- EXD EXECUTIVE APPROVAL INBOX: CURRICULUM & OBE MAP APPROVAL WORKFLOW     -->
+              <!-- ========================================================================= -->
+              <div id="exdApprovalInboxContainer" class="space-y-4">
+                <div class="bg-gradient-to-r from-amber-500/10 via-slate-50 to-blue-500/10 dark:from-amber-950/30 dark:via-slate-900 dark:to-blue-950/30 border border-amber-500/40 p-4 shadow-sm space-y-3">
+                  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-amber-500/20 pb-3">
+                    <div class="flex items-center space-x-2.5">
+                      <span class="w-8 h-8 rounded-none bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm shadow-xs">⚖️</span>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <h3 class="text-sm font-black tracking-wider uppercase text-slate-900 dark:text-white">
+                            Executive Directorate Approval Inbox
+                          </h3>
+                          <span id="exdPendingCountBadge" class="px-2 py-0.5 bg-amber-500 text-slate-950 font-mono font-bold text-[10px]">
+                            1 Pending
+                          </span>
+                        </div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                          Review, validate educational alignments, and grant institutional approval to activate proposed curricula and OBE curriculum maps.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <button type="button" onclick="navigateView('versioning-history')" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs border border-[#E5A823]/40 transition cursor-pointer shadow-xs flex items-center gap-1.5">
+                        <span>📜</span>
+                        <span>Full Version Archive</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Pending Proposals Queue Table -->
+                  <div class="overflow-x-auto border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950">
+                    <table class="w-full text-left text-xs border-collapse">
+                      <thead class="bg-slate-100 dark:bg-slate-800 text-[11px] uppercase font-bold text-slate-700 dark:text-slate-300 border-b border-slate-300 dark:border-slate-700 font-mono">
+                        <tr>
+                          <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-700">Proposal ID</th>
+                          <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-700">Type / Domain</th>
+                          <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-700">Curriculum / Title</th>
+                          <th class="py-2.5 px-2 border-r border-slate-200 dark:border-slate-700 text-center">Tiers / Lineage</th>
+                          <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-700 text-center">Status</th>
+                          <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-700">Author / Notes</th>
+                          <th class="py-2.5 px-3 text-center min-w-[200px]">Executive Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="exdPendingApprovalsTbody" class="divide-y divide-slate-200 dark:divide-slate-800">
+                        <!-- Populated dynamically by renderExdApprovalInbox() -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ========================================================================= -->
               <!-- 2. PROGRAMS OFFERED AND PROGRAM DIRECTORS SECTION                         -->
               <!-- ========================================================================= -->
               <div class="space-y-4">
@@ -6819,6 +6871,119 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <button type="button" onclick="confirmSaveRevisionWithNotes()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs">
           <span>Commit &amp; Save &rarr;</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- EXD CURRICULUM & OBE MAP PROPOSAL DETAILED REVIEW MODAL                   -->
+  <!-- ========================================================================= -->
+  <div id="exdReviewProposalModal" onclick="if(event.target === this) closeExdReviewProposalModal()" class="hidden fixed inset-0 z-50 bg-slate-950/85 flex items-center justify-center p-3 sm:p-5 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#151D2A] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-4xl flex flex-col rounded-none overflow-hidden max-h-[94vh]">
+      <!-- Header -->
+      <div class="bg-[#002855] dark:bg-[#0c121c] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="w-8 h-8 bg-amber-500 text-slate-950 font-black text-base flex items-center justify-center rounded-none shadow-xs">⚖️</span>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-sm tracking-wider uppercase text-white" id="exdReviewModalTitle">Executive Review: Curriculum &amp; Map Proposal</h3>
+              <span id="exdReviewModalStatusBadge" class="px-2 py-0.5 text-[10px] font-mono font-bold bg-amber-500 text-slate-950">PENDING APPROVAL</span>
+            </div>
+            <p class="text-[10px] text-amber-300 font-mono" id="exdReviewModalSubtitle">Institutional Validation &amp; OBE Forward Alignment Checklist</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeExdReviewProposalModal()" class="text-slate-300 hover:text-white text-2xl font-bold p-1 cursor-pointer leading-none">&times;</button>
+      </div>
+
+      <!-- Scrollable Review Body -->
+      <div class="p-5 overflow-y-auto space-y-4 text-xs">
+        
+        <!-- Summary Cards Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <div class="p-3 bg-slate-50 dark:bg-[#101722] border border-slate-200 dark:border-slate-800">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Proposal ID</span>
+            <span id="exdReviewPropId" class="font-mono font-bold text-slate-800 dark:text-amber-400 text-sm">CM-BSCpE-2027</span>
+          </div>
+          <div class="p-3 bg-slate-50 dark:bg-[#101722] border border-slate-200 dark:border-slate-800">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Target Cohort</span>
+            <span id="exdReviewCohort" class="font-mono font-bold text-slate-800 dark:text-slate-200 text-sm">AY 2027–2031</span>
+          </div>
+          <div class="p-3 bg-slate-50 dark:bg-[#101722] border border-slate-200 dark:border-slate-800">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Total Program Load</span>
+            <span id="exdReviewUnitsCourses" class="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm">184.0 Units • 74 Courses</span>
+          </div>
+          <div class="p-3 bg-slate-50 dark:bg-[#101722] border border-slate-200 dark:border-slate-800">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Lead Author</span>
+            <span id="exdReviewAuthor" class="font-mono font-bold text-blue-600 dark:text-blue-400 text-sm">Program Director</span>
+          </div>
+        </div>
+
+        <!-- OBE Lineage & Governance Alignment Chain -->
+        <div class="p-3.5 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[#002855] dark:text-[#E5A823] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+              <span>🔗 Verified OBE Educational Alignment Chain</span>
+            </span>
+            <span class="text-[10px] text-emerald-600 font-mono font-bold">✓ Forward-Only Compliant</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
+            <div class="bg-white dark:bg-[#10151E] p-2 border border-slate-200 dark:border-slate-800">
+              <span class="text-[10px] text-slate-400 block">Tier 0: Institution</span>
+              <span id="exdReviewMvv" class="font-bold text-slate-800 dark:text-slate-200">MVV 2025</span>
+            </div>
+            <div class="bg-white dark:bg-[#10151E] p-2 border border-slate-200 dark:border-slate-800">
+              <span class="text-[10px] text-slate-400 block">Tier 1: Attributes</span>
+              <span id="exdReviewGa" class="font-bold text-slate-800 dark:text-slate-200">GA 2027 (9 GAs)</span>
+            </div>
+            <div class="bg-white dark:bg-[#10151E] p-2 border border-slate-200 dark:border-slate-800">
+              <span class="text-[10px] text-slate-400 block">Tier 2: Objectives</span>
+              <span id="exdReviewPeo" class="font-bold text-slate-800 dark:text-slate-200">PEO 2027 (5 PEOs)</span>
+            </div>
+            <div class="bg-white dark:bg-[#10151E] p-2 border border-slate-200 dark:border-slate-800">
+              <span class="text-[10px] text-slate-400 block">Tier 3: Outcomes</span>
+              <span id="exdReviewSo" class="font-bold text-slate-800 dark:text-slate-200">SO 2027 (13 SOs)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proposal Scope & Notes -->
+        <div class="p-3 bg-slate-50 dark:bg-[#101722] border border-slate-200 dark:border-slate-800 space-y-1">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block">Revision Scope &amp; PD Rationale:</span>
+          <p id="exdReviewNotes" class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
+            Annual batch update with PEO 2027 AI engineering electives and updated Student Outcomes alignment for the incoming cohort.
+          </p>
+        </div>
+
+        <!-- Executive Director Institutional Sign-off Feedback Notes -->
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">
+            Executive Director Action Notes &amp; Academic Board Endorsement:
+          </label>
+          <textarea id="exdReviewDecisionNotes" rows="2" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-none" placeholder="Provide endorsement remarks, registrar transmission instructions, or revision request notes..."></textarea>
+        </div>
+      </div>
+
+      <!-- Footer Bar -->
+      <div class="bg-slate-100 dark:bg-[#101722] px-5 py-3 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2">
+          <button type="button" id="exdReviewInspectWorkspaceBtn" onclick="exdInspectProposalWorkspace()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center gap-1.5 cursor-pointer">
+            <span>🔍</span>
+            <span>Inspect in Workspace</span>
+          </button>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button type="button" onclick="closeExdReviewProposalModal()" class="px-3.5 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs cursor-pointer">
+            Close
+          </button>
+          <button type="button" onclick="exdRejectProposal()" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs transition">
+            <span>↩</span>
+            <span>Request PD Revision</span>
+          </button>
+          <button type="button" onclick="exdApproveProposal()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer shadow-xs transition">
+            <span>✓</span>
+            <span>Grant Executive Approval &amp; Activate</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

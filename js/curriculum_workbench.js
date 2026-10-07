@@ -1441,7 +1441,368 @@
         `;
         grid.appendChild(addCard);
       }
+
+      // Render the Executive Directorate Approval Inbox
+      if (typeof renderExdApprovalInbox === 'function') {
+        renderExdApprovalInbox();
+      }
     }
+
+    // =========================================================================
+    // EXD APPROVAL INBOX & CURRICULUM / OBE MAP APPROVAL WORKFLOW ENGINE
+    // =========================================================================
+    let currentExdReviewingProposal = null;
+
+    function getPendingProposals() {
+      const pendingList = [];
+
+      // 1. Check Curriculum Maps
+      (window.CURRICULUM_MAPS || []).forEach(m => {
+        const isPending = (m.status === 'UNLOCKED DRAFT' || m.status.includes('PENDING') || m.status.includes('DRAFT'));
+        if (isPending) {
+          pendingList.push({
+            type: 'map',
+            id: m.id,
+            title: m.name,
+            domain: 'OBE Curriculum Map',
+            cohort: m.curriculumLabel || m.curriculumVersion || 'AY 2027–2031',
+            status: m.status,
+            statusClass: m.statusClass || 'bg-amber-100 text-amber-800 border-amber-300',
+            author: m.approvedBy || 'Program Director',
+            notes: m.notes || 'Curriculum map with outcomes & prerequisite sequences.',
+            units: '184.0 Units • 74 Courses',
+            mvv: m.mvvVersion || 'MVV 2025',
+            ga: m.gaVersion || 'GA 2027',
+            peo: m.peoVersion || 'PEO 2027',
+            so: m.soVersion || 'SO 2027',
+            raw: m
+          });
+        }
+      });
+
+      // 2. Check Curriculum Batches / Editions
+      (window.CURRIC_EDITIONS_REGISTRY || []).forEach(c => {
+        const isPending = (c.status === 'UNLOCKED DRAFT' || c.status.includes('PENDING') || c.status.includes('DRAFT'));
+        if (isPending && !pendingList.some(p => p.id === c.id)) {
+          pendingList.push({
+            type: 'curric',
+            id: c.id,
+            title: c.name,
+            domain: 'Curriculum Edition',
+            cohort: c.effective || 'AY 2027–2031',
+            status: c.status,
+            statusClass: c.statusClass || 'bg-amber-100 text-amber-800 border-amber-300',
+            author: 'Program Director',
+            notes: c.notes || 'Degree batch curriculum structure.',
+            units: `${c.units || '184.0'} Units • ${c.courses || 74} Courses`,
+            mvv: 'MVV 2025',
+            ga: 'GA 2027',
+            peo: 'PEO 2027',
+            so: c.parentSoId || 'SO 2027',
+            raw: c
+          });
+        }
+      });
+
+      // 3. Check Student Outcomes (SO) Versions
+      (window.SO_VERSION_REGISTRY || []).forEach(so => {
+        const isPending = (so.status === 'UNLOCKED DRAFT' || so.status.includes('PENDING') || so.status.includes('DRAFT'));
+        if (isPending && !pendingList.some(p => p.id === so.id)) {
+          pendingList.push({
+            type: 'so',
+            id: so.id,
+            title: so.name,
+            domain: 'Student Outcomes (SO)',
+            cohort: so.effective || 'AY 2027–2031',
+            status: so.status,
+            statusClass: so.statusClass || 'bg-amber-100 text-amber-800 border-amber-300',
+            author: 'Program Director',
+            notes: so.notes || 'Student outcomes revisions under CHED CMO 92.',
+            units: `${so.count || (so.items ? so.items.length : 13)} Outcomes`,
+            mvv: 'MVV 2025',
+            ga: 'GA 2027',
+            peo: so.parentPeoId || 'PEO 2027',
+            so: so.id,
+            raw: so
+          });
+        }
+      });
+
+      return pendingList;
+    }
+
+    function renderExdApprovalInbox() {
+      const tbody = document.getElementById('exdPendingApprovalsTbody');
+      const badge = document.getElementById('exdPendingCountBadge');
+      if (!tbody) return;
+
+      const proposals = getPendingProposals();
+      if (badge) {
+        badge.textContent = `${proposals.length} Pending`;
+        if (proposals.length === 0) {
+          badge.className = 'px-2 py-0.5 bg-emerald-500 text-slate-950 font-mono font-bold text-[10px]';
+          badge.textContent = '0 Pending (All Approved)';
+        } else {
+          badge.className = 'px-2 py-0.5 bg-amber-500 text-slate-950 font-mono font-bold text-[10px] animate-pulse';
+        }
+      }
+
+      if (proposals.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-6 px-4 text-center text-slate-400 dark:text-slate-500 font-mono text-xs">
+              ✓ All curriculum proposals, batches, and OBE maps have been reviewed and approved by the Executive Director.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = proposals.map((p, pIdx) => {
+        return `
+          <tr class="hover:bg-amber-50/40 dark:hover:bg-slate-900/60 transition border-b border-slate-200 dark:border-slate-800">
+            <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono font-bold text-xs text-[#002855] dark:text-amber-400">
+              ${p.id}
+            </td>
+            <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-medium">
+              <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase">
+                ${p.domain}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+              <div class="font-bold text-slate-900 dark:text-white">${p.title}</div>
+              <div class="text-[10px] font-mono text-slate-500 dark:text-slate-400">${p.cohort} • ${p.units}</div>
+            </td>
+            <td class="py-2.5 px-2 border-r border-slate-200 dark:border-slate-800 text-center font-mono text-[10px] text-slate-600 dark:text-slate-400">
+              <div title="Lineage: ${p.mvv} ➔ ${p.ga} ➔ ${p.peo} ➔ ${p.so}">
+                <span class="text-indigo-600 dark:text-indigo-400 font-bold">${p.so || 'SO-2027'}</span>
+                <span class="text-slate-400"> ➔ </span>
+                <span class="text-slate-500">${p.peo || 'PEO-2027'}</span>
+              </div>
+            </td>
+            <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-center">
+              <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${p.statusClass}">
+                ${p.status}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+              <div class="text-[11px] text-slate-700 dark:text-slate-300 line-clamp-1" title="${p.notes}">${p.notes}</div>
+              <div class="text-[10px] font-mono text-slate-400 mt-0.5">Author: ${p.author}</div>
+            </td>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap">
+              <div class="flex items-center justify-center gap-1.5">
+                <button type="button" onclick="openExdReviewProposalModal('${p.type}', '${p.id}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs border border-[#E5A823]/60 transition cursor-pointer shadow-xs flex items-center gap-1">
+                  <span>⚖️</span>
+                  <span>Review &amp; Decide</span>
+                </button>
+                <button type="button" onclick="quickExdApprove('${p.type}', '${p.id}')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition cursor-pointer shadow-xs" title="Quick Approve as Executive Director">
+                  ✓ Approve
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+    window.renderExdApprovalInbox = renderExdApprovalInbox;
+
+    function openExdReviewProposalModal(type, id) {
+      const proposals = getPendingProposals();
+      const prop = proposals.find(p => p.type === type && p.id === id);
+      if (!prop) {
+        if (typeof showToast === 'function') showToast(`Proposal '${id}' not found or already approved.`);
+        return;
+      }
+
+      currentExdReviewingProposal = prop;
+
+      const modal = document.getElementById('exdReviewProposalModal');
+      const titleEl = document.getElementById('exdReviewModalTitle');
+      const badgeEl = document.getElementById('exdReviewModalStatusBadge');
+      const propIdEl = document.getElementById('exdReviewPropId');
+      const cohortEl = document.getElementById('exdReviewCohort');
+      const unitsCoursesEl = document.getElementById('exdReviewUnitsCourses');
+      const authorEl = document.getElementById('exdReviewAuthor');
+      const mvvEl = document.getElementById('exdReviewMvv');
+      const gaEl = document.getElementById('exdReviewGa');
+      const peoEl = document.getElementById('exdReviewPeo');
+      const soEl = document.getElementById('exdReviewSo');
+      const notesEl = document.getElementById('exdReviewNotes');
+      const decisionNotesEl = document.getElementById('exdReviewDecisionNotes');
+
+      if (titleEl) titleEl.textContent = `Executive Review: ${prop.title}`;
+      if (badgeEl) badgeEl.textContent = prop.status;
+      if (propIdEl) propIdEl.textContent = prop.id;
+      if (cohortEl) cohortEl.textContent = prop.cohort;
+      if (unitsCoursesEl) unitsCoursesEl.textContent = prop.units;
+      if (authorEl) authorEl.textContent = prop.author;
+      if (mvvEl) mvvEl.textContent = prop.mvv;
+      if (gaEl) gaEl.textContent = prop.ga;
+      if (peoEl) peoEl.textContent = prop.peo;
+      if (soEl) soEl.textContent = prop.so;
+      if (notesEl) notesEl.textContent = prop.notes;
+      if (decisionNotesEl) decisionNotesEl.value = `Approved and ratified by Executive Director. Aligned with CHED CMO 92 and institutional MVV. Forwarded to Office of the Registrar.`;
+
+      if (modal) modal.classList.remove('hidden');
+    }
+    window.openExdReviewProposalModal = openExdReviewProposalModal;
+
+    function closeExdReviewProposalModal() {
+      const modal = document.getElementById('exdReviewProposalModal');
+      if (modal) modal.classList.add('hidden');
+      currentExdReviewingProposal = null;
+    }
+    window.closeExdReviewProposalModal = closeExdReviewProposalModal;
+
+    function exdInspectProposalWorkspace() {
+      if (!currentExdReviewingProposal) return;
+      const prop = currentExdReviewingProposal;
+      closeExdReviewProposalModal();
+
+      if (prop.type === 'map') {
+        window.setObeActiveYear('2027');
+        navigateView('obe');
+      } else if (prop.type === 'curric') {
+        window.switchVhDomain('curric');
+        navigateView('versioning-history');
+        if (typeof window.renderVhCurricDomain === 'function') window.renderVhCurricDomain(prop.id);
+      } else if (prop.type === 'so') {
+        window.switchVhDomain('so');
+        navigateView('versioning-history');
+        if (typeof window.renderVhSoDomain === 'function') window.renderVhSoDomain(prop.id);
+      }
+      if (typeof showToast === 'function') {
+        showToast(`Opening '${prop.id}' in workspace for executive inspection.`);
+      }
+    }
+    window.exdInspectProposalWorkspace = exdInspectProposalWorkspace;
+
+    function exdApproveProposal() {
+      if (!currentExdReviewingProposal) return;
+      const prop = currentExdReviewingProposal;
+      const decisionNotes = document.getElementById('exdReviewDecisionNotes')?.value.trim();
+
+      executeApproval(prop.type, prop.id, decisionNotes);
+      closeExdReviewProposalModal();
+    }
+    window.exdApproveProposal = exdApproveProposal;
+
+    function quickExdApprove(type, id) {
+      executeApproval(type, id, 'Quick approved by Executive Director.');
+    }
+    window.quickExdApprove = quickExdApprove;
+
+    function executeApproval(type, id, decisionNotes = '') {
+      const today = new Date().toISOString().split('T')[0];
+
+      if (type === 'map') {
+        const map = (window.CURRICULUM_MAPS || []).find(m => m.id === id);
+        if (map) {
+          (window.CURRICULUM_MAPS || []).forEach(m => {
+            if (m.status === 'ACTIVE BATCH') {
+              m.status = 'PREV BATCH';
+              m.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
+            }
+          });
+          map.status = 'ACTIVE BATCH';
+          map.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+          map.approvedBy = 'Executive Director';
+          map.approvedAt = today;
+          if (decisionNotes) map.notes = `${map.notes} [ExD Note: ${decisionNotes}]`;
+          try { localStorage.setItem('apc_curriculum_maps', JSON.stringify(window.CURRICULUM_MAPS)); } catch(e) {}
+          window.currentActiveCurriculumMap = id;
+        }
+      } else if (type === 'curric') {
+        const curric = (window.CURRIC_EDITIONS_REGISTRY || []).find(c => c.id === id);
+        if (curric) {
+          (window.CURRIC_EDITIONS_REGISTRY || []).forEach(c => {
+            if (c.status === 'ACTIVE BATCH') {
+              c.status = 'PREV BATCH';
+              c.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
+            }
+          });
+          curric.status = 'ACTIVE BATCH';
+          curric.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+          curric.approvedBy = 'Executive Director';
+          curric.approvedAt = today;
+          try { localStorage.setItem('apc_curric_editions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY)); } catch(e) {}
+        }
+      } else if (type === 'so') {
+        const so = (window.SO_VERSION_REGISTRY || []).find(s => s.id === id);
+        if (so) {
+          (window.SO_VERSION_REGISTRY || []).forEach(s => {
+            if (s.status === 'ACTIVE BATCH') {
+              s.status = 'PREV BATCH';
+              s.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
+            }
+          });
+          so.status = 'ACTIVE BATCH';
+          so.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+          so.approvedBy = 'Executive Director';
+          so.approvedAt = today;
+          try { localStorage.setItem('apc_so_versions', JSON.stringify(window.SO_VERSION_REGISTRY)); } catch(e) {}
+        }
+      }
+
+      // Record in Institutional Governance Audit Log
+      try {
+        if (typeof appendAuditLog === 'function') {
+          appendAuditLog({
+            action: 'EXD_APPROVAL_GRANTED',
+            user: 'Executive Director (SoE)',
+            target: `${type.toUpperCase()}: ${id}`,
+            notes: decisionNotes || 'Executive institutional approval granted and activated.'
+          });
+        }
+      } catch(e) {}
+
+      // Refresh UI components
+      renderExdApprovalInbox();
+      if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
+      if (typeof renderCurriculumMapHierarchy === 'function') renderCurriculumMapHierarchy();
+      if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView(id);
+
+      if (typeof showToast === 'function') {
+        showToast(`✓ Executive Approval Granted! '${id}' is now ACTIVE BATCH.`);
+      }
+    }
+
+    function exdRejectProposal() {
+      if (!currentExdReviewingProposal) return;
+      const prop = currentExdReviewingProposal;
+      const decisionNotes = document.getElementById('exdReviewDecisionNotes')?.value.trim() || 'Please revise educational outcome alignment and prerequisites.';
+
+      if (prop.type === 'map') {
+        const map = (window.CURRICULUM_MAPS || []).find(m => m.id === prop.id);
+        if (map) {
+          map.status = 'UNLOCKED DRAFT (REVISION REQUESTED)';
+          map.statusClass = 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700';
+          map.notes = `${map.notes} [ExD Revision Note: ${decisionNotes}]`;
+          try { localStorage.setItem('apc_curriculum_maps', JSON.stringify(window.CURRICULUM_MAPS)); } catch(e) {}
+        }
+      } else if (prop.type === 'curric') {
+        const curric = (window.CURRIC_EDITIONS_REGISTRY || []).find(c => c.id === prop.id);
+        if (curric) {
+          curric.status = 'UNLOCKED DRAFT (REVISION REQUESTED)';
+          curric.statusClass = 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700';
+          try { localStorage.setItem('apc_curric_editions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY)); } catch(e) {}
+        }
+      } else if (prop.type === 'so') {
+        const so = (window.SO_VERSION_REGISTRY || []).find(s => s.id === prop.id);
+        if (so) {
+          so.status = 'UNLOCKED DRAFT (REVISION REQUESTED)';
+          so.statusClass = 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-700';
+          try { localStorage.setItem('apc_so_versions', JSON.stringify(window.SO_VERSION_REGISTRY)); } catch(e) {}
+        }
+      }
+
+      closeExdReviewProposalModal();
+      renderExdApprovalInbox();
+      if (typeof showToast === 'function') {
+        showToast(`↩ Proposal '${prop.id}' returned to Program Director for revision.`);
+      }
+    }
+    window.exdRejectProposal = exdRejectProposal;
 
     function toggleArchivedExdProgs() {
       const w = document.getElementById('archivedExdProgsWrapper');
