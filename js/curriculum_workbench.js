@@ -3011,29 +3011,29 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const startYr = document.getElementById('newCurricStartYear')?.value || '2027';
       const endYr = document.getElementById('newCurricEndYear')?.value || '2031';
       const mapName = document.getElementById('newCurricMapName')?.value || `${prog} ${startYr}–${endYr} Curriculum Map`;
-      const soVer = document.getElementById('newCurricSoVersion')?.value || 'SOv2026b';
-      const peoVer = document.getElementById('newCurricPeoVersion')?.value || 'PEOv2027a';
-      const gaVer = document.getElementById('newCurricGaVersion')?.value || 'GAv2026a';
+      const soVer = document.getElementById('newCurricSoVersion')?.value || 'SO 2026';
+      const peoVer = document.getElementById('newCurricPeoVersion')?.value || 'PEO 2027';
+      const gaVer = document.getElementById('newCurricGaVersion')?.value || 'GA 2024';
 
       const newMapId = `CM-${prog}-${startYr}`;
       const newMap = {
         id: newMapId,
         name: mapName,
-        curriculumVersion: `Curriculumv${startYr}a`,
-        curriculumLabel: `${prog}${startYr} (AY ${startYr}–${endYr})`,
+        curriculumVersion: `${prog} ${startYr}`,
+        curriculumLabel: `${prog} ${startYr} (AY ${startYr}–${endYr})`,
         soVersion: soVer,
         soCount: 13,
         peoVersion: peoVer,
         peoCount: 5,
         gaVersion: gaVer,
         gaCount: 9,
-        mvvVersion: 'MVVv2025',
-        mapRevision: `SO/PEO Map v${startYr}a`,
-        status: 'ACTIVE BASELINE',
-        statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
+        mvvVersion: 'MVV 2025',
+        mapRevision: `Map ${startYr}`,
+        status: 'NEXT YEAR BATCH',
+        statusClass: 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700',
         createdAt: new Date().toISOString().split('T')[0],
         program: prog,
-        notes: `Saved Curriculum Map bound to newly created ${prog} ${startYr} revision.`
+        notes: `Saved Curriculum Map bound to newly created ${prog} ${startYr} batch.`
       };
 
       if (!window.CURRICULUM_MAPS) window.CURRICULUM_MAPS = [];
@@ -7767,74 +7767,74 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.CURRICULUM_MAPS = [
       {
         id: 'CM-BSCpE-2026',
-        name: 'BSCpE 2026–2030 Approved Baseline',
-        curriculumVersion: 'Curriculumv2026a',
-        curriculumLabel: 'CPE2026 (AY 2026–2030)',
-        soVersion: 'SOv2026a',
+        name: 'BSCpE 2026–2030 Active Batch',
+        curriculumVersion: 'CPE 2026',
+        curriculumLabel: 'CPE 2026 (AY 2026–2030)',
+        soVersion: 'SO 2026',
         soCount: 13,
-        peoVersion: 'PEOv2026a',
+        peoVersion: 'PEO 2026',
         peoCount: 5,
-        gaVersion: 'GAv2026a',
+        gaVersion: 'GA 2024',
         gaCount: 9,
-        mvvVersion: 'MVVv2025',
-        mapRevision: 'SO/PEO Map v2026a',
-        status: 'ACTIVE BASELINE',
+        mvvVersion: 'MVV 2025',
+        mapRevision: 'Map 2026',
+        status: 'ACTIVE BATCH',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         createdAt: '2026-01-15',
         program: 'BSCpE',
-        notes: 'Official CHED CMO No. 92 baseline with 184.0 units.'
+        notes: 'Official active batch baseline with 184.0 units and 74 mapped courses.'
       },
       {
-        id: 'CM-BSCpE-2027a',
-        name: 'BSCpE 2027–2031 Mid-Cycle Proposal',
-        curriculumVersion: 'Curriculumv2027a',
-        curriculumLabel: 'CPE2027 (AY 2027–2031)',
-        soVersion: 'SOv2026b',
+        id: 'CM-BSCpE-2027',
+        name: 'BSCpE 2027–2031 Next Year Batch',
+        curriculumVersion: 'CPE 2027',
+        curriculumLabel: 'CPE 2027 (AY 2027–2031)',
+        soVersion: 'SO 2026',
         soCount: 13,
-        peoVersion: 'PEOv2027a',
+        peoVersion: 'PEO 2027',
         peoCount: 5,
-        gaVersion: 'GAv2026a',
+        gaVersion: 'GA 2024',
         gaCount: 9,
-        mvvVersion: 'MVVv2025',
-        mapRevision: 'SO/PEO Map v2026b',
-        status: 'ACTIVE PROPOSAL',
+        mvvVersion: 'MVV 2025',
+        mapRevision: 'Map 2027',
+        status: 'NEXT YEAR BATCH',
         statusClass: 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700',
         createdAt: '2027-03-10',
         program: 'BSCpE',
-        notes: 'Updated PEO 2027 with AI engineering electives.'
+        notes: 'Annual batch update with PEO 2027 AI engineering electives.'
       },
       {
-        id: 'CM-BSCpE-2027b',
-        name: 'BSCpE 2027–2031 ABET Specialization Rev',
-        curriculumVersion: 'Curriculumv2027b',
-        curriculumLabel: 'CPE2027b (AY 2027–2031)',
-        soVersion: 'SOv2026b',
+        id: 'CM-BSCpE-2025',
+        name: 'BSCpE 2025–2029 Previous Batch',
+        curriculumVersion: 'CPE 2025',
+        curriculumLabel: 'CPE 2025 (AY 2025–2029)',
+        soVersion: 'SO 2025',
         soCount: 13,
-        peoVersion: 'PEOv2027a',
+        peoVersion: 'PEO 2025',
         peoCount: 5,
-        gaVersion: 'GAv2026a',
+        gaVersion: 'GA 2024',
         gaCount: 9,
-        mvvVersion: 'MVVv2025',
-        mapRevision: 'SO/PEO Map v2026c',
-        status: 'DRAFT REV',
-        statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
-        createdAt: '2027-08-20',
+        mvvVersion: 'MVV 2025',
+        mapRevision: 'Map 2025',
+        status: 'PREV BATCH',
+        statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700',
+        createdAt: '2025-06-15',
         program: 'BSCpE',
-        notes: 'Draft revision linking newer curriculum CURv2027b to older SOv2026b and PEOv2027a.'
+        notes: 'Previous year batch legacy mapping.'
       },
       {
         id: 'CM-BSCpE-2021',
         name: 'BSCpE 2021–2025 Historical Edition',
-        curriculumVersion: 'Curriculumv2021',
-        curriculumLabel: 'CPE2021 (AY 2021–2025)',
-        soVersion: 'SOv2021',
+        curriculumVersion: 'CPE 2021',
+        curriculumLabel: 'CPE 2021 (AY 2021–2025)',
+        soVersion: 'SO 2021',
         soCount: 12,
-        peoVersion: 'PEOv2021',
+        peoVersion: 'PEO 2021',
         peoCount: 4,
-        gaVersion: 'GAv2021',
+        gaVersion: 'GA 2021',
         gaCount: 8,
-        mvvVersion: 'MVVv2020',
-        mapRevision: 'SO/PEO Map v2021a',
+        mvvVersion: 'MVV 2020',
+        mapRevision: 'Map 2021',
         status: 'ARCHIVED',
         statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
         createdAt: '2021-06-15',
@@ -7889,6 +7889,84 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const gCUR = document.getElementById('graphLabelCUR');
       if (gCUR) gCUR.textContent = map.curriculumVersion;
 
+      // Highlight active batch nodes in flowchart DAG
+      const curNodes = [
+        { id: 'graphNodeCUR_2026', match: map.id === 'CM-BSCpE-2026' || map.curriculumVersion.includes('2026') },
+        { id: 'graphNodeCUR_2027', match: map.id === 'CM-BSCpE-2027' || map.curriculumVersion.includes('2027') },
+        { id: 'graphNodeCUR_2025', match: map.id === 'CM-BSCpE-2025' || map.curriculumVersion.includes('2025') }
+      ];
+      curNodes.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (!el) return;
+        if (item.match) {
+          el.className = 'p-2.5 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 cursor-pointer ring-2 ring-apc-gold opacity-100';
+          const badge = el.querySelector('.node-active-badge');
+          if (badge) {
+            badge.className = 'node-active-badge inline-block mt-0.5 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 text-emerald-800 font-bold';
+            badge.textContent = 'ACTIVE';
+          }
+        } else {
+          el.className = 'p-2.5 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-65 hover:opacity-100';
+          const badge = el.querySelector('.node-active-badge');
+          if (badge) {
+            const is2027 = item.id.includes('2027');
+            badge.className = 'node-active-badge inline-block mt-0.5 px-1.5 py-0.2 text-[9px] font-mono ' + (is2027 ? 'bg-blue-100 text-blue-800' : 'bg-slate-200 text-slate-600');
+            badge.textContent = is2027 ? 'NEXT BATCH' : 'PREV BATCH';
+          }
+        }
+      });
+
+      // Highlight active SO nodes in flowchart
+      const soNodes = [
+        { id: 'graphNodeSO_2026', match: map.soVersion.includes('2026') },
+        { id: 'graphNodeSO_2025', match: map.soVersion.includes('2025') }
+      ];
+      soNodes.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (!el) return;
+        if (item.match) {
+          el.className = 'p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 cursor-pointer ring-2 ring-apc-gold opacity-100';
+          const badge = el.querySelector('.node-active-badge');
+          if (badge) {
+            badge.className = 'node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold';
+            badge.textContent = 'ACTIVE';
+          }
+        } else {
+          el.className = 'p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-65 hover:opacity-100';
+          const badge = el.querySelector('.node-active-badge');
+          if (badge) {
+            badge.className = 'node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-500';
+            badge.textContent = 'PREV BATCH';
+          }
+        }
+      });
+
+      // Highlight active PEO nodes in flowchart
+      const peoNodes = [
+        { id: 'graphNodePEO_2026', match: map.peoVersion.includes('2026') },
+        { id: 'graphNodePEO_2027', match: map.peoVersion.includes('2027') }
+      ];
+      peoNodes.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (!el) return;
+        if (item.match) {
+          el.className = 'p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 cursor-pointer ring-2 ring-apc-gold opacity-100';
+          const badge = el.querySelector('.node-active-badge');
+          if (badge) {
+            badge.className = 'node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold';
+            badge.textContent = 'ACTIVE';
+          }
+        } else {
+          el.className = 'p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-65 hover:opacity-100';
+          const badge = el.querySelector('.node-active-badge');
+          if (badge) {
+            const is2027 = item.id.includes('2027');
+            badge.className = 'node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono ' + (is2027 ? 'bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300' : 'bg-slate-200 dark:bg-slate-800 text-slate-500');
+            badge.textContent = is2027 ? 'NEXT BATCH' : 'PREV BATCH';
+          }
+        }
+      });
+
       // Update Tier Cards
       const cCurricId = document.getElementById('cardCurricId');
       if (cCurricId) cCurricId.textContent = map.curriculumVersion;
@@ -7898,6 +7976,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       const cCurricStatus = document.getElementById('cardCurricStatus');
       if (cCurricStatus) cCurricStatus.textContent = map.status;
+
+      const cCurricSpan = document.getElementById('cardCurricSpan');
+      if (cCurricSpan) {
+        if (map.id.includes('2027')) cCurricSpan.textContent = '2027–2031';
+        else if (map.id.includes('2025')) cCurricSpan.textContent = '2025–2029';
+        else if (map.id.includes('2021')) cCurricSpan.textContent = '2021–2025';
+        else cCurricSpan.textContent = '2026–2030';
+      }
 
       const cSoId = document.getElementById('cardSoId');
       if (cSoId) cSoId.textContent = map.soVersion;
@@ -7929,7 +8015,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const sel = document.getElementById('curriculumMapSelect');
       if (!sel) return;
       sel.innerHTML = (window.CURRICULUM_MAPS || []).map(m => `
-        <option value="${m.id}">${m.id} (${m.name})</option>
+        <option value="${m.id}">${m.curriculumVersion} (${m.mapRevision} &bull; ${m.status})</option>
       `).join('');
       if (window.currentActiveCurriculumMap) sel.value = window.currentActiveCurriculumMap;
     };
@@ -7937,8 +8023,22 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.verifyCurriculumMapRequisites = function() {
       const map = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || window.CURRICULUM_MAPS[0];
       if (typeof showToast === 'function') {
-        showToast(`✓ Requisite Integrity Passed: ${map.curriculumVersion} ➔ ${map.soVersion} ➔ ${map.peoVersion} ➔ ${map.gaVersion} satisfies forward-only constraints!`);
+        showToast(`✓ Requisite Integrity Passed: ${map.curriculumVersion} ➔ ${map.mapRevision} ➔ ${map.soVersion} ➔ ${map.peoVersion} ➔ ${map.gaVersion} satisfies annual batch constraints!`);
       }
+    };
+
+    window.updateNewCurricMapPreview = function() {
+      const sel = document.getElementById('newCurricMapSelect');
+      if (!sel) return;
+      const mapId = sel.value;
+      const map = (window.CURRICULUM_MAPS || []).find(m => m.id === mapId);
+      if (!map) return;
+      const ga = document.getElementById('previewModalGa');
+      if (ga) ga.textContent = map.gaVersion;
+      const peo = document.getElementById('previewModalPeo');
+      if (peo) peo.textContent = map.peoVersion;
+      const so = document.getElementById('previewModalSo');
+      if (so) so.textContent = map.soVersion;
     };
 
     window.updateNewCurricLineagePreview = function() {
@@ -7950,7 +8050,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const gaSelect = document.getElementById('newCurricGaVersion');
 
       const tagInput = document.getElementById('newCurricVersionTag');
-      if (tagInput) tagInput.value = 'CURv' + startYr;
+      if (tagInput) tagInput.value = `${prog} ${startYr}`;
 
       const mapNameInput = document.getElementById('newCurricMapName');
       if (mapNameInput && (!mapNameInput.dataset.manualEdit)) {
@@ -7958,7 +8058,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       const pCurric = document.getElementById('previewCurricNode');
-      if (pCurric) pCurric.textContent = 'CURv' + startYr;
+      if (pCurric) pCurric.textContent = `${prog} ${startYr}`;
 
       const pSo = document.getElementById('previewSoNode');
       if (pSo && soSelect) pSo.textContent = soSelect.value;
@@ -7997,43 +8097,50 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     window.handleSaveCurriculumMapSubmit = function(e) {
       if (e) e.preventDefault();
-      const name = document.getElementById('snapshotMapName')?.value || 'New Custom Curriculum Map';
-      const mapVer = document.getElementById('snapshotMapVersion')?.value || ('Map v' + new Date().getFullYear() + 'b');
-      const cVer = document.getElementById('snapshotCurricVer')?.value || 'CURv2027';
-      const status = document.getElementById('snapshotMapStatus')?.value || 'DRAFT';
-      const soVer = document.getElementById('snapshotSoVer')?.value || 'SOv2026b';
-      const peoVer = document.getElementById('snapshotPeoVer')?.value || 'PEOv2027a';
-      const gaVer = document.getElementById('snapshotGaVer')?.value || 'GAv2026a';
-      const notes = document.getElementById('snapshotMapNotes')?.value || 'Manual curriculum map snapshot.';
+      const name = document.getElementById('snapshotMapName')?.value || 'BSCpE Next Batch Curriculum Map';
+      const mapVer = document.getElementById('snapshotMapVersion')?.value || ('Map ' + (new Date().getFullYear() + 1));
+      const cVer = document.getElementById('snapshotCurricVer')?.value || ('CPE ' + (new Date().getFullYear() + 1));
+      const status = document.getElementById('snapshotMapStatus')?.value || 'NEXT YEAR BATCH';
+      const soVer = document.getElementById('snapshotSoVer')?.value || 'SO 2026';
+      const peoVer = document.getElementById('snapshotPeoVer')?.value || 'PEO 2027';
+      const gaVer = document.getElementById('snapshotGaVer')?.value || 'GA 2024';
+      const notes = document.getElementById('snapshotMapNotes')?.value || 'Annual curriculum map snapshot.';
 
-      const newId = 'CM-CUSTOM-' + Date.now().toString().slice(-4);
+      const yrMatch = cVer.match(/\d{4}/);
+      const yr = yrMatch ? yrMatch[0] : (new Date().getFullYear() + 1);
+      const newId = `CM-BSCpE-${yr}`;
       const newEntry = {
         id: newId,
         name: name,
         curriculumVersion: cVer,
-        curriculumLabel: `${cVer} (Custom Snapshot)`,
+        curriculumLabel: `${cVer} (AY ${yr}–${parseInt(yr, 10) + 4})`,
         soVersion: soVer,
         soCount: 13,
         peoVersion: peoVer,
         peoCount: 5,
         gaVersion: gaVer,
         gaCount: 9,
-        mvvVersion: 'MVVv2025',
+        mvvVersion: 'MVV 2025',
         mapRevision: mapVer,
         status: status,
-        statusClass: status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300',
+        statusClass: status.includes('ACTIVE') ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-blue-100 text-blue-800 border-blue-300',
         createdAt: new Date().toISOString().split('T')[0],
         program: 'BSCpE',
         notes: notes
       };
 
       if (!window.CURRICULUM_MAPS) window.CURRICULUM_MAPS = [];
-      window.CURRICULUM_MAPS.unshift(newEntry);
+      const existingIdx = window.CURRICULUM_MAPS.findIndex(m => m.id === newId);
+      if (existingIdx >= 0) {
+        window.CURRICULUM_MAPS[existingIdx] = newEntry;
+      } else {
+        window.CURRICULUM_MAPS.unshift(newEntry);
+      }
       window.currentActiveCurriculumMap = newId;
       if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
       closeSaveCurriculumMapModal();
       if (typeof showToast === 'function') {
-        showToast(`✓ Saved Curriculum Map '${name}' successfully!`);
+        showToast(`✓ Saved Annual Curriculum Map '${name}' successfully!`);
       }
       renderCurriculumMapHierarchy();
     };

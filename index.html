@@ -1329,8 +1329,8 @@
             <div class="space-y-1.5 max-w-2xl">
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Curriculum Map Package</span>
-                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">Map v2026a</span>
-                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE BASELINE</span>
+                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">Map 2026</span>
+                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE BATCH</span>
               </div>
               <h3 class="text-sm sm:text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">
                 Curriculum Map &amp; Hierarchy Versioning (GA &gt; PEO &gt; SO &gt; I-E-D Matrix)
@@ -2656,15 +2656,12 @@
               </div>
               <div class="flex items-center flex-wrap gap-2">
                 <span id="obe-active-version-badge" class="px-2.5 py-1 font-mono font-bold text-xs bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 border border-blue-300 dark:border-blue-700">
-                  OBE Version: 2026
+                  OBE Batch: 2026
                 </span>
-                <button type="button" onclick="bumpCurrentObeRevision('Manual mid-year revision')" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-xs rounded-none transition flex items-center gap-1 shadow-2xs cursor-pointer" title="Increment to next mid-year revision (e.g. 2026 -> 2026.a -> 2026.b)">
-                  <span>⚡</span>
-                  <span>Bump Mid-Year Revision</span>
-                </button>
-                <button type="button" onclick="resetCurrentObeRevision()" class="px-2 py-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs rounded-none transition font-medium cursor-pointer" title="Reset sub-revision to base curriculum year">
-                  ↺
-                </button>
+                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-[10px] font-mono text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center gap-1">
+                  <span class="text-emerald-500 font-bold">🔒 Annual Batch Policy:</span>
+                  <span>No mid-year edits &bull; Edits apply to Next Year Batch only</span>
+                </span>
               </div>
             </div>
 
@@ -2691,11 +2688,11 @@
                 <div class="space-y-1">
                   <div class="flex items-center gap-2 flex-wrap">
                     <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Active Curriculum Map</span>
-                    <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">Map Version: <span id="curricMapActiveVer">Map v2026a</span></span>
-                    <span id="curricMapActiveTag" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE BASELINE</span>
+                    <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">Map Version: <span id="curricMapActiveVer">Map 2026</span></span>
+                    <span id="curricMapActiveTag" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE BATCH</span>
                   </div>
                   <h3 id="curricMapActiveTitle" class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">
-                    BSCpE 2026–2030 Approved Baseline (CM-BSCpE-2026)
+                    BSCpE 2026–2030 Active Batch (CM-BSCpE-2026)
                   </h3>
                   <p class="text-[11px] text-slate-500 dark:text-slate-400">
                     Saves the specific Curriculum &rarr; Student Outcomes &rarr; PEO &rarr; GA hierarchy for this curriculum edition.
@@ -2706,15 +2703,15 @@
                   <div class="flex items-center gap-1.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 px-2.5 py-1">
                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Select Map:</span>
                     <select id="curriculumMapSelect" onchange="selectCurriculumMap(this.value)" class="bg-transparent text-xs font-mono font-bold text-[#002855] dark:text-amber-400 outline-none cursor-pointer">
-                      <option value="CM-BSCpE-2026">CM-BSCpE-2026 (Active Baseline · 2026–2030)</option>
-                      <option value="CM-BSCpE-2027a">CM-BSCpE-2027a (Draft Proposal · 2027–2031)</option>
-                      <option value="CM-BSCpE-2027b">CM-BSCpE-2027b (Accreditation Rev · 2027–2031)</option>
-                      <option value="CM-BSCpE-2021">CM-BSCpE-2021 (Historical Edition · 2021–2025)</option>
+                      <option value="CM-BSCpE-2026">CPE 2026 (Map 2026 · Active Batch)</option>
+                      <option value="CM-BSCpE-2027">CPE 2027 (Map 2027 · Next Year Batch)</option>
+                      <option value="CM-BSCpE-2025">CPE 2025 (Map 2025 · Prev Batch)</option>
+                      <option value="CM-BSCpE-2021">CPE 2021 (Map 2021 · Historical)</option>
                     </select>
                   </div>
                   <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs">
                     <span>+</span>
-                    <span>Save New Curriculum Map</span>
+                    <span>Save Next Year Batch Map</span>
                   </button>
                   <button type="button" onclick="verifyCurriculumMapRequisites()" class="px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition flex items-center gap-1 cursor-pointer">
                     <span>✓</span>
@@ -2729,30 +2726,32 @@
                   <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-amber-400 shrink-0"></span>
                     <h4 class="font-extrabold text-slate-900 dark:text-white text-xs uppercase tracking-wider">
-                      Cascading Version Graph: Requisite Lineage Architecture
+                      Interactive Hierarchy Graph (Click any node to navigate or switch batch)
                     </h4>
                   </div>
                   <div class="flex items-center gap-2 text-[10px] font-mono text-slate-500">
-                    <span class="px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">Rule: Newer &rarr; Older/Same Only</span>
-                    <span>DAG Topology Enforced</span>
+                    <span class="px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">Policy: Annual Cohort Batching</span>
+                    <span>Interactive DAG</span>
                   </div>
                 </div>
 
-                <!-- Graph Schema Flowchart matching user reference -->
+                <!-- Graph Schema Flowchart with Clickable Nodes -->
                 <div class="overflow-x-auto py-2">
                   <div class="min-w-[860px] flex items-center justify-between gap-3 relative py-4 px-2">
                     
                     <!-- Left: Graduate Attributes (GA) -->
                     <div class="flex flex-col gap-4 w-48 shrink-0">
                       <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 1 &bull; Root</div>
-                      <div id="graphNodeGA" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-102">
-                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelGA">GAv2026a</div>
+                      <div id="graphNodeGA" onclick="switchObeTab('vision'); if(typeof showToast==='function') showToast('Viewing 9 Graduate Attributes (GA 2024)');" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 hover:ring-2 hover:ring-apc-gold cursor-pointer group" title="Click to view Graduate Attributes & Institutional Alignment">
+                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelGA">GA 2024</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Graduate Attributes (9 GAs)</div>
-                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">ACTIVE</span>
+                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold">ACTIVE</span>
+                        <span class="text-[8px] text-amber-500 font-mono block mt-1">↗ Click to view</span>
                       </div>
-                      <div class="p-2 border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 text-center">
-                        <div class="font-mono text-[11px] text-slate-500" id="graphLabelMVV">MVVv2025 (Peer)</div>
+                      <div id="graphLabelMVV" onclick="switchObeTab('vision'); if(typeof showToast==='function') showToast('Viewing Institutional Vision, Mission, & Goals (2025)');" class="p-2 border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 text-center cursor-pointer hover:border-amber-400 hover:scale-105 transition" title="Click to view Institutional VMG">
+                        <div class="font-mono text-[11px] text-slate-500 font-bold">MVV 2025 (Peer)</div>
                         <div class="text-[9px] text-slate-400">Institutional VMG</div>
+                        <span class="text-[8px] text-slate-400 font-mono block">↗ Click to view</span>
                       </div>
                     </div>
 
@@ -2766,22 +2765,24 @@
                     <!-- Middle-Left: Program Educational Objectives (PEO) -->
                     <div class="flex flex-col gap-3 w-48 shrink-0">
                       <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 2 &bull; PEO</div>
-                      <div id="graphNodePEO_A" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-102">
-                        <div class="font-mono font-bold text-xs text-slate-800 dark:text-slate-200">PEOv2026a</div>
+                      <div id="graphNodePEO_2026" onclick="switchObeTab('peo'); if(typeof showToast==='function') showToast('Viewing PEO 2026 (5 Objectives)');" class="p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 cursor-pointer ring-1 ring-apc-gold" title="Click to view PEO 2026 Objectives & Matrix">
+                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]">PEO 2026</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">5 Objectives (Baseline)</div>
-                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">SUPERSEDED</span>
+                        <span class="node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold">ACTIVE</span>
+                        <span class="text-[8px] text-purple-400 font-mono block mt-1">↗ Click to view</span>
                       </div>
-                      <div id="graphNodePEO_B" class="p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-102">
-                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelPEO">PEOv2027a</div>
+                      <div id="graphNodePEO_2027" onclick="switchObeTab('peo'); if(typeof showToast==='function') showToast('Viewing PEO 2027 Next Batch Objectives');" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-75 hover:opacity-100" title="Click to view PEO 2027 Next Batch Objectives">
+                        <div class="font-mono font-bold text-xs text-slate-700 dark:text-slate-300">PEO 2027</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">5 Objectives (AI Specialized)</div>
-                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">ACTIVE</span>
+                        <span class="node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300">NEXT BATCH</span>
+                        <span class="text-[8px] text-slate-400 font-mono block mt-1">↗ Click to view</span>
                       </div>
                     </div>
 
-                    <!-- Arrow PEO -> SO with SO/PEO Map Link Badges -->
+                    <!-- Arrow PEO -> SO with Map Link Badge -->
                     <div class="flex flex-col items-center justify-center shrink-0 px-1 space-y-3">
                       <div class="text-center">
-                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/70 text-blue-900 dark:text-blue-200 text-[9px] font-mono font-bold border border-blue-300 dark:border-blue-700 block" id="graphLabelMapRev">SO/PEO Map v2026b</span>
+                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/70 text-blue-900 dark:text-blue-200 text-[9px] font-mono font-bold border border-blue-300 dark:border-blue-700 block cursor-pointer hover:scale-105 transition" id="graphLabelMapRev" onclick="verifyCurriculumMapRequisites()" title="Curriculum Map Link: Click to verify requisite constraints">Map 2026</span>
                         <div class="w-12 h-0.5 bg-[#002855] dark:bg-amber-400 mx-auto my-0.5"></div>
                       </div>
                       <span class="text-xs font-mono text-slate-400">&larr;</span>
@@ -2790,27 +2791,30 @@
                     <!-- Middle-Right: Student Outcomes (SO) -->
                     <div class="flex flex-col gap-3 w-48 shrink-0">
                       <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 3 &bull; Outcomes</div>
-                      <div id="graphNodeSO_A" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-102">
-                        <div class="font-mono font-bold text-xs text-slate-800 dark:text-slate-200">SOv2026a</div>
+                      <div id="graphNodeSO_2026" onclick="switchObeTab('matrix'); if(typeof showToast==='function') showToast('Viewing SO 2026 Learning Progression Matrix');" class="p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 cursor-pointer ring-1 ring-apc-gold" title="Click to open SO 2026 Learning Progression Matrix">
+                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]">SO 2026</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">13 CHED CMO 92 SOs</div>
-                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">SUPERSEDED</span>
+                        <span class="node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold">ACTIVE</span>
+                        <span class="text-[8px] text-indigo-400 font-mono block mt-1">↗ Click to view</span>
                       </div>
-                      <div id="graphNodeSO_B" class="p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-102">
-                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelSO">SOv2026b</div>
+                      <div id="graphNodeSO_2025" onclick="switchObeTab('matrix'); if(typeof showToast==='function') showToast('Viewing SO 2025 Learning Progression Matrix');" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-75 hover:opacity-100" title="Click to open SO 2025 Matrix">
+                        <div class="font-mono font-bold text-xs text-slate-700 dark:text-slate-300">SO 2025</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">13 CHED CMO 92 SOs</div>
-                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">ACTIVE</span>
+                        <span class="node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-500">PREV BATCH</span>
+                        <span class="text-[8px] text-slate-400 font-mono block mt-1">↗ Click to view</span>
                       </div>
                     </div>
 
                     <!-- I-E-D Competency Bridge (SO -> Curriculum/Courses) -->
                     <div class="flex flex-col items-center justify-center shrink-0 px-1 space-y-1">
-                      <div class="p-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-center shadow-xs">
+                      <div onclick="switchObeTab('matrix'); if(typeof showToast==='function') showToast('Opening 74-Course I-E-D Competency Matrix');" class="p-1.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-center shadow-xs cursor-pointer hover:scale-110 hover:ring-2 hover:ring-emerald-400 transition" title="Click to open 74-Course I-E-D Matrix">
                         <span class="px-1.5 py-0.5 bg-emerald-800 text-white text-[9px] font-mono font-bold block">I-E-D Matrix</span>
                         <div class="flex items-center gap-1 mt-1 font-mono text-[8px] font-bold">
                           <span class="px-1 bg-emerald-100 text-emerald-800 border border-emerald-300" title="Introductory (e.g. CALCONE on SO-a)">I</span>
                           <span class="px-1 bg-amber-100 text-amber-800 border border-amber-300" title="Enabling">E</span>
                           <span class="px-1 bg-indigo-100 text-indigo-800 border border-indigo-300" title="Demonstrative">D</span>
                         </div>
+                        <span class="text-[7px] text-emerald-600 font-mono block mt-0.5">↗ Open Matrix</span>
                       </div>
                       <div class="flex items-center gap-1 text-slate-400">
                         <div class="w-6 h-0.5 bg-[#002855] dark:bg-amber-400"></div>
@@ -2818,20 +2822,29 @@
                       </div>
                     </div>
 
-                    <!-- Right: Curriculum Editions -->
+                    <!-- Right: Curriculum Year Batches (Clickable!) -->
                     <div class="flex flex-col gap-2.5 w-52 shrink-0">
-                      <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 4 &bull; Curriculum</div>
-                      <div id="graphNodeCUR_2026" class="p-2.5 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-102">
-                        <div class="font-mono font-bold text-xs text-slate-800 dark:text-slate-200">Curriculumv2026a</div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">CPE2026 (AY 2026–2030)</div>
+                      <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 4 &bull; Curriculum Batches</div>
+                      
+                      <!-- Batch 2026 -->
+                      <div id="graphNodeCUR_2026" onclick="selectCurriculumMap('CM-BSCpE-2026')" class="p-2.5 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 cursor-pointer ring-1 ring-apc-gold" title="Click to select and activate CPE 2026 Batch">
+                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]">CPE 2026</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">AY 2026–2030 (Active Batch)</div>
+                        <span class="node-active-badge inline-block mt-0.5 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 text-emerald-800 font-bold">ACTIVE</span>
                       </div>
-                      <div id="graphNodeCUR_2027a" class="p-2.5 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-102">
-                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelCUR">Curriculumv2027a</div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">CPE2027 (AY 2027–2031)</div>
+
+                      <!-- Batch 2027 (Next Year Batch) -->
+                      <div id="graphNodeCUR_2027" onclick="selectCurriculumMap('CM-BSCpE-2027')" class="p-2.5 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-75 hover:opacity-100" title="Click to select CPE 2027 Next Year Batch">
+                        <div class="font-mono font-bold text-xs text-slate-700 dark:text-slate-300">CPE 2027</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">AY 2027–2031 (Next Year Batch)</div>
+                        <span class="node-active-badge inline-block mt-0.5 px-1.5 py-0.2 text-[9px] font-mono bg-blue-100 text-blue-800">NEXT BATCH</span>
                       </div>
-                      <div id="graphNodeCUR_2027b" class="p-2.5 bg-amber-50/40 dark:bg-amber-950/20 border-2 border-dashed border-amber-300 dark:border-amber-700 text-center shadow-xs transition hover:scale-102">
-                        <div class="font-mono font-bold text-xs text-amber-800 dark:text-amber-300">Curriculumv2027b</div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400">CPE2027b (Accreditation Rev)</div>
+
+                      <!-- Batch 2025 (Previous Batch) -->
+                      <div id="graphNodeCUR_2025" onclick="selectCurriculumMap('CM-BSCpE-2025')" class="p-2.5 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-75 hover:opacity-100" title="Click to select CPE 2025 Previous Batch">
+                        <div class="font-mono font-bold text-xs text-slate-700 dark:text-slate-300">CPE 2025</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">AY 2025–2029 (Previous Batch)</div>
+                        <span class="node-active-badge inline-block mt-0.5 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 text-slate-600">PREV BATCH</span>
                       </div>
                     </div>
 
@@ -2839,62 +2852,62 @@
                 </div>
               </div>
 
-              <!-- 4-Tier Interactive Inspector Grid -->
+              <!-- 4-Tier Interactive Inspector Grid (Clickable to jump to corresponding views) -->
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 
                 <!-- Tier 4: Curriculum Card -->
-                <div class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-xs space-y-2">
+                <div onclick="navigateView('flowchart'); if(typeof showToast==='function') showToast('Opening Prerequisite Flowchart for Active Curriculum');" class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-amber-400 hover:scale-[1.01] transition group" title="Click to view Prerequisite Flowchart">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-[#002855] dark:text-[#E5A823]">Tier 4 &bull; Curriculum</span>
-                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardCurricStatus">ACTIVE</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardCurricStatus">ACTIVE BATCH</span>
                   </div>
-                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardCurricId">CURv2026</h5>
+                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardCurricId">CPE 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardCurricName">BS Computer Engineering (184.0 Units)</p>
                   <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
-                    <div>AY Span: <span class="font-bold text-slate-800 dark:text-slate-200" id="cardCurricSpan">2026–2030</span></div>
-                    <div>Flowchart: <span class="text-emerald-600 font-bold">Synchronized</span></div>
+                    <div>AY Batch: <span class="font-bold text-slate-800 dark:text-slate-200" id="cardCurricSpan">2026–2030</span></div>
+                    <div class="text-[9px] text-[#002855] dark:text-[#E5A823] font-bold group-hover:underline">↗ Click to open Prereq Flowchart</div>
                   </div>
                 </div>
 
                 <!-- Tier 3: SO Card -->
-                <div class="p-4 bg-white dark:bg-[#111722] border-2 border-indigo-700/60 shadow-xs space-y-2">
+                <div onclick="switchObeTab('matrix'); if(typeof showToast==='function') showToast('Opening Course-to-SO Learning Progression Matrix');" class="p-4 bg-white dark:bg-[#111722] border-2 border-indigo-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-indigo-500 hover:scale-[1.01] transition group" title="Click to view Course-to-SO Learning Progression Matrix">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-indigo-700 dark:text-indigo-400">Tier 3 &bull; Student Outcomes</span>
                     <span class="px-1.5 py-0.2 bg-indigo-100 text-indigo-800 font-mono text-[9px] font-bold" id="cardSoStatus">ACTIVE</span>
                   </div>
-                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardSoId">SOv2026a</h5>
+                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardSoId">SO 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardSoName">13 CHED CMO 92 Outcomes (SO a–m)</p>
                   <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
-                    <div>Progression Matrix: <span class="font-bold text-slate-800 dark:text-slate-200">74 Courses Mapped</span></div>
-                    <div>Relational Map: <span class="text-indigo-600 font-bold" id="cardSoMapRel">SO/PEO Map v2026a</span></div>
+                    <div>Mapping: <span class="font-bold text-slate-800 dark:text-slate-200">74 Courses via I-E-D</span></div>
+                    <div class="text-[9px] text-indigo-600 dark:text-indigo-400 font-bold group-hover:underline">↗ Click to open Course-to-SO Matrix</div>
                   </div>
                 </div>
 
                 <!-- Tier 2: PEO Card -->
-                <div class="p-4 bg-white dark:bg-[#111722] border-2 border-purple-700/60 shadow-xs space-y-2">
+                <div onclick="switchObeTab('peo'); if(typeof showToast==='function') showToast('Opening PEO-to-SO Relational Schedule');" class="p-4 bg-white dark:bg-[#111722] border-2 border-purple-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-purple-500 hover:scale-[1.01] transition group" title="Click to view PEO-to-SO Relational Schedule">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-purple-700 dark:text-purple-400">Tier 2 &bull; Program Objectives</span>
                     <span class="px-1.5 py-0.2 bg-purple-100 text-purple-800 font-mono text-[9px] font-bold" id="cardPeoStatus">ACTIVE</span>
                   </div>
-                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardPeoId">PEOv2026a</h5>
+                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardPeoId">PEO 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardPeoName">5 Program Educational Objectives</p>
                   <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
-                    <div>Scope: <span class="font-bold text-slate-800 dark:text-slate-200">Professional Engineering</span></div>
-                    <div>Linked GA: <span class="text-purple-600 font-bold" id="cardPeoGaRel">GAv2026a</span></div>
+                    <div>Linked GA: <span class="text-purple-600 font-bold" id="cardPeoGaRel">GA 2024</span></div>
+                    <div class="text-[9px] text-purple-600 dark:text-purple-400 font-bold group-hover:underline">↗ Click to open PEO Schedule</div>
                   </div>
                 </div>
 
                 <!-- Tier 1: GA Card -->
-                <div class="p-4 bg-white dark:bg-[#111722] border-2 border-slate-700/60 shadow-xs space-y-2">
+                <div onclick="switchObeTab('vision'); if(typeof showToast==='function') showToast('Opening Graduate Attributes Alignment');" class="p-4 bg-white dark:bg-[#111722] border-2 border-slate-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-slate-400 hover:scale-[1.01] transition group" title="Click to view Graduate Attributes & Institutional VMG">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-slate-700 dark:text-slate-300">Tier 1 &bull; Graduate Attributes</span>
                     <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardGaStatus">ACTIVE</span>
                   </div>
-                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardGaId">GAv2026a</h5>
+                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardGaId">GA 2024</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardGaName">9 Institutional Graduate Attributes</p>
                   <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
-                    <div>Peer Tier: <span class="font-bold text-slate-800 dark:text-slate-200">MVVv2025</span></div>
-                    <div>Authority: <span class="text-slate-700 dark:text-slate-300 font-bold">Institutional Academic Council</span></div>
+                    <div>Authority: <span class="text-slate-700 dark:text-slate-300 font-bold">Academic Council</span></div>
+                    <div class="text-[9px] text-slate-600 dark:text-slate-400 font-bold group-hover:underline">↗ Click to open GA Alignment</div>
                   </div>
                 </div>
 
@@ -2976,17 +2989,17 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
                   <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
                     <div class="text-[10px] text-slate-400 uppercase">Link 1: Curriculum &rarr; SO</div>
-                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck1">CURv2026 &ge; SOv2026a</div>
-                    <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Child references valid concurrent SO</div>
+                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck1">CPE 2026 &ge; SO 2026</div>
+                    <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Batch references valid concurrent SO</div>
                   </div>
                   <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
                     <div class="text-[10px] text-slate-400 uppercase">Link 2: SO &rarr; PEO</div>
-                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck2">SOv2026a &ge; PEOv2026a</div>
+                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck2">SO 2026 &ge; PEO 2026</div>
                     <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Forward-only relational mapping</div>
                   </div>
                   <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
                     <div class="text-[10px] text-slate-400 uppercase">Link 3: PEO &rarr; GA</div>
-                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck3">PEOv2026a &ge; GAv2026a</div>
+                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck3">PEO 2026 &ge; GA 2024</div>
                     <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Root attribute alignment verified</div>
                   </div>
                 </div>
@@ -5426,10 +5439,10 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[10px]">Select Target Curriculum Map File</label>
             <div class="flex items-center gap-2">
               <select id="newCurricMapSelect" onchange="updateNewCurricMapPreview()" class="w-full px-3 py-2 bg-white dark:bg-[#151C28] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono font-bold">
-                <option value="CM-BSCpE-2026" selected>CM-BSCpE-2026: Approved Baseline (GAv2026a &gt; PEOv2026a &gt; SOv2026a)</option>
-                <option value="CM-BSCpE-2027a">CM-BSCpE-2027a: AI Mid-Cycle Proposal (GAv2026a &gt; PEOv2027a &gt; SOv2026b)</option>
-                <option value="CM-BSCpE-2027b">CM-BSCpE-2027b: ABET Specialization Rev (GAv2026a &gt; PEOv2027a &gt; SOv2026b)</option>
-                <option value="CM-BSCpE-2021">CM-BSCpE-2021: Historical Edition (GAv2021 &gt; PEOv2021 &gt; SOv2021)</option>
+                <option value="CM-BSCpE-2026" selected>Map 2026: Active Baseline (GA 2024 &gt; PEO 2026 &gt; SO 2026)</option>
+                <option value="CM-BSCpE-2027">Map 2027: Next Year Batch (GA 2024 &gt; PEO 2027 &gt; SO 2026)</option>
+                <option value="CM-BSCpE-2025">Map 2025: Previous Batch (GA 2024 &gt; PEO 2025 &gt; SO 2025)</option>
+                <option value="CM-BSCpE-2021">Map 2021: Historical Baseline (GA 2021 &gt; PEO 2021 &gt; SO 2021)</option>
               </select>
               <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs whitespace-nowrap border border-[#E5A823]/60 cursor-pointer" title="Create a new Curriculum Map file">
                 <span>+ New Map</span>
@@ -5449,11 +5462,11 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <div class="flex items-center gap-1 font-mono text-[11px] overflow-x-auto py-1.5">
               <div class="flex items-center p-1 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700">
                 <span class="text-[9px] text-slate-400 font-bold uppercase mr-1">Curriculum Map:</span>
-                <span class="px-1.5 py-0.5 bg-slate-800 text-slate-100 font-bold text-[10px]" id="previewModalGa">GAv2026a</span>
+                <span class="px-1.5 py-0.5 bg-slate-800 text-slate-100 font-bold text-[10px]" id="previewModalGa">GA 2024</span>
                 <span class="text-slate-400 mx-1">&gt;</span>
-                <span class="px-1.5 py-0.5 bg-purple-900 text-purple-100 font-bold text-[10px]" id="previewModalPeo">PEOv2026a</span>
+                <span class="px-1.5 py-0.5 bg-purple-900 text-purple-100 font-bold text-[10px]" id="previewModalPeo">PEO 2026</span>
                 <span class="text-slate-400 mx-1">&gt;</span>
-                <span class="px-1.5 py-0.5 bg-indigo-900 text-indigo-100 font-bold text-[10px]" id="previewModalSo">SOv2026a</span>
+                <span class="px-1.5 py-0.5 bg-indigo-900 text-indigo-100 font-bold text-[10px]" id="previewModalSo">SO 2026</span>
               </div>
               <span class="text-[#E5A823] font-bold text-sm mx-1">&gt;</span>
               <div class="p-1 bg-emerald-900/40 text-emerald-300 border border-emerald-600/60 flex items-center gap-1 shrink-0">
@@ -5539,25 +5552,26 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Map Identifier / Name</label>
-            <input type="text" id="snapshotMapName" value="BSCpE 2027b Specialized Curriculum Map" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
+            <input type="text" id="snapshotMapName" value="BSCpE 2027 Next Batch Curriculum Map" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
           </div>
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Map Version</label>
-            <input type="text" id="snapshotMapVersion" value="Map v2027b" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
+            <input type="text" id="snapshotMapVersion" value="Map 2027" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Version</label>
-            <input type="text" id="snapshotCurricVer" value="CURv2027b" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
+            <input type="text" id="snapshotCurricVer" value="CPE 2027" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
           </div>
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Status</label>
             <select id="snapshotMapStatus" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823]">
-              <option value="ACTIVE">ACTIVE BASELINE</option>
-              <option value="DRAFT" selected>DRAFT PROPOSAL</option>
-              <option value="SUPERSEDED">SUPERSEDED</option>
+              <option value="ACTIVE BATCH">ACTIVE BATCH</option>
+              <option value="NEXT YEAR BATCH" selected>NEXT YEAR BATCH</option>
+              <option value="PREV BATCH">PREVIOUS BATCH</option>
+              <option value="ARCHIVED">ARCHIVED</option>
             </select>
           </div>
         </div>
@@ -5572,24 +5586,26 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <div>
               <label class="block text-[10px] font-bold text-slate-500 uppercase">SO Version</label>
               <select id="snapshotSoVer" class="w-full p-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
-                <option value="SOv2026b" selected>SOv2026b</option>
-                <option value="SOv2026a">SOv2026a</option>
-                <option value="SOv2027a">SOv2027a</option>
+                <option value="SO 2027">SO 2027</option>
+                <option value="SO 2026" selected>SO 2026</option>
+                <option value="SO 2025">SO 2025</option>
+                <option value="SO 2021">SO 2021</option>
               </select>
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 uppercase">PEO Version</label>
               <select id="snapshotPeoVer" class="w-full p-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
-                <option value="PEOv2027a" selected>PEOv2027a</option>
-                <option value="PEOv2026a">PEOv2026a</option>
+                <option value="PEO 2027" selected>PEO 2027</option>
+                <option value="PEO 2026">PEO 2026</option>
+                <option value="PEO 2025">PEO 2025</option>
+                <option value="PEO 2021">PEO 2021</option>
               </select>
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 uppercase">GA Version</label>
               <select id="snapshotGaVer" class="w-full p-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
-                <option value="GAv2026a" selected>GAv2026a</option>
-                <option value="GAv2025a">GAv2025a</option>
-                <option value="GAv2024">GAv2024</option>
+                <option value="GA 2024" selected>GA 2024</option>
+                <option value="GA 2021">GA 2021</option>
               </select>
             </div>
           </div>
@@ -5597,7 +5613,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Mapping Documentation Notes</label>
-          <textarea id="snapshotMapNotes" rows="2" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-none" placeholder="Context, rationale, accreditation cycle notes..."></textarea>
+          <textarea id="snapshotMapNotes" rows="2" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-none" placeholder="Annual batch notes, curriculum revision scope, accreditation cycle notes..."></textarea>
         </div>
 
         <!-- Footer -->
