@@ -245,6 +245,13 @@
                             <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                           </button>
 
+                          <!-- Curriculum Map Versioning Button (Together with Management Homepage) -->
+                          <button type="button" id="nav-cpe-curricmap-top" onclick="openCurriculumMapTab()"
+                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                            <span class="text-amber-400">🗺️</span>
+                            <span class="font-semibold text-slate-300 group-hover:text-amber-300">Curriculum Map Versioning</span>
+                          </button>
+
                           <!-- By Academic Year Section Header -->
                           <div class="px-2 pt-1 pb-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
                             By Academic Year
@@ -1309,7 +1316,38 @@
                   <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
                   <span id="curricHomeWorkbenchBtnText">PD Workbench</span>
                 </button>
+                <button type="button" onclick="openCurriculumMapTab()" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] border border-[#E5A823]/60 font-bold text-xs flex items-center gap-2 transition cursor-pointer shadow-xs group" title="Open Curriculum Map &amp; Hierarchy Versioning">
+                  <span>🗺️</span>
+                  <span>Curriculum Map Versioning</span>
+                </button>
               </div>
+            </div>
+          </div>
+
+          <!-- Executive Curriculum Map Versioning Strip on Management Homepage -->
+          <div class="p-4 sm:p-5 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823]/70 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="space-y-1.5 max-w-2xl">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Curriculum Map Package</span>
+                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">Map v2026a</span>
+                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE BASELINE</span>
+              </div>
+              <h3 class="text-sm sm:text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">
+                Curriculum Map &amp; Hierarchy Versioning (GA &gt; PEO &gt; SO &gt; I-E-D Matrix)
+              </h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300">
+                Encapsulates the versioned hierarchical lineage and competency ratings (<strong>GA &rarr; PEO &rarr; SO &rarr; I-E-D Matrix &rarr; 74 Courses</strong>) for this degree program.
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <button type="button" onclick="openCurriculumMapTab()" class="px-3.5 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-black uppercase tracking-wider border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                <span>🗺️</span>
+                <span>Open Curriculum Map</span>
+              </button>
+              <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition flex items-center gap-1 cursor-pointer">
+                <span>+</span>
+                <span>Save New Map</span>
+              </button>
             </div>
           </div>
 
