@@ -2632,12 +2632,9 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400">Institutional alignment across Vision, Mission, School of Engineering Goal, 9 Graduate Attributes (GAs), 5 PEOs, and 13 CHED Student Outcomes (SO a–m).</p>
               </div>
               <div class="flex items-center space-x-2">
-                <button type="button" onclick="openIntegratedSpreadsheet('obe', 'obe')" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold rounded-none shadow-xs transition flex items-center gap-1.5 border border-[#E5A823]/40 cursor-pointer" title="Mass edit SO 1-13 learning progression mappings in spreadsheet">
-                  <span>📊</span>
-                  <span>Mass Edit in Spreadsheet (OBE Grid)</span>
-                </button>
-                <button onclick="exportObeMatrixCSV()" class="px-3.5 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-none border border-slate-300 dark:border-slate-700 transition cursor-pointer">
-                  Export OBE Matrix (.xlsx)
+                <button type="button" onclick="exportObeMatrixCSV()" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold rounded-none border border-[#E5A823]/40 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Export complete Curriculum Map (74 Courses, PEOs, GAs) to Excel (.xlsx)">
+                  <span>📥</span>
+                  <span>Export Curriculum Map (.xlsx)</span>
                 </button>
               </div>
             </div>
@@ -2670,7 +2667,7 @@
                 <span id="obe-tab-label-hierarchy">🗺️ Curriculum Map (Hierarchy &amp; Versions)</span>
               </button>
               <button onclick="switchObeTab('matrix')" id="obe-tab-matrix" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
-                <span id="obe-tab-label-matrix">Course-to-SO Learning Progression Matrix (SO 2026)</span>
+                <span id="obe-tab-label-matrix">Curriculum Map (Course-to-SO Progression)</span>
               </button>
               <button onclick="switchObeTab('peo')" id="obe-tab-peo" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
                 <span id="obe-tab-label-peo">PEO-to-SO Relational Schedule (PEO 2026 • SO 2026)</span>
@@ -3112,7 +3109,9 @@
                       <th id="matrix-col-hdr-j" class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[38px]" title="SO j: Contextual &amp; Contemporary Reasoning">SO j</th>
                       <th id="matrix-col-hdr-k" class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[38px]" title="SO k: Modern Engineering &amp; IT Tools">SO k</th>
                       <th id="matrix-col-hdr-l" class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[38px]" title="SO l: Engineering Management &amp; Economics">SO l</th>
-                      <th id="matrix-col-hdr-m" class="py-2.5 px-2 text-center min-w-[38px]" title="SO m: Specialized Computer Engineering Practice">SO m</th>
+                      <th id="matrix-col-hdr-m" class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[38px]" title="SO m: Specialized Computer Engineering Practice">SO m</th>
+                      <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[75px] bg-purple-50/70 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 font-bold" title="Program Educational Objectives linked through mapped SOs">Linked PEOs</th>
+                      <th class="py-2.5 px-2 text-center min-w-[85px] bg-amber-50/70 dark:bg-amber-950/40 text-[#002855] dark:text-[#E5A823] font-bold" title="Graduate Attributes aligned through linked PEOs">Aligned GAs</th>
                     </tr>
                   </thead>
                   <tbody id="matrixTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">

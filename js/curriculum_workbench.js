@@ -6065,35 +6065,47 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     function sheetSaveAllChanges() {
       promptSaveSpreadsheetChanges();
     }
-    function downloadArrayOfArraysAsExcel(aoa, sheetName, filenameBase) {
+    function downloadArrayOfArraysAsExcel(data, defaultSheetName, filenameBase) {
       const safeFilename = filenameBase.replace(/\.(csv|xlsx|xls)$/i, '') + '.xlsx';
+      const sheets = Array.isArray(data) && data.length > 0 && data[0].name && Array.isArray(data[0].aoa)
+        ? data
+        : [{ name: defaultSheetName || 'Curriculum', aoa: data }];
+
       if (typeof XLSX !== 'undefined') {
         const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(aoa);
-        XLSX.utils.book_append_sheet(wb, ws, (sheetName || 'Curriculum').slice(0, 31));
+        sheets.forEach(s => {
+          const ws = XLSX.utils.aoa_to_sheet(s.aoa);
+          XLSX.utils.book_append_sheet(wb, ws, (s.name || 'Sheet').slice(0, 31));
+        });
         XLSX.writeFile(wb, safeFilename);
         return;
       }
-      // Offline XML Spreadsheet 2003 (.xls) fallback
-      const xmlRows = aoa.map(row => {
-        const cells = row.map(val => {
-          const escaped = String(val == null ? '' : val)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-          const isNum = typeof val === 'number' || (/^\d+(\.\d+)?$/.test(String(val)) && String(val) !== '');
-          return `<Cell><Data ss:Type="${isNum ? 'Number' : 'String'}">${escaped}</Data></Cell>`;
-        }).join('');
-        return `<Row>${cells}</Row>`;
+
+      // Offline XML Spreadsheet 2003 (.xls) fallback with multi-worksheet support
+      const worksheetsXml = sheets.map(s => {
+        const xmlRows = (s.aoa || []).map(row => {
+          const cells = row.map(val => {
+            const escaped = String(val == null ? '' : val)
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;');
+            const isNum = typeof val === 'number' || (/^\d+(\.\d+)?$/.test(String(val)) && String(val) !== '');
+            return `<Cell><Data ss:Type="${isNum ? 'Number' : 'String'}">${escaped}</Data></Cell>`;
+          }).join('');
+          return `<Row>${cells}</Row>`;
+        }).join('\n');
+        return `
+  <Worksheet ss:Name="${(s.name || 'Sheet').replace(/[:\/\\\?\[\]\*]/g, '_').slice(0, 31)}">
+   <Table>${xmlRows}</Table>
+  </Worksheet>`;
       }).join('\n');
+
       const xml = `<?xml version="1.0"?>
 <?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
- <Worksheet ss:Name="${(sheetName || 'Curriculum').slice(0, 31)}">
-  <Table>${xmlRows}</Table>
- </Worksheet>
+${worksheetsXml}
 </Workbook>`;
       const blob = new Blob([xml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -6141,22 +6153,143 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function exportObeMatrixCSV() {
-      const headers = [
-        'Course Code', 'Course Title', 'Units', 'Year', 'Term', 'Category',
-        'SO_A', 'SO_B', 'SO_C', 'SO_D', 'SO_E', 'SO_F', 'SO_G', 'SO_H', 'SO_I', 'SO_J', 'SO_K', 'SO_L', 'SO_M'
-      ];
-      const aoa = [headers];
-      ALL_COURSES.forEach(c => {
-        const row = [c.code, c.title, c.units, c.year, c.term, c.group];
-        for (let i = 0; i < 13; i++) {
-          row.push((c.sos && c.sos[i]) ? c.sos[i] : '-');
-        }
-        aoa.push(row);
-      });
+      const peoSoLinks = window.getPeoSoLinks() || {};
+      const peoGaLinks = window.getPeoGaLinks() || {};
+      const SO_LABELS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
       const progCode = (typeof currentSelectedProgram !== 'undefined' && currentSelectedProgram) ? currentSelectedProgram : 'BSCpE';
-      downloadArrayOfArraysAsExcel(aoa, 'OBE_SO_Matrix', `APC_${progCode}_OBE_Matrix_${new Date().toISOString().slice(0,10)}.xlsx`);
+      const courses = (window.OFFICIAL_BASELINE_74_COURSES && window.OFFICIAL_BASELINE_74_COURSES.length > 0)
+        ? window.OFFICIAL_BASELINE_74_COURSES
+        : [];
+
+      // 1. Sheet 1: Full Curriculum Map & OBE Progression Matrix (All 74 Courses)
+      const matrixHeaders = [
+        'Course Code', 'Course Title', 'Units', 'Lec', 'Lab', 'Year', 'Term', 'Category', 'Prerequisites',
+        'SO-a', 'SO-b', 'SO-c', 'SO-d', 'SO-e', 'SO-f', 'SO-g', 'SO-h', 'SO-i', 'SO-j', 'SO-k', 'SO-l', 'SO-m',
+        'Linked PEOs', 'Aligned GAs', 'Description'
+      ];
+      const matrixRows = [matrixHeaders];
+
+      courses.forEach(c => {
+        const sos = c.sos || ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
+        const coursePeos = new Set();
+        const courseGas = new Set();
+
+        SO_LABELS.forEach((soKey, sIdx) => {
+          const val = (sos[sIdx] || '-').trim().toUpperCase();
+          if (val === 'I' || val === 'E' || val === 'D') {
+            const peos = peoSoLinks[soKey] || [];
+            peos.forEach(p => {
+              coursePeos.add(p);
+              const gas = peoGaLinks[p] || [];
+              gas.forEach(g => courseGas.add(g));
+            });
+          }
+        });
+
+        const peoListStr = Array.from(coursePeos).sort((a,b)=>a-b).map(p => `PEO ${p}`).join(', ') || 'None';
+        const gaListStr = Array.from(courseGas).sort((a,b)=>a-b).map(g => `GA ${g}`).join(', ') || 'None';
+        const prereqStr = (c.prereqs || []).join(', ') || 'None';
+
+        const row = [
+          c.code,
+          c.title,
+          c.units !== undefined ? c.units : 3,
+          c.lec !== undefined ? c.lec : 3,
+          c.lab !== undefined ? c.lab : 0,
+          c.year || 1,
+          c.term || 1,
+          c.group || '',
+          prereqStr
+        ];
+
+        for (let i = 0; i < 13; i++) {
+          row.push((sos[i] || '-').trim().toUpperCase());
+        }
+
+        row.push(peoListStr);
+        row.push(gaListStr);
+        row.push(c.desc || '');
+        matrixRows.push(row);
+      });
+
+      // 2. Sheet 2: PEO to SO Relational Schedule
+      const peoHeaders = ['PEO Code', 'Program Educational Objective Title', 'SO-a', 'SO-b', 'SO-c', 'SO-d', 'SO-e', 'SO-f', 'SO-g', 'SO-h', 'SO-i', 'SO-j', 'SO-k', 'SO-l', 'SO-m', 'Aligned Graduate Attributes'];
+      const peoRows = [peoHeaders];
+      const peoDefs = [
+        { id: 1, code: 'PEO 1', title: 'Technical Competence & Innovation' },
+        { id: 2, code: 'PEO 2', title: 'Professional & Ethical Responsibility' },
+        { id: 3, code: 'PEO 3', title: 'Continuous Learning & Development' },
+        { id: 4, code: 'PEO 4', title: 'Leadership & Teamwork' },
+        { id: 5, code: 'PEO 5', title: 'Communication & Interpersonal Skills' }
+      ];
+      peoDefs.forEach(peo => {
+        const gas = (peoGaLinks[peo.id] || []).map(g => `GA ${g}`).join(', ') || 'None';
+        const row = [peo.code, peo.title];
+        SO_LABELS.forEach(soKey => {
+          const links = peoSoLinks[soKey] || [];
+          row.push(links.includes(peo.id) ? '✓' : '-');
+        });
+        row.push(gas);
+        peoRows.push(row);
+      });
+
+      // 3. Sheet 3: GA to PEO Alignment Matrix
+      const gaHeaders = ['GA Code', 'Graduate Attribute Name', 'PEO 1', 'PEO 2', 'PEO 3', 'PEO 4', 'PEO 5'];
+      const gaRows = [gaHeaders];
+      const gaDefs = [
+        { id: 1, code: 'GA 1', title: 'Professional Knowledge' },
+        { id: 2, code: 'GA 2', title: 'Problem Analysis' },
+        { id: 3, code: 'GA 3', title: 'Design & Investigation' },
+        { id: 4, code: 'GA 4', title: 'Modern Tool Usage' },
+        { id: 5, code: 'GA 5', title: 'Individual & Team Work' },
+        { id: 6, code: 'GA 6', title: 'Communication' },
+        { id: 7, code: 'GA 7', title: 'Societal & Environmental Context' },
+        { id: 8, code: 'GA 8', title: 'Ethics' },
+        { id: 9, code: 'GA 9', title: 'Lifelong Learning' }
+      ];
+      gaDefs.forEach(ga => {
+        const row = [ga.code, ga.title];
+        for (let p = 1; p <= 5; p++) {
+          const gas = peoGaLinks[p] || [];
+          row.push(gas.includes(ga.id) ? '✓' : '-');
+        }
+        gaRows.push(row);
+      });
+
+      // 4. Sheet 4: Student Outcome Definitions
+      const soDescHeaders = ['Outcome Code', 'Outcome Definition', 'Linked PEOs'];
+      const soDescRows = [soDescHeaders];
+      const soDefs = [
+        { id: 'a', title: 'Engineering Knowledge Application: Apply mathematics, sciences, engineering fundamentals.' },
+        { id: 'b', title: 'Investigation of Complex Problems: Formulate, analyze, and conduct experiments.' },
+        { id: 'c', title: 'Design Solutions for Complex Problems: Design systems/components meeting specified needs.' },
+        { id: 'd', title: 'Individual and Team Functioning: Function effectively in multidisciplinary environments.' },
+        { id: 'e', title: 'Evaluation & First Principles: Formulate and evaluate engineering problems.' },
+        { id: 'f', title: 'Ethical Principles & Norms: Understand professional ethics, obligations, and norms.' },
+        { id: 'g', title: 'Effective Communication: Communicate effectively on complex engineering activities.' },
+        { id: 'h', title: 'Sustainability and Impact: Assess societal, health, legal, and environmental impacts.' },
+        { id: 'i', title: 'Lifelong Learning: Recognize need for and engage in continuous learning.' },
+        { id: 'j', title: 'Societal & Contextual Knowledge: Apply contextual knowledge to assess issues.' },
+        { id: 'k', title: 'Modern Tool Synthesis: Create, select, apply modern techniques and IT tools.' },
+        { id: 'l', title: 'Engineering Management & Economics: Apply management principles and economic analysis.' },
+        { id: 'm', title: 'Specialized Computer Engineering: Apply specialized CpE practice and embedded systems.' }
+      ];
+      soDefs.forEach(so => {
+        const peos = (peoSoLinks[so.id] || []).map(p => `PEO ${p}`).join(', ') || 'None';
+        soDescRows.push([`SO-${so.id}`, so.title, peos]);
+      });
+
+      const multiSheets = [
+        { name: 'Curriculum_Map_Matrix', aoa: matrixRows },
+        { name: 'PEO_to_SO_Schedule', aoa: peoRows },
+        { name: 'GA_to_PEO_Alignment', aoa: gaRows },
+        { name: 'Student_Outcomes_Definitions', aoa: soDescRows }
+      ];
+
+      downloadArrayOfArraysAsExcel(multiSheets, 'Curriculum_Map_Matrix', `APC_${progCode}_Curriculum_Map_OBE_Workbook_${new Date().toISOString().slice(0,10)}.xlsx`);
+
       if (typeof showToast === 'function') {
-        showToast('Exported OBE Learning Progression Matrix as Excel (.xlsx) successfully.');
+        showToast('Exported Full Curriculum Map & OBE Matrix (74 Courses, PEOs, GAs) to Excel (.xlsx) successfully.');
       }
     }
     window.exportObeMatrixCSV = exportObeMatrixCSV;
@@ -7630,7 +7763,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       // 3. Tab Labels
       const tabLblMatrix = document.getElementById('obe-tab-label-matrix');
-      if (tabLblMatrix) tabLblMatrix.textContent = `Course-to-SO Learning Progression Matrix (SO ${verStr})`;
+      if (tabLblMatrix) tabLblMatrix.textContent = `Curriculum Map (Course-to-SO Progression)`;
 
       const tabLblPeo = document.getElementById('obe-tab-label-peo');
       if (tabLblPeo) tabLblPeo.textContent = `PEO-to-SO Relational Schedule (PEO ${verStr} • SO ${verStr})`;
@@ -9021,16 +9154,21 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (countEl) countEl.textContent = `${filtered.length} courses loaded (OBE v${verStr})`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="17" class="p-8 text-center text-slate-400 italic">No courses match the current filter criteria.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="19" class="p-8 text-center text-slate-400 italic">No courses match the current filter criteria.</td></tr>`;
         return;
       }
 
       const SO_LABELS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+      const peoSoLinks = window.getPeoSoLinks() || {};
+      const peoGaLinks = window.getPeoGaLinks() || {};
 
       let rowsHtml = '';
       filtered.forEach((course, idx) => {
         const rowBg = idx % 2 === 0 ? 'bg-white dark:bg-[#111722]' : 'bg-slate-50/60 dark:bg-[#0D131C]';
         const sos = course.sos || ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
+
+        const coursePeos = new Set();
+        const courseGas = new Set();
 
         let cellsHtml = '';
         SO_LABELS.forEach((soLetter, soIdx) => {
@@ -9041,12 +9179,27 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           if (val === 'I') {
             badgeClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-300 dark:border-emerald-700 shadow-2xs';
             displayVal = 'I';
+            const peos = peoSoLinks[soLetter] || [];
+            peos.forEach(p => {
+              coursePeos.add(p);
+              (peoGaLinks[p] || []).forEach(g => courseGas.add(g));
+            });
           } else if (val === 'E') {
             badgeClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-700 shadow-2xs';
             displayVal = 'E';
+            const peos = peoSoLinks[soLetter] || [];
+            peos.forEach(p => {
+              coursePeos.add(p);
+              (peoGaLinks[p] || []).forEach(g => courseGas.add(g));
+            });
           } else if (val === 'D') {
             badgeClass = 'bg-indigo-100 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 font-bold border border-indigo-300 dark:border-indigo-700 shadow-2xs';
             displayVal = 'D';
+            const peos = peoSoLinks[soLetter] || [];
+            peos.forEach(p => {
+              coursePeos.add(p);
+              (peoGaLinks[p] || []).forEach(g => courseGas.add(g));
+            });
           }
 
           cellsHtml += `
@@ -9060,6 +9213,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           `;
         });
 
+        const peoListStr = Array.from(coursePeos).sort((a,b)=>a-b).map(p => `P${p}`).join(', ') || '-';
+        const gaListStr = Array.from(courseGas).sort((a,b)=>a-b).map(g => `G${g}`).join(', ') || '-';
+
         rowsHtml += `
           <tr class="${rowBg} hover:bg-blue-50/50 dark:hover:bg-slate-800/40 transition-colors">
             <td class="p-2 font-mono font-bold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs sticky left-0 ${rowBg} z-10 min-w-[100px] shadow-xs">${course.code}</td>
@@ -9067,6 +9223,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             <td class="p-2 font-mono font-bold text-center text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs">${course.units !== undefined ? course.units : 3}</td>
             <td class="p-2 font-mono text-center text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 text-xs">Y${course.year} T${course.term}</td>
             ${cellsHtml}
+            <td class="p-1.5 font-mono text-[10px] text-center font-bold text-purple-700 dark:text-purple-300 border border-slate-200 dark:border-slate-800 bg-purple-50/30 dark:bg-purple-950/20">${peoListStr}</td>
+            <td class="p-1.5 font-mono text-[10px] text-center font-bold text-[#002855] dark:text-[#E5A823] border border-slate-200 dark:border-slate-800 bg-amber-50/30 dark:bg-amber-950/20">${gaListStr}</td>
           </tr>
         `;
       });
