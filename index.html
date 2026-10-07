@@ -1647,7 +1647,7 @@
         </section>
 
         <!-- ========================================================================= -->
-        <!-- VIEW: VERSIONING HISTORY (CURRICULUM MAPS, GAs, SOs, PEOs, MVV, COURSE IED) -->
+        <!-- VIEW: VERSIONING HISTORY -->
         <!-- ========================================================================= -->
         <section id="view-versioning-history" class="hidden space-y-4">
           <!-- Concise Header Banner -->
@@ -1657,7 +1657,7 @@
                 <span class="text-base">📜</span>
                 <h2 class="text-base md:text-lg font-black tracking-tight text-white">Versioning History</h2>
               </div>
-              <p class="text-xs text-slate-300 mt-0.5">Accreditation lineage and independent version history across all curriculum entities.</p>
+              <p class="text-xs text-slate-300 mt-0.5">Curriculum version history and domain lineage.</p>
             </div>
             <div class="flex items-center gap-2 flex-wrap shrink-0">
               <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-[#002855] font-black text-xs uppercase tracking-wider transition cursor-pointer shadow-xs border border-amber-500 flex items-center gap-1.5" title="Save current curriculum state as a new version">
@@ -1763,7 +1763,7 @@
                   <span class="text-sm">🔍</span>
                   <div>
                     <h3 class="font-black text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
-                      <span>Curriculum Map Snapshot:</span>
+                      <span>Viewing:</span>
                       <span id="vh-inspect-title" class="text-blue-700 dark:text-amber-400 font-mono">BSCpE 2026-2030 (CM-BSCpE-2026)</span>
                     </h3>
                     <p class="text-[11px] text-slate-500" id="vh-inspect-subtitle">Official active batch baseline with 184.0 units and 74 mapped courses.</p>
@@ -1949,7 +1949,7 @@
                   <span class="text-sm">🎯</span>
                   <div>
                     <h3 class="font-black text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
-                      <span>Inspecting Outcomes:</span>
+                      <span>Viewing:</span>
                       <span id="vh-so-inspect-title" class="text-indigo-600 dark:text-indigo-400 font-mono">SO-2026 (Active Baseline)</span>
                     </h3>
                     <p class="text-[11px] text-slate-500" id="vh-so-inspect-subtitle">Official active engineering outcomes a through m.</p>
@@ -2005,7 +2005,7 @@
                   <span class="text-sm">🏆</span>
                   <div>
                     <h3 class="font-black text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
-                      <span>Inspecting PEOs:</span>
+                      <span>Viewing:</span>
                       <span id="vh-peo-inspect-title" class="text-amber-600 dark:text-amber-400 font-mono">PEO-2026 (Active Baseline)</span>
                     </h3>
                     <p class="text-[11px] text-slate-500" id="vh-peo-inspect-subtitle">Active Program Educational Objectives for BSCpE.</p>
@@ -2061,7 +2061,7 @@
                   <span class="text-sm">🏛️</span>
                   <div>
                     <h3 class="font-black text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
-                      <span>Inspecting Attributes:</span>
+                      <span>Viewing:</span>
                       <span id="vh-ga-inspect-title" class="text-blue-600 dark:text-blue-400 font-mono">GA-2024 (Active Institutional Standard)</span>
                     </h3>
                     <p class="text-[11px] text-slate-500" id="vh-ga-inspect-subtitle">APC 9 Institutional Graduate Attributes (GA-A through GA-I).</p>
@@ -2116,8 +2116,8 @@
                   <span class="text-sm">📜</span>
                   <div>
                     <h3 class="font-black text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
-                      <span>Inspecting Strategic Direction:</span>
-                      <span id="vh-mvv-inspect-title" class="text-emerald-600 dark:text-emerald-400 font-mono">MVV-2025 (Active Baseline)</span>
+                      <span>Viewing:</span>
+                      <span id="vh-mvv-inspect-title" class="text-emerald-600 dark:text-emerald-400 font-mono">MVV-2025</span>
                     </h3>
                     <p class="text-[11px] text-slate-500" id="vh-mvv-inspect-subtitle">Institutional Mission, Vision, Values, and Engineering School Goals.</p>
                   </div>
@@ -5542,10 +5542,10 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <span class="text-base text-[#E5A823]">🏛️</span>
           <div>
             <div class="flex items-center gap-2">
-              <h3 class="font-black text-sm tracking-wider text-white uppercase">Institutional Versioning History</h3>
-              <span class="px-2 py-0.5 bg-amber-400/20 text-amber-300 font-mono font-bold text-[10px] uppercase border border-amber-400/40">Sys Admin Tier</span>
+              <h3 class="font-black text-sm tracking-wider text-white uppercase">Institutional Versioning</h3>
+              <span class="px-2 py-0.5 bg-amber-400/20 text-amber-300 font-mono font-bold text-[10px] uppercase border border-amber-400/40">Admin Only</span>
             </div>
-            <p class="text-[11px] text-slate-300">Institutional MVV (Mission, Vision, Values) &amp; Graduate Attributes (GA) Lineage</p>
+            <p class="text-[11px] text-slate-300">Institutional MVV and Graduate Attributes (GA)</p>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -5557,11 +5557,11 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       <div class="bg-slate-100 dark:bg-[#10151E] px-5 py-2 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2 text-xs font-bold shrink-0">
         <button type="button" id="tabInstVhMvv" onclick="switchInstVhTab('mvv')" class="px-3 py-1.5 bg-[#002855] text-[#E5A823] font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer">
           <span>📜</span>
-          <span>Institutional MVV Lineage</span>
+          <span>MVV</span>
         </button>
         <button type="button" id="tabInstVhGa" onclick="switchInstVhTab('ga')" class="px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer">
           <span>🏛️</span>
-          <span>Graduate Attributes (GA) Lineage</span>
+          <span>Graduate Attributes (GA)</span>
         </button>
       </div>
 
@@ -5574,11 +5574,11 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
               <thead class="bg-slate-50 dark:bg-[#0E141F] text-slate-800 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800">
                 <tr>
-                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Version ID</th>
-                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Strategic Framework</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Version</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Framework</th>
                   <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Status</th>
-                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Effective Period</th>
-                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[200px]">Governance Notes</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Effective</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[180px]">Notes</th>
                   <th class="py-2.5 px-3 text-center">Action</th>
                 </tr>
               </thead>
@@ -5593,10 +5593,10 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700/60 pb-2">
               <div class="flex items-center gap-2">
                 <span class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                  <span>Inspecting Framework:</span>
-                  <span id="instMvvInspectTitle" class="text-emerald-600 dark:text-emerald-400 font-mono">MVV-2025 (Active Baseline)</span>
+                  <span>Viewing:</span>
+                  <span id="instMvvInspectTitle" class="text-emerald-600 dark:text-emerald-400 font-mono">MVV-2025</span>
                 </span>
-                <span id="instMvvInspectBadge" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Active Strategic Direction</span>
+                <span id="instMvvInspectBadge" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Active</span>
               </div>
               <button type="button" id="btnToggleInstMvvEdit" onclick="toggleInstMvvInlineEditor()" class="px-3 py-1 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-xs">
                 <span>✎</span>
@@ -5611,29 +5611,25 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
             <!-- Inline Edit Mode (Sys Admin Exclusive) -->
             <div id="instMvvInlineEditor" class="hidden space-y-3 pt-2">
-              <div class="bg-amber-500/10 border border-amber-500/30 p-2.5 text-xs text-amber-600 dark:text-amber-400 flex items-center justify-between">
-                <span class="font-bold">Institutional Mission, Vision &amp; Core Values Editor (Direct Lineage Update)</span>
-                <span class="text-[10px] font-mono uppercase bg-amber-400/20 px-2 py-0.5 border border-amber-400/40">Sys Admin Only</span>
-              </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[10px]">Institutional Mission Statement</label>
+                  <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[10px]">Mission Statement</label>
                   <textarea id="inlineInstMissionInput" rows="4" class="w-full px-3 py-2 bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823] leading-relaxed resize-y text-xs"></textarea>
                 </div>
                 <div>
-                  <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[10px]">Institutional Vision Statement</label>
+                  <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[10px]">Vision Statement</label>
                   <textarea id="inlineInstVisionInput" rows="4" class="w-full px-3 py-2 bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823] leading-relaxed resize-y text-xs"></textarea>
                 </div>
               </div>
               <div>
-                <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[10px]">Institutional Core Values (Title: Description per line)</label>
+                <label class="block text-slate-700 dark:text-slate-300 font-bold mb-1 uppercase tracking-wider text-[10px]">Core Values (Title: Description per line)</label>
                 <textarea id="inlineInstValuesInput" rows="3" class="w-full px-3 py-2 bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823] leading-relaxed resize-y text-xs"></textarea>
               </div>
               <div class="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
                 <button type="button" onclick="resetPillarsToDefault()" class="text-rose-600 dark:text-rose-400 hover:underline text-xs cursor-pointer">Reset Defaults</button>
                 <div class="flex items-center gap-2">
                   <button type="button" onclick="toggleInstMvvInlineEditor(false)" class="px-3.5 py-1.5 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-300 dark:hover:bg-slate-600 cursor-pointer">Cancel</button>
-                  <button type="button" onclick="saveInstMvvInline()" class="px-4 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 font-black text-xs uppercase tracking-wider cursor-pointer shadow-xs transition">Save MVV Version</button>
+                  <button type="button" onclick="saveInstMvvInline()" class="px-4 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 font-black text-xs uppercase tracking-wider cursor-pointer shadow-xs transition">Save Changes</button>
                 </div>
               </div>
             </div>
@@ -5646,12 +5642,12 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
               <thead class="bg-slate-50 dark:bg-[#0E141F] text-slate-800 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800">
                 <tr>
-                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Version ID</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Version</th>
                   <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Attribute Profile</th>
                   <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Count</th>
                   <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Status</th>
-                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Effective Period</th>
-                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[200px]">Governance Notes</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Effective</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[180px]">Notes</th>
                   <th class="py-2.5 px-3 text-center">Action</th>
                 </tr>
               </thead>
@@ -5666,14 +5662,14 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700/60 pb-2">
               <div class="flex items-center gap-2">
                 <span class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                  <span>Inspecting Attributes:</span>
-                  <span id="instGaInspectTitle" class="text-blue-600 dark:text-blue-400 font-mono">GA-2024 (Active Standard)</span>
+                  <span>Viewing:</span>
+                  <span id="instGaInspectTitle" class="text-blue-600 dark:text-blue-400 font-mono">GA-2024</span>
                 </span>
                 <span id="instGaInspectBadge" class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">9 Attributes</span>
               </div>
               <button type="button" id="btnToggleInstGaEdit" onclick="toggleInstGaInlineEditor()" class="px-3 py-1 bg-[#E5A823] hover:bg-amber-400 text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-xs">
                 <span>✎</span>
-                <span id="lblToggleInstGaEdit">Edit Graduate Attributes</span>
+                <span id="lblToggleInstGaEdit">Edit Attributes</span>
               </button>
             </div>
 
@@ -5684,18 +5680,15 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
             <!-- Inline Edit Mode (Sys Admin Exclusive) -->
             <div id="instGaInlineEditor" class="hidden space-y-3 pt-2">
-              <div class="bg-blue-500/10 border border-blue-500/30 p-2.5 text-xs text-blue-700 dark:text-blue-300 flex items-center justify-between">
-                <span class="font-bold">Institutional Graduate Attributes Editor (Direct Lineage Update)</span>
-                <span class="text-[10px] font-mono">Format: GA X: Title - Description</span>
-              </div>
+              <div class="text-[11px] text-slate-500 font-mono">Format: GA X: Title - Description (one per line)</div>
               <div>
                 <textarea id="inlineInstGasInput" rows="7" class="w-full px-3 py-2 bg-white dark:bg-[#181D26] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:border-[#E5A823] font-mono text-xs leading-relaxed resize-y" placeholder="GA A: Solution Provider - Creates innovative, proactive and impactful strategies..."></textarea>
               </div>
               <div class="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
-                <span class="text-xs text-slate-500 font-mono">Changes cascade to all academic degree programs.</span>
+                <span class="text-xs text-slate-500">Updates apply across all degree programs.</span>
                 <div class="flex items-center gap-2">
                   <button type="button" onclick="toggleInstGaInlineEditor(false)" class="px-3.5 py-1.5 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-300 dark:hover:bg-slate-600 cursor-pointer">Cancel</button>
-                  <button type="button" onclick="saveInstGaInline()" class="px-4 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 font-black text-xs uppercase tracking-wider cursor-pointer shadow-xs transition">Save GA Version</button>
+                  <button type="button" onclick="saveInstGaInline()" class="px-4 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 font-black text-xs uppercase tracking-wider cursor-pointer shadow-xs transition">Save Changes</button>
                 </div>
               </div>
             </div>
@@ -5706,7 +5699,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
       <!-- Modal Footer -->
       <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between shrink-0">
-        <span class="text-xs text-slate-500 font-mono">Institution: Asia Pacific College &bull; Governance Authority: System Administrator</span>
+        <span class="text-xs text-slate-500 font-mono">Asia Pacific College &bull; Governance</span>
         <button type="button" onclick="closeInstitutionalVersioningModal()" class="px-5 py-1.5 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-700 dark:hover:bg-slate-600 text-xs font-black transition cursor-pointer border border-slate-700 shadow-sm">
           <span>Close</span>
         </button>
@@ -5732,9 +5725,6 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       <div class="p-6 space-y-4 text-slate-800 dark:text-slate-200 flex-1 overflow-y-auto min-h-0">
         <div id="pillarModalContent" class="text-sm leading-relaxed">
           <!-- Populated by showPillarModal -->
-        </div>
-        <div class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-400">
-          <span class="font-bold text-[#002855] dark:text-[#E5A823]">Asia Pacific College (APC):</span> Real Projects. Real Learning. Academic Institutional Governance.
         </div>
       </div>
 

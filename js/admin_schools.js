@@ -692,9 +692,9 @@
           <div class="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700/70 pb-2">
             <div>
               <p class="font-bold text-[#002855] dark:text-[#E5A823] text-sm">Asia Pacific College Graduate Attributes</p>
-              <p class="text-[11px] text-slate-500 dark:text-slate-400">Institutional-level attributes established at the System Administrator tier. All degree programs cascade PEOs from these GAs.</p>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">Institutional graduate profile.</p>
             </div>
-            <span class="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] border border-amber-300 dark:border-amber-700">System Admin Tier</span>
+            <span class="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] border border-amber-300 dark:border-amber-700">Institutional</span>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[55vh] overflow-y-auto pr-1">
             ${gaCards}
