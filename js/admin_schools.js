@@ -2036,6 +2036,13 @@
                   <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                 </button>
 
+                <!-- Curriculum Dashboard Button -->
+                <button type="button" id="nav-cpe-dashboard" onclick="navigateView('dashboard')"
+                  class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                  <span class="text-amber-400">📊</span>
+                  <span class="font-semibold text-slate-300 group-hover:text-amber-300">Curriculum Dashboard</span>
+                </button>
+
                 <!-- Versioning History Button (Under Management Homepage) -->
                 <button type="button" id="nav-versioning-history" onclick="navigateView('versioning-history')"
                   class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
