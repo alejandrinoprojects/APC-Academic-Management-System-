@@ -2895,9 +2895,11 @@
           <div class="bg-white dark:bg-[#111722] rounded-none border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
             
             <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-3">
-              <div>
-                <h2 class="font-extrabold text-slate-900 dark:text-white text-lg tracking-tight">Outcomes-Based Education (OBE) Cascading Architecture</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Institutional alignment across Vision, Mission, School of Engineering Goal, 9 Graduate Attributes (GAs), 5 PEOs, and 13 CHED Student Outcomes (SO a–m).</p>
+              <div class="flex items-center gap-3">
+                <button type="button" onclick="navigateView('curriculum-home')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition flex items-center gap-1.5 cursor-pointer shadow-2xs" title="Return to Curriculum Management">
+                  <span>← Back</span>
+                </button>
+                <h2 class="font-black text-slate-900 dark:text-white text-lg tracking-tight">Curriculum Map</h2>
               </div>
               <div class="flex items-center space-x-2">
                 <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-[#002855] text-xs font-black rounded-none border border-amber-500 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Create a new curriculum map or save current revision">
@@ -2930,26 +2932,22 @@
                 <span id="obe-active-version-badge" class="px-2.5 py-1 font-mono font-bold text-xs bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 border border-blue-300 dark:border-blue-700">
                   OBE Batch: 2026
                 </span>
-                <span class="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-[10px] font-mono text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center gap-1">
-                  <span class="text-emerald-500 font-bold">🔒 Annual Batch Policy:</span>
-                  <span>No mid-year edits &bull; Edits apply to Next Year Batch only</span>
-                </span>
               </div>
             </div>
 
             <!-- OBE HIERARCHY TABS -->
             <div class="flex border-b border-slate-200 dark:border-slate-800 space-x-6 text-xs font-bold overflow-x-auto">
               <button onclick="switchObeTab('hierarchy')" id="obe-tab-hierarchy" class="pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer whitespace-nowrap">
-                <span id="obe-tab-label-hierarchy">🗺️ Curriculum Map (Hierarchy &amp; Versions)</span>
+                <span id="obe-tab-label-hierarchy">Curriculum Map</span>
               </button>
               <button onclick="switchObeTab('matrix')" id="obe-tab-matrix" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
                 <span id="obe-tab-label-matrix">SO to Course</span>
               </button>
               <button onclick="switchObeTab('peo')" id="obe-tab-peo" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
-                <span id="obe-tab-label-peo">PEO-to-SO Relational Schedule (PEO 2026 • SO 2026)</span>
+                <span id="obe-tab-label-peo">PEO to SO</span>
               </button>
               <button onclick="switchObeTab('vision')" id="obe-tab-vision" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
-                <span id="obe-tab-label-vision">Vision, Mission, School Goal &amp; Graduate Attributes (GA 2026)</span>
+                <span id="obe-tab-label-vision">Graduate Attributes (GA)</span>
               </button>
             </div>
 
@@ -2983,80 +2981,88 @@
                 </div>
               </div>
 
-              <!-- 4-Tier Interactive Inspector Grid (Clickable to jump to corresponding views) -->
+              <!-- 4-Tier Interactive Inspector Grid -->
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 
                 <!-- Tier 4: Curriculum Card -->
-                <div onclick="navigateView('flowchart'); if(typeof showToast==='function') showToast('Opening Prerequisite Flowchart for Active Curriculum');" class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-amber-400 hover:scale-[1.01] transition group" title="Click to view Prerequisite Flowchart">
+                <div onclick="navigateView('flowchart')" class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-amber-400 transition group" title="View Prerequisite Flowchart">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-[#002855] dark:text-[#E5A823]">Tier 4 &bull; Curriculum</span>
                     <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardCurricStatus">ACTIVE BATCH</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardCurricId">CPE 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardCurricName">BS Computer Engineering (184.0 Units)</p>
-                  <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
-                    <div>AY Batch: <span class="font-bold text-slate-800 dark:text-slate-200" id="cardCurricSpan">2026–2030</span></div>
-                    <div class="text-[9px] text-[#002855] dark:text-[#E5A823] font-bold group-hover:underline">↗ Click to open Prereq Flowchart</div>
+                  <div class="text-[11px] text-slate-500 font-mono pt-1 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span>AY Batch:</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200" id="cardCurricSpan">2026–2030</span>
                   </div>
                 </div>
 
                 <!-- Tier 3: SO Card -->
-                <div onclick="switchObeTab('matrix'); if(typeof showToast==='function') showToast('Opening Course-to-SO Learning Progression Matrix');" class="p-4 bg-white dark:bg-[#111722] border-2 border-indigo-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-indigo-500 hover:scale-[1.01] transition group" title="Click to view Course-to-SO Learning Progression Matrix">
+                <div onclick="switchObeTab('matrix')" class="p-4 bg-white dark:bg-[#111722] border-2 border-indigo-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-indigo-500 transition group" title="View SO to Course Matrix">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-indigo-700 dark:text-indigo-400">Tier 3 &bull; Student Outcomes</span>
                     <span class="px-1.5 py-0.2 bg-indigo-100 text-indigo-800 font-mono text-[9px] font-bold" id="cardSoStatus">ACTIVE</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardSoId">SO 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardSoName">13 CHED CMO 92 Outcomes (SO a–m)</p>
-                  <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
-                    <div>Mapping: <span class="font-bold text-slate-800 dark:text-slate-200">74 Courses via I-E-D</span></div>
-                    <div class="text-[9px] text-indigo-600 dark:text-indigo-400 font-bold group-hover:underline">↗ Click to open Course-to-SO Matrix</div>
+                  <div class="text-[11px] text-slate-500 font-mono pt-1 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span>Progression:</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200">74 Courses via I-E-D</span>
                   </div>
                 </div>
 
                 <!-- Tier 2: PEO Card -->
-                <div onclick="switchObeTab('peo'); if(typeof showToast==='function') showToast('Opening PEO-to-SO Relational Schedule');" class="p-4 bg-white dark:bg-[#111722] border-2 border-purple-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-purple-500 hover:scale-[1.01] transition group" title="Click to view PEO-to-SO Relational Schedule">
+                <div onclick="switchObeTab('peo')" class="p-4 bg-white dark:bg-[#111722] border-2 border-purple-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-purple-500 transition group" title="View PEO to SO Schedule">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-purple-700 dark:text-purple-400">Tier 2 &bull; Program Objectives</span>
                     <span class="px-1.5 py-0.2 bg-purple-100 text-purple-800 font-mono text-[9px] font-bold" id="cardPeoStatus">ACTIVE</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardPeoId">PEO 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardPeoName">5 Program Educational Objectives</p>
-                  <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
-                    <div>Linked GA: <span class="text-purple-600 font-bold" id="cardPeoGaRel">GA 2024</span></div>
-                    <div class="text-[9px] text-purple-600 dark:text-purple-400 font-bold group-hover:underline">↗ Click to open PEO Schedule</div>
+                  <div class="text-[11px] text-slate-500 font-mono pt-1 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span>Linked GA:</span>
+                    <span class="text-purple-600 font-bold" id="cardPeoGaRel">GA 2024</span>
                   </div>
                 </div>
 
                 <!-- Tier 1: GA Card -->
-                <div onclick="switchObeTab('vision'); if(typeof showToast==='function') showToast('Opening Graduate Attributes Alignment');" class="p-4 bg-white dark:bg-[#111722] border-2 border-slate-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-slate-400 hover:scale-[1.01] transition group" title="Click to view Graduate Attributes & Institutional VMG">
+                <div onclick="switchObeTab('vision')" class="p-4 bg-white dark:bg-[#111722] border-2 border-slate-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-slate-400 transition group" title="View Graduate Attributes">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-slate-700 dark:text-slate-300">Tier 1 &bull; Graduate Attributes</span>
                     <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardGaStatus">ACTIVE</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardGaId">GA 2024</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardGaName">9 Institutional Graduate Attributes</p>
-                  <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
-                    <div>Authority: <span class="text-slate-700 dark:text-slate-300 font-bold">Academic Council</span></div>
-                    <div class="text-[9px] text-slate-600 dark:text-slate-400 font-bold group-hover:underline">↗ Click to open GA Alignment</div>
+                  <div class="text-[11px] text-slate-500 font-mono pt-1 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span>Scope:</span>
+                    <span class="text-slate-700 dark:text-slate-300 font-bold">Degree Standards</span>
                   </div>
                 </div>
 
               </div>
 
               <!-- ========================================================================= -->
-              <!-- OPTION 1: ROTATING CYLINDER WHEEL FLOW GRAPH (GA -> PEO -> SO -> COURSES) -->
+              <!-- CASCADING OBE RELATIONAL ALIGNMENT TREE (GA -> PEO -> SO -> COURSES)     -->
               <!-- ========================================================================= -->
               <div class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-md space-y-3">
                 
                 <!-- Section Header & Filter Ribbon -->
                 <div class="flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-200 dark:border-slate-800 pb-2.5">
-                  <div class="flex items-center gap-2">
+                  <div class="flex items-center gap-2 flex-wrap">
                     <span class="w-3 h-3 bg-[#E5A823] shrink-0"></span>
                     <h4 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">
-                      Relational Cylinder Wheel (GA &rarr; PEO &rarr; SO &rarr; Courses)
+                      Curriculum Alignment Tree (GA &rarr; PEO &rarr; SO &rarr; Course)
                     </h4>
-                    <span class="px-1.5 py-0.2 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[9px] font-bold border border-blue-300 dark:border-blue-700">5-Item Focused View</span>
+                    <!-- Mode Switch Buttons -->
+                    <div class="inline-flex border border-slate-300 dark:border-slate-700 text-xs font-mono ml-2">
+                      <button type="button" id="btnFlowModeTree" onclick="setFlowViewMode('tree')" class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-bold cursor-pointer transition">
+                        🌳 Expanded Tree
+                      </button>
+                      <button type="button" id="btnFlowModeCylinder" onclick="setFlowViewMode('cylinder')" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer transition">
+                        🎡 Cylinder Drum
+                      </button>
+                    </div>
                   </div>
 
                   <!-- Controls & Filters -->
@@ -3070,7 +3076,7 @@
                       <option value="4">Year 4</option>
                     </select>
                     <button type="button" onclick="clearFlowTrace()" id="flowGraphClearTraceBtn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer">
-                      <span>↺ Clear</span>
+                      <span>↺ Reset Filter</span>
                     </button>
                   </div>
                 </div>
@@ -3079,7 +3085,7 @@
                 <div id="flowGraphTraceBar" class="p-2 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 text-[11px] font-mono flex flex-wrap items-center justify-between gap-2">
                   <div class="flex items-center gap-2 flex-wrap">
                     <span class="px-1.5 py-0.2 bg-[#002855] text-[#E5A823] font-bold text-[9px] uppercase">Active Path</span>
-                    <span id="flowGraphTraceText" class="text-slate-700 dark:text-slate-300 font-medium">Click any card to isolate and narrow cylinders to linked items only.</span>
+                    <span id="flowGraphTraceText" class="text-slate-700 dark:text-slate-300 font-medium">Click any card to isolate and link nodes across all 4 tiers.</span>
                   </div>
                   <div id="flowGraphTraceBadge" class="hidden text-[9px] px-2 py-0.5 bg-amber-100 text-amber-900 dark:bg-amber-900/60 dark:text-amber-200 font-bold border border-amber-300 dark:border-amber-700 flex items-center gap-1.5">
                     <span>LINKED FILTER ACTIVE</span>
@@ -3087,11 +3093,11 @@
                   </div>
                 </div>
 
-                <!-- 4-Column iOS Rotating Cylinder Wheel Grid -->
+                <!-- 4-Column Grid (Tree / Cylinder) -->
                 <div class="relative bg-slate-100/70 dark:bg-[#0A0F17] p-2 border border-slate-200 dark:border-slate-800">
                   
-                  <!-- Unified Center Focal Alignment Lens across all 4 cylinders -->
-                  <div class="pointer-events-none absolute inset-x-2 top-[175px] h-[72px] border-y-2 border-[#E5A823] bg-[#E5A823]/10 dark:bg-[#E5A823]/15 z-20 shadow-xs flex items-center justify-between px-2">
+                  <!-- Unified Center Focal Alignment Lens (Shown in Cylinder mode) -->
+                  <div id="flowCenterAlignmentLine" class="hidden pointer-events-none absolute inset-x-2 top-[175px] h-[72px] border-y-2 border-[#E5A823] bg-[#E5A823]/10 dark:bg-[#E5A823]/15 z-20 shadow-xs flex items-center justify-between px-2">
                     <span class="text-[8px] font-mono font-black text-[#002855] dark:text-[#E5A823] tracking-wider uppercase bg-white/90 dark:bg-black/80 px-1 py-0.5 border border-[#E5A823]/40">Center Alignment Line</span>
                     <span class="text-[8px] font-mono text-slate-600 dark:text-slate-300 bg-white/90 dark:bg-black/80 px-1 py-0.5 border border-slate-300 dark:border-slate-700">GA &rarr; PEO &rarr; SO &rarr; Course</span>
                   </div>
@@ -3296,63 +3302,24 @@
                   <div class="flex items-center space-x-2.5">
                     <div class="w-8 h-8 rounded-none bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 flex items-center justify-center text-base">🎯</div>
                     <div>
-                      <h3 class="font-black text-slate-900 dark:text-white text-sm">Program Educational Objectives (<span id="obe-badge-peo" class="text-blue-700 dark:text-blue-400">PEO 2026</span>)</h3>
+                      <div class="flex items-center gap-2">
+                        <h3 class="font-black text-slate-900 dark:text-white text-sm">Program Educational Objectives (<span id="obe-badge-peo" class="text-blue-700 dark:text-blue-400">PEO 2026</span>)</h3>
+                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 font-mono font-bold text-[10px] border border-blue-200 dark:border-blue-700">Editable on Map</span>
+                      </div>
                       <p class="text-slate-500 dark:text-slate-400 text-[11px]">Long-term professional milestones expected of BSCpE graduates within 3 to 5 years after graduation</p>
                     </div>
                   </div>
-                  <span class="px-2.5 py-1 rounded-none bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono font-bold text-[11px] border border-slate-200 dark:border-slate-700">CHED CMO No. 92, s. 2017 § 4.1</span>
+                  <div class="flex items-center space-x-2">
+                    <button type="button" onclick="openEditAllDefinitionsModal('peo')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold transition cursor-pointer border border-[#E5A823]/40 flex items-center gap-1 shadow-2xs" title="Edit PEO Definitions">
+                      <span>✏️</span>
+                      <span>Edit PEO Definitions</span>
+                    </button>
+                    <span class="px-2.5 py-1 rounded-none bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono font-bold text-[11px] border border-slate-200 dark:border-slate-700">CHED CMO No. 92, s. 2017 § 4.1</span>
+                  </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  <!-- PEO 1 -->
-                  <div class="p-4 bg-slate-50/80 dark:bg-slate-800/50 rounded-none border border-slate-300/90 dark:border-slate-700 space-y-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <div class="flex items-center justify-between">
-                      <span id="peo-card-tag-1" class="px-2 py-0.5 rounded-none bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 font-mono font-black text-xs border border-blue-200 dark:border-blue-700">PEO 1 (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Solutions &amp; Tech</span>
-                    </div>
-                    <h4 class="font-bold text-slate-900 dark:text-slate-100 text-xs leading-snug">Complex Solutions &amp; Emerging Technologies</h4>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Synthesize advanced engineering principles and emerging technologies to develop innovative, efficient, and adaptive computer-based solutions for complex engineering problems.</p>
-                  </div>
-
-                  <!-- PEO 2 -->
-                  <div class="p-4 bg-slate-50/80 dark:bg-slate-800/50 rounded-none border border-slate-300/90 dark:border-slate-700 space-y-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <div class="flex items-center justify-between">
-                      <span id="peo-card-tag-2" class="px-2 py-0.5 rounded-none bg-emerald-100 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200 font-mono font-black text-xs border border-emerald-200 dark:border-emerald-700">PEO 2 (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ethics &amp; Sustainability</span>
-                    </div>
-                    <h4 class="font-bold text-slate-900 dark:text-slate-100 text-xs leading-snug">Sustainable &amp; Responsible Solutions</h4>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Integrate ethical, social, and environmental considerations into engineering practices for sustainable and responsible solutions that contribute to societal well-being.</p>
-                  </div>
-
-                  <!-- PEO 3 -->
-                  <div class="p-4 bg-slate-50/80 dark:bg-slate-800/50 rounded-none border border-slate-300/90 dark:border-slate-700 space-y-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <div class="flex items-center justify-between">
-                      <span id="peo-card-tag-3" class="px-2 py-0.5 rounded-none bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono font-black text-xs border border-purple-200 dark:border-purple-700">PEO 3 (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Lifelong Learning</span>
-                    </div>
-                    <h4 class="font-bold text-slate-900 dark:text-slate-100 text-xs leading-snug">Continuous Professional Growth</h4>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Pursue continuous professional growth by engaging in advanced studies, industry certifications, or self-directed learning to stay at the forefront of technological advancements.</p>
-                  </div>
-
-                  <!-- PEO 4 -->
-                  <div class="p-4 bg-slate-50/80 dark:bg-slate-800/50 rounded-none border border-slate-300/90 dark:border-slate-700 space-y-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <div class="flex items-center justify-between">
-                      <span id="peo-card-tag-4" class="px-2 py-0.5 rounded-none bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-mono font-black text-xs border border-amber-200 dark:border-amber-700">PEO 4 (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Leadership &amp; Teams</span>
-                    </div>
-                    <h4 class="font-bold text-slate-900 dark:text-slate-100 text-xs leading-snug">Multidisciplinary Leadership &amp; Teamwork</h4>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Demonstrate leadership and teamwork by effectively managing multidisciplinary collaborations and promoting inclusive environments.</p>
-                  </div>
-
-                  <!-- PEO 5 -->
-                  <div class="p-4 bg-slate-50/80 dark:bg-slate-800/50 rounded-none border border-slate-300/90 dark:border-slate-700 space-y-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-                    <div class="flex items-center justify-between">
-                      <span id="peo-card-tag-5" class="px-2 py-0.5 rounded-none bg-sky-100 dark:bg-sky-900/60 text-sky-900 dark:text-sky-200 font-mono font-black text-xs border border-sky-200 dark:border-sky-700">PEO 5 (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Communication</span>
-                    </div>
-                    <h4 class="font-bold text-slate-900 dark:text-slate-100 text-xs leading-snug">Technical Communication &amp; Engagement</h4>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Articulate complex technical concepts with clarity and precision, adapting communication strategies to effectively engage with engineers, client, employers, and the broader community.</p>
-                  </div>
+                <div id="peoCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                  <!-- Populated dynamically by renderPeoCards() -->
                 </div>
               </div>
 
@@ -3362,132 +3329,24 @@
                   <div class="flex items-center space-x-2.5">
                     <div class="w-8 h-8 rounded-none bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center text-base">📜</div>
                     <div>
-                      <h3 class="font-black text-slate-900 dark:text-white text-sm">CHED Student Outcomes (<span id="obe-badge-so" class="text-emerald-700 dark:text-emerald-400">SO 2026</span>)</h3>
+                      <div class="flex items-center gap-2">
+                        <h3 class="font-black text-slate-900 dark:text-white text-sm">CHED Student Outcomes (<span id="obe-badge-so" class="text-emerald-700 dark:text-emerald-400">SO 2026</span>)</h3>
+                        <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200 font-mono font-bold text-[10px] border border-emerald-200 dark:border-emerald-700">Editable on Map</span>
+                      </div>
                       <p class="text-slate-500 dark:text-slate-400 text-[11px]">Authentic abilities and competencies required of BSCpE students by the time of graduation</p>
                     </div>
                   </div>
-                  <span class="px-2.5 py-1 rounded-none bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-mono font-bold text-[11px] border border-emerald-200 dark:border-emerald-800">CHED CMO No. 92, s. 2017 § 6.2</span>
+                  <div class="flex items-center space-x-2">
+                    <button type="button" onclick="openEditAllDefinitionsModal('so')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold transition cursor-pointer border border-[#E5A823]/40 flex items-center gap-1 shadow-2xs" title="Edit SO Definitions">
+                      <span>✏️</span>
+                      <span>Edit SO Definitions</span>
+                    </button>
+                    <span class="px-2.5 py-1 rounded-none bg-emerald-50 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-mono font-bold text-[11px] border border-emerald-200 dark:border-emerald-800">CHED CMO No. 92, s. 2017 § 6.2</span>
+                  </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-a" class="px-2 py-0.5 rounded-none bg-indigo-100 dark:bg-indigo-900/60 text-indigo-900 dark:text-indigo-200 font-mono font-bold text-[11px] border border-indigo-200 dark:border-indigo-700">SO-a (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Engineering Sciences</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Engineering Knowledge Application</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Apply knowledge of mathematics, natural science, engineering fundamentals and an engineering specialization to the solution of complex engineering problems.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-b" class="px-2 py-0.5 rounded-none bg-indigo-100 dark:bg-indigo-900/60 text-indigo-900 dark:text-indigo-200 font-mono font-bold text-[11px] border border-indigo-200 dark:border-indigo-700">SO-b (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Investigation</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Investigation of Complex Problems</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Conduct investigations of complex problems using research-based knowledge and research methods including design of experiments, analysis and interpretation of data, and synthesis of information to provide valid conclusions.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-c" class="px-2 py-0.5 rounded-none bg-indigo-100 dark:bg-indigo-900/60 text-indigo-900 dark:text-indigo-200 font-mono font-bold text-[11px] border border-indigo-200 dark:border-indigo-700">SO-c (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">System Design</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Design Solutions for Complex Problems</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Design solutions for complex engineering problems and design systems, components or processes that meet specified needs with appropriate consideration for political, manufacturability, sustainability, economic, public health and safety, cultural, societal, ethical, and environmental considerations.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-d" class="px-2 py-0.5 rounded-none bg-emerald-100 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200 font-mono font-bold text-[11px] border border-emerald-200 dark:border-emerald-700">SO-d (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Teamwork</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Individual and Team Functioning</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Function effectively as an individual, and as a member or leader in diverse teams and in multi-disciplinary settings.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-e" class="px-2 py-0.5 rounded-none bg-indigo-100 dark:bg-indigo-900/60 text-indigo-900 dark:text-indigo-200 font-mono font-bold text-[11px] border border-indigo-200 dark:border-indigo-700">SO-e (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Problem Solving</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Evaluation &amp; First Principles</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Evaluate complex engineering problems by critically identifying, formulating, and analyzing them through comprehensive research and literature review, applying first principles of mathematics, natural sciences, and engineering sciences to derive well-founded and impactful solutions.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-f" class="px-2 py-0.5 rounded-none bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-mono font-bold text-[11px] border border-amber-200 dark:border-amber-700">SO-f (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Ethics</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Ethical Principles &amp; Norms</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Apply ethical principles and commit to professional ethics and responsibilities and norms of engineering practice.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-g" class="px-2 py-0.5 rounded-none bg-sky-100 dark:bg-sky-900/60 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] border border-sky-200 dark:border-sky-700">SO-g (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Communication</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Effective Engineering Communication</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Communicate effectively on complex engineering activities with the engineering community and with society at large, such as being able to comprehend and write effective reports and design documentation, make effective presentations, and give and receive clear instructions.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-h" class="px-2 py-0.5 rounded-none bg-rose-100 dark:bg-rose-900/60 text-rose-900 dark:text-rose-200 font-mono font-bold text-[11px] border border-rose-200 dark:border-rose-700">SO-h (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Societal Context</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Sustainability &amp; Global Context</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Assess the sustainability and impact of professional engineering solutions in complex global, economic, societal, and environmental contexts.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-i" class="px-2 py-0.5 rounded-none bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono font-bold text-[11px] border border-purple-200 dark:border-purple-700">SO-i (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Lifelong Learning</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Independent &amp; Lifelong Learning</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Recognize the need for and have the preparation and ability to engage in independent and life-long learning in the broadest context of technological change.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-j" class="px-2 py-0.5 rounded-none bg-sky-100 dark:bg-sky-900/60 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] border border-sky-200 dark:border-sky-700">SO-j (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Contemporary Issues</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Contextual Reasoning &amp; Responsibilities</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Apply reasoning informed by contextual knowledge to assess societal, health, safety, legal and cultural issues and the consequent responsibilities relevant to professional engineering practice and solutions to complex engineering problems.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-k" class="px-2 py-0.5 rounded-none bg-indigo-100 dark:bg-indigo-900/60 text-indigo-900 dark:text-indigo-200 font-mono font-bold text-[11px] border border-indigo-200 dark:border-indigo-700">SO-k (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Modern Tools</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Modern Engineering &amp; IT Tool Synthesis</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Synthesize appropriate techniques, skills, resources, and modern engineering and IT tools, including predictive modeling, to develop and implement effective solutions for complex engineering problems, while critically evaluating their limitations.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-l" class="px-2 py-0.5 rounded-none bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-mono font-bold text-[11px] border border-amber-200 dark:border-amber-700">SO-l (2026)</span>
-                      <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Project Management</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Engineering Management &amp; Economics</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Demonstrate knowledge and understanding of engineering management principles and economic decision-making and apply these to one’s own work, as a member and leader in a team, to manage projects and in multidisciplinary environments.</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5 md:col-span-2 lg:col-span-3">
-                    <div class="flex items-center justify-between">
-                      <span id="so-card-tag-m" class="px-2 py-0.5 rounded-none bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono font-bold text-[11px] border border-purple-200 dark:border-purple-700">SO-m (2026)</span>
-                      <span class="text-[11px] font-bold text-purple-700 dark:text-purple-300 uppercase">Program Specific (CMO 92)</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Specialized Computer Engineering Practice</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Apply one specialized skills of computer engineering practice.</p>
-                  </div>
-
+                <div id="soCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <!-- Populated dynamically by renderSoCards() -->
                 </div>
               </div>
 
@@ -3529,37 +3388,10 @@
 
             </div>
 
-            <!-- TAB 3: VISION, MISSION, SCHOOL GOAL & GRADUATE ATTRIBUTES -->
+            <!-- TAB 3: GRADUATE ATTRIBUTES (GA) -->
             <div id="obe-content-vision" class="hidden space-y-5 text-xs">
               
-              <!-- Section 1: Vision, Mission & School Goal Cards -->
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-2">
-                  <div class="flex items-center space-x-2 text-apc-navy dark:text-amber-400 font-bold text-xs uppercase tracking-wider">
-                    <span>🏛️</span>
-                    <span>APC Institutional Vision <span id="obe-badge-vision" class="font-mono text-[10px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-700 ml-1">Vision 2026</span></span>
-                  </div>
-                  <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-[11px]">Asia Pacific College envisions itself to be the preferred Higher Education Institution bridging academe and industry with its programs founded on the concepts and applications of IT, guided by the core values of integrity, industry, and innovation that works.</p>
-                </div>
-
-                <div class="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-2">
-                  <div class="flex items-center space-x-2 text-apc-navy dark:text-amber-400 font-bold text-xs uppercase tracking-wider">
-                    <span>🚀</span>
-                    <span>APC Institutional Mission <span id="obe-badge-mission" class="font-mono text-[10px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-700 ml-1">Mission 2026</span></span>
-                  </div>
-                  <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-[11px]">Asia Pacific College, powered by education and industry professionals as faculty and a balanced curriculum, aims to provide business and the information and communications technology industry in the Philippines and in the global community lifelong learning graduates who are anchored on the principles of integrity and professionalism.</p>
-                </div>
-
-                <div class="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-2">
-                  <div class="flex items-center space-x-2 text-apc-navy dark:text-amber-400 font-bold text-xs uppercase tracking-wider">
-                    <span>🎯</span>
-                    <span>School of Engineering Goal <span id="obe-badge-goal" class="font-mono text-[10px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 border border-blue-200 dark:border-blue-700 ml-1">Goal 2026</span></span>
-                  </div>
-                  <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-[11px]">The School of Engineering aims to produce life-long learning graduates in a professional engineering career equipped with knowledge and skills that will effectively and efficiently meet the scientific and technical demands of the fast-paced technological needs of the diverse field of information and communication technology guided by the college core values of integrity, industry, and innovation.</p>
-                </div>
-              </div>
-
-              <!-- Section 2: APC Graduate Attributes (GA A to GA I) - System Administrator Tier -->
+              <!-- Section 1: APC Graduate Attributes (GA A to GA I) -->
               <div class="p-5 bg-white dark:bg-[#111722] rounded-none border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
                 <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
                   <div class="flex items-center space-x-2.5">
@@ -3567,103 +3399,22 @@
                     <div>
                       <div class="flex items-center gap-2">
                         <h3 class="font-black text-slate-900 dark:text-white text-sm">Asia Pacific College Graduate Attributes (<span id="obe-badge-ga" class="text-amber-700 dark:text-amber-400">GA 2026</span>)</h3>
-                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-[#002855] dark:text-blue-200 font-mono font-bold text-[10px] border border-blue-200 dark:border-blue-700">Institutional Governance &bull; System Admin Level</span>
+                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-[#002855] dark:text-blue-200 font-mono font-bold text-[10px] border border-blue-200 dark:border-blue-700">Editable on Map</span>
                       </div>
-                      <p class="text-slate-500 dark:text-slate-400 text-[11px]">Institutional attributes managed exclusively by System Administration; inherited as fixed reference standards by Degree Programs &amp; Program Directors.</p>
+                      <p class="text-slate-500 dark:text-slate-400 text-[11px]">Core attributes expected of APC graduates; aligned to Program Educational Objectives (PEOs).</p>
                     </div>
                   </div>
                   <div class="flex items-center space-x-2">
-                    <span class="px-2.5 py-1 rounded-none bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-mono font-bold text-[11px] border border-amber-200 dark:border-amber-800">9 Institutional GAs (Inherited)</span>
-                    <button type="button" onclick="showPillarModal('gas')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold transition cursor-pointer border border-[#E5A823]/40 flex items-center gap-1 shadow-2xs" title="View institutional specification">
-                      <span>🏛️</span>
-                      <span>View Institutional Spec</span>
+                    <button type="button" onclick="openEditAllDefinitionsModal('ga')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold transition cursor-pointer border border-[#E5A823]/40 flex items-center gap-1 shadow-2xs" title="Edit GA Definitions">
+                      <span>✏️</span>
+                      <span>Edit GA Definitions</span>
                     </button>
+                    <span class="px-2.5 py-1 rounded-none bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-mono font-bold text-[11px] border border-amber-200 dark:border-amber-800">9 Institutional GAs</span>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-A" class="px-2 py-0.5 rounded-none bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 font-mono font-bold text-[11px] border border-blue-200 dark:border-blue-700">GA A (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Innovation</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Solution Provider</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Creates innovative, proactive and impactful strategies with a willingness to challenge the status quo using emerging technologies aligned with organizational goals and within a global context</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-B" class="px-2 py-0.5 rounded-none bg-emerald-100 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200 font-mono font-bold text-[11px] border border-emerald-200 dark:border-emerald-700">GA B (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Dedication</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Committed</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Personifies reliability, unwavering dedication to responsibilities and resiliency to overcome unexpected challenges</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-C" class="px-2 py-0.5 rounded-none bg-indigo-100 dark:bg-indigo-900/60 text-indigo-900 dark:text-indigo-200 font-mono font-bold text-[11px] border border-indigo-200 dark:border-indigo-700">GA C (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Technology</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">IT Enabled</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Pioneers in utilizing emerging technologies aiming for digital inclusivity</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-D" class="px-2 py-0.5 rounded-none bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono font-bold text-[11px] border border-purple-200 dark:border-purple-700">GA D (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Service &amp; Empathy</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Customer-oriented Professional</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Practices sensitivity and respect for cultural and disciplinary diversity; and advocates empathy and compassion (malasakit) to enhance cultural experience of customers</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-E" class="px-2 py-0.5 rounded-none bg-teal-100 dark:bg-teal-900/60 text-teal-900 dark:text-teal-200 font-mono font-bold text-[11px] border border-teal-200 dark:border-teal-700">GA E (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Collaboration</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Team Player</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Demonstrates leadership to inspire the achievement of team goals with open collaboration and respect for new ideas</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-F" class="px-2 py-0.5 rounded-none bg-sky-100 dark:bg-sky-900/60 text-sky-900 dark:text-sky-200 font-mono font-bold text-[11px] border border-sky-200 dark:border-sky-700">GA F (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Dialogue</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Good Communicator</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Expresses ideas in an organized manner with clarity, listening respectfully to diverse audience needs leading to meaningful dialogue</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-G" class="px-2 py-0.5 rounded-none bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-mono font-bold text-[11px] border border-amber-200 dark:border-amber-700">GA G (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Integrity</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Ethical</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Practices fairness and empathy in dealing with all levels of the organization guided by a moral compass</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-H" class="px-2 py-0.5 rounded-none bg-rose-100 dark:bg-rose-900/60 text-rose-900 dark:text-rose-200 font-mono font-bold text-[11px] border border-rose-200 dark:border-rose-700">GA H (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Civic Impact</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Contributor to Nation Building</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Participates actively in socio-economic and environmental issues leading towards sustainability; and contributes positively to national and global development</p>
-                  </div>
-
-                  <div class="p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-none border border-slate-300 dark:border-slate-700 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span id="ga-card-tag-I" class="px-2 py-0.5 rounded-none bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 font-mono font-bold text-[11px] border border-purple-200 dark:border-purple-700">GA I (2026)</span>
-                      <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Growth</span>
-                    </div>
-                    <h5 class="font-bold text-slate-900 dark:text-slate-100 text-xs">Lifelong Learner</h5>
-                    <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">Undertakes continuous, independent learning charting a path in pursuit of self-actualization</p>
-                  </div>
-
+                <div id="gaCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <!-- Populated dynamically by renderGaCards() -->
                 </div>
               </div>
 
@@ -5752,6 +5503,16 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </div>
         </div>
 
+        <div class="p-2.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 flex items-center justify-between">
+          <div>
+            <div class="font-bold text-slate-800 dark:text-slate-200 text-xs">Customize GA, PEO &amp; SO Definitions</div>
+            <div class="text-[10px] text-slate-500">Edit or refine outcome statements specifically for this map revision</div>
+          </div>
+          <button type="button" onclick="openEditAllDefinitionsModal('all')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/50 cursor-pointer shadow-xs">
+            ✏️ Customize Outcomes
+          </button>
+        </div>
+
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Mapping Documentation Notes</label>
           <textarea id="snapshotMapNotes" rows="2" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-none" placeholder="Annual batch notes, curriculum revision scope, accreditation cycle notes..."></textarea>
@@ -5761,6 +5522,72 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
           <button type="button" onclick="closeSaveCurriculumMapModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Save Curriculum Map</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- OBE OUTCOMES & OBJECTIVES DEFINITION EDITOR MODAL (GA, PEO, SO)           -->
+  <!-- ========================================================================= -->
+  <div id="obeDefinitionEditModal" onclick="if(event.target === this) closeEditObeDefinitionModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+      <!-- Header -->
+      <div class="bg-[#002855] dark:bg-[#10151E] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black text-sm flex items-center justify-center rounded-none shadow-xs">✏️</span>
+          <div>
+            <h3 id="obeDefModalTitle" class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Edit Outcome / Objective Definition</h3>
+            <p id="obeDefModalSubtitle" class="text-[10px] text-amber-300 font-mono">Curriculum Map Definition Specification</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeEditObeDefinitionModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <!-- Form Body -->
+      <form onsubmit="handleSaveObeDefinition(event)" class="p-5 space-y-4 text-xs overflow-y-auto">
+        <input type="hidden" id="obeDefEditType" value="" />
+        <input type="hidden" id="obeDefEditId" value="" />
+
+        <div class="p-2.5 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-600 dark:text-slate-400 uppercase text-[10px]">Select Item:</span>
+            <select id="obeDefSelectSwitch" onchange="onObeDefSelectSwitch(this.value)" class="px-2 py-1 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold text-[#002855] dark:text-amber-400 outline-none cursor-pointer">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+          <span id="obeDefMapBadge" class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 font-mono text-[10px] font-bold">Map: 2026</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Code / Identifier</label>
+            <input type="text" id="obeDefEditCode" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Domain / Category</label>
+            <input type="text" id="obeDefEditDomain" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-bold" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Full Title / Short Description</label>
+          <input type="text" id="obeDefEditTitle" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-medium" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Statement / Competency Specification</label>
+          <textarea id="obeDefEditDesc" rows="4" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-y font-normal" placeholder="Detailed outcome statement, performance indicator, or competency criteria..."></textarea>
+        </div>
+
+        <div id="obeDefActiveLockNotice" class="hidden p-2.5 bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-800 dark:text-amber-300">
+          <span>⚠️ <strong>Note:</strong> Modifying definitions updates this curriculum map version across all matrices, cards, and the relational tree.</span>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeEditObeDefinitionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Save Definition</button>
         </div>
       </form>
     </div>

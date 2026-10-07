@@ -7766,14 +7766,17 @@ ${worksheetsXml}
       });
 
       // 3. Tab Labels
+      const tabLblHierarchy = document.getElementById('obe-tab-label-hierarchy');
+      if (tabLblHierarchy) tabLblHierarchy.textContent = `Curriculum Map`;
+
       const tabLblMatrix = document.getElementById('obe-tab-label-matrix');
       if (tabLblMatrix) tabLblMatrix.textContent = `SO to Course`;
 
       const tabLblPeo = document.getElementById('obe-tab-label-peo');
-      if (tabLblPeo) tabLblPeo.textContent = `PEO-to-SO Relational Schedule (PEO ${verStr} • SO ${verStr})`;
+      if (tabLblPeo) tabLblPeo.textContent = `PEO to SO`;
 
       const tabLblVision = document.getElementById('obe-tab-label-vision');
-      if (tabLblVision) tabLblVision.textContent = `Vision, Mission, Goal & Graduate Attributes (GA ${verStr})`;
+      if (tabLblVision) tabLblVision.textContent = `Graduate Attributes (GA)`;
 
       // 4. Component Section Badges
       const badgePeo = document.getElementById('obe-badge-peo');
@@ -7785,23 +7788,15 @@ ${worksheetsXml}
       const badgePeoSoMatrix = document.getElementById('obe-badge-peo-so-matrix');
       if (badgePeoSoMatrix) badgePeoSoMatrix.textContent = `Matrix ${verStr}`;
 
-      const badgeVision = document.getElementById('obe-badge-vision');
-      if (badgeVision) badgeVision.textContent = `Vision ${verStr}`;
-
-      const badgeMission = document.getElementById('obe-badge-mission');
-      if (badgeMission) badgeMission.textContent = `Mission ${verStr}`;
-
-      const badgeGoal = document.getElementById('obe-badge-goal');
-      if (badgeGoal) badgeGoal.textContent = `Goal ${verStr}`;
-
-      const badgeValues = document.getElementById('obe-badge-values');
-      if (badgeValues) badgeValues.textContent = `Values ${verStr}`;
-
       const badgeGa = document.getElementById('obe-badge-ga');
       if (badgeGa) badgeGa.textContent = `GA ${verStr}`;
 
       const badgePeoGaMatrix = document.getElementById('obe-badge-peo-ga-matrix');
       if (badgePeoGaMatrix) badgePeoGaMatrix.textContent = `Matrix ${verStr}`;
+
+      if (typeof renderPeoCards === 'function') renderPeoCards();
+      if (typeof renderSoCards === 'function') renderSoCards();
+      if (typeof renderGaCards === 'function') renderGaCards();
 
       // 5. Card Badges: PEO 1..5
       for (let i = 1; i <= 5; i++) {
@@ -7877,10 +7872,13 @@ ${worksheetsXml}
       } else if (tabKey === 'peo' || tabKey === 'peo-so') {
         if (tabPeoSo) tabPeoSo.classList.remove('hidden');
         if (btnPeoSo) btnPeoSo.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold whitespace-nowrap';
+        if (typeof renderPeoCards === 'function') renderPeoCards();
+        if (typeof renderSoCards === 'function') renderSoCards();
         if (typeof renderPeoSoAlignmentTable === 'function') renderPeoSoAlignmentTable();
       } else if (tabKey === 'vision' || tabKey === 'vmg') {
         if (tabVmg) tabVmg.classList.remove('hidden');
         if (btnVmg) btnVmg.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold whitespace-nowrap';
+        if (typeof renderGaCards === 'function') renderGaCards();
         if (typeof renderPeoGaAlignmentTable === 'function') renderPeoGaAlignmentTable();
       }
       updateAllObeVersionBadges();
@@ -7989,6 +7987,11 @@ ${worksheetsXml}
     window.selectCurriculumMap = function(mapId) {
       window.currentActiveCurriculumMap = mapId;
       renderCurriculumMapHierarchy();
+      if (typeof renderPeoCards === 'function') renderPeoCards();
+      if (typeof renderSoCards === 'function') renderSoCards();
+      if (typeof renderGaCards === 'function') renderGaCards();
+      if (typeof renderPeoSoAlignmentTable === 'function') renderPeoSoAlignmentTable();
+      if (typeof renderPeoGaAlignmentTable === 'function') renderPeoGaAlignmentTable();
     };
 
     window.renderCurriculumMapHierarchy = function() {
@@ -8392,41 +8395,72 @@ ${worksheetsXml}
     // =========================================================================
     // MULTI-COLUMN RELATIONAL FLOW GRAPH & INLINE LINK EDITOR MODULE (OPTION 1)
     // =========================================================================
-    const FLOW_GA_DEFS = [
-      { id: 1, code: 'GA 1', title: 'Professional Knowledge', desc: 'Apply specialized knowledge in mathematics and engineering fundamentals.' },
-      { id: 2, code: 'GA 2', title: 'Problem Analysis', desc: 'Identify, formulate, and analyze complex engineering problems.' },
-      { id: 3, code: 'GA 3', title: 'Design & Investigation', desc: 'Design systems, components, and conduct investigations using research methods.' },
-      { id: 4, code: 'GA 4', title: 'Modern Tool Usage', desc: 'Create, select, and apply modern IT tools and predictive modeling.' },
-      { id: 5, code: 'GA 5', title: 'Individual & Team Work', desc: 'Function effectively as an individual, and as a member or leader in diverse teams.' },
-      { id: 6, code: 'GA 6', title: 'Communication', desc: 'Communicate effectively on complex engineering activities with clarity.' },
-      { id: 7, code: 'GA 7', title: 'Ethics & Responsibility', desc: 'Apply ethical principles and commit to professional ethics and responsibilities.' },
-      { id: 8, code: 'GA 8', title: 'Lifelong Learning', desc: 'Recognize the need for and engage in independent lifelong learning.' },
-      { id: 9, code: 'GA 9', title: 'Innovation & Technopreneurship', desc: 'Synthesize engineering knowledge with innovation and entrepreneurship.' }
+    const DEFAULT_FLOW_GA_DEFS = [
+      { id: 1, code: 'GA A', domain: 'Innovation', title: 'Solution Provider', desc: 'Creates innovative, proactive and impactful strategies with a willingness to challenge the status quo using emerging technologies aligned with organizational goals and within a global context.' },
+      { id: 2, code: 'GA B', domain: 'Dedication', title: 'Committed', desc: 'Personifies reliability, unwavering dedication to responsibilities and resiliency to overcome unexpected challenges.' },
+      { id: 3, code: 'GA C', domain: 'Technology', title: 'IT Enabled', desc: 'Pioneers in utilizing emerging technologies aiming for digital inclusivity.' },
+      { id: 4, code: 'GA D', domain: 'Service & Empathy', title: 'Customer-oriented Professional', desc: 'Practices sensitivity and respect for cultural and disciplinary diversity; and advocates empathy and compassion (malasakit) to enhance cultural experience of customers.' },
+      { id: 5, code: 'GA E', domain: 'Collaboration', title: 'Team Player', desc: 'Demonstrates leadership to inspire the achievement of team goals with open collaboration and respect for new ideas.' },
+      { id: 6, code: 'GA F', domain: 'Dialogue', title: 'Good Communicator', desc: 'Expresses ideas in an organized manner with clarity, listening respectfully to diverse audience needs leading to meaningful dialogue.' },
+      { id: 7, code: 'GA G', domain: 'Integrity', title: 'Ethical', desc: 'Practices fairness and empathy in dealing with all levels of the organization guided by a moral compass.' },
+      { id: 8, code: 'GA H', domain: 'Civic Impact', title: 'Contributor to Nation Building', desc: 'Participates actively in socio-economic and environmental issues leading towards sustainability; and contributes positively to national and global development.' },
+      { id: 9, code: 'GA I', domain: 'Growth', title: 'Lifelong Learner', desc: 'Undertakes continuous, independent learning charting a path in pursuit of self-actualization.' }
     ];
 
-    const FLOW_PEO_DEFS = [
-      { id: 1, code: 'PEO 1', title: 'Solutions & Emerging Technologies', desc: 'Synthesize advanced engineering principles to develop innovative computer-based solutions.' },
-      { id: 2, code: 'PEO 2', title: 'Ethics & Sustainability', desc: 'Integrate ethical, social, and environmental considerations into engineering practice.' },
-      { id: 3, code: 'PEO 3', title: 'Continuous Professional Growth', desc: 'Pursue continuous professional growth through advanced studies and certifications.' },
-      { id: 4, code: 'PEO 4', title: 'Leadership & Teamwork', desc: 'Demonstrate leadership and teamwork in multidisciplinary collaborations.' },
-      { id: 5, code: 'PEO 5', title: 'Articulate Communication', desc: 'Articulate complex technical concepts with clarity across diverse engineering contexts.' }
+    const DEFAULT_FLOW_PEO_DEFS = [
+      { id: 1, code: 'PEO 1', domain: 'Solutions & Tech', title: 'Complex Solutions & Emerging Technologies', desc: 'Synthesize advanced engineering principles and emerging technologies to develop innovative, efficient, and adaptive computer-based solutions for complex engineering problems.' },
+      { id: 2, code: 'PEO 2', domain: 'Ethics & Sustainability', title: 'Sustainable & Responsible Solutions', desc: 'Integrate ethical, social, and environmental considerations into engineering practices for sustainable and responsible solutions that contribute to societal well-being.' },
+      { id: 3, code: 'PEO 3', domain: 'Lifelong Learning', title: 'Continuous Professional Growth', desc: 'Pursue continuous professional growth by engaging in advanced studies, industry certifications, or self-directed learning to stay at the forefront of technological advancements.' },
+      { id: 4, code: 'PEO 4', domain: 'Leadership & Teams', title: 'Multidisciplinary Leadership & Teamwork', desc: 'Demonstrate leadership and teamwork by effectively managing multidisciplinary collaborations and promoting inclusive environments.' },
+      { id: 5, code: 'PEO 5', domain: 'Communication', title: 'Technical Communication & Engagement', desc: 'Articulate complex technical concepts with clarity and precision, adapting communication strategies to effectively engage with engineers, client, employers, and the broader community.' }
     ];
 
-    const FLOW_SO_DEFS = [
-      { id: 'a', code: 'SO-a', title: 'Engineering Knowledge Application', desc: 'Apply knowledge of mathematics, natural science, and engineering fundamentals.' },
-      { id: 'b', code: 'SO-b', title: 'Investigation of Complex Problems', desc: 'Conduct investigations using research-based knowledge and design of experiments.' },
-      { id: 'c', code: 'SO-c', title: 'Design Solutions for Complex Problems', desc: 'Design systems or components that meet specified needs with constraints.' },
-      { id: 'd', code: 'SO-d', title: 'Individual and Team Functioning', desc: 'Function effectively as an individual and in multidisciplinary teams.' },
-      { id: 'e', code: 'SO-e', title: 'Evaluation & First Principles', desc: 'Critically formulate and evaluate problems applying first principles.' },
-      { id: 'f', code: 'SO-f', title: 'Ethical Principles & Norms', desc: 'Apply ethical principles and commit to professional ethics and responsibilities.' },
-      { id: 'g', code: 'SO-g', title: 'Effective Communication', desc: 'Communicate effectively on complex engineering activities.' },
-      { id: 'h', code: 'SO-h', title: 'Sustainability and Impact', desc: 'Assess impact of engineering solutions in societal and environmental contexts.' },
-      { id: 'i', code: 'SO-i', title: 'Lifelong Learning', desc: 'Engage in independent and lifelong learning amidst technological change.' },
-      { id: 'j', code: 'SO-j', title: 'Societal & Contextual Knowledge', desc: 'Apply reasoning informed by contextual knowledge to assess societal issues.' },
-      { id: 'k', code: 'SO-k', title: 'Modern Tool Synthesis', desc: 'Synthesize appropriate techniques, resources, and modern engineering IT tools.' },
-      { id: 'l', code: 'SO-l', title: 'Engineering Management & Economics', desc: 'Demonstrate understanding of engineering management and economic decisions.' },
-      { id: 'm', code: 'SO-m', title: 'Specialized Computer Engineering', desc: 'Apply specialized skills of computer engineering practice.' }
+    const DEFAULT_FLOW_SO_DEFS = [
+      { id: 'a', code: 'SO-a', domain: 'Engineering Sciences', title: 'Engineering Knowledge Application', desc: 'Apply knowledge of mathematics, natural science, engineering fundamentals and an engineering specialization to the solution of complex engineering problems.' },
+      { id: 'b', code: 'SO-b', domain: 'Investigation', title: 'Investigation of Complex Problems', desc: 'Conduct investigations of complex problems using research-based knowledge and research methods including design of experiments, analysis and interpretation of data, and synthesis of information to provide valid conclusions.' },
+      { id: 'c', code: 'SO-c', domain: 'System Design', title: 'Design Solutions for Complex Problems', desc: 'Design solutions for complex engineering problems and design systems, components or processes that meet specified needs with appropriate consideration for political, manufacturability, sustainability, economic, public health and safety, cultural, societal, ethical, and environmental considerations.' },
+      { id: 'd', code: 'SO-d', domain: 'Teamwork', title: 'Individual and Team Functioning', desc: 'Function effectively as an individual, and as a member or leader in diverse teams and in multi-disciplinary settings.' },
+      { id: 'e', code: 'SO-e', domain: 'Problem Solving', title: 'Evaluation & First Principles', desc: 'Evaluate complex engineering problems by critically identifying, formulating, and analyzing them through comprehensive research and literature review, applying first principles of mathematics, natural sciences, and engineering sciences to derive well-founded and impactful solutions.' },
+      { id: 'f', code: 'SO-f', domain: 'Ethics', title: 'Ethical Principles & Norms', desc: 'Apply ethical principles and commit to professional ethics and responsibilities and norms of engineering practice.' },
+      { id: 'g', code: 'SO-g', domain: 'Communication', title: 'Effective Engineering Communication', desc: 'Communicate effectively on complex engineering activities with the engineering community and with society at large, such as being able to comprehend and write effective reports and design documentation, make effective presentations, and give and receive clear instructions.' },
+      { id: 'h', code: 'SO-h', domain: 'Societal Context', title: 'Sustainability & Global Context', desc: 'Assess the sustainability and impact of professional engineering solutions in complex global, economic, societal, and environmental contexts.' },
+      { id: 'i', code: 'SO-i', domain: 'Lifelong Learning', title: 'Independent & Lifelong Learning', desc: 'Recognize the need for and have the preparation and ability to engage in independent and life-long learning in the broadest context of technological change.' },
+      { id: 'j', code: 'SO-j', domain: 'Contemporary Issues', title: 'Contextual Reasoning & Responsibilities', desc: 'Apply reasoning informed by contextual knowledge to assess societal, health, safety, legal and cultural issues and the consequent responsibilities relevant to professional engineering practice and solutions to complex engineering problems.' },
+      { id: 'k', code: 'SO-k', domain: 'Modern Tools', title: 'Modern Engineering & IT Tool Synthesis', desc: 'Synthesize appropriate techniques, skills, resources, and modern engineering and IT tools, including predictive modeling, to develop and implement effective solutions for complex engineering problems, while critically evaluating their limitations.' },
+      { id: 'l', code: 'SO-l', domain: 'Project Management', title: 'Engineering Management & Economics', desc: 'Demonstrate knowledge and understanding of engineering management principles and economic decision-making and apply these to one’s own work, as a member and leader in a team, to manage projects and in multidisciplinary environments.' },
+      { id: 'm', code: 'SO-m', domain: 'Program Specific (CMO 92)', title: 'Specialized Computer Engineering Practice', desc: 'Apply one specialized skills of computer engineering practice.' }
     ];
+
+    window.FLOW_GA_DEFS = DEFAULT_FLOW_GA_DEFS;
+    window.FLOW_PEO_DEFS = DEFAULT_FLOW_PEO_DEFS;
+    window.FLOW_SO_DEFS = DEFAULT_FLOW_SO_DEFS;
+
+    window.getObeGaDefs = function() {
+      const mapId = window.currentActiveCurriculumMap || 'default';
+      try {
+        const s = localStorage.getItem('apc_obe_gas_' + mapId);
+        if (s) return JSON.parse(s);
+      } catch (e) {}
+      return DEFAULT_FLOW_GA_DEFS;
+    };
+
+    window.getObePeoDefs = function() {
+      const mapId = window.currentActiveCurriculumMap || 'default';
+      try {
+        const s = localStorage.getItem('apc_obe_peos_' + mapId);
+        if (s) return JSON.parse(s);
+      } catch (e) {}
+      return DEFAULT_FLOW_PEO_DEFS;
+    };
+
+    window.getObeSoDefs = function() {
+      const mapId = window.currentActiveCurriculumMap || 'default';
+      try {
+        const s = localStorage.getItem('apc_obe_sos_' + mapId);
+        if (s) return JSON.parse(s);
+      } catch (e) {}
+      return DEFAULT_FLOW_SO_DEFS;
+    };
 
     window.getPeoSoLinks = function() {
       try {
@@ -8483,7 +8517,7 @@ ${worksheetsXml}
       const tbody = document.getElementById('peoSoAlignmentTableBody');
       if (!tbody) return;
       const links = window.getPeoSoLinks() || {};
-      const soList = FLOW_SO_DEFS || [];
+      const soList = (typeof window.getObeSoDefs === 'function') ? window.getObeSoDefs() : (FLOW_SO_DEFS || []);
 
       tbody.innerHTML = soList.map(so => {
         const linkedPeos = links[so.id] || [];
@@ -8533,6 +8567,9 @@ ${worksheetsXml}
       }
       window.savePeoSoLinks(links);
       renderPeoSoAlignmentTable();
+      if (typeof renderPeoCards === 'function') renderPeoCards();
+      if (typeof renderSoCards === 'function') renderSoCards();
+      if (typeof renderFlowGraph === 'function') renderFlowGraph();
       if (typeof renderObeMatrix === 'function') renderObeMatrix();
       if (typeof renderCurriculumMapMatrix === 'function') renderCurriculumMapMatrix();
       if (typeof showToast === 'function') {
@@ -8545,7 +8582,7 @@ ${worksheetsXml}
       const tbody = document.getElementById('peoGaAlignmentTableBody');
       if (!tbody) return;
       const links = window.getPeoGaLinks() || {};
-      const peoList = FLOW_PEO_DEFS || [];
+      const peoList = (typeof window.getObePeoDefs === 'function') ? window.getObePeoDefs() : (FLOW_PEO_DEFS || []);
       const gaLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
       tbody.innerHTML = peoList.map(peo => {
@@ -8597,11 +8634,299 @@ ${worksheetsXml}
       }
       window.savePeoGaLinks(links);
       renderPeoGaAlignmentTable();
+      if (typeof renderPeoCards === 'function') renderPeoCards();
+      if (typeof renderGaCards === 'function') renderGaCards();
+      if (typeof renderFlowGraph === 'function') renderFlowGraph();
       if (typeof renderObeMatrix === 'function') renderObeMatrix();
       if (typeof renderCurriculumMapMatrix === 'function') renderCurriculumMapMatrix();
       if (typeof showToast === 'function') {
         const action = idx >= 0 ? 'Removed alignment' : 'Aligned';
         showToast(`${action}: PEO ${peoId} ↔ GA ${String.fromCharCode(64 + gaNum)}`);
+      }
+    };
+
+    // =========================================================================
+    // DYNAMIC CARD RENDERERS (GA, PEO, SO) WITH INLINE EDIT FACILITIES
+    // =========================================================================
+    window.renderPeoCards = function() {
+      const container = document.getElementById('peoCardsContainer');
+      if (!container) return;
+      const peos = (typeof window.getObePeoDefs === 'function') ? window.getObePeoDefs() : (FLOW_PEO_DEFS || []);
+      const peoGaLinks = (typeof window.getPeoGaLinks === 'function') ? window.getPeoGaLinks() : {};
+      const peoSoLinks = (typeof window.getPeoSoLinks === 'function') ? window.getPeoSoLinks() : {};
+
+      container.innerHTML = peos.map(peo => {
+        const linkedGas = (peoGaLinks[peo.id] || []).map(g => `GA ${String.fromCharCode(64 + g)}`);
+        const linkedSos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
+
+        return `
+          <div class="p-4 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 shadow-2xs hover:border-purple-400 transition flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-300 font-mono font-bold text-xs border border-purple-200 dark:border-purple-800">${peo.code}</span>
+                  ${peo.domain ? `<span class="px-1.5 py-0.2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px]">${peo.domain}</span>` : ''}
+                </div>
+                <button type="button" onclick="openEditObeDefinitionModal('peo', ${peo.id})" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer flex items-center gap-1" title="Edit definition">
+                  <span>✏️</span>
+                  <span>Edit</span>
+                </button>
+              </div>
+              <h4 class="font-bold text-xs text-slate-900 dark:text-slate-100 mt-2 leading-snug">${peo.title}</h4>
+              <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">${peo.desc}</p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-1 text-[10px] font-mono">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Upstream GAs:</span>
+                <span class="font-bold text-slate-700 dark:text-slate-300">${linkedGas.length ? linkedGas.join(', ') : '<span class="italic text-slate-400">None</span>'}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Cascading SOs:</span>
+                <span class="font-bold text-indigo-700 dark:text-indigo-400">${linkedSos.length ? linkedSos.join(', ') : '<span class="italic text-slate-400">None</span>'}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    window.renderSoCards = function() {
+      const container = document.getElementById('soCardsContainer');
+      if (!container) return;
+      const sos = (typeof window.getObeSoDefs === 'function') ? window.getObeSoDefs() : (FLOW_SO_DEFS || []);
+      const peoSoLinks = (typeof window.getPeoSoLinks === 'function') ? window.getPeoSoLinks() : {};
+      const allCourses = (window.OFFICIAL_BASELINE_74_COURSES && window.OFFICIAL_BASELINE_74_COURSES.length > 0)
+        ? window.OFFICIAL_BASELINE_74_COURSES
+        : [];
+      const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+
+      container.innerHTML = sos.map(so => {
+        const linkedPeos = (peoSoLinks[so.id] || []).map(p => `PEO ${p}`);
+        const soIdx = SO_KEYS.indexOf(so.id);
+        let iCnt = 0, eCnt = 0, dCnt = 0;
+        allCourses.forEach(c => {
+          const val = (c.sos && c.sos[soIdx]) ? c.sos[soIdx].trim().toUpperCase() : '-';
+          if (val === 'I') iCnt++;
+          else if (val === 'E') eCnt++;
+          else if (val === 'D') dCnt++;
+        });
+        const totalMapped = iCnt + eCnt + dCnt;
+
+        return `
+          <div class="p-4 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 shadow-2xs hover:border-indigo-400 transition flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-300 font-mono font-bold text-xs border border-indigo-200 dark:border-indigo-800">${so.code}</span>
+                  ${so.domain ? `<span class="px-1.5 py-0.2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px]">${so.domain}</span>` : ''}
+                </div>
+                <button type="button" onclick="openEditObeDefinitionModal('so', '${so.id}')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer flex items-center gap-1" title="Edit definition">
+                  <span>✏️</span>
+                  <span>Edit</span>
+                </button>
+              </div>
+              <h4 class="font-bold text-xs text-slate-900 dark:text-slate-100 mt-2 leading-snug">${so.title}</h4>
+              <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">${so.desc}</p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-1 text-[10px] font-mono">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Mapped PEOs:</span>
+                <span class="font-bold text-purple-700 dark:text-purple-400">${linkedPeos.length ? linkedPeos.join(', ') : '<span class="italic text-slate-400">None</span>'}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">I-E-D Courses:</span>
+                <div class="flex items-center gap-1 font-bold">
+                  <span class="px-1 bg-emerald-100 text-emerald-800 text-[9px]">I:${iCnt}</span>
+                  <span class="px-1 bg-amber-100 text-amber-800 text-[9px]">E:${eCnt}</span>
+                  <span class="px-1 bg-indigo-100 text-indigo-800 text-[9px]">D:${dCnt}</span>
+                  <span class="text-slate-600 dark:text-slate-400 text-[9px]">(${totalMapped})</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    window.renderGaCards = function() {
+      const container = document.getElementById('gaCardsContainer');
+      if (!container) return;
+      const gas = (typeof window.getObeGaDefs === 'function') ? window.getObeGaDefs() : (FLOW_GA_DEFS || []);
+      const peoGaLinks = (typeof window.getPeoGaLinks === 'function') ? window.getPeoGaLinks() : {};
+
+      container.innerHTML = gas.map(ga => {
+        const linkedPeos = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id)).map(p => `PEO ${p}`);
+
+        return `
+          <div class="p-4 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 shadow-2xs hover:border-amber-400 transition flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 font-mono font-bold text-xs border border-amber-200 dark:border-amber-800">${ga.code}</span>
+                  <span class="px-1.5 py-0.2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px]">${ga.cat || ga.domain || 'Institutional'}</span>
+                </div>
+                <button type="button" onclick="openEditObeDefinitionModal('ga', ${ga.id})" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer flex items-center gap-1" title="Edit definition">
+                  <span>✏️</span>
+                  <span>Edit</span>
+                </button>
+              </div>
+              <h4 class="font-bold text-xs text-slate-900 dark:text-slate-100 mt-2 leading-snug">${ga.title}</h4>
+              <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed">${ga.desc}</p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-1 text-[10px] font-mono">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Supporting PEOs:</span>
+                <span class="font-bold text-purple-700 dark:text-purple-400">${linkedPeos.length ? linkedPeos.join(', ') : '<span class="italic text-slate-400">None</span>'}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    // =========================================================================
+    // OBE DEFINITION EDIT MODAL CONTROLLERS
+    // =========================================================================
+    window.openEditObeDefinitionModal = function(type, targetId) {
+      const modal = document.getElementById('obeDefinitionEditModal');
+      if (!modal) return;
+      const mapId = window.currentActiveCurriculumMap || 'CM-BSCpE-2026';
+
+      const typeInput = document.getElementById('obeDefEditType');
+      const idInput = document.getElementById('obeDefEditId');
+      const titleEl = document.getElementById('obeDefModalTitle');
+      const subEl = document.getElementById('obeDefModalSubtitle');
+      const switchSel = document.getElementById('obeDefSelectSwitch');
+      const mapBadge = document.getElementById('obeDefMapBadge');
+
+      if (typeInput) typeInput.value = type;
+      if (mapBadge) mapBadge.textContent = `Map: ${mapId}`;
+
+      let items = [];
+      let modalTitle = '';
+      if (type === 'ga') {
+        items = window.getObeGaDefs();
+        modalTitle = 'Edit Graduate Attribute (GA) Definition';
+      } else if (type === 'peo') {
+        items = window.getObePeoDefs();
+        modalTitle = 'Edit Program Educational Objective (PEO) Definition';
+      } else if (type === 'so') {
+        items = window.getObeSoDefs();
+        modalTitle = 'Edit Student Outcome (SO) Definition';
+      }
+
+      if (titleEl) titleEl.textContent = modalTitle;
+      if (subEl) subEl.textContent = `Curriculum Map ${mapId} Definition Specification`;
+
+      if (switchSel) {
+        switchSel.innerHTML = items.map(item => `
+          <option value="${item.id}">${item.code} — ${item.title}</option>
+        `).join('');
+      }
+
+      const selectedItem = (targetId !== undefined && targetId !== null)
+        ? items.find(x => String(x.id) === String(targetId)) || items[0]
+        : items[0];
+
+      if (selectedItem) {
+        if (switchSel) switchSel.value = selectedItem.id;
+        if (idInput) idInput.value = selectedItem.id;
+        const codeInput = document.getElementById('obeDefEditCode');
+        const domInput = document.getElementById('obeDefEditDomain');
+        const titleInput = document.getElementById('obeDefEditTitle');
+        const descInput = document.getElementById('obeDefEditDesc');
+        if (codeInput) codeInput.value = selectedItem.code || '';
+        if (domInput) domInput.value = selectedItem.domain || selectedItem.cat || '';
+        if (titleInput) titleInput.value = selectedItem.title || '';
+        if (descInput) descInput.value = selectedItem.desc || '';
+      }
+
+      modal.classList.remove('hidden');
+    };
+
+    window.openEditAllDefinitionsModal = function(type) {
+      const targetType = (!type || type === 'all') ? 'so' : type;
+      window.openEditObeDefinitionModal(targetType);
+    };
+
+    window.closeEditObeDefinitionModal = function() {
+      const modal = document.getElementById('obeDefinitionEditModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.onObeDefSelectSwitch = function(newId) {
+      const type = document.getElementById('obeDefEditType')?.value || 'so';
+      let items = [];
+      if (type === 'ga') items = window.getObeGaDefs();
+      else if (type === 'peo') items = window.getObePeoDefs();
+      else if (type === 'so') items = window.getObeSoDefs();
+
+      const selectedItem = items.find(x => String(x.id) === String(newId));
+      if (selectedItem) {
+        const idInput = document.getElementById('obeDefEditId');
+        const codeInput = document.getElementById('obeDefEditCode');
+        const domInput = document.getElementById('obeDefEditDomain');
+        const titleInput = document.getElementById('obeDefEditTitle');
+        const descInput = document.getElementById('obeDefEditDesc');
+        if (idInput) idInput.value = selectedItem.id;
+        if (codeInput) codeInput.value = selectedItem.code || '';
+        if (domInput) domInput.value = selectedItem.domain || selectedItem.cat || '';
+        if (titleInput) titleInput.value = selectedItem.title || '';
+        if (descInput) descInput.value = selectedItem.desc || '';
+      }
+    };
+
+    window.handleSaveObeDefinition = function(e) {
+      if (e) e.preventDefault();
+      const type = document.getElementById('obeDefEditType')?.value;
+      const id = document.getElementById('obeDefEditId')?.value;
+      const code = document.getElementById('obeDefEditCode')?.value;
+      const domain = document.getElementById('obeDefEditDomain')?.value;
+      const title = document.getElementById('obeDefEditTitle')?.value;
+      const desc = document.getElementById('obeDefEditDesc')?.value;
+      const mapId = window.currentActiveCurriculumMap || 'CM-BSCpE-2026';
+
+      if (!type || !id) return;
+
+      let items = [];
+      if (type === 'ga') items = window.getObeGaDefs();
+      else if (type === 'peo') items = window.getObePeoDefs();
+      else if (type === 'so') items = window.getObeSoDefs();
+
+      items = JSON.parse(JSON.stringify(items));
+      const target = items.find(x => String(x.id) === String(id));
+      if (target) {
+        target.code = code;
+        if (type === 'ga') target.cat = domain;
+        target.domain = domain;
+        target.title = title;
+        target.desc = desc;
+      }
+
+      try {
+        localStorage.setItem(`apc_obe_${type}s_${mapId}`, JSON.stringify(items));
+      } catch (err) {}
+
+      if (type === 'ga') window.FLOW_GA_DEFS = items;
+      else if (type === 'peo') window.FLOW_PEO_DEFS = items;
+      else if (type === 'so') window.FLOW_SO_DEFS = items;
+
+      window.closeEditObeDefinitionModal();
+
+      if (typeof renderPeoCards === 'function') renderPeoCards();
+      if (typeof renderSoCards === 'function') renderSoCards();
+      if (typeof renderGaCards === 'function') renderGaCards();
+      if (typeof renderPeoSoAlignmentTable === 'function') renderPeoSoAlignmentTable();
+      if (typeof renderPeoGaAlignmentTable === 'function') renderPeoGaAlignmentTable();
+      if (typeof renderFlowGraph === 'function') renderFlowGraph();
+      if (typeof renderObeMatrix === 'function') renderObeMatrix();
+      if (typeof renderCurriculumMapMatrix === 'function') renderCurriculumMapMatrix();
+
+      if (typeof showToast === 'function') {
+        showToast(`✓ Successfully saved definition for ${code}!`);
       }
     };
 
@@ -9005,9 +9330,9 @@ ${worksheetsXml}
         return true;
       });
 
-      let gaList = FLOW_GA_DEFS || [];
-      let peoList = FLOW_PEO_DEFS || [];
-      let soList = FLOW_SO_DEFS || [];
+      let gaList = (typeof window.getObeGaDefs === 'function') ? window.getObeGaDefs() : (FLOW_GA_DEFS || []);
+      let peoList = (typeof window.getObePeoDefs === 'function') ? window.getObePeoDefs() : (FLOW_PEO_DEFS || []);
+      let soList = (typeof window.getObeSoDefs === 'function') ? window.getObeSoDefs() : (FLOW_SO_DEFS || []);
       let courseList = baseCourses;
 
       const tr = window.activeFlowTrace;
@@ -9129,6 +9454,27 @@ ${worksheetsXml}
       window.renderFlowGraph();
     };
 
+    window.flowViewMode = 'tree';
+
+    window.setFlowViewMode = function(mode) {
+      window.flowViewMode = mode;
+      const btnTree = document.getElementById('btnFlowModeTree');
+      const btnCylinder = document.getElementById('btnFlowModeCylinder');
+      const centerLine = document.getElementById('flowCenterAlignmentLine');
+
+      if (mode === 'tree') {
+        if (btnTree) btnTree.className = 'px-2.5 py-1 bg-[#002855] text-[#E5A823] font-bold cursor-pointer transition';
+        if (btnCylinder) btnCylinder.className = 'px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-normal cursor-pointer transition';
+        if (centerLine) centerLine.classList.add('hidden');
+      } else {
+        if (btnTree) btnTree.className = 'px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-normal cursor-pointer transition';
+        if (btnCylinder) btnCylinder.className = 'px-2.5 py-1 bg-[#002855] text-[#E5A823] font-bold cursor-pointer transition';
+        if (centerLine) centerLine.classList.remove('hidden');
+      }
+
+      window.renderFlowGraph();
+    };
+
     window.renderFlowGraph = function() {
       const colGA = document.getElementById('flowColGA');
       const colPEO = document.getElementById('flowColPEO');
@@ -9142,6 +9488,48 @@ ${worksheetsXml}
       const lists = window.getFlowColumnLists();
       const allCourses = lists.course;
       const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+      const isTree = (window.flowViewMode !== 'cylinder');
+
+      // Containers & viewport setup
+      const containers = [
+        document.getElementById('cylinderContainerGA'),
+        document.getElementById('cylinderContainerPEO'),
+        document.getElementById('cylinderContainerSO'),
+        document.getElementById('cylinderContainerCourses')
+      ];
+      const cols = [colGA, colPEO, colSO, colCourses];
+      const centerLine = document.getElementById('flowCenterAlignmentLine');
+
+      containers.forEach(cont => {
+        if (!cont) return;
+        if (isTree) {
+          cont.style.perspective = 'none';
+          cont.style.height = 'auto';
+          cont.className = 'relative overflow-y-auto max-h-[520px] select-none p-1 space-y-1.5';
+          cont.querySelectorAll('.pointer-events-none.absolute').forEach(el => el.style.display = 'none');
+        } else {
+          cont.style.perspective = '900px';
+          cont.style.height = '360px';
+          cont.className = 'relative overflow-hidden h-[360px] select-none';
+          cont.querySelectorAll('.pointer-events-none.absolute').forEach(el => el.style.display = 'block');
+        }
+      });
+
+      cols.forEach(col => {
+        if (!col) return;
+        if (isTree) {
+          col.className = 'w-full flex flex-col gap-2 relative z-10';
+          col.style.height = 'auto';
+        } else {
+          col.className = 'h-full flex flex-col justify-between py-1 relative z-10';
+          col.style.height = '';
+        }
+      });
+
+      if (centerLine) {
+        if (isTree) centerLine.classList.add('hidden');
+        else centerLine.classList.remove('hidden');
+      }
 
       // Ensure valid wheel indices
       ['ga', 'peo', 'so', 'course'].forEach(k => {
@@ -9154,30 +9542,46 @@ ${worksheetsXml}
       const tr = window.activeFlowTrace;
       const isTraceActive = Boolean(tr && tr.type && tr.id !== null);
 
-      // Update position counters with dynamic focus / linked indicators
+      // Update position counters
       const posGA = document.getElementById('wheelPosGA');
       if (posGA) {
         const isFocus = (tr && tr.type === 'ga');
-        const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
-        posGA.textContent = lists.ga.length ? `${window.flowWheelIndices.ga + 1} / ${lists.ga.length}${suffix}` : '0 / 0';
+        if (isTree) {
+          posGA.textContent = isTraceActive ? (isFocus ? '★ Focus' : `${lists.ga.length} linked`) : `${lists.ga.length} items`;
+        } else {
+          const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
+          posGA.textContent = lists.ga.length ? `${window.flowWheelIndices.ga + 1} / ${lists.ga.length}${suffix}` : '0 / 0';
+        }
       }
       const posPEO = document.getElementById('wheelPosPEO');
       if (posPEO) {
         const isFocus = (tr && tr.type === 'peo');
-        const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
-        posPEO.textContent = lists.peo.length ? `${window.flowWheelIndices.peo + 1} / ${lists.peo.length}${suffix}` : '0 / 0';
+        if (isTree) {
+          posPEO.textContent = isTraceActive ? (isFocus ? '★ Focus' : `${lists.peo.length} linked`) : `${lists.peo.length} items`;
+        } else {
+          const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
+          posPEO.textContent = lists.peo.length ? `${window.flowWheelIndices.peo + 1} / ${lists.peo.length}${suffix}` : '0 / 0';
+        }
       }
       const posSO = document.getElementById('wheelPosSO');
       if (posSO) {
         const isFocus = (tr && tr.type === 'so');
-        const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
-        posSO.textContent = lists.so.length ? `${window.flowWheelIndices.so + 1} / ${lists.so.length}${suffix}` : '0 / 0';
+        if (isTree) {
+          posSO.textContent = isTraceActive ? (isFocus ? '★ Focus' : `${lists.so.length} linked`) : `${lists.so.length} items`;
+        } else {
+          const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
+          posSO.textContent = lists.so.length ? `${window.flowWheelIndices.so + 1} / ${lists.so.length}${suffix}` : '0 / 0';
+        }
       }
       const posCourse = document.getElementById('wheelPosCourse');
       if (posCourse) {
         const isFocus = (tr && tr.type === 'course');
-        const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
-        posCourse.textContent = lists.course.length ? `${window.flowWheelIndices.course + 1} / ${lists.course.length}${suffix}` : '0 / 0';
+        if (isTree) {
+          posCourse.textContent = isTraceActive ? (isFocus ? '★ Focus' : `${lists.course.length} linked`) : `${lists.course.length} items`;
+        } else {
+          const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
+          posCourse.textContent = lists.course.length ? `${window.flowWheelIndices.course + 1} / ${lists.course.length}${suffix}` : '0 / 0';
+        }
       }
 
       const traceBadge = document.getElementById('flowGraphTraceBadge');
@@ -9191,7 +9595,7 @@ ${worksheetsXml}
         const numGas = lists.ga.length;
 
         if (tr.type === 'ga') {
-          if (traceText) traceText.textContent = `Aligned GA ${tr.id}: Narrowed to ${numPeos} linked PEOs ➔ ${numSos} SOs ➔ ${numCourses} courses.`;
+          if (traceText) traceText.textContent = `Aligned GA ${tr.id}: Cascading to ${numPeos} linked PEOs ➔ ${numSos} SOs ➔ ${numCourses} courses.`;
         } else if (tr.type === 'peo') {
           if (traceText) traceText.textContent = `Aligned PEO ${tr.id}: Narrowed to ${numGas} upstream GAs ➔ ${numSos} SOs ➔ ${numCourses} courses.`;
         } else if (tr.type === 'so') {
@@ -9201,10 +9605,167 @@ ${worksheetsXml}
         }
       } else {
         if (traceBadge) traceBadge.classList.add('hidden');
-        if (traceText) traceText.textContent = 'Showing full catalog. Click any card to isolate and narrow cylinders to linked items only.';
+        if (traceText) traceText.textContent = 'Showing full catalog. Click any card to isolate and link nodes across all 4 tiers.';
       }
 
-      // Slot configuration for 5 items: k = -2, -1, 0, 1, 2
+      // =======================================================================
+      // MODE 1: EXPANDED TREE VIEW (DEFAULT)
+      // =======================================================================
+      if (isTree) {
+        // Col 1: GA Tree
+        colGA.innerHTML = lists.ga.length ? lists.ga.map(ga => {
+          const linkedPeoList = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id)).map(p => `PEO ${p}`);
+          const isFocus = (tr && tr.type === 'ga' && String(tr.id) === String(ga.id));
+          return `
+            <div onclick="traceFlowLineage('ga', ${ga.id})" 
+              class="p-2.5 transition cursor-pointer flex flex-col justify-between gap-1.5 border ${
+                isFocus
+                  ? 'bg-amber-50/90 dark:bg-[#1C2534] border-2 border-[#002855] dark:border-[#E5A823] ring-2 ring-inset ring-apc-gold shadow-md'
+                  : 'bg-white dark:bg-[#151D2A] border-slate-200 dark:border-slate-800 hover:border-amber-400 hover:shadow-xs'
+              }" title="Click to ${isFocus ? 'clear filter (show all)' : 'isolate linked path'}">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
+                  ${isFocus ? '<span class="px-1 bg-amber-200 dark:bg-amber-900/60 text-amber-950 dark:text-amber-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                  ${ga.cat || ga.domain ? `<span class="px-1 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[9px] truncate max-w-[90px]">${ga.cat || ga.domain}</span>` : ''}
+                </div>
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-slate-300 dark:border-slate-700">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('ga', ${ga.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit GA">✏️</button>`}
+              </div>
+              <h6 class="font-bold text-xs text-slate-900 dark:text-slate-100 leading-snug">${ga.title}</h6>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight">${ga.desc}</p>
+              <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-slate-100 dark:border-slate-800">
+                <span>Linked PEOs:</span>
+                <span class="font-bold text-purple-700 dark:text-purple-300 truncate">${linkedPeoList.length ? linkedPeoList.join(', ') : 'None'}</span>
+              </div>
+            </div>
+          `;
+        }).join('') : '<div class="p-6 text-center text-slate-400 italic font-mono text-xs">No linked GAs in this path</div>';
+
+        // Col 2: PEO Tree
+        colPEO.innerHTML = lists.peo.length ? lists.peo.map(peo => {
+          const gaList = (peoGaLinks[peo.id] || []).map(g => `GA ${String.fromCharCode(64 + g)}`);
+          const soList = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
+          const isFocus = (tr && tr.type === 'peo' && String(tr.id) === String(peo.id));
+          return `
+            <div onclick="traceFlowLineage('peo', ${peo.id})" 
+              class="p-2.5 transition cursor-pointer flex flex-col justify-between gap-1.5 border ${
+                isFocus
+                  ? 'bg-purple-50/90 dark:bg-[#1E1F35] border-2 border-purple-600 dark:border-purple-400 ring-2 ring-inset ring-apc-gold shadow-md'
+                  : 'bg-white dark:bg-[#151D2A] border-purple-200 dark:border-purple-900/50 hover:border-purple-400 hover:shadow-xs'
+              }" title="Click to ${isFocus ? 'clear filter (show all)' : 'isolate linked path'}">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-xs text-purple-800 dark:text-purple-300">${peo.code}</span>
+                  ${isFocus ? '<span class="px-1 bg-purple-200 dark:bg-purple-900/60 text-purple-950 dark:text-purple-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                  ${peo.domain ? `<span class="px-1 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[9px] truncate max-w-[90px]">${peo.domain}</span>` : ''}
+                </div>
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-purple-300 dark:border-purple-800">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('peo', ${peo.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit PEO">✏️</button>`}
+              </div>
+              <h6 class="font-bold text-xs text-slate-900 dark:text-slate-100 leading-snug">${peo.title}</h6>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight">${peo.desc}</p>
+              <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-purple-100 dark:border-purple-900/40">
+                <span>&larr; ${gaList.length} GAs</span>
+                <span class="font-bold text-indigo-600 dark:text-indigo-400">${soList.length} SOs &rarr;</span>
+              </div>
+            </div>
+          `;
+        }).join('') : '<div class="p-6 text-center text-slate-400 italic font-mono text-xs">No linked PEOs in this path</div>';
+
+        // Col 3: SO Tree
+        colSO.innerHTML = lists.so.length ? lists.so.map(so => {
+          const peoList = (peoSoLinks[so.id] || []).map(p => `PEO ${p}`);
+          const soKeyIdx = SO_KEYS.indexOf(so.id);
+          let iCount = 0, eCount = 0, dCount = 0;
+          allCourses.forEach(c => {
+            const rating = (c.sos && c.sos[soKeyIdx]) ? c.sos[soKeyIdx].trim().toUpperCase() : '-';
+            if (rating === 'I') iCount++;
+            else if (rating === 'E') eCount++;
+            else if (rating === 'D') dCount++;
+          });
+          const totalMapped = iCount + eCount + dCount;
+          const isFocus = (tr && tr.type === 'so' && String(tr.id) === String(so.id));
+
+          return `
+            <div onclick="traceFlowLineage('so', '${so.id}')" 
+              class="p-2.5 transition cursor-pointer flex flex-col justify-between gap-1.5 border ${
+                isFocus
+                  ? 'bg-indigo-50/90 dark:bg-[#191D33] border-2 border-indigo-600 dark:border-indigo-400 ring-2 ring-inset ring-apc-gold shadow-md'
+                  : 'bg-white dark:bg-[#151D2A] border-indigo-200 dark:border-indigo-900/50 hover:border-indigo-400 hover:shadow-xs'
+              }" title="Click to ${isFocus ? 'clear filter (show all)' : 'isolate linked path'}">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-xs text-indigo-800 dark:text-indigo-300">${so.code}</span>
+                  ${isFocus ? '<span class="px-1 bg-indigo-200 dark:bg-indigo-900/60 text-indigo-950 dark:text-indigo-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                  ${so.domain ? `<span class="px-1 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[9px] truncate max-w-[90px]">${so.domain}</span>` : ''}
+                </div>
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-indigo-300 dark:border-indigo-800">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('so', '${so.id}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-200 hover:bg-[#002855] hover:text-[#E5A823] border border-indigo-300 dark:border-indigo-800 transition cursor-pointer" title="Edit SO">✏️</button>`}
+              </div>
+              <h6 class="font-bold text-xs text-slate-900 dark:text-slate-100 leading-snug">${so.title}</h6>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight">${so.desc}</p>
+              <div class="flex items-center justify-between text-[10px] font-mono pt-1 border-t border-indigo-100 dark:border-indigo-900/40">
+                <span class="text-slate-500 truncate">&larr; ${peoList.length ? peoList.join(', ') : 'None'}</span>
+                <div class="flex items-center gap-1 shrink-0 font-bold">
+                  <span class="px-1 bg-emerald-100 text-emerald-800 text-[9px]">I:${iCount}</span>
+                  <span class="px-1 bg-amber-100 text-amber-800 text-[9px]">E:${eCount}</span>
+                  <span class="px-1 bg-indigo-100 text-indigo-800 text-[9px]">D:${dCount}</span>
+                  <span class="text-slate-600 dark:text-slate-400 text-[9px]">(${totalMapped})</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('') : '<div class="p-6 text-center text-slate-400 italic font-mono text-xs">No linked SOs in this path</div>';
+
+        // Col 4: Courses Tree
+        colCourses.innerHTML = lists.course.length ? lists.course.map(c => {
+          const mappedPills = [];
+          (c.sos || []).forEach((rating, sIdx) => {
+            const val = (rating || '-').trim().toUpperCase();
+            if (val === 'I' || val === 'E' || val === 'D') {
+              const sKey = SO_KEYS[sIdx];
+              let pColor = val === 'I' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : (val === 'E' ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-indigo-100 text-indigo-800 border-indigo-300');
+              mappedPills.push(`
+                <span onclick="event.stopPropagation(); if(typeof isCurriculumLocked==='function'&&isCurriculumLocked()){if(typeof showToast==='function')showToast('🔒 Locked: Active enrolled batch is read-only');return;} cycleObeProgression('${c.code}', ${sIdx}); if(typeof renderFlowGraph==='function') renderFlowGraph();" 
+                      class="px-1 py-0.2 rounded-none border font-mono text-[9px] font-bold cursor-pointer hover:ring-1 hover:ring-apc-gold ${pColor}" 
+                      title="SO-${sKey} [${val}]: ${isLocked ? 'Locked' : 'Click to cycle'}">
+                  ${sKey.toUpperCase()}:${val}
+                </span>
+              `);
+            }
+          });
+          const isFocus = (tr && tr.type === 'course' && String(tr.id) === String(c.code));
+
+          return `
+            <div onclick="traceFlowLineage('course', '${c.code}')" 
+              class="p-2.5 transition cursor-pointer flex flex-col justify-between gap-1.5 border ${
+                isFocus
+                  ? 'bg-emerald-50/90 dark:bg-[#12231E] border-2 border-emerald-600 dark:border-emerald-400 ring-2 ring-inset ring-apc-gold shadow-md'
+                  : 'bg-white dark:bg-[#151D2A] border-emerald-200 dark:border-emerald-900/50 hover:border-emerald-400 hover:shadow-xs'
+              }" title="Click to ${isFocus ? 'clear filter (show all)' : 'isolate linked path'}">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-xs text-emerald-900 dark:text-emerald-300">${c.code}</span>
+                  <span class="text-[9px] font-mono text-slate-500">Y${c.year} T${c.term}</span>
+                  ${isFocus ? '<span class="px-1 bg-emerald-200 dark:bg-emerald-900/60 text-emerald-950 dark:text-emerald-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                </div>
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-emerald-300 dark:border-emerald-800">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('course', '${c.code}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-[#002855] hover:text-[#E5A823] border border-emerald-300 dark:border-emerald-800 transition cursor-pointer" title="Edit SOs">+ SOs</button>`}
+              </div>
+              <h6 class="font-bold text-xs text-slate-900 dark:text-slate-100 leading-snug truncate" title="${c.title}">${c.title}</h6>
+              <div class="flex items-center justify-between text-[10px] font-mono pt-1 border-t border-emerald-100 dark:border-emerald-900/40">
+                <span class="text-slate-500">Units: ${c.units !== undefined ? c.units : 3}.0</span>
+                <div class="flex items-center gap-1 overflow-hidden max-w-[140px] flex-wrap justify-end">
+                  ${mappedPills.length ? mappedPills.join('') : '<span class="text-slate-400 italic text-[9px]">None</span>'}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('') : '<div class="p-6 text-center text-slate-400 italic font-mono text-xs">No linked Courses in this path</div>';
+
+        return;
+      }
+
+      // =======================================================================
+      // MODE 2: CYLINDER DRUM VIEW (5 SLOTS PER COLUMN)
+      // =======================================================================
       const slotConfigs = {
         '-2': { transform: 'translateY(8px) rotateX(46deg) scale(0.82)', opacity: '0.35', zIndex: '5', height: '56px' },
         '-1': { transform: 'translateY(4px) rotateX(24deg) scale(0.92)', opacity: '0.70', zIndex: '15', height: '64px' },
@@ -9213,7 +9774,6 @@ ${worksheetsXml}
         '2':  { transform: 'translateY(-8px) rotateX(-46deg) scale(0.82)', opacity: '0.35', zIndex: '5', height: '56px' }
       };
 
-      // Helper to generate 5 slots handling short lists cleanly
       function render5Slots(list, centerIdx, renderItem) {
         if (!list || list.length === 0) {
           return '<div class="h-full flex items-center justify-center p-6 text-center text-slate-400 italic font-mono text-xs">No linked items in this path</div>';
@@ -9254,7 +9814,7 @@ ${worksheetsXml}
                   <span class="font-mono font-bold text-[11px] text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
                   ${isCurrentTrace ? '<span class="px-1 bg-amber-200 dark:bg-amber-900/60 text-amber-950 dark:text-amber-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
                 </div>
-                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-slate-300 dark:border-slate-700">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('ga', ${ga.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit PEO links">✏️ Link</button>`}
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-slate-300 dark:border-slate-700">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('ga', ${ga.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit GA">✏️ Edit</button>`}
               </div>
               <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${ga.title}</h6>
               <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-0.5 border-t border-slate-200 dark:border-slate-700/60">
@@ -9277,7 +9837,7 @@ ${worksheetsXml}
 
       // 2. Render Column 2: PEO Cylinder
       colPEO.innerHTML = render5Slots(lists.peo, window.flowWheelIndices.peo, (peo, idx, k, isCenter, cfg) => {
-        const gaList = (peoGaLinks[peo.id] || []).map(g => `GA ${g}`);
+        const gaList = (peoGaLinks[peo.id] || []).map(g => `GA ${String.fromCharCode(64 + g)}`);
         const soList = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
         const isCurrentTrace = (tr && tr.type === 'peo' && String(tr.id) === String(peo.id));
         if (isCenter) {
@@ -9288,7 +9848,7 @@ ${worksheetsXml}
                   <span class="font-mono font-bold text-[11px] text-purple-800 dark:text-purple-300">${peo.code}</span>
                   ${isCurrentTrace ? '<span class="px-1 bg-purple-200 dark:bg-purple-900/60 text-purple-950 dark:text-purple-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
                 </div>
-                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-purple-300 dark:border-purple-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('peo', ${peo.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit Links">✏️ Edit</button>`}
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-purple-300 dark:border-purple-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('peo', ${peo.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit PEO">✏️ Edit</button>`}
               </div>
               <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${peo.title}</h6>
               <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-0.5 border-t border-purple-200 dark:border-purple-900/40">
@@ -9331,7 +9891,7 @@ ${worksheetsXml}
                   <span class="font-mono font-bold text-[11px] text-indigo-800 dark:text-indigo-300">${so.code}</span>
                   ${isCurrentTrace ? '<span class="px-1 bg-indigo-200 dark:bg-indigo-900/60 text-indigo-950 dark:text-indigo-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
                 </div>
-                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-indigo-300 dark:border-indigo-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('so', '${so.id}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-200 hover:bg-[#002855] hover:text-[#E5A823] border border-indigo-300 dark:border-indigo-800 transition cursor-pointer" title="Edit PEO Links">✏️ Edit</button>`}
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-indigo-300 dark:border-indigo-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('so', '${so.id}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-200 hover:bg-[#002855] hover:text-[#E5A823] border border-indigo-300 dark:border-indigo-800 transition cursor-pointer" title="Edit SO">✏️ Edit</button>`}
               </div>
               <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${so.title}</h6>
               <div class="flex items-center justify-between text-[10px] font-mono pt-0.5 border-t border-indigo-200 dark:border-indigo-900/40">
@@ -9772,7 +10332,7 @@ ${worksheetsXml}
       const nextIdx = (cycle.indexOf(current) + 1) % cycle.length;
       course.sos[soIndex] = cycle[nextIdx];
 
-      // Sync across cohorts in ALL_COURSES if present
+      // Sync across batches in ALL_COURSES if present
       if (window.ALL_COURSES) {
         window.ALL_COURSES.forEach(c => {
           if (c.code === courseCode && c.sos) {
@@ -9803,6 +10363,15 @@ ${worksheetsXml}
     window.cycleObeProgression = cycleObeProgression;
     window.renderPeoSoAlignmentTable = renderPeoSoAlignmentTable;
     window.renderPeoGaAlignmentTable = renderPeoGaAlignmentTable;
+    window.renderPeoCards = renderPeoCards;
+    window.renderSoCards = renderSoCards;
+    window.renderGaCards = renderGaCards;
+    window.openEditObeDefinitionModal = openEditObeDefinitionModal;
+    window.openEditAllDefinitionsModal = openEditAllDefinitionsModal;
+    window.closeEditObeDefinitionModal = closeEditObeDefinitionModal;
+    window.onObeDefSelectSwitch = onObeDefSelectSwitch;
+    window.handleSaveObeDefinition = handleSaveObeDefinition;
+    window.setFlowViewMode = setFlowViewMode;
     window.renderVersioningHistoryView = renderVersioningHistoryView;
     window.switchVhInspectorTab = switchVhInspectorTab;
 
@@ -9815,6 +10384,9 @@ ${worksheetsXml}
       applyRolePermissions();
       updateAllObeVersionBadges();
       if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
+      if (typeof renderPeoCards === 'function') renderPeoCards();
+      if (typeof renderSoCards === 'function') renderSoCards();
+      if (typeof renderGaCards === 'function') renderGaCards();
       if (typeof renderPeoSoAlignmentTable === 'function') renderPeoSoAlignmentTable();
       if (typeof renderPeoGaAlignmentTable === 'function') renderPeoGaAlignmentTable();
       if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView();
