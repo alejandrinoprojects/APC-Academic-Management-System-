@@ -273,20 +273,20 @@
                               <span class="px-1.5 py-0.2 text-[9px] font-bold rounded bg-amber-400/20 text-amber-400 border border-amber-400/40 shrink-0" title="Unlocked Draft">✏️ Draft</span>
                             </button>
                             <div id="cpeY2027Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
-                              <button type="button" onclick="setSidebarYear('2027'); navigateView('obe')"
+                              <button type="button" onclick="setSidebarYear('2027'); openCurriculumMapForCurriculum('CPE-2027')"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-amber-400">🗺️</span>
-                                <span class="truncate">OBE Map (2027 Unlocked)</span>
+                                <span class="truncate">Curriculum Map &bull; 2027</span>
                               </button>
                               <a href="/soe/cpe/flowchart?year=2027" onclick="event.preventDefault(); setSidebarYear('2027'); openFlowchartForYear(1)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-sky-400">📊</span>
-                                <span class="truncate">Flowchart (2027 Draft)</span>
+                                <span class="truncate">Flowchart &bull; 2027</span>
                               </a>
                               <a href="/soe/cpe/spreadsheet?year=2027" onclick="event.preventDefault(); setSidebarYear('2027'); openSpreadsheetForYear(1)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-emerald-400">📑</span>
-                                <span class="truncate">Spreadsheet (2027 Draft)</span>
+                                <span class="truncate">Spreadsheet &bull; 2027</span>
                               </a>
                             </div>
                           </div>
@@ -308,15 +308,20 @@
                             </button>
                             <div id="cpeY1Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
                               <!-- 1st Year Direct Tools -->
+                              <button type="button" onclick="setSidebarYear(1); openCurriculumMapForCurriculum('CPE-2026')"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">🗺️</span>
+                                <span class="truncate">Curriculum Map &bull; Year 1</span>
+                              </button>
                               <a href="/soe/cpe/flowchart?year=1" onclick="event.preventDefault(); openFlowchartForYear(1)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-sky-400">📊</span>
-                                <span class="truncate">Curriculum Flowchart (Year 1)</span>
+                                <span class="truncate">Curriculum Flowchart &bull; Year 1</span>
                               </a>
                               <a href="/soe/cpe/spreadsheet?year=1" onclick="event.preventDefault(); openSpreadsheetForYear(1)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-emerald-400">📑</span>
-                                <span class="truncate">Curriculum Spreadsheet (Year 1)</span>
+                                <span class="truncate">Curriculum Spreadsheet &bull; Year 1</span>
                               </a>
 
                               <!-- 1st Year Official Documents Accordion -->
@@ -338,7 +343,7 @@
                                   <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
                                   <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
                                   <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
-                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                  <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Curriculum Map</span></button>
                                   <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
                                   <button type="button" onclick="setSidebarYear(1); selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
                                 </div>
@@ -361,15 +366,20 @@
                               </span>
                             </button>
                             <div id="cpeY2Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                              <button type="button" onclick="setSidebarYear(2); openCurriculumMapForCurriculum('CPE-2025')"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">🗺️</span>
+                                <span class="truncate">Curriculum Map &bull; Year 2</span>
+                              </button>
                               <a href="/soe/cpe/flowchart?year=2" onclick="event.preventDefault(); openFlowchartForYear(2)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-sky-400">📊</span>
-                                <span class="truncate">Curriculum Flowchart (Year 2)</span>
+                                <span class="truncate">Curriculum Flowchart &bull; Year 2</span>
                               </a>
                               <a href="/soe/cpe/spreadsheet?year=2" onclick="event.preventDefault(); openSpreadsheetForYear(2)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-emerald-400">📑</span>
-                                <span class="truncate">Curriculum Spreadsheet (Year 2)</span>
+                                <span class="truncate">Curriculum Spreadsheet &bull; Year 2</span>
                               </a>
 
                               <!-- 2nd Year Official Documents Accordion -->
@@ -391,7 +401,7 @@
                                   <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
                                   <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
                                   <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
-                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                  <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Curriculum Map</span></button>
                                   <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
                                   <button type="button" onclick="setSidebarYear(2); selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
                                 </div>
@@ -414,15 +424,20 @@
                               </span>
                             </button>
                             <div id="cpeY3Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                              <button type="button" onclick="setSidebarYear(3); openCurriculumMapForCurriculum('CPE-2024')"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">🗺️</span>
+                                <span class="truncate">Curriculum Map &bull; Year 3</span>
+                              </button>
                               <a href="/soe/cpe/flowchart?year=3" onclick="event.preventDefault(); openFlowchartForYear(3)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-sky-400">📊</span>
-                                <span class="truncate">Curriculum Flowchart (Year 3)</span>
+                                <span class="truncate">Curriculum Flowchart &bull; Year 3</span>
                               </a>
                               <a href="/soe/cpe/spreadsheet?year=3" onclick="event.preventDefault(); openSpreadsheetForYear(3)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-emerald-400">📑</span>
-                                <span class="truncate">Curriculum Spreadsheet (Year 3)</span>
+                                <span class="truncate">Curriculum Spreadsheet &bull; Year 3</span>
                               </a>
 
                               <!-- 3rd Year Official Documents Accordion -->
@@ -444,7 +459,7 @@
                                   <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
                                   <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
                                   <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
-                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                  <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Curriculum Map</span></button>
                                   <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
                                   <button type="button" onclick="setSidebarYear(3); selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
                                 </div>
@@ -467,15 +482,20 @@
                               </span>
                             </button>
                             <div id="cpeY4Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                              <button type="button" onclick="setSidebarYear(4); openCurriculumMapForCurriculum('CPE-2023')"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">🗺️</span>
+                                <span class="truncate">Curriculum Map &bull; Year 4</span>
+                              </button>
                               <a href="/soe/cpe/flowchart?year=4" onclick="event.preventDefault(); openFlowchartForYear(4)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-sky-400">📊</span>
-                                <span class="truncate">Curriculum Flowchart (Year 4)</span>
+                                <span class="truncate">Curriculum Flowchart &bull; Year 4</span>
                               </a>
                               <a href="/soe/cpe/spreadsheet?year=4" onclick="event.preventDefault(); openSpreadsheetForYear(4)"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-emerald-400">📑</span>
-                                <span class="truncate">Curriculum Spreadsheet (Year 4)</span>
+                                <span class="truncate">Curriculum Spreadsheet &bull; Year 4</span>
                               </a>
 
                               <!-- 4th Year Official Documents Accordion -->
@@ -497,7 +517,7 @@
                                   <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 2)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Prospectus</span></button>
                                   <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 3)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Course Catalog</span></button>
                                   <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 4)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Program of Study</span></button>
-                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>OBE Map</span></button>
+                                  <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 5)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Curriculum Map</span></button>
                                   <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 6)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Comparative Summary</span></button>
                                   <button type="button" onclick="setSidebarYear(4); selectProgram('BSCpE', 'registrar', 7)" class="w-full flex items-center space-x-1.5 px-1.5 py-0.5 text-slate-400 hover:text-white hover:bg-slate-800/60 text-left truncate text-[10px]"><span>Summary of Units</span></button>
                                 </div>
@@ -517,7 +537,7 @@
                             <button type="button" id="nav-cpe-curricmap" onclick="openCurriculumMapTab()"
                               class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
                               <span class="text-amber-400">🗺️</span>
-                              <span class="truncate text-[11px] font-semibold text-slate-300 group-hover:text-amber-300">Curriculum Map (Hierarchy)</span>
+                              <span class="truncate text-[11px] font-semibold text-slate-300 group-hover:text-amber-300">Curriculum Map</span>
                             </button>
 
                             <!-- 5. Delegations -->
@@ -1471,7 +1491,7 @@
                   </div>
                 </div>
               </div>
-              <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+              <div class="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                 <a href="/soe/cpe/flowchart?year=1" onclick="event.preventDefault(); openFlowchartForYear(1)" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 1 Flowchart">
                   <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                   <span>Flowchart</span>
@@ -1480,6 +1500,10 @@
                   <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                   <span>Spreadsheet</span>
                 </a>
+                <button type="button" onclick="openCurriculumMapForYear(1)" class="w-full py-2 px-1.5 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 1 Curriculum Map">
+                  <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                  <span>Curriculum Map</span>
+                </button>
                 <button type="button" onclick="openDocsForYear(1)" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 1 Official Documents">
                   <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                   <span>Official Docs</span>
@@ -1517,7 +1541,7 @@
                   </div>
                 </div>
               </div>
-              <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+              <div class="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                 <a href="/soe/cpe/flowchart?year=2" onclick="event.preventDefault(); openFlowchartForYear(2)" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 2 Flowchart">
                   <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                   <span>Flowchart</span>
@@ -1526,6 +1550,10 @@
                   <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                   <span>Spreadsheet</span>
                 </a>
+                <button type="button" onclick="openCurriculumMapForYear(2)" class="w-full py-2 px-1.5 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 2 Curriculum Map">
+                  <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                  <span>Curriculum Map</span>
+                </button>
                 <button type="button" onclick="openDocsForYear(2)" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 2 Official Documents">
                   <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                   <span>Official Docs</span>
@@ -1563,7 +1591,7 @@
                   </div>
                 </div>
               </div>
-              <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+              <div class="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                 <a href="/soe/cpe/flowchart?year=3" onclick="event.preventDefault(); openFlowchartForYear(3)" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 3 Flowchart">
                   <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                   <span>Flowchart</span>
@@ -1572,6 +1600,10 @@
                   <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                   <span>Spreadsheet</span>
                 </a>
+                <button type="button" onclick="openCurriculumMapForYear(3)" class="w-full py-2 px-1.5 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 3 Curriculum Map">
+                  <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                  <span>Curriculum Map</span>
+                </button>
                 <button type="button" onclick="openDocsForYear(3)" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 3 Official Documents">
                   <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                   <span>Official Docs</span>
@@ -1609,7 +1641,7 @@
                   </div>
                 </div>
               </div>
-              <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+              <div class="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                 <a href="/soe/cpe/flowchart?year=4" onclick="event.preventDefault(); openFlowchartForYear(4)" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 4 Flowchart">
                   <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                   <span>Flowchart</span>
@@ -1618,6 +1650,10 @@
                   <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                   <span>Spreadsheet</span>
                 </a>
+                <button type="button" onclick="openCurriculumMapForYear(4)" class="w-full py-2 px-1.5 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 4 Curriculum Map">
+                  <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                  <span>Curriculum Map</span>
+                </button>
                 <button type="button" onclick="openDocsForYear(4)" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open Year 4 Official Documents">
                   <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                   <span>Official Docs</span>
@@ -4410,31 +4446,31 @@
             <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5">
               <button id="docTabBtn_1" onclick="navigateRegistrarDoc(1)" class="px-3 py-2 rounded-none bg-apc-blue text-white shadow transition border border-apc-blue flex items-center gap-1.5 shrink-0">
                 <span>📊</span>
-                <span>1. Flowchart (Sheet 1)</span>
+                <span>1. Flowchart</span>
               </button>
               <button id="docTabBtn_2" onclick="navigateRegistrarDoc(2)" class="px-3 py-2 rounded-none bg-white text-slate-700 hover:bg-slate-50 transition border border-slate-200 flex items-center gap-1.5 shrink-0">
                 <span>📋</span>
-                <span>2. Prospectus (Sheet 2)</span>
+                <span>2. Prospectus</span>
               </button>
               <button id="docTabBtn_3" onclick="navigateRegistrarDoc(3)" class="px-3 py-2 rounded-none bg-white text-slate-700 hover:bg-slate-50 transition border border-slate-200 flex items-center gap-1.5 shrink-0">
                 <span>📖</span>
-                <span>3. Course Catalog (Sheet 3)</span>
+                <span>3. Course Catalog</span>
               </button>
               <button id="docTabBtn_4" onclick="navigateRegistrarDoc(4)" class="px-3 py-2 rounded-none bg-white text-slate-700 hover:bg-slate-50 transition border border-slate-200 flex items-center gap-1.5 shrink-0">
                 <span>📑</span>
-                <span>4. Program Study (Sheet 4)</span>
+                <span>4. Program Study</span>
               </button>
               <button id="docTabBtn_5" onclick="navigateRegistrarDoc(5)" class="px-3 py-2 rounded-none bg-white text-slate-700 hover:bg-slate-50 transition border border-slate-200 flex items-center gap-1.5 shrink-0">
                 <span>🗺️</span>
-                <span>5. OBE Map (Sheet 5)</span>
+                <span>5. Curriculum Map</span>
               </button>
               <button id="docTabBtn_6" onclick="navigateRegistrarDoc(6)" class="px-3 py-2 rounded-none bg-white text-slate-700 hover:bg-slate-50 transition border border-slate-200 flex items-center gap-1.5 shrink-0">
                 <span>⚖️</span>
-                <span>6. Comparative Summary (Sheet 6)</span>
+                <span>6. Comparative Summary</span>
               </button>
               <button id="docTabBtn_7" onclick="navigateRegistrarDoc(7)" class="px-3 py-2 rounded-none bg-white text-slate-700 hover:bg-slate-50 transition border border-slate-200 flex items-center gap-1.5 shrink-0">
                 <span>📊</span>
-                <span>7. Summary of Units (Sheet 7)</span>
+                <span>7. Summary of Units</span>
               </button>
             </div>
           </div>
@@ -5809,11 +5845,11 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <!-- Academic Years Grid -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year (Start)</label>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year Start</label>
             <input type="number" id="newCurricStartYear" value="2027" min="2020" max="2035" required onchange="updateNewCurricLineagePreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
           </div>
           <div>
-            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year (End)</label>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year End</label>
             <input type="number" id="newCurricEndYear" value="2031" min="2024" max="2040" required onchange="updateNewCurricLineagePreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
           </div>
         </div>
@@ -6018,9 +6054,9 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Domain / Category</label>
           <select id="domainSelectType" onchange="handleDomainTypeChange()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs">
-            <option value="so">🎯 Student Outcomes (SO)</option>
-            <option value="peo">🏆 Program Educational Objectives (PEO)</option>
-            <option value="ga">🏛️ Graduate Attributes (GA)</option>
+            <option value="so">🎯 Student Outcomes SO</option>
+            <option value="peo">🏆 Program Educational Objectives PEO</option>
+            <option value="ga">🏛️ Graduate Attributes GA</option>
             <option value="mvv">📜 Institutional MVV</option>
             <option value="curric">📑 Batches &amp; Curriculums</option>
           </select>
@@ -6031,7 +6067,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <div class="flex items-center justify-between">
             <label class="font-bold text-indigo-900 dark:text-indigo-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
               <span id="domainParentInheritIcon">🏛️</span>
-              <span id="domainParentInheritLabel">Upstream Alignment (Inherit from Step Above)</span>
+              <span id="domainParentInheritLabel">Upstream Alignment &bull; Inherit from Step Above</span>
             </label>
             <span id="domainParentInheritBadge" class="text-[10px] text-indigo-700 dark:text-indigo-400 font-mono font-bold">Tier Alignment</span>
           </div>
@@ -6048,7 +6084,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <div class="flex items-center justify-between">
             <label class="font-bold text-amber-900 dark:text-amber-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
               <span>📋 Base Version to Clone</span>
-              <span class="text-[10px] font-normal text-slate-500 font-sans">(Optional)</span>
+              <span class="text-[10px] font-normal text-slate-500 font-sans">Optional</span>
             </label>
             <span id="domainBaseModeBadge" class="text-[10px] text-amber-700 dark:text-amber-400 font-mono font-bold">Clone Baseline</span>
           </div>
@@ -6074,16 +6110,16 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Version Name / Description</label>
-          <input type="text" id="domainNewName" required placeholder="e.g. Student Outcomes 2028 (Smart Era Framework)" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-bold" />
+          <input type="text" id="domainNewName" required placeholder="e.g. Student Outcomes 2028 Smart Era Framework" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-bold" />
         </div>
 
         <!-- Status -->
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Initial Status</label>
           <select id="domainStatusSelect" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs">
-            <option value="UNLOCKED DRAFT" selected>UNLOCKED DRAFT (Recommended for authoring)</option>
-            <option value="DRAFT (PENDING EXD APPROVAL)">DRAFT (PENDING EXD APPROVAL)</option>
-            <option value="ACTIVE BATCH" id="domainActiveOption">ACTIVE BATCH (ExD Authority Required)</option>
+            <option value="UNLOCKED DRAFT" selected>UNLOCKED DRAFT &bull; Recommended for authoring</option>
+            <option value="DRAFT (PENDING EXD APPROVAL)">DRAFT &bull; Pending ExD Approval</option>
+            <option value="ACTIVE BATCH" id="domainActiveOption">ACTIVE BATCH &bull; ExD Authority Required</option>
           </select>
         </div>
 

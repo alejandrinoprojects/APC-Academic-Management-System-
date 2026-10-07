@@ -226,7 +226,7 @@
           'Sheet 2: Curriculum Prospectus',
           'Sheet 3: Course Catalog Descriptions',
           'Sheet 4: Program of Study Matrix',
-          'Sheet 5: OBE Curriculum Map',
+          'Sheet 5: Curriculum Map',
           'Sheet 6: Comparative Summary',
           'Sheet 7: Summary of Units'
         ];
@@ -3747,7 +3747,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         'Sheet 2: Curriculum Prospectus',
         'Sheet 3: Course Catalog',
         'Sheet 4: Program of Study',
-        'Sheet 5: OBE Curriculum Map',
+        'Sheet 5: Curriculum Map',
         'Sheet 6: Comparative Summary',
         'Sheet 7: Summary of Units'
       ];
@@ -9693,9 +9693,10 @@ ${worksheetsXml}
       const topPill = document.getElementById('topBarPathPill');
       const prog = currentSelectedProgram || 'BSCpE';
       const edition = (window.CURRIC_EDITIONS_REGISTRY || []).find(e => e.id === editionId);
-      const label = edition ? (edition.code || edition.name) : editionId;
+      const rawLabel = edition ? (edition.code || edition.name) : editionId;
+      const label = (rawLabel || '').replace(/\s*\([^)]*\)/g, '').trim();
       if (topPill) {
-        topPill.innerText = `Schools > SoE > ${prog} > Flowchart (${label})`;
+        topPill.innerText = `Schools > SoE > ${prog} > Flowchart • ${label}`;
       }
     };
 
@@ -9706,9 +9707,10 @@ ${worksheetsXml}
       const topPill = document.getElementById('topBarPathPill');
       const prog = currentSelectedProgram || 'BSCpE';
       const edition = (window.CURRIC_EDITIONS_REGISTRY || []).find(e => e.id === editionId);
-      const label = edition ? (edition.code || edition.name) : editionId;
+      const rawLabel = edition ? (edition.code || edition.name) : editionId;
+      const label = (rawLabel || '').replace(/\s*\([^)]*\)/g, '').trim();
       if (topPill) {
-        topPill.innerText = `Schools > SoE > ${prog} > Spreadsheet (${label})`;
+        topPill.innerText = `Schools > SoE > ${prog} > Spreadsheet • ${label}`;
       }
     };
 
@@ -9719,9 +9721,59 @@ ${worksheetsXml}
       const topPill = document.getElementById('topBarPathPill');
       const prog = currentSelectedProgram || 'BSCpE';
       const edition = (window.CURRIC_EDITIONS_REGISTRY || []).find(e => e.id === editionId);
-      const label = edition ? (edition.code || edition.name) : editionId;
+      const rawLabel = edition ? (edition.code || edition.name) : editionId;
+      const label = (rawLabel || '').replace(/\s*\([^)]*\)/g, '').trim();
       if (topPill) {
-        topPill.innerText = `Schools > SoE > ${prog} > Official Documents (${label})`;
+        topPill.innerText = `Schools > SoE > ${prog} > Official Documents • ${label}`;
+      }
+    };
+
+    window.openCurriculumMapForCurriculum = function(editionId) {
+      const maps = window.CURRICULUM_MAPS || [];
+      const ed = (window.CURRICULUM_EDITIONS_REGISTRY || []).find(e => e.id === editionId);
+      const searchStr = `${editionId} ${ed ? ed.code : ''} ${ed ? ed.name : ''}`;
+      const yearMatch = searchStr.match(/20\d\d/);
+      const year = yearMatch ? yearMatch[0] : '2026';
+
+      let targetMap = maps.find(m => m.id === `CM-BSCpE-${year}`) ||
+                       maps.find(m => (m.curriculumVersion && m.curriculumVersion.includes(year)) || (m.name && m.name.includes(year))) ||
+                       maps.find(m => m.id === 'CM-BSCpE-2026') ||
+                       maps[0];
+
+      if (targetMap && typeof selectCurriculumMap === 'function') {
+        selectCurriculumMap(targetMap.id);
+      }
+      if (typeof openCurriculumMapTab === 'function') {
+        openCurriculumMapTab();
+      }
+      const topPill = document.getElementById('topBarPathPill');
+      const prog = currentSelectedProgram || 'BSCpE';
+      const rawLabel = ed ? (ed.code || ed.name) : editionId;
+      const label = (rawLabel || '').replace(/\s*\([^)]*\)/g, '').trim();
+      if (topPill) {
+        topPill.innerText = `Schools > SoE > ${prog} > Curriculum Map • ${label}`;
+      }
+    };
+
+    window.openCurriculumMapForYear = function(yearNum) {
+      const yearMap = { 1: '2026', 2: '2025', 3: '2024', 4: '2023' };
+      const targetYear = yearMap[yearNum] || '2026';
+      const maps = window.CURRICULUM_MAPS || [];
+      let targetMap = maps.find(m => m.id === `CM-BSCpE-${targetYear}`) ||
+                       maps.find(m => (m.curriculumVersion && m.curriculumVersion.includes(targetYear)) || (m.name && m.name.includes(targetYear))) ||
+                       maps.find(m => m.id === 'CM-BSCpE-2026') ||
+                       maps[0];
+
+      if (targetMap && typeof selectCurriculumMap === 'function') {
+        selectCurriculumMap(targetMap.id);
+      }
+      if (typeof openCurriculumMapTab === 'function') {
+        openCurriculumMapTab();
+      }
+      const topPill = document.getElementById('topBarPathPill');
+      const prog = currentSelectedProgram || 'BSCpE';
+      if (topPill) {
+        topPill.innerText = `Schools > SoE > ${prog} > Curriculum Map • Year ${yearNum}`;
       }
     };
 
@@ -9733,7 +9785,8 @@ ${worksheetsXml}
       const activeBatch = editions.find(e => e.status === 'ACTIVE BATCH') || editions[0];
       const batchTag = document.getElementById('curricSequenceBatchTag');
       if (batchTag && activeBatch) {
-        batchTag.innerText = `${activeBatch.code || activeBatch.id} Curriculum`;
+        const cleanActiveLabel = (activeBatch.code || activeBatch.id).replace(/\s*\([^)]*\)/g, '').trim();
+        batchTag.innerText = `${cleanActiveLabel} Curriculum`;
       }
 
       // Built-in academic year sequences for the standard active cohort
@@ -9795,7 +9848,11 @@ ${worksheetsXml}
             ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700'
             : 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700');
         
-        const cohortTag = ed.effective ? ed.effective : (ed.code || ed.id);
+        const rawCohortTag = ed.effective ? ed.effective : (ed.code || ed.id);
+        const cohortTag = String(rawCohortTag).replace(/\s*\([^)]*\)/g, '').trim();
+        const rawTitle = ed.name || (ed.code + ' Curriculum');
+        const cleanTitle = String(rawTitle).replace(/\s*\([^)]*\)/g, '').trim();
+        const cleanCode = String(ed.code || ed.id).replace(/\s*\([^)]*\)/g, '').trim();
 
         html += `
           <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#E5A823]">
@@ -9803,7 +9860,7 @@ ${worksheetsXml}
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <span class="px-2.5 py-0.5 bg-[#E5A823] text-slate-950 font-black text-xs font-mono">Next Year Batch</span>
-                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">${ed.code || ed.id}</span>
+                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">${cleanCode}</span>
                 </div>
                 <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${badgeColor}">
                   ${ed.status}
@@ -9811,7 +9868,7 @@ ${worksheetsXml}
               </div>
               <div>
                 <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
-                  ${ed.name || (ed.code + ' Curriculum')}
+                  ${cleanTitle}
                 </h3>
               </div>
               <div class="grid grid-cols-3 gap-2 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center font-mono">
@@ -9829,16 +9886,20 @@ ${worksheetsXml}
                 </div>
               </div>
             </div>
-            <div class="pt-4 grid grid-cols-3 gap-2 text-center">
-              <button type="button" onclick="openFlowchartForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${ed.code} Flowchart">
+            <div class="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+              <button type="button" onclick="openFlowchartForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${cleanCode} Flowchart">
                 <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                 <span>Flowchart</span>
               </button>
-              <button type="button" onclick="openSpreadsheetForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${ed.code} Spreadsheet">
+              <button type="button" onclick="openSpreadsheetForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${cleanCode} Spreadsheet">
                 <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                 <span>Spreadsheet</span>
               </button>
-              <button type="button" onclick="openDocsForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${ed.code} Official Documents">
+              <button type="button" onclick="openCurriculumMapForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${cleanCode} Curriculum Map">
+                <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                <span>Curriculum Map</span>
+              </button>
+              <button type="button" onclick="openDocsForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${cleanCode} Official Documents">
                 <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 <span>Official Docs</span>
               </button>
@@ -9879,7 +9940,7 @@ ${worksheetsXml}
                 </div>
               </div>
             </div>
-            <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+            <div class="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
               <a href="/soe/cpe/flowchart?year=${c.yearNum}" onclick="event.preventDefault(); openFlowchartForYear(${c.yearNum})" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${c.yearLabel} Flowchart">
                 <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                 <span>Flowchart</span>
@@ -9888,6 +9949,10 @@ ${worksheetsXml}
                 <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                 <span>Spreadsheet</span>
               </a>
+              <button type="button" onclick="openCurriculumMapForYear(${c.yearNum})" class="w-full py-2 px-1.5 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${c.yearLabel} Curriculum Map">
+                <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                <span>Curriculum Map</span>
+              </button>
               <button type="button" onclick="openDocsForYear(${c.yearNum})" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${c.yearLabel} Official Documents">
                 <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 <span>Official Docs</span>
