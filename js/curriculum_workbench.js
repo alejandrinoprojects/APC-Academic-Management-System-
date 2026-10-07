@@ -8347,9 +8347,36 @@ ${worksheetsXml}
       }
     };
 
+    window.populateSnapshotBaseMapOptions = function() {
+      const sel = document.getElementById('snapshotBaseMapSelect');
+      if (!sel) return;
+      const maps = window.CURRICULUM_MAPS || [];
+      const currentId = window.currentActiveCurriculumMap || (maps[0] ? maps[0].id : '');
+      sel.innerHTML = maps.map(m => `
+        <option value="${m.id}" ${m.id === currentId ? 'selected' : ''}>
+          ${m.id} (${m.name}) &bull; ${m.status}
+        </option>
+      `).join('');
+    };
+
+    window.handleSnapshotBaseMapChange = function() {
+      const sel = document.getElementById('snapshotBaseMapSelect');
+      if (!sel) return;
+      const baseMap = (window.CURRICULUM_MAPS || []).find(m => m.id === sel.value);
+      if (!baseMap) return;
+      const soSelect = document.getElementById('snapshotSoVer');
+      const peoSelect = document.getElementById('snapshotPeoVer');
+      const gaSelect = document.getElementById('snapshotGaVer');
+      if (soSelect && baseMap.soVersion) soSelect.value = baseMap.soVersion;
+      if (peoSelect && baseMap.peoVersion) peoSelect.value = baseMap.peoVersion;
+      if (gaSelect && baseMap.gaVersion) gaSelect.value = baseMap.gaVersion;
+    };
+
     window.openSaveCurriculumMapModal = function() {
       const modal = document.getElementById('saveCurriculumMapModal');
       if (!modal) return;
+      window.populateSnapshotBaseMapOptions();
+      window.handleSnapshotBaseMapChange();
       const role = (window.currentActiveRole || 'admin').toLowerCase();
       const statusSelect = document.getElementById('snapshotMapStatus');
       const activeOption = document.getElementById('snapshotOptionActive');
@@ -8396,6 +8423,8 @@ ${worksheetsXml}
       const peoVer = document.getElementById('snapshotPeoVer')?.value || 'PEO 2027';
       const gaVer = document.getElementById('snapshotGaVer')?.value || 'GA 2024';
       const notes = document.getElementById('snapshotMapNotes')?.value || 'Annual curriculum map snapshot.';
+      const baseMapId = document.getElementById('snapshotBaseMapSelect')?.value;
+      const baseMap = (window.CURRICULUM_MAPS || []).find(m => m.id === baseMapId);
 
       // Enforce ExD Governance Rule
       if (status === 'ACTIVE BATCH' && role !== 'exd') {
@@ -8426,36 +8455,46 @@ ${worksheetsXml}
         statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
       }
 
+      // Clone from baseMap if available, else from system default
+      const coursesToClone = baseMap?.courses ? JSON.parse(JSON.stringify(baseMap.courses)) : JSON.parse(JSON.stringify(window.OFFICIAL_BASELINE_74_COURSES || []));
+      const peoSoLinksToClone = baseMap?.peoSoLinks ? JSON.parse(JSON.stringify(baseMap.peoSoLinks)) : JSON.parse(JSON.stringify(window.getPeoSoLinks() || {}));
+      const peoGaLinksToClone = baseMap?.peoGaLinks ? JSON.parse(JSON.stringify(baseMap.peoGaLinks)) : JSON.parse(JSON.stringify(window.getPeoGaLinks() || {}));
+      const soDefsToClone = baseMap?.soDefs ? JSON.parse(JSON.stringify(baseMap.soDefs)) : JSON.parse(JSON.stringify(window.FLOW_SO_DEFS || []));
+      const peoDefsToClone = baseMap?.peoDefs ? JSON.parse(JSON.stringify(baseMap.peoDefs)) : JSON.parse(JSON.stringify(window.FLOW_PEO_DEFS || []));
+      const gaDefsToClone = baseMap?.gaDefs ? JSON.parse(JSON.stringify(baseMap.gaDefs)) : JSON.parse(JSON.stringify(window.FLOW_GA_DEFS || []));
+      const mvvToClone = baseMap?.mvv ? JSON.parse(JSON.stringify(baseMap.mvv)) : {
+        version: 'MVV 2025',
+        vision: "Asia Pacific College envisions itself to be the preferred Higher Education Institution bridging academe and industry with its programs founded on the concepts and applications of IT, guided by the core values of integrity, industry, and innovation that works.",
+        mission: "Asia Pacific College, powered by education and industry professionals as faculty and a balanced curriculum, aims to provide business and the ICT industry lifelong learning graduates anchored on integrity and professionalism."
+      };
+
       const newEntry = {
         id: newId,
         name: name,
         curriculumVersion: cVer,
         curriculumLabel: `${cVer} (AY ${yr}–${parseInt(yr, 10) + 4})`,
         soVersion: soVer,
-        soCount: 13,
+        soCount: soDefsToClone.length || 13,
         peoVersion: peoVer,
-        peoCount: 5,
+        peoCount: peoDefsToClone.length || 5,
         gaVersion: gaVer,
-        gaCount: 9,
-        mvvVersion: 'MVV 2025',
+        gaCount: gaDefsToClone.length || 9,
+        mvvVersion: baseMap?.mvvVersion || 'MVV 2025',
         mapRevision: mapVer,
         status: status,
         statusClass: statusClass,
         createdAt: new Date().toISOString().split('T')[0],
         program: 'BSCpE',
         notes: notes,
+        clonedFrom: baseMapId || 'system-baseline',
         approvedBy: (status === 'ACTIVE BATCH') ? 'Executive Director' : 'Draft in Progress',
-        courses: JSON.parse(JSON.stringify(window.OFFICIAL_BASELINE_74_COURSES || [])),
-        peoSoLinks: JSON.parse(JSON.stringify(window.getPeoSoLinks() || {})),
-        peoGaLinks: JSON.parse(JSON.stringify(window.getPeoGaLinks() || {})),
-        soDefs: JSON.parse(JSON.stringify(window.FLOW_SO_DEFS || [])),
-        peoDefs: JSON.parse(JSON.stringify(window.FLOW_PEO_DEFS || [])),
-        gaDefs: JSON.parse(JSON.stringify(window.FLOW_GA_DEFS || [])),
-        mvv: {
-          version: 'MVV 2025',
-          vision: "Asia Pacific College envisions itself to be the preferred Higher Education Institution bridging academe and industry with its programs founded on the concepts and applications of IT, guided by the core values of integrity, industry, and innovation that works.",
-          mission: "Asia Pacific College, powered by education and industry professionals as faculty and a balanced curriculum, aims to provide business and the ICT industry lifelong learning graduates anchored on integrity and professionalism."
-        }
+        courses: coursesToClone,
+        peoSoLinks: peoSoLinksToClone,
+        peoGaLinks: peoGaLinksToClone,
+        soDefs: soDefsToClone,
+        peoDefs: peoDefsToClone,
+        gaDefs: gaDefsToClone,
+        mvv: mvvToClone
       };
 
       if (!window.CURRICULUM_MAPS) window.CURRICULUM_MAPS = [];
@@ -10020,6 +10059,284 @@ ${worksheetsXml}
           }
         }
       });
+    };
+
+    // =========================================================================
+    // UNIVERSAL DOMAIN VERSION CREATOR (SO, PEO, GA, MVV, CURRICULUM BATCHES)
+    // =========================================================================
+    window.openCreateDomainVersionModal = function(initialDomain) {
+      const domain = initialDomain || (window.currentVhDomain && window.currentVhDomain !== 'maps' ? window.currentVhDomain : 'so');
+      const modal = document.getElementById('createDomainVersionModal');
+      if (!modal) return;
+
+      const typeSelect = document.getElementById('domainSelectType');
+      if (typeSelect) typeSelect.value = domain;
+
+      window.handleDomainTypeChange();
+
+      // Check ExD authority
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      const activeOpt = document.getElementById('domainActiveOption');
+      const statusSelect = document.getElementById('domainStatusSelect');
+      if (activeOpt) {
+        if (role === 'exd') {
+          activeOpt.disabled = false;
+          activeOpt.textContent = 'ACTIVE BATCH (Executive Director Approved)';
+        } else {
+          activeOpt.disabled = true;
+          activeOpt.textContent = 'ACTIVE BATCH (Requires Executive Director Approval)';
+          if (statusSelect && statusSelect.value === 'ACTIVE BATCH') {
+            statusSelect.value = 'UNLOCKED DRAFT';
+          }
+        }
+      }
+
+      modal.classList.remove('hidden');
+    };
+
+    window.closeCreateDomainVersionModal = function() {
+      const modal = document.getElementById('createDomainVersionModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.handleDomainTypeChange = function() {
+      const typeSelect = document.getElementById('domainSelectType');
+      const domain = typeSelect ? typeSelect.value : 'so';
+      const iconEl = document.getElementById('domainModalIcon');
+      const titleEl = document.getElementById('domainModalTitle');
+      const subtitleEl = document.getElementById('domainModalSubtitle');
+      const baseSelect = document.getElementById('domainBaseSelect');
+      const idInput = document.getElementById('domainNewId');
+      const nameInput = document.getElementById('domainNewName');
+      const effInput = document.getElementById('domainEffective');
+      const notesInput = document.getElementById('domainNotes');
+
+      const nextYr = new Date().getFullYear() + 2;
+      const curYr = new Date().getFullYear() + 1;
+
+      let registry = [];
+      let domainLabel = '';
+      let defaultId = '';
+      let defaultName = '';
+      let defaultEff = `AY ${curYr}–${curYr + 4}`;
+      let icon = '✨';
+
+      if (domain === 'so') {
+        registry = window.SO_VERSION_REGISTRY || [];
+        domainLabel = 'Student Outcomes (SO)';
+        defaultId = `SO-${nextYr}`;
+        defaultName = `Student Outcomes ${nextYr} (Expanded Framework)`;
+        icon = '🎯';
+      } else if (domain === 'peo') {
+        registry = window.PEO_VERSION_REGISTRY || [];
+        domainLabel = 'Program Educational Objectives (PEO)';
+        defaultId = `PEO-${nextYr}`;
+        defaultName = `Program Educational Objectives ${nextYr} (Next-Gen Goals)`;
+        icon = '🏆';
+      } else if (domain === 'ga') {
+        registry = window.GA_VERSION_REGISTRY || [];
+        domainLabel = 'Graduate Attributes (GA)';
+        defaultId = `GA-${nextYr}`;
+        defaultName = `Graduate Attributes ${nextYr} (Smart Era Profile)`;
+        icon = '🏛️';
+      } else if (domain === 'mvv') {
+        registry = window.MVV_VERSION_REGISTRY || [];
+        domainLabel = 'Institutional MVV';
+        defaultId = `MVV-${nextYr}`;
+        defaultName = `APC Institutional MVV ${nextYr}–${nextYr + 5}`;
+        defaultEff = `${nextYr}–${nextYr + 5}`;
+        icon = '📜';
+      } else if (domain === 'curric') {
+        registry = window.CURRIC_EDITIONS_REGISTRY || [];
+        domainLabel = 'Curriculums & Batches';
+        defaultId = `CPE-${nextYr}`;
+        defaultName = `BSCpE ${nextYr}–${nextYr + 4} (Next Batch)`;
+        icon = '📑';
+      }
+
+      if (iconEl) iconEl.textContent = icon;
+      if (titleEl) titleEl.textContent = `Create New ${domainLabel} Version`;
+      if (subtitleEl) subtitleEl.textContent = `Clone baseline & create independent revision for ${domainLabel}`;
+
+      if (baseSelect) {
+        baseSelect.innerHTML = registry.map(item => `
+          <option value="${item.id}">
+            ${item.id} &bull; ${item.name || item.code} (${item.status || 'Archived'})
+          </option>
+        `).join('');
+      }
+
+      if (idInput) idInput.value = defaultId;
+      if (nameInput) nameInput.value = defaultName;
+      if (effInput) effInput.value = defaultEff;
+      if (notesInput) notesInput.value = `Cloned baseline for ${domainLabel} revision.`;
+
+      window.handleDomainBaseSelectChange();
+    };
+
+    window.handleDomainBaseSelectChange = function() {
+      const typeSelect = document.getElementById('domainSelectType');
+      const domain = typeSelect ? typeSelect.value : 'so';
+      const baseSelect = document.getElementById('domainBaseSelect');
+      const helpEl = document.getElementById('domainBaseHelp');
+      if (!baseSelect || !helpEl) return;
+
+      const baseId = baseSelect.value;
+      if (domain === 'so') {
+        const item = (window.SO_VERSION_REGISTRY || []).find(x => x.id === baseId);
+        helpEl.textContent = `Inherits ${item ? (item.count || (item.items ? item.items.length : 13)) : 13} outcome statements from ${baseId}. You can customize statements directly in version history.`;
+      } else if (domain === 'peo') {
+        const item = (window.PEO_VERSION_REGISTRY || []).find(x => x.id === baseId);
+        helpEl.textContent = `Inherits ${item ? (item.count || (item.items ? item.items.length : 5)) : 5} educational objectives from ${baseId}.`;
+      } else if (domain === 'ga') {
+        const item = (window.GA_VERSION_REGISTRY || []).find(x => x.id === baseId);
+        helpEl.textContent = `Inherits ${item ? (item.count || (item.items ? item.items.length : 9)) : 9} institutional graduate attributes from ${baseId}.`;
+      } else if (domain === 'mvv') {
+        helpEl.textContent = `Inherits Vision, Mission, Values, and SoE Goal statements from ${baseId}.`;
+      } else if (domain === 'curric') {
+        const item = (window.CURRIC_EDITIONS_REGISTRY || []).find(x => x.id === baseId);
+        helpEl.textContent = `Inherits degree structure (${item ? item.units : '184.0'} units, ${item ? item.courses : 74} courses) from batch ${baseId}.`;
+      }
+    };
+
+    window.handleCreateDomainVersionSubmit = function(e) {
+      if (e) e.preventDefault();
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      const domain = document.getElementById('domainSelectType')?.value || 'so';
+      const baseId = document.getElementById('domainBaseSelect')?.value;
+      const newId = document.getElementById('domainNewId')?.value.trim();
+      const name = document.getElementById('domainNewName')?.value.trim();
+      const effective = document.getElementById('domainEffective')?.value.trim();
+      let status = document.getElementById('domainStatusSelect')?.value || 'UNLOCKED DRAFT';
+      const notes = document.getElementById('domainNotes')?.value.trim() || 'New revision initialized from baseline.';
+
+      if (!newId || !name) {
+        if (typeof showToast === 'function') showToast('⚠ Please provide a valid Version ID and Name.');
+        return;
+      }
+
+      // Enforce ExD rule on active
+      if (status === 'ACTIVE BATCH' && role !== 'exd') {
+        status = 'DRAFT (PENDING EXD APPROVAL)';
+        if (typeof showToast === 'function') {
+          showToast('🔒 Only the Executive Director can activate. Saved as Draft pending ExD approval.');
+        }
+      }
+
+      let statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
+      if (status === 'ACTIVE BATCH') {
+        statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+      }
+
+      if (domain === 'so') {
+        const base = (window.SO_VERSION_REGISTRY || []).find(x => x.id === baseId) || window.SO_VERSION_REGISTRY[0];
+        const clonedItems = base?.items ? JSON.parse(JSON.stringify(base.items)) : JSON.parse(JSON.stringify(DEFAULT_FLOW_SO_DEFS));
+        const entry = {
+          id: newId,
+          name: name,
+          standard: base?.standard || 'CHED CMO 92 Series of 2017',
+          count: clonedItems.length,
+          status: status,
+          statusClass: statusClass,
+          effective: effective,
+          notes: notes,
+          clonedFrom: baseId,
+          items: clonedItems
+        };
+        const idx = (window.SO_VERSION_REGISTRY || []).findIndex(x => x.id === newId);
+        if (idx >= 0) window.SO_VERSION_REGISTRY[idx] = entry;
+        else window.SO_VERSION_REGISTRY.unshift(entry);
+        try { localStorage.setItem('apc_so_versions', JSON.stringify(window.SO_VERSION_REGISTRY)); } catch(err) {}
+        window.switchVhDomain('so');
+        window.renderVhSoDomain(newId);
+      } else if (domain === 'peo') {
+        const base = (window.PEO_VERSION_REGISTRY || []).find(x => x.id === baseId) || window.PEO_VERSION_REGISTRY[0];
+        const clonedItems = base?.items ? JSON.parse(JSON.stringify(base.items)) : JSON.parse(JSON.stringify(DEFAULT_FLOW_PEO_DEFS));
+        const entry = {
+          id: newId,
+          name: name,
+          count: clonedItems.length,
+          status: status,
+          statusClass: statusClass,
+          effective: effective,
+          notes: notes,
+          clonedFrom: baseId,
+          items: clonedItems
+        };
+        const idx = (window.PEO_VERSION_REGISTRY || []).findIndex(x => x.id === newId);
+        if (idx >= 0) window.PEO_VERSION_REGISTRY[idx] = entry;
+        else window.PEO_VERSION_REGISTRY.unshift(entry);
+        try { localStorage.setItem('apc_peo_versions', JSON.stringify(window.PEO_VERSION_REGISTRY)); } catch(err) {}
+        window.switchVhDomain('peo');
+        window.renderVhPeoDomain(newId);
+      } else if (domain === 'ga') {
+        const base = (window.GA_VERSION_REGISTRY || []).find(x => x.id === baseId) || window.GA_VERSION_REGISTRY[0];
+        const clonedItems = base?.items ? JSON.parse(JSON.stringify(base.items)) : JSON.parse(JSON.stringify(DEFAULT_FLOW_GA_DEFS));
+        const entry = {
+          id: newId,
+          name: name,
+          count: clonedItems.length,
+          status: status,
+          statusClass: statusClass,
+          effective: effective,
+          notes: notes,
+          clonedFrom: baseId,
+          items: clonedItems
+        };
+        const idx = (window.GA_VERSION_REGISTRY || []).findIndex(x => x.id === newId);
+        if (idx >= 0) window.GA_VERSION_REGISTRY[idx] = entry;
+        else window.GA_VERSION_REGISTRY.unshift(entry);
+        try { localStorage.setItem('apc_ga_versions', JSON.stringify(window.GA_VERSION_REGISTRY)); } catch(err) {}
+        window.switchVhDomain('ga');
+        window.renderVhGaDomain(newId);
+      } else if (domain === 'mvv') {
+        const base = (window.MVV_VERSION_REGISTRY || []).find(x => x.id === baseId) || window.MVV_VERSION_REGISTRY[0];
+        const entry = {
+          id: newId,
+          name: name,
+          status: status,
+          statusClass: statusClass,
+          effective: effective,
+          notes: notes,
+          clonedFrom: baseId,
+          vision: base?.vision || '',
+          mission: base?.mission || '',
+          values: base?.values || '',
+          soeGoal: base?.soeGoal || ''
+        };
+        const idx = (window.MVV_VERSION_REGISTRY || []).findIndex(x => x.id === newId);
+        if (idx >= 0) window.MVV_VERSION_REGISTRY[idx] = entry;
+        else window.MVV_VERSION_REGISTRY.unshift(entry);
+        try { localStorage.setItem('apc_mvv_versions', JSON.stringify(window.MVV_VERSION_REGISTRY)); } catch(err) {}
+        window.switchVhDomain('mvv');
+        window.renderVhMvvDomain(newId);
+      } else if (domain === 'curric') {
+        const base = (window.CURRIC_EDITIONS_REGISTRY || []).find(x => x.id === baseId) || window.CURRIC_EDITIONS_REGISTRY[0];
+        const entry = {
+          id: newId,
+          code: newId.replace('-', ' '),
+          name: name,
+          units: base?.units || '184.0',
+          courses: base?.courses || 74,
+          terms: base?.terms || 12,
+          status: status,
+          statusClass: statusClass,
+          effective: effective,
+          notes: notes,
+          clonedFrom: baseId
+        };
+        const idx = (window.CURRIC_EDITIONS_REGISTRY || []).findIndex(x => x.id === newId);
+        if (idx >= 0) window.CURRIC_EDITIONS_REGISTRY[idx] = entry;
+        else window.CURRIC_EDITIONS_REGISTRY.unshift(entry);
+        try { localStorage.setItem('apc_curric_versions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY)); } catch(err) {}
+        window.switchVhDomain('curric');
+        window.renderVhCurricDomain(newId);
+      }
+
+      window.closeCreateDomainVersionModal();
+      if (typeof showToast === 'function') {
+        showToast(`✓ Created new version '${newId}' successfully based on '${baseId}'!`);
+      }
     };
 
     window.activeFlowTrace = {

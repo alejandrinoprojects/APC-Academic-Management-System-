@@ -1643,9 +1643,13 @@
               <p class="text-xs text-slate-300 mt-0.5">Curriculum version history and domain lineage.</p>
             </div>
             <div class="flex items-center gap-2 flex-wrap shrink-0">
-              <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-[#002855] font-black text-xs uppercase tracking-wider transition cursor-pointer shadow-xs border border-amber-500 flex items-center gap-1.5" title="Save current curriculum state as a new version">
-                <span>➕</span>
-                <span>Save New Version</span>
+              <button type="button" onclick="openCreateDomainVersionModal()" class="px-3 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-[#002855] font-black text-xs uppercase tracking-wider transition cursor-pointer shadow-xs border border-amber-500 flex items-center gap-1.5" title="Create a new version of SO, PEO, GA, MVV, or Curriculums with base version cloning">
+                <span>✨</span>
+                <span>Create New Version</span>
+              </button>
+              <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition cursor-pointer flex items-center gap-1.5" title="Save / snapshot current curriculum map with base template cloning">
+                <span>🗺️</span>
+                <span>Save Map Snapshot</span>
               </button>
               <button type="button" onclick="exportObeMatrixCSV()" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition cursor-pointer flex items-center gap-1.5" title="Export complete multi-sheet curriculum map workbook (.xlsx)">
                 <span>📥</span>
@@ -1899,9 +1903,15 @@
                   <span class="w-2.5 h-2.5 bg-indigo-500 shrink-0"></span>
                   <h3 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">Student Outcomes (SO) Version Registry</h3>
                 </div>
-                <div class="text-xs text-slate-500 font-mono">
-                  <span>Standard: </span>
-                  <span class="font-bold text-indigo-600 dark:text-indigo-400">CHED CMO 92 Series of 2017</span>
+                <div class="flex items-center gap-3">
+                  <div class="text-xs text-slate-500 font-mono">
+                    <span>Standard: </span>
+                    <span class="font-bold text-indigo-600 dark:text-indigo-400">CHED CMO 92 Series of 2017</span>
+                  </div>
+                  <button type="button" onclick="openCreateDomainVersionModal('so')" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition cursor-pointer shadow-xs flex items-center gap-1.5">
+                    <span>➕</span>
+                    <span>New SO Version</span>
+                  </button>
                 </div>
               </div>
 
@@ -1955,9 +1965,15 @@
                   <span class="w-2.5 h-2.5 bg-amber-500 shrink-0"></span>
                   <h3 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">PEO Objectives Version Registry</h3>
                 </div>
-                <div class="text-xs text-slate-500 font-mono">
-                  <span>Scope: </span>
-                  <span class="font-bold text-amber-600 dark:text-amber-400">3–5 Years Post-Graduation Career Goals</span>
+                <div class="flex items-center gap-3">
+                  <div class="text-xs text-slate-500 font-mono">
+                    <span>Scope: </span>
+                    <span class="font-bold text-amber-600 dark:text-amber-400">3–5 Years Post-Graduation Career Goals</span>
+                  </div>
+                  <button type="button" onclick="openCreateDomainVersionModal('peo')" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition cursor-pointer shadow-xs flex items-center gap-1.5">
+                    <span>➕</span>
+                    <span>New PEO Version</span>
+                  </button>
                 </div>
               </div>
 
@@ -2011,9 +2027,15 @@
                   <span class="w-2.5 h-2.5 bg-blue-500 shrink-0"></span>
                   <h3 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">Graduate Attributes (GA) Version Registry</h3>
                 </div>
-                <div class="text-xs text-slate-500 font-mono">
-                  <span>Standard: </span>
-                  <span class="font-bold text-blue-600 dark:text-blue-400">APC Institutional Graduate Profile</span>
+                <div class="flex items-center gap-3">
+                  <div class="text-xs text-slate-500 font-mono">
+                    <span>Standard: </span>
+                    <span class="font-bold text-blue-600 dark:text-blue-400">APC Institutional Graduate Profile</span>
+                  </div>
+                  <button type="button" onclick="openCreateDomainVersionModal('ga')" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition cursor-pointer shadow-xs flex items-center gap-1.5">
+                    <span>➕</span>
+                    <span>New GA Version</span>
+                  </button>
                 </div>
               </div>
 
@@ -2067,9 +2089,15 @@
                   <span class="w-2.5 h-2.5 bg-emerald-500 shrink-0"></span>
                   <h3 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">Institutional MVV Version Registry</h3>
                 </div>
-                <div class="text-xs text-slate-500 font-mono">
-                  <span>Hierarchy: </span>
-                  <span class="font-bold text-emerald-600 dark:text-emerald-400">Vision &bull; Mission &bull; Values &bull; SoE Goals</span>
+                <div class="flex items-center gap-3">
+                  <div class="text-xs text-slate-500 font-mono">
+                    <span>Hierarchy: </span>
+                    <span class="font-bold text-emerald-600 dark:text-emerald-400">Vision &bull; Mission &bull; Values &bull; SoE Goals</span>
+                  </div>
+                  <button type="button" onclick="openCreateDomainVersionModal('mvv')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition cursor-pointer shadow-xs flex items-center gap-1.5">
+                    <span>➕</span>
+                    <span>New MVV Version</span>
+                  </button>
                 </div>
               </div>
 
@@ -2122,9 +2150,15 @@
                   <span class="w-2.5 h-2.5 bg-purple-500 shrink-0"></span>
                   <h3 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">Curriculums &amp; Batches Version Registry</h3>
                 </div>
-                <div class="text-xs text-slate-500 font-mono">
-                  <span>Program: </span>
-                  <span class="font-bold text-purple-600 dark:text-purple-400">BS in Computer Engineering (BSCpE)</span>
+                <div class="flex items-center gap-3">
+                  <div class="text-xs text-slate-500 font-mono">
+                    <span>Program: </span>
+                    <span class="font-bold text-purple-600 dark:text-purple-400">BS in Computer Engineering (BSCpE)</span>
+                  </div>
+                  <button type="button" onclick="openCreateDomainVersionModal('curric')" class="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition cursor-pointer shadow-xs flex items-center gap-1.5">
+                    <span>➕</span>
+                    <span>New Batch Version</span>
+                  </button>
                 </div>
               </div>
 
@@ -3057,45 +3091,7 @@
                 <input type="file" id="importJsonInput" onchange="importCurriculumJSON(event)" accept=".json" class="hidden">
               </div>
 
-              <!-- Full Width Divider Line -->
-              <div class="border-b border-slate-200 dark:border-slate-700 pt-1"></div>
 
-              <!-- 16-Year Master Curriculum Scope Controls -->
-              <div class="flex flex-wrap items-center justify-between gap-2.5 pt-1">
-                <div class="flex flex-wrap items-center gap-1.5">
-                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Curricular Scope:</span>
-                  <button type="button" id="btnScopeYear_all" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] text-[#E5A823] font-black text-xs border border-[#E5A823] shadow-xs cursor-pointer" title="View Master Spreadsheet (All 296 courses across 16 academic years)">
-                    Master Spreadsheet (All 16 Years • 296 Courses)
-                  </button>
-                  <button type="button" id="btnScopeYear_1" onclick="setSpreadsheetYearScope(1)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 1 Curriculum (22 Courses)">
-                    CPE2026 Curriculum
-                  </button>
-                  <button type="button" id="btnScopeYear_2" onclick="setSpreadsheetYearScope(2)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 2 Curriculum (21 Courses)">
-                    CPE2025 Curriculum
-                  </button>
-                  <button type="button" id="btnScopeYear_3" onclick="setSpreadsheetYearScope(3)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 3 Curriculum (22 Courses)">
-                    CPE2024 Curriculum
-                  </button>
-                  <button type="button" id="btnScopeYear_4" onclick="setSpreadsheetYearScope(4)" class="px-2.5 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs font-semibold border border-slate-300 dark:border-slate-600 cursor-pointer" title="View Year 4 Curriculum (9 Courses)">
-                    CPE2023 Curriculum
-                  </button>
-                </div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono hidden md:block">
-                  4 Academic Year Levels • 16-Year Curricular Horizon • 296 Courses
-                </div>
-              </div>
-
-              <!-- Active Single-Year Filter Notice Banner -->
-              <div id="sheetYearScopeNotice" class="hidden p-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-xs flex flex-wrap items-center justify-between gap-2">
-                <div class="flex items-center gap-2">
-                  <span class="text-base leading-none">ℹ️</span>
-                  <span id="sheetYearScopeNoticeText" class="font-bold">Currently displaying filtered courses.</span>
-                  <span class="text-amber-700 dark:text-amber-400 hidden sm:inline">(Each academic year level spans 4 years across a 16-year total curricular horizon).</span>
-                </div>
-                <button type="button" onclick="setSpreadsheetYearScope('all')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs cursor-pointer shadow-xs">
-                  Show Master Spreadsheet (All 16 Years • 296 Courses) &rarr;
-                </button>
-              </div>
 
               <!-- Right-aligned Filter Bar -->
               <div class="flex flex-wrap items-center justify-end gap-2.5">
@@ -5907,6 +5903,14 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </div>
         </div>
 
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Base Version to Clone</label>
+          <select id="snapshotBaseMapSelect" onchange="handleSnapshotBaseMapChange()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold">
+            <!-- Populated dynamically -->
+          </select>
+          <p class="text-[10px] text-slate-500 mt-1">Clones all 74 course I-E-D competencies, outcome linkages, and parent tiers from the selected base version.</p>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Map Identifier / Name</label>
@@ -5989,6 +5993,95 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
           <button type="button" onclick="closeSaveCurriculumMapModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Save Curriculum Map</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- CREATE NEW DOMAIN VERSION MODAL (SO, PEO, GA, MVV, CURRICULUM)            -->
+  <!-- ========================================================================= -->
+  <div id="createDomainVersionModal" onclick="if(event.target === this) closeCreateDomainVersionModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+      <!-- Header -->
+      <div class="bg-[#002855] dark:bg-[#10151E] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <span id="domainModalIcon" class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black text-sm flex items-center justify-center rounded-none shadow-xs">✨</span>
+          <div>
+            <h3 id="domainModalTitle" class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Create New Version</h3>
+            <p id="domainModalSubtitle" class="text-[10px] text-amber-300 font-mono">Create a new version with previous baseline inheritance</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeCreateDomainVersionModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <!-- Form Body -->
+      <form onsubmit="handleCreateDomainVersionSubmit(event)" class="p-5 space-y-4 text-xs overflow-y-auto">
+        <!-- Target Domain Selector -->
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Domain / Category</label>
+          <select id="domainSelectType" onchange="handleDomainTypeChange()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs">
+            <option value="so">🎯 Student Outcomes (SO)</option>
+            <option value="peo">🏆 Program Educational Objectives (PEO)</option>
+            <option value="ga">🏛️ Graduate Attributes (GA)</option>
+            <option value="mvv">📜 Institutional MVV</option>
+            <option value="curric">📑 Batches &amp; Curriculums</option>
+          </select>
+        </div>
+
+        <!-- Baseline Selection Option -->
+        <div class="p-3 bg-amber-500/10 border border-amber-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-amber-900 dark:text-amber-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+              <span>📋 Base Version to Clone</span>
+            </label>
+            <span class="text-[10px] text-amber-700 dark:text-amber-400 font-mono font-bold">Deep Inherit Mode</span>
+          </div>
+          <select id="domainBaseSelect" onchange="handleDomainBaseSelectChange()" class="w-full px-3 py-2 bg-white dark:bg-[#10151E] border border-amber-300 dark:border-amber-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold">
+            <!-- Populated dynamically -->
+          </select>
+          <p id="domainBaseHelp" class="text-[10px] text-slate-600 dark:text-slate-400">
+            Copies all statements, items, and settings from the chosen version so you can refine them without starting from scratch.
+          </p>
+        </div>
+
+        <!-- Version ID & Name -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">New Version Identifier</label>
+            <input type="text" id="domainNewId" required placeholder="e.g. SO-2028" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Effective Period / Cohort</label>
+            <input type="text" id="domainEffective" required placeholder="e.g. AY 2028–2032" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Version Name / Description</label>
+          <input type="text" id="domainNewName" required placeholder="e.g. Student Outcomes 2028 (Smart Era Framework)" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-bold" />
+        </div>
+
+        <!-- Status -->
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Initial Status</label>
+          <select id="domainStatusSelect" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs">
+            <option value="UNLOCKED DRAFT" selected>UNLOCKED DRAFT (Recommended for authoring)</option>
+            <option value="DRAFT (PENDING EXD APPROVAL)">DRAFT (PENDING EXD APPROVAL)</option>
+            <option value="ACTIVE BATCH" id="domainActiveOption">ACTIVE BATCH (ExD Authority Required)</option>
+          </select>
+        </div>
+
+        <!-- Notes -->
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Version Notes / Revision Rationale</label>
+          <textarea id="domainNotes" rows="2" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-none" placeholder="Revision rationale, curriculum changes, accreditation compliance notes..."></textarea>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeCreateDomainVersionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Create Version</button>
         </div>
       </form>
     </div>
