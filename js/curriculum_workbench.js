@@ -8009,6 +8009,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       const r3 = document.getElementById('ruleCheck3');
       if (r3) r3.textContent = `${map.peoVersion} >= ${map.gaVersion}`;
+
+      if (typeof renderFlowGraph === 'function') {
+        renderFlowGraph();
+      }
     };
 
     window.populateCurriculumMapSelect = function() {
@@ -8143,6 +8147,596 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         showToast(`✓ Saved Annual Curriculum Map '${name}' successfully!`);
       }
       renderCurriculumMapHierarchy();
+    };
+
+    // =========================================================================
+    // MULTI-COLUMN RELATIONAL FLOW GRAPH & INLINE LINK EDITOR MODULE (OPTION 1)
+    // =========================================================================
+    const FLOW_GA_DEFS = [
+      { id: 1, code: 'GA 1', title: 'Professional Knowledge', desc: 'Apply specialized knowledge in mathematics and engineering fundamentals.' },
+      { id: 2, code: 'GA 2', title: 'Problem Analysis', desc: 'Identify, formulate, and analyze complex engineering problems.' },
+      { id: 3, code: 'GA 3', title: 'Design & Investigation', desc: 'Design systems, components, and conduct investigations using research methods.' },
+      { id: 4, code: 'GA 4', title: 'Modern Tool Usage', desc: 'Create, select, and apply modern IT tools and predictive modeling.' },
+      { id: 5, code: 'GA 5', title: 'Individual & Team Work', desc: 'Function effectively as an individual, and as a member or leader in diverse teams.' },
+      { id: 6, code: 'GA 6', title: 'Communication', desc: 'Communicate effectively on complex engineering activities with clarity.' },
+      { id: 7, code: 'GA 7', title: 'Ethics & Responsibility', desc: 'Apply ethical principles and commit to professional ethics and responsibilities.' },
+      { id: 8, code: 'GA 8', title: 'Lifelong Learning', desc: 'Recognize the need for and engage in independent lifelong learning.' },
+      { id: 9, code: 'GA 9', title: 'Innovation & Technopreneurship', desc: 'Synthesize engineering knowledge with innovation and entrepreneurship.' }
+    ];
+
+    const FLOW_PEO_DEFS = [
+      { id: 1, code: 'PEO 1', title: 'Solutions & Emerging Technologies', desc: 'Synthesize advanced engineering principles to develop innovative computer-based solutions.' },
+      { id: 2, code: 'PEO 2', title: 'Ethics & Sustainability', desc: 'Integrate ethical, social, and environmental considerations into engineering practice.' },
+      { id: 3, code: 'PEO 3', title: 'Continuous Professional Growth', desc: 'Pursue continuous professional growth through advanced studies and certifications.' },
+      { id: 4, code: 'PEO 4', title: 'Leadership & Teamwork', desc: 'Demonstrate leadership and teamwork in multidisciplinary collaborations.' },
+      { id: 5, code: 'PEO 5', title: 'Articulate Communication', desc: 'Articulate complex technical concepts with clarity across diverse engineering contexts.' }
+    ];
+
+    const FLOW_SO_DEFS = [
+      { id: 'a', code: 'SO-a', title: 'Engineering Knowledge Application', desc: 'Apply knowledge of mathematics, natural science, and engineering fundamentals.' },
+      { id: 'b', code: 'SO-b', title: 'Investigation of Complex Problems', desc: 'Conduct investigations using research-based knowledge and design of experiments.' },
+      { id: 'c', code: 'SO-c', title: 'Design Solutions for Complex Problems', desc: 'Design systems or components that meet specified needs with constraints.' },
+      { id: 'd', code: 'SO-d', title: 'Individual and Team Functioning', desc: 'Function effectively as an individual and in multidisciplinary teams.' },
+      { id: 'e', code: 'SO-e', title: 'Evaluation & First Principles', desc: 'Critically formulate and evaluate problems applying first principles.' },
+      { id: 'f', code: 'SO-f', title: 'Ethical Principles & Norms', desc: 'Apply ethical principles and commit to professional ethics and responsibilities.' },
+      { id: 'g', code: 'SO-g', title: 'Effective Communication', desc: 'Communicate effectively on complex engineering activities.' },
+      { id: 'h', code: 'SO-h', title: 'Sustainability and Impact', desc: 'Assess impact of engineering solutions in societal and environmental contexts.' },
+      { id: 'i', code: 'SO-i', title: 'Lifelong Learning', desc: 'Engage in independent and lifelong learning amidst technological change.' },
+      { id: 'j', code: 'SO-j', title: 'Societal & Contextual Knowledge', desc: 'Apply reasoning informed by contextual knowledge to assess societal issues.' },
+      { id: 'k', code: 'SO-k', title: 'Modern Tool Synthesis', desc: 'Synthesize appropriate techniques, resources, and modern engineering IT tools.' },
+      { id: 'l', code: 'SO-l', title: 'Engineering Management & Economics', desc: 'Demonstrate understanding of engineering management and economic decisions.' },
+      { id: 'm', code: 'SO-m', title: 'Specialized Computer Engineering', desc: 'Apply specialized skills of computer engineering practice.' }
+    ];
+
+    window.getPeoSoLinks = function() {
+      try {
+        const s = localStorage.getItem('apc_obe_peo_so_links');
+        if (s) return JSON.parse(s);
+      } catch (e) {}
+      return {
+        'a': [1],
+        'b': [1, 3],
+        'c': [1, 2, 3],
+        'd': [2, 4],
+        'e': [1],
+        'f': [2, 5],
+        'g': [4, 5],
+        'h': [2, 3],
+        'i': [3],
+        'j': [1, 2, 3, 5],
+        'k': [1, 3],
+        'l': [2, 3, 4, 5],
+        'm': [1, 3]
+      };
+    };
+
+    window.savePeoSoLinks = function(links) {
+      try {
+        localStorage.setItem('apc_obe_peo_so_links', JSON.stringify(links));
+      } catch (e) {}
+    };
+
+    window.getPeoGaLinks = function() {
+      try {
+        const s = localStorage.getItem('apc_obe_peo_ga_links');
+        if (s) return JSON.parse(s);
+      } catch (e) {}
+      return {
+        1: [1, 3, 4, 9],
+        2: [2, 6, 7, 8],
+        3: [2, 3, 9],
+        4: [1, 2, 4, 5],
+        5: [4, 5, 6, 7, 8]
+      };
+    };
+
+    window.savePeoGaLinks = function(links) {
+      try {
+        localStorage.setItem('apc_obe_peo_ga_links', JSON.stringify(links));
+      } catch (e) {}
+    };
+
+    window.activeFlowTrace = {
+      type: null,
+      id: null
+    };
+
+    window.clearFlowTrace = function() {
+      window.activeFlowTrace = { type: null, id: null };
+      if (typeof window.renderFlowGraph === 'function') window.renderFlowGraph();
+    };
+
+    window.traceFlowLineage = function(type, id) {
+      if (window.activeFlowTrace.type === type && String(window.activeFlowTrace.id) === String(id)) {
+        window.clearFlowTrace();
+        return;
+      }
+      window.activeFlowTrace = { type, id };
+      if (typeof window.renderFlowGraph === 'function') window.renderFlowGraph();
+    };
+
+    window.renderFlowGraph = function() {
+      const colGA = document.getElementById('flowColGA');
+      const colPEO = document.getElementById('flowColPEO');
+      const colSO = document.getElementById('flowColSO');
+      const colCourses = document.getElementById('flowColCourses');
+      if (!colGA || !colPEO || !colSO || !colCourses) return;
+
+      const peoSoLinks = window.getPeoSoLinks();
+      const peoGaLinks = window.getPeoGaLinks();
+      const allCourses = (window.OFFICIAL_BASELINE_74_COURSES && window.OFFICIAL_BASELINE_74_COURSES.length > 0)
+        ? window.OFFICIAL_BASELINE_74_COURSES
+        : [];
+
+      const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+
+      let activeGAs = null;
+      let activePEOs = null;
+      let activeSOs = null;
+      let activeCourses = null;
+
+      const tr = window.activeFlowTrace;
+      const traceBadge = document.getElementById('flowGraphTraceBadge');
+      const traceText = document.getElementById('flowGraphTraceText');
+
+      if (tr && tr.type && tr.id !== null) {
+        if (traceBadge) traceBadge.classList.remove('hidden');
+
+        if (tr.type === 'ga') {
+          activeGAs = new Set([Number(tr.id)]);
+          activePEOs = new Set(Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(Number(tr.id))).map(Number));
+          activeSOs = new Set(Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).some(p => activePEOs.has(p))));
+          activeCourses = new Set();
+          allCourses.forEach(c => {
+            const sos = c.sos || [];
+            const hasMapped = SO_KEYS.some((letter, idx) => activeSOs.has(letter) && (sos[idx] === 'I' || sos[idx] === 'E' || sos[idx] === 'D'));
+            if (hasMapped) activeCourses.add(c.code);
+          });
+          if (traceText) traceText.textContent = `Traced GA ${tr.id}: ${activePEOs.size} PEOs ➔ ${activeSOs.size} SOs ➔ ${activeCourses.size} Courses mapped downstream.`;
+
+        } else if (tr.type === 'peo') {
+          activePEOs = new Set([Number(tr.id)]);
+          activeGAs = new Set(peoGaLinks[tr.id] || []);
+          activeSOs = new Set(Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(Number(tr.id))));
+          activeCourses = new Set();
+          allCourses.forEach(c => {
+            const sos = c.sos || [];
+            const hasMapped = SO_KEYS.some((letter, idx) => activeSOs.has(letter) && (sos[idx] === 'I' || sos[idx] === 'E' || sos[idx] === 'D'));
+            if (hasMapped) activeCourses.add(c.code);
+          });
+          if (traceText) traceText.textContent = `Traced PEO ${tr.id}: Linked upstream to ${activeGAs.size} GAs ➔ Downstream to ${activeSOs.size} SOs & ${activeCourses.size} Courses.`;
+
+        } else if (tr.type === 'so') {
+          activeSOs = new Set([String(tr.id)]);
+          activePEOs = new Set(peoSoLinks[tr.id] || []);
+          activeGAs = new Set();
+          activePEOs.forEach(p => (peoGaLinks[p] || []).forEach(g => activeGAs.add(g)));
+          activeCourses = new Set();
+          const soIdx = SO_KEYS.indexOf(String(tr.id));
+          allCourses.forEach(c => {
+            const sos = c.sos || [];
+            if (soIdx >= 0 && (sos[soIdx] === 'I' || sos[soIdx] === 'E' || sos[soIdx] === 'D')) {
+              activeCourses.add(c.code);
+            }
+          });
+          if (traceText) traceText.textContent = `Traced SO-${tr.id}: Linked upstream to ${activePEOs.size} PEOs & ${activeGAs.size} GAs ➔ ${activeCourses.size} Courses mapped.`;
+
+        } else if (tr.type === 'course') {
+          activeCourses = new Set([String(tr.id)]);
+          const c = allCourses.find(course => course.code === tr.id);
+          activeSOs = new Set();
+          if (c && c.sos) {
+            SO_KEYS.forEach((letter, idx) => {
+              if (c.sos[idx] === 'I' || c.sos[idx] === 'E' || c.sos[idx] === 'D') {
+                activeSOs.add(letter);
+              }
+            });
+          }
+          activePEOs = new Set();
+          activeSOs.forEach(s => (peoSoLinks[s] || []).forEach(p => activePEOs.add(p)));
+          activeGAs = new Set();
+          activePEOs.forEach(p => (peoGaLinks[p] || []).forEach(g => activeGAs.add(g)));
+          if (traceText) traceText.textContent = `Traced Course [${tr.id}]: Maps to ${activeSOs.size} SOs ➔ ${activePEOs.size} PEOs ➔ ${activeGAs.size} Institutional GAs.`;
+        }
+      } else {
+        if (traceBadge) traceBadge.classList.add('hidden');
+        if (traceText) traceText.textContent = 'Click any node below to isolate its cascading relationship through GA ➔ PEO ➔ SO ➔ Courses.';
+      }
+
+      // Render Column 1: GA
+      colGA.innerHTML = FLOW_GA_DEFS.map(ga => {
+        const isMatched = activeGAs ? activeGAs.has(ga.id) : true;
+        const isDirect = tr && tr.type === 'ga' && Number(tr.id) === ga.id;
+        const linkedPeoList = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id)).map(p => `PEO ${p}`);
+        const cardClass = isDirect
+          ? 'bg-amber-50 dark:bg-[#1C2534] border-2 border-[#002855] dark:border-[#E5A823] ring-2 ring-apc-gold shadow-md opacity-100'
+          : (isMatched
+              ? 'bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 shadow-xs hover:border-[#002855] opacity-100'
+              : 'bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-800 opacity-30 hover:opacity-100');
+
+        return `
+          <div onclick="traceFlowLineage('ga', ${ga.id})" class="p-2.5 rounded-none transition cursor-pointer space-y-1.5 ${cardClass}" title="Click to trace GA ${ga.id}">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-[11px] text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
+              <button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('ga', ${ga.id})" class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit PEO links for ${ga.code}">✏️ Link PEOs</button>
+            </div>
+            <h6 class="font-bold text-xs text-slate-800 dark:text-slate-100 leading-tight">${ga.title}</h6>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">${ga.desc}</p>
+            <div class="pt-1 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[10px] font-mono">
+              <span class="text-slate-500">Linked:</span>
+              <span class="font-bold text-purple-700 dark:text-purple-300">${linkedPeoList.length ? linkedPeoList.join(', ') : 'None'}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Render Column 2: PEO
+      colPEO.innerHTML = FLOW_PEO_DEFS.map(peo => {
+        const isMatched = activePEOs ? activePEOs.has(peo.id) : true;
+        const isDirect = tr && tr.type === 'peo' && Number(tr.id) === peo.id;
+        const gaList = (peoGaLinks[peo.id] || []).map(g => `GA ${g}`);
+        const soList = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
+        const cardClass = isDirect
+          ? 'bg-purple-50 dark:bg-[#1E1F35] border-2 border-purple-600 dark:border-purple-400 ring-2 ring-apc-gold shadow-md opacity-100'
+          : (isMatched
+              ? 'bg-white dark:bg-[#151D2A] border border-purple-200 dark:border-purple-900/60 shadow-xs hover:border-purple-500 opacity-100'
+              : 'bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-800 opacity-30 hover:opacity-100');
+
+        return `
+          <div onclick="traceFlowLineage('peo', ${peo.id})" class="p-2.5 rounded-none transition cursor-pointer space-y-1.5 ${cardClass}" title="Click to trace PEO ${peo.id}">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-[11px] text-purple-700 dark:text-purple-300">${peo.code}</span>
+              <button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('peo', ${peo.id})" class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit GAs and SOs for ${peo.code}">✏️ Edit Links</button>
+            </div>
+            <h6 class="font-bold text-xs text-slate-800 dark:text-slate-100 leading-tight">${peo.title}</h6>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">${peo.desc}</p>
+            <div class="pt-1 border-t border-purple-100 dark:border-purple-900/40 flex items-center justify-between text-[10px] font-mono">
+              <span class="text-slate-500">← ${gaList.length} GAs</span>
+              <span class="font-bold text-indigo-600 dark:text-indigo-400">${soList.length} SOs →</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Render Column 3: SO
+      colSO.innerHTML = FLOW_SO_DEFS.map((so, soIdx) => {
+        const isMatched = activeSOs ? activeSOs.has(so.id) : true;
+        const isDirect = tr && tr.type === 'so' && tr.id === so.id;
+        const peoList = (peoSoLinks[so.id] || []).map(p => `PEO ${p}`);
+        
+        let iCount = 0, eCount = 0, dCount = 0;
+        allCourses.forEach(c => {
+          const rating = (c.sos && c.sos[soIdx]) ? c.sos[soIdx].trim().toUpperCase() : '-';
+          if (rating === 'I') iCount++;
+          else if (rating === 'E') eCount++;
+          else if (rating === 'D') dCount++;
+        });
+        const totalMapped = iCount + eCount + dCount;
+
+        const cardClass = isDirect
+          ? 'bg-indigo-50 dark:bg-[#191D33] border-2 border-indigo-600 dark:border-indigo-400 ring-2 ring-apc-gold shadow-md opacity-100'
+          : (isMatched
+              ? 'bg-white dark:bg-[#151D2A] border border-indigo-200 dark:border-indigo-900/60 shadow-xs hover:border-indigo-500 opacity-100'
+              : 'bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-800 opacity-30 hover:opacity-100');
+
+        return `
+          <div onclick="traceFlowLineage('so', '${so.id}')" class="p-2.5 rounded-none transition cursor-pointer space-y-1.5 ${cardClass}" title="Click to trace SO-${so.id}">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-[11px] text-indigo-700 dark:text-indigo-300">${so.code}</span>
+              <button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('so', '${so.id}')" class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-200 hover:bg-[#002855] hover:text-[#E5A823] border border-indigo-300 dark:border-indigo-800 transition cursor-pointer" title="Edit PEO links for ${so.code}">✏️ Edit PEOs</button>
+            </div>
+            <h6 class="font-bold text-xs text-slate-800 dark:text-slate-100 leading-tight">${so.title}</h6>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">${so.desc}</p>
+            <div class="pt-1 border-t border-indigo-100 dark:border-indigo-900/40 flex items-center justify-between text-[10px] font-mono">
+              <span class="text-slate-500">← ${peoList.join(', ')}</span>
+              <span class="font-bold text-emerald-700 dark:text-emerald-400">${totalMapped} Courses</span>
+            </div>
+            <div class="flex items-center gap-1 font-mono text-[9px]">
+              <span class="px-1 bg-emerald-100 text-emerald-800 font-bold">I:${iCount}</span>
+              <span class="px-1 bg-amber-100 text-amber-800 font-bold">E:${eCount}</span>
+              <span class="px-1 bg-indigo-100 text-indigo-800 font-bold">D:${dCount}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Render Column 4: Courses
+      const searchQ = (document.getElementById('flowGraphSearchInput')?.value || '').trim().toLowerCase();
+      const yrFilter = document.getElementById('flowGraphYearFilter')?.value || 'all';
+
+      let filteredCourses = allCourses.filter(c => {
+        if (yrFilter !== 'all' && String(c.year) !== yrFilter) return false;
+        if (searchQ) {
+          const mCode = (c.code || '').toLowerCase().includes(searchQ);
+          const mTitle = (c.title || '').toLowerCase().includes(searchQ);
+          if (!mCode && !mTitle) return false;
+        }
+        return true;
+      });
+
+      const counterEl = document.getElementById('flowCourseCounter');
+      if (counterEl) counterEl.textContent = `${filteredCourses.length} Courses`;
+
+      if (filteredCourses.length === 0) {
+        colCourses.innerHTML = `<div class="p-6 text-center text-slate-400 italic font-mono text-xs">No courses match filters.</div>`;
+      } else {
+        colCourses.innerHTML = filteredCourses.map(c => {
+          const isMatched = activeCourses ? activeCourses.has(c.code) : true;
+          const isDirect = tr && tr.type === 'course' && tr.id === c.code;
+
+          const mappedPills = [];
+          (c.sos || []).forEach((rating, sIdx) => {
+            const val = (rating || '-').trim().toUpperCase();
+            if (val === 'I' || val === 'E' || val === 'D') {
+              const sKey = SO_KEYS[sIdx];
+              let pColor = val === 'I' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : (val === 'E' ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-indigo-100 text-indigo-800 border-indigo-300');
+              mappedPills.push(`
+                <span onclick="event.stopPropagation(); cycleObeProgression('${c.code}', ${sIdx}); if(typeof renderFlowGraph==='function') renderFlowGraph();" 
+                      class="px-1 py-0.2 rounded-none border font-mono text-[9px] font-bold cursor-pointer hover:ring-1 hover:ring-apc-gold ${pColor}" 
+                      title="SO-${sKey} [${val}]: Click to cycle I ➔ E ➔ D ➔ Unmap">
+                  ${sKey.toUpperCase()}:${val}
+                </span>
+              `);
+            }
+          });
+
+          const cardClass = isDirect
+            ? 'bg-emerald-50 dark:bg-[#12231E] border-2 border-emerald-600 dark:border-emerald-400 ring-2 ring-apc-gold shadow-md opacity-100'
+            : (isMatched
+                ? 'bg-white dark:bg-[#151D2A] border border-emerald-200 dark:border-emerald-900/60 shadow-xs hover:border-emerald-500 opacity-100'
+                : 'bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-800 opacity-30 hover:opacity-100');
+
+          return `
+            <div onclick="traceFlowLineage('course', '${c.code}')" class="p-2.5 rounded-none transition cursor-pointer space-y-1.5 ${cardClass}" title="Click to trace ${c.code}">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-xs text-emerald-800 dark:text-emerald-300">${c.code}</span>
+                  <span class="text-[9px] font-mono text-slate-400">Y${c.year} T${c.term}</span>
+                </div>
+                <button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('course', '${c.code}')" class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-[#002855] hover:text-[#E5A823] border border-emerald-300 dark:border-emerald-800 transition cursor-pointer" title="Edit SO mappings for ${c.code}">+ Edit SOs</button>
+              </div>
+              <h6 class="font-bold text-xs text-slate-800 dark:text-slate-100 leading-tight">${c.title}</h6>
+              <div class="flex items-center justify-between text-[10px] text-slate-500">
+                <span>Units: ${c.units !== undefined ? c.units : 3}.0</span>
+                <span>${mappedPills.length} Mapped SOs</span>
+              </div>
+              <div class="flex flex-wrap gap-1 pt-1 border-t border-emerald-100 dark:border-emerald-900/40">
+                ${mappedPills.length ? mappedPills.join('') : '<span class="text-[10px] text-slate-400 italic">No SOs mapped yet</span>'}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    };
+
+    window.flowEditTarget = { type: null, id: null };
+
+    window.openFlowLinkEditor = function(type, id) {
+      window.flowEditTarget = { type, id };
+      const modal = document.getElementById('flowGraphLinkModal');
+      const titleEl = document.getElementById('flowModalTitle');
+      const subEl = document.getElementById('flowModalSubtitle');
+      const contentEl = document.getElementById('flowModalContent');
+      if (!modal || !contentEl) return;
+
+      const peoSoLinks = window.getPeoSoLinks();
+      const peoGaLinks = window.getPeoGaLinks();
+
+      if (type === 'course') {
+        const c = (window.OFFICIAL_BASELINE_74_COURSES || []).find(course => course.code === id);
+        if (!c) return;
+        if (titleEl) titleEl.textContent = `Edit SO Mappings for ${c.code}`;
+        if (subEl) subEl.textContent = `${c.title} • Assign Introductory (I), Enabling (E), or Demonstrative (D) competencies`;
+
+        const sos = c.sos || ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
+        contentEl.innerHTML = `
+          <div class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-800 space-y-2">
+            <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase">Course Information:</div>
+            <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+              <div>Code: <span class="font-bold text-emerald-700 dark:text-emerald-400">${c.code}</span></div>
+              <div>Units: <span class="font-bold">${c.units !== undefined ? c.units : 3}.0</span></div>
+              <div>Group: <span class="font-bold">${c.group || 'Core'}</span></div>
+              <div>Term: <span class="font-bold">Year ${c.year}, Term ${c.term}</span></div>
+            </div>
+          </div>
+          <div class="space-y-1.5 max-h-[380px] overflow-y-auto pr-1">
+            <div class="text-[11px] font-bold text-slate-600 dark:text-slate-400 uppercase">CHED Student Outcomes Competency Progression:</div>
+            ${FLOW_SO_DEFS.map((so, idx) => {
+              const currentVal = (sos[idx] || '-').trim().toUpperCase();
+              return `
+                <div class="p-2 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+                  <div class="min-w-[140px]">
+                    <span class="font-mono font-bold text-indigo-700 dark:text-indigo-400 text-xs">${so.code}</span>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate" title="${so.title}">${so.title}</div>
+                  </div>
+                  <div class="flex items-center gap-2 font-mono text-xs">
+                    <label class="flex items-center gap-1 cursor-pointer">
+                      <input type="radio" name="so_radio_${idx}" value="-" ${currentVal === '-' ? 'checked' : ''} />
+                      <span class="text-slate-400">None</span>
+                    </label>
+                    <label class="flex items-center gap-1 cursor-pointer px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                      <input type="radio" name="so_radio_${idx}" value="I" ${currentVal === 'I' ? 'checked' : ''} />
+                      <span class="font-bold">I</span>
+                    </label>
+                    <label class="flex items-center gap-1 cursor-pointer px-1.5 py-0.5 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
+                      <input type="radio" name="so_radio_${idx}" value="E" ${currentVal === 'E' ? 'checked' : ''} />
+                      <span class="font-bold">E</span>
+                    </label>
+                    <label class="flex items-center gap-1 cursor-pointer px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-800">
+                      <input type="radio" name="so_radio_${idx}" value="D" ${currentVal === 'D' ? 'checked' : ''} />
+                      <span class="font-bold">D</span>
+                    </label>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+
+      } else if (type === 'so') {
+        const so = FLOW_SO_DEFS.find(s => s.id === id);
+        if (!so) return;
+        if (titleEl) titleEl.textContent = `Edit PEO Alignment for ${so.code}`;
+        if (subEl) subEl.textContent = `Select which Program Educational Objectives are directly supported by ${so.code}`;
+
+        const currentPeos = peoSoLinks[id] || [];
+        contentEl.innerHTML = `
+          <div class="p-3 bg-indigo-50/50 dark:bg-[#121626] border border-indigo-200 dark:border-indigo-800 space-y-1">
+            <div class="font-mono font-bold text-indigo-800 dark:text-indigo-300">${so.code}: ${so.title}</div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400">${so.desc}</p>
+          </div>
+          <div class="space-y-2 pt-2">
+            <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase">Supporting Program Educational Objectives:</div>
+            ${FLOW_PEO_DEFS.map(peo => {
+              const checked = currentPeos.includes(peo.id) ? 'checked' : '';
+              return `
+                <label class="flex items-start gap-2.5 p-2.5 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 cursor-pointer hover:bg-slate-50 dark:hover:bg-[#1A2333] transition">
+                  <input type="checkbox" name="peo_chk_${peo.id}" value="${peo.id}" ${checked} class="mt-0.5" />
+                  <div>
+                    <span class="font-mono font-bold text-purple-700 dark:text-purple-300">${peo.code}: ${peo.title}</span>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400">${peo.desc}</p>
+                  </div>
+                </label>
+              `;
+            }).join('')}
+          </div>
+        `;
+
+      } else if (type === 'peo') {
+        const peo = FLOW_PEO_DEFS.find(p => p.id === Number(id));
+        if (!peo) return;
+        if (titleEl) titleEl.textContent = `Edit GA & SO Links for ${peo.code}`;
+        if (subEl) subEl.textContent = `Configure upstream Graduate Attributes and downstream Student Outcomes for ${peo.code}`;
+
+        const currentGas = peoGaLinks[peo.id] || [];
+        contentEl.innerHTML = `
+          <div class="p-3 bg-purple-50/50 dark:bg-[#18152B] border border-purple-200 dark:border-purple-800 space-y-1">
+            <div class="font-mono font-bold text-purple-800 dark:text-purple-300">${peo.code}: ${peo.title}</div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400">${peo.desc}</p>
+          </div>
+          <div class="space-y-2 pt-2">
+            <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase">Upstream Graduate Attributes Alignment (GA 1–9):</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[220px] overflow-y-auto pr-1">
+              ${FLOW_GA_DEFS.map(ga => {
+                const checked = currentGas.includes(ga.id) ? 'checked' : '';
+                return `
+                  <label class="flex items-start gap-2 p-2 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 cursor-pointer text-xs">
+                    <input type="checkbox" name="ga_chk_${ga.id}" value="${ga.id}" ${checked} class="mt-0.5" />
+                    <div>
+                      <span class="font-mono font-bold text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
+                      <div class="text-[10px] text-slate-600 dark:text-slate-400 leading-tight">${ga.title}</div>
+                    </div>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+
+      } else if (type === 'ga') {
+        const ga = FLOW_GA_DEFS.find(g => g.id === Number(id));
+        if (!ga) return;
+        if (titleEl) titleEl.textContent = `Edit PEO Alignment for ${ga.code}`;
+        if (subEl) subEl.textContent = `Select which PEOs directly support ${ga.code}`;
+
+        contentEl.innerHTML = `
+          <div class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-800 space-y-1">
+            <div class="font-mono font-bold text-[#002855] dark:text-[#E5A823]">${ga.code}: ${ga.title}</div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400">${ga.desc}</p>
+          </div>
+          <div class="space-y-2 pt-2">
+            <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase">Program Educational Objectives (PEO 1–5):</div>
+            ${FLOW_PEO_DEFS.map(peo => {
+              const isChecked = (peoGaLinks[peo.id] || []).includes(ga.id) ? 'checked' : '';
+              return `
+                <label class="flex items-start gap-2.5 p-2.5 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 cursor-pointer hover:bg-slate-50 dark:hover:bg-[#1A2333] transition">
+                  <input type="checkbox" name="peo_ga_chk_${peo.id}" value="${peo.id}" ${isChecked} class="mt-0.5" />
+                  <div>
+                    <span class="font-mono font-bold text-purple-700 dark:text-purple-300">${peo.code}: ${peo.title}</span>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400">${peo.desc}</p>
+                  </div>
+                </label>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      modal.classList.remove('hidden');
+    };
+
+    window.closeFlowLinkEditor = function() {
+      const modal = document.getElementById('flowGraphLinkModal');
+      if (modal) modal.classList.add('hidden');
+      window.flowEditTarget = { type: null, id: null };
+    };
+
+    window.saveFlowLinkEditor = function(e) {
+      if (e) e.preventDefault();
+      const tr = window.flowEditTarget;
+      if (!tr || !tr.type || tr.id === null) {
+        window.closeFlowLinkEditor();
+        return;
+      }
+
+      const peoSoLinks = window.getPeoSoLinks();
+      const peoGaLinks = window.getPeoGaLinks();
+      const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+
+      if (tr.type === 'course') {
+        const c = (window.OFFICIAL_BASELINE_74_COURSES || []).find(course => course.code === tr.id);
+        if (c) {
+          const newSos = [];
+          SO_KEYS.forEach((letter, idx) => {
+            const rad = document.querySelector(`input[name="so_radio_${idx}"]:checked`);
+            newSos.push(rad ? rad.value : '-');
+          });
+          c.sos = newSos;
+
+          if (window.ALL_COURSES) {
+            window.ALL_COURSES.forEach(ac => {
+              if (ac.code === tr.id) ac.sos = newSos;
+            });
+          }
+        }
+
+      } else if (tr.type === 'so') {
+        const selectedPeos = [];
+        FLOW_PEO_DEFS.forEach(peo => {
+          const chk = document.querySelector(`input[name="peo_chk_${peo.id}"]:checked`);
+          if (chk) selectedPeos.push(peo.id);
+        });
+        peoSoLinks[tr.id] = selectedPeos;
+        window.savePeoSoLinks(peoSoLinks);
+
+      } else if (tr.type === 'peo') {
+        const selectedGas = [];
+        FLOW_GA_DEFS.forEach(ga => {
+          const chk = document.querySelector(`input[name="ga_chk_${ga.id}"]:checked`);
+          if (chk) selectedGas.push(ga.id);
+        });
+        peoGaLinks[tr.id] = selectedGas;
+        window.savePeoGaLinks(peoGaLinks);
+
+      } else if (tr.type === 'ga') {
+        FLOW_PEO_DEFS.forEach(peo => {
+          const chk = document.querySelector(`input[name="peo_ga_chk_${peo.id}"]:checked`);
+          if (!peoGaLinks[peo.id]) peoGaLinks[peo.id] = [];
+          if (chk) {
+            if (!peoGaLinks[peo.id].includes(Number(tr.id))) peoGaLinks[peo.id].push(Number(tr.id));
+          } else {
+            peoGaLinks[peo.id] = peoGaLinks[peo.id].filter(g => g !== Number(tr.id));
+          }
+        });
+        window.savePeoGaLinks(peoGaLinks);
+      }
+
+      window.closeFlowLinkEditor();
+      if (typeof window.renderFlowGraph === 'function') window.renderFlowGraph();
+      if (typeof window.renderObeMatrix === 'function') window.renderObeMatrix();
+      if (typeof showToast === 'function') {
+        showToast(`✓ Updated relational mappings for ${tr.id}!`);
+      }
     };
 
     function renderObeMatrix() {
@@ -8283,6 +8877,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       switchRole('admin', false);
       applyRolePermissions();
       updateAllObeVersionBadges();
+      if (typeof renderFlowGraph === 'function') renderFlowGraph();
     } catch (e) {
       console.warn('Initial setup warning:', e);
     }
