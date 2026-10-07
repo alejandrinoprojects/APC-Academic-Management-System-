@@ -1597,6 +1597,36 @@
       if (document.getElementById('spreadsheetTable') && typeof renderSpreadsheetGrid === 'function') {
         renderSpreadsheetGrid();
       }
+
+      // 6. Institutional MVV & GA Governance (Restricted strictly to Sys Admin; ExD and PD cannot edit)
+      const isAdmin = (currentActiveRole === 'admin' || currentActiveRole === 'a');
+      const gaTab = document.getElementById('vh-domain-tab-ga');
+      const mvvTab = document.getElementById('vh-domain-tab-mvv');
+      if (gaTab) {
+        if (isAdmin) gaTab.classList.remove('hidden');
+        else gaTab.classList.add('hidden');
+      }
+      if (mvvTab) {
+        if (isAdmin) mvvTab.classList.remove('hidden');
+        else mvvTab.classList.add('hidden');
+      }
+      if (!isAdmin && (window.currentVhDomain === 'ga' || window.currentVhDomain === 'mvv')) {
+        if (typeof window.switchVhDomain === 'function') {
+          window.switchVhDomain('maps');
+        }
+      }
+
+      // Hero banner buttons on Schools page: Edit Statements and Institutional Versioning
+      const heroEditBtn = document.getElementById('btnHeroEditStatements');
+      if (heroEditBtn) {
+        if (isAdmin) heroEditBtn.classList.remove('hidden');
+        else heroEditBtn.classList.add('hidden');
+      }
+      const heroInstVerBtn = document.getElementById('btnHeroInstVersioning');
+      if (heroInstVerBtn) {
+        if (isAdmin) heroInstVerBtn.classList.remove('hidden');
+        else heroInstVerBtn.classList.add('hidden');
+      }
     }
     window.applyRolePermissions = applyRolePermissions;
 

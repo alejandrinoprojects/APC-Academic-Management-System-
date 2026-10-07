@@ -723,6 +723,15 @@
         `;
       }
       modal.classList.remove('hidden');
+      const editBtn = document.getElementById('btnPillarModalEdit');
+      if (editBtn) {
+        const role = (window.currentActiveRole || 'admin').toLowerCase();
+        if (role === 'admin' || role === 'a') {
+          editBtn.classList.remove('hidden');
+        } else {
+          editBtn.classList.add('hidden');
+        }
+      }
       if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
         window.spaRouter.onModalOpen('pillar', { pillar: pillar });
       }
@@ -737,6 +746,13 @@
     }
 
     function openEditPillarsModal() {
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      if (role !== 'admin' && role !== 'a') {
+        if (typeof showToast === 'function') {
+          showToast('🔒 Access Restricted: Only the System Administrator can edit institutional MVV and Graduate Attributes. ExD and PD are not allowed to edit.');
+        }
+        return;
+      }
       closePillarModal();
       const modal = document.getElementById('editPillarsModal');
       if (!modal) return;
@@ -762,6 +778,13 @@
 
     function saveCustomPillars(event) {
       if (event) event.preventDefault();
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      if (role !== 'admin' && role !== 'a') {
+        if (typeof showToast === 'function') {
+          showToast('🔒 Access Restricted: Only the System Administrator can edit institutional MVV and Graduate Attributes.');
+        }
+        return;
+      }
       const mInput = document.getElementById('editPillarMissionInput');
       const vInput = document.getElementById('editPillarVisionInput');
       const valInput = document.getElementById('editPillarValuesInput');
@@ -805,6 +828,13 @@
     }
 
     function resetPillarsToDefault() {
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      if (role !== 'admin' && role !== 'a') {
+        if (typeof showToast === 'function') {
+          showToast('🔒 Access Restricted: Only the System Administrator can reset institutional statements.');
+        }
+        return;
+      }
       try {
         localStorage.removeItem('apc_custom_pillars');
       } catch (e) {}
@@ -820,6 +850,202 @@
       }
       if (typeof showToast === 'function') {
         showToast('Reset statements to institutional defaults.');
+      }
+    }
+
+    // =========================================================================
+    // DEDICATED INSTITUTIONAL MVV & GA VERSIONING HISTORY (SYS ADMIN EXCLUSIVE)
+    // =========================================================================
+    let currentInstVhTab = 'mvv';
+    let currentInspectedInstMvvId = 'MVV-2025';
+    let currentInspectedInstGaId = 'GA-2024';
+
+    function openInstitutionalVersioningModal(domain = 'mvv') {
+      const modal = document.getElementById('institutionalVersioningModal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      switchInstVhTab(domain);
+      if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
+        window.spaRouter.onModalOpen('inst-versioning', { domain });
+      }
+    }
+
+    function closeInstitutionalVersioningModal() {
+      const modal = document.getElementById('institutionalVersioningModal');
+      if (modal) modal.classList.add('hidden');
+      if (window.spaRouter && typeof window.spaRouter.onModalClose === 'function') {
+        window.spaRouter.onModalClose('inst-versioning');
+      }
+    }
+
+    function switchInstVhTab(tabId) {
+      currentInstVhTab = tabId;
+      const tabMvv = document.getElementById('tabInstVhMvv');
+      const tabGa = document.getElementById('tabInstVhGa');
+      const panelMvv = document.getElementById('panelInstVhMvv');
+      const panelGa = document.getElementById('panelInstVhGa');
+
+      if (tabId === 'mvv') {
+        if (panelMvv) panelMvv.classList.remove('hidden');
+        if (panelGa) panelGa.classList.add('hidden');
+        if (tabMvv) tabMvv.className = 'px-3 py-1.5 bg-[#002855] text-[#E5A823] font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer';
+        if (tabGa) tabGa.className = 'px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+        renderInstMvvTable();
+      } else {
+        if (panelMvv) panelMvv.classList.add('hidden');
+        if (panelGa) panelGa.classList.remove('hidden');
+        if (tabGa) tabGa.className = 'px-3 py-1.5 bg-[#002855] text-[#E5A823] font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer';
+        if (tabMvv) tabMvv.className = 'px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer';
+        renderInstGaTable();
+      }
+    }
+
+    function renderInstMvvTable(targetId) {
+      const registry = window.MVV_VERSION_REGISTRY || [];
+      const id = targetId || currentInspectedInstMvvId || 'MVV-2025';
+      currentInspectedInstMvvId = id;
+      const targetMvv = registry.find(m => m.id === id) || registry[0];
+
+      const tbody = document.getElementById('instMvvTableBody');
+      if (tbody) {
+        tbody.innerHTML = registry.map(mvv => {
+          const isInspecting = (mvv.id === id);
+          return `
+            <tr onclick="renderInstMvvTable('${mvv.id}')" class="cursor-pointer transition border-b border-slate-100 dark:border-slate-800 ${
+              isInspecting ? 'bg-amber-500/10 dark:bg-amber-500/15 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+            }">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-[#002855] dark:text-amber-400">
+                <div class="flex items-center gap-1.5">
+                  ${isInspecting ? '<span class="text-amber-500">👉</span>' : ''}
+                  <span>${mvv.id}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${mvv.name}</div>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${mvv.statusClass}">
+                  ${mvv.status}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-600 dark:text-slate-400">
+                ${mvv.effective}
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+                ${mvv.notes}
+              </td>
+              <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
+                <button type="button" onclick="renderInstMvvTable('${mvv.id}')" class="px-2 py-1 bg-[#002855] text-[#E5A823] font-bold text-[10px] hover:bg-[#001f42] cursor-pointer">
+                  🔍 Inspect
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (targetMvv) {
+        const titleEl = document.getElementById('instMvvInspectTitle');
+        if (titleEl) titleEl.textContent = `${targetMvv.name} (${targetMvv.id})`;
+        const badgeEl = document.getElementById('instMvvInspectBadge');
+        if (badgeEl) badgeEl.textContent = targetMvv.status;
+
+        const cardsContainer = document.getElementById('instMvvCardsContainer');
+        if (cardsContainer) {
+          cardsContainer.innerHTML = `
+            <div class="p-3.5 bg-white dark:bg-[#181D26] border border-slate-200 dark:border-slate-800 space-y-1.5 shadow-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🏛️ Vision Statement</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 font-bold">${targetMvv.id}</span>
+              </div>
+              <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${targetMvv.vision}</p>
+            </div>
+            <div class="p-3.5 bg-white dark:bg-[#181D26] border border-slate-200 dark:border-slate-800 space-y-1.5 shadow-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🚀 Mission Statement</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 font-bold">${targetMvv.id}</span>
+              </div>
+              <p class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">${targetMvv.mission}</p>
+            </div>
+            <div class="p-3.5 bg-white dark:bg-[#181D26] border border-slate-200 dark:border-slate-800 space-y-1.5 shadow-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🎯 Core Values &amp; Goal</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 font-bold">${targetMvv.id}</span>
+              </div>
+              <p class="text-xs font-bold text-amber-600 dark:text-amber-400">${targetMvv.values}</p>
+              <p class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed pt-1 border-t border-slate-100 dark:border-slate-800">${targetMvv.soeGoal}</p>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function renderInstGaTable(targetId) {
+      const registry = window.GA_VERSION_REGISTRY || [];
+      const id = targetId || currentInspectedInstGaId || 'GA-2024';
+      currentInspectedInstGaId = id;
+      const targetGa = registry.find(g => g.id === id) || registry[0];
+
+      const tbody = document.getElementById('instGaTableBody');
+      if (tbody) {
+        tbody.innerHTML = registry.map(ga => {
+          const isInspecting = (ga.id === id);
+          return `
+            <tr onclick="renderInstGaTable('${ga.id}')" class="cursor-pointer transition border-b border-slate-100 dark:border-slate-800 ${
+              isInspecting ? 'bg-blue-500/10 dark:bg-blue-500/15 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+            }">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-blue-700 dark:text-blue-400">
+                <div class="flex items-center gap-1.5">
+                  ${isInspecting ? '<span class="text-blue-500">👉</span>' : ''}
+                  <span>${ga.id}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${ga.name}</div>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs font-bold text-blue-600 dark:text-blue-400">
+                ${ga.count} Attributes
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${ga.statusClass}">
+                  ${ga.status}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-600 dark:text-slate-400">
+                ${ga.effective}
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+                ${ga.notes}
+              </td>
+              <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
+                <button type="button" onclick="renderInstGaTable('${ga.id}')" class="px-2 py-1 bg-blue-600 text-white font-bold text-[10px] hover:bg-blue-700 cursor-pointer">
+                  🔍 Inspect
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (targetGa) {
+        const titleEl = document.getElementById('instGaInspectTitle');
+        if (titleEl) titleEl.textContent = `${targetGa.name} (${targetGa.id})`;
+        const badgeEl = document.getElementById('instGaInspectBadge');
+        if (badgeEl) badgeEl.textContent = `${targetGa.count} Attributes • ${targetGa.status}`;
+
+        const cardsContainer = document.getElementById('instGaCardsContainer');
+        if (cardsContainer) {
+          cardsContainer.innerHTML = (targetGa.items || []).map(item => `
+            <div class="p-3 bg-white dark:bg-[#181D26] border border-slate-200 dark:border-slate-800 space-y-1 shadow-2xs">
+              <div class="flex items-center justify-between gap-1.5">
+                <span class="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 font-mono font-bold text-xs border border-blue-200 dark:border-blue-700">${item.code}</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600">${item.domain}</span>
+              </div>
+              <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${item.title}</div>
+              <p class="text-slate-600 dark:text-slate-300 text-xs leading-relaxed mt-1">${item.desc}</p>
+            </div>
+          `).join('');
+        }
       }
     }
 
@@ -2278,6 +2504,11 @@
     window.closeEditPillarsModal = closeEditPillarsModal;
     window.saveCustomPillars = saveCustomPillars;
     window.resetPillarsToDefault = resetPillarsToDefault;
+    window.openInstitutionalVersioningModal = openInstitutionalVersioningModal;
+    window.closeInstitutionalVersioningModal = closeInstitutionalVersioningModal;
+    window.switchInstVhTab = switchInstVhTab;
+    window.renderInstMvvTable = renderInstMvvTable;
+    window.renderInstGaTable = renderInstGaTable;
     window.submitEditSchool = submitEditSchool;
     window.getProgramDirector = getProgramDirector;
     window.openEditProgramModal = openEditProgramModal;

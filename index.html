@@ -699,11 +699,17 @@
                 <!-- White framed rectangle container (Compact Size) -->
                 <div class="relative p-4 sm:p-5 md:p-6 flex items-center justify-center">
                   <div class="border border-white/60 p-4 sm:p-5 md:p-6 text-center w-full max-w-3xl mx-auto shadow-2xl bg-[#000000]/25 relative">
-                    <!-- Edit Pillars Button -->
-                    <button type="button" onclick="openEditPillarsModal()" class="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 px-2 py-1 bg-white/10 hover:bg-[#E5A823] text-white hover:text-slate-950 text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 border border-white/30 cursor-pointer shadow-xs" title="Edit Institutional Mission, Vision & Values">
-                      <span>✎</span>
-                      <span>Edit Statements</span>
-                    </button>
+                    <!-- Institutional Versioning & Edit Buttons (System Admin Only) -->
+                    <div class="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 flex items-center gap-1.5 flex-wrap justify-end">
+                      <button type="button" onclick="openInstitutionalVersioningModal()" id="btnHeroInstVersioning" class="px-2 py-1 bg-white/10 hover:bg-[#E5A823] text-white hover:text-slate-950 text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 border border-white/30 cursor-pointer shadow-xs" title="Institutional MVV & GA Versioning History (Sys Admin)">
+                        <span>📜</span>
+                        <span>Versioning History</span>
+                      </button>
+                      <button type="button" onclick="openEditPillarsModal()" id="btnHeroEditStatements" class="px-2 py-1 bg-white/10 hover:bg-[#E5A823] text-white hover:text-slate-950 text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 border border-white/30 cursor-pointer shadow-xs" title="Edit Institutional Mission, Vision, Values & GAs">
+                        <span>✎</span>
+                        <span>Edit Statements</span>
+                      </button>
+                    </div>
 
                     <!-- Main Headline (No Underline) -->
                     <h1 class="text-xl sm:text-2xl md:text-3xl font-black font-sans text-white tracking-tight">
@@ -5532,6 +5538,130 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   </div>
 
   <!-- ========================================================================= -->
+  <!-- INSTITUTIONAL MVV & GA VERSIONING HISTORY MODAL (SYS ADMIN EXCLUSIVE)     -->
+  <!-- ========================================================================= -->
+  <div id="institutionalVersioningModal" onclick="if(event.target === this) closeInstitutionalVersioningModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-3 sm:p-4 backdrop-blur-xs no-print overflow-y-auto">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#E5A823] shadow-2xl w-full max-w-4xl flex flex-col rounded-none overflow-hidden max-h-[92vh] my-auto">
+      <!-- Modal Header -->
+      <div class="bg-[#002855] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-base text-[#E5A823]">🏛️</span>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-sm tracking-wider text-white uppercase">Institutional Versioning History</h3>
+              <span class="px-2 py-0.5 bg-amber-400/20 text-amber-300 font-mono font-bold text-[10px] uppercase border border-amber-400/40">Sys Admin Tier</span>
+            </div>
+            <p class="text-[11px] text-slate-300">Institutional MVV (Mission, Vision, Values) &amp; Graduate Attributes (GA) Lineage</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnInstVhEditStatements" onclick="openEditPillarsModal()" class="px-2.5 py-1 bg-[#E5A823] hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-xs flex items-center gap-1">
+            <span>✎</span>
+            <span>Edit Statements</span>
+          </button>
+          <button type="button" onclick="closeInstitutionalVersioningModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer leading-none" aria-label="Close">&times;</button>
+        </div>
+      </div>
+
+      <!-- Domain Tabs: MVV vs GA -->
+      <div class="bg-slate-100 dark:bg-[#10151E] px-5 py-2 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2 text-xs font-bold shrink-0">
+        <button type="button" id="tabInstVhMvv" onclick="switchInstVhTab('mvv')" class="px-3 py-1.5 bg-[#002855] text-[#E5A823] font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+          <span>📜</span>
+          <span>Institutional MVV Lineage</span>
+        </button>
+        <button type="button" id="tabInstVhGa" onclick="switchInstVhTab('ga')" class="px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer">
+          <span>🏛️</span>
+          <span>Graduate Attributes (GA) Lineage</span>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 space-y-4 flex-1 overflow-y-auto min-h-0 text-xs">
+        
+        <!-- PANEL A: INSTITUTIONAL MVV -->
+        <div id="panelInstVhMvv" class="space-y-4">
+          <div class="overflow-x-auto border border-slate-200 dark:border-slate-800">
+            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+              <thead class="bg-slate-50 dark:bg-[#0E141F] text-slate-800 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800">
+                <tr>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Version ID</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Strategic Framework</th>
+                  <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Status</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Effective Period</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[200px]">Governance Notes</th>
+                  <th class="py-2.5 px-3 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="instMvvTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- MVV Snapshot Display -->
+          <div class="p-4 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-800 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700/60 pb-2">
+              <span class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                <span>Inspecting Framework:</span>
+                <span id="instMvvInspectTitle" class="text-emerald-600 dark:text-emerald-400 font-mono">MVV-2025 (Active Baseline)</span>
+              </span>
+              <span id="instMvvInspectBadge" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Active Strategic Direction</span>
+            </div>
+            <div id="instMvvCardsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <!-- Cards -->
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL B: INSTITUTIONAL GRADUATE ATTRIBUTES (GA) -->
+        <div id="panelInstVhGa" class="hidden space-y-4">
+          <div class="overflow-x-auto border border-slate-200 dark:border-slate-800">
+            <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+              <thead class="bg-slate-50 dark:bg-[#0E141F] text-slate-800 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800">
+                <tr>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Version ID</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Attribute Profile</th>
+                  <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Count</th>
+                  <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">Status</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">Effective Period</th>
+                  <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[200px]">Governance Notes</th>
+                  <th class="py-2.5 px-3 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="instGaTableBody" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- GA Snapshot Display -->
+          <div class="p-4 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-800 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700/60 pb-2">
+              <span class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                <span>Inspecting Attributes:</span>
+                <span id="instGaInspectTitle" class="text-blue-600 dark:text-blue-400 font-mono">GA-2024 (Active Standard)</span>
+              </span>
+              <span id="instGaInspectBadge" class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">9 Attributes</span>
+            </div>
+            <div id="instGaCardsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-2.5 max-h-[45vh] overflow-y-auto pr-1">
+              <!-- Cards -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between shrink-0">
+        <span class="text-xs text-slate-500 font-mono">Institution: Asia Pacific College &bull; Governance Authority: System Administrator</span>
+        <button type="button" onclick="closeInstitutionalVersioningModal()" class="px-5 py-1.5 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-700 dark:hover:bg-slate-600 text-xs font-black transition cursor-pointer border border-slate-700 shadow-sm">
+          <span>Close</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
   <!-- MISSION, VISION & VALUES MODAL -->
   <!-- ========================================================================= -->
   <div id="pillarModal" onclick="if(event.target === this) closePillarModal()" class="hidden fixed inset-0 z-50 bg-slate-950/75 flex items-center justify-center p-4 backdrop-blur-xs no-print overflow-y-auto">
@@ -5557,10 +5687,16 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
       <!-- Modal Footer -->
       <div class="bg-slate-50 dark:bg-[#10151E] px-5 py-3 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between shrink-0">
-        <button type="button" onclick="openEditPillarsModal()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-xs">
-          <span>✎</span>
-          <span>Edit Statements</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnPillarModalEdit" onclick="openEditPillarsModal()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-[#d4971a] text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+            <span>✎</span>
+            <span>Edit Statements</span>
+          </button>
+          <button type="button" onclick="openInstitutionalVersioningModal()" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs border border-[#E5A823]/60">
+            <span>📜</span>
+            <span>Versioning History</span>
+          </button>
+        </div>
         <button type="button" onclick="closePillarModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white dark:bg-slate-700 dark:hover:bg-slate-600 text-xs font-black transition cursor-pointer border border-slate-700 shadow-sm flex items-center gap-1.5">
           <span>✕</span>
           <span>Close Window</span>
@@ -5581,7 +5717,13 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
             <p class="text-[11px] text-slate-400">Institutional Mission, Vision, Values &amp; Graduate Attributes</p>
           </div>
         </div>
-        <button type="button" onclick="closeEditPillarsModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="openInstitutionalVersioningModal()" class="px-2.5 py-1 bg-white/10 hover:bg-[#E5A823] text-white hover:text-slate-950 text-xs font-bold transition flex items-center gap-1 border border-white/20 cursor-pointer shadow-xs">
+            <span>📜</span>
+            <span>View History</span>
+          </button>
+          <button type="button" onclick="closeEditPillarsModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+        </div>
       </div>
       <!-- Form Body -->
       <form id="editPillarsForm" onsubmit="saveCustomPillars(event)" class="p-5 space-y-4 overflow-y-auto text-xs">
