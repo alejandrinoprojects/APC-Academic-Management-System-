@@ -9099,13 +9099,14 @@ ${worksheetsXml}
     window.SO_VERSION_REGISTRY = [
       {
         id: 'SO-2027',
-        name: 'Student Outcomes 2027 (Draft Next-Gen & AI)',
+        name: 'Student Outcomes 2027',
         standard: 'CHED CMO 92 s.2017 + AI & Edge Specialization',
         count: 13,
         status: 'UNLOCKED DRAFT',
         statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         effective: 'AY 2027–2031',
         notes: 'Updated outcomes incorporating edge AI, cyber-physical systems, and sustainable computing in SO-k and SO-m.',
+        parentPeoId: 'PEO-2027',
         items: [
           { code: 'SO-a', domain: 'Engineering Sciences', title: 'Engineering Knowledge Application', desc: 'Apply knowledge of mathematics, natural science, computing fundamentals and engineering sciences to solve complex engineering problems.' },
           { code: 'SO-b', domain: 'Investigation', title: 'Investigation of Complex Problems', desc: 'Conduct investigations of complex engineering problems using research-based knowledge, experimental design, and data interpretation.' },
@@ -9124,24 +9125,26 @@ ${worksheetsXml}
       },
       {
         id: 'SO-2026',
-        name: 'Student Outcomes 2026 (Active Baseline)',
+        name: 'Student Outcomes 2026',
         standard: 'CHED CMO 92 s.2017 (Standard Engineering a–m)',
         count: 13,
         status: 'ACTIVE BATCH',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: 'AY 2026–2030',
         notes: 'Active accreditation baseline with 13 official CHED student outcomes.',
+        parentPeoId: 'PEO-2026',
         items: DEFAULT_FLOW_SO_DEFS
       },
       {
         id: 'SO-2021',
-        name: 'Student Outcomes 2021 (Historical Archive)',
+        name: 'Student Outcomes 2021',
         standard: 'CHED CMO 92 s.2017 (Initial 12 Outcomes a–l)',
         count: 12,
         status: 'ARCHIVED',
         statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
         effective: 'AY 2021–2025',
         notes: 'Pre-expansion 12-outcome framework prior to specialization track expansion.',
+        parentPeoId: 'PEO-2021',
         items: DEFAULT_FLOW_SO_DEFS.slice(0, 12)
       }
     ];
@@ -9149,12 +9152,13 @@ ${worksheetsXml}
     window.PEO_VERSION_REGISTRY = [
       {
         id: 'PEO-2027',
-        name: 'Program Educational Objectives 2027 (Draft)',
+        name: 'Program Educational Objectives 2027',
         count: 5,
         status: 'UNLOCKED DRAFT',
         statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         effective: 'AY 2027–2031',
         notes: 'Expanded to highlight AI innovation, autonomous systems, and global technopreneurship.',
+        parentGaId: 'GA-2027',
         items: [
           { id: 1, code: 'PEO 1', domain: 'Intelligent Systems', title: 'Complex Solutions & Emerging AI Technologies', desc: 'Synthesize advanced computer engineering principles and generative/edge AI technologies to architect adaptive, resilient hardware-software systems.' },
           { id: 2, code: 'PEO 2', domain: 'Ethics & Climate', title: 'Sustainable, Resilient & Ethical Computing', desc: 'Integrate cyber ethics, data governance, and green computing principles to deliver socially beneficial solutions for global well-being.' },
@@ -9165,22 +9169,24 @@ ${worksheetsXml}
       },
       {
         id: 'PEO-2026',
-        name: 'Program Educational Objectives 2026 (Active Baseline)',
+        name: 'Program Educational Objectives 2026',
         count: 5,
         status: 'ACTIVE BATCH',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: 'AY 2026–2030',
         notes: 'Active baseline for BSCpE 3 to 5 years after graduation.',
+        parentGaId: 'GA-2024',
         items: DEFAULT_FLOW_PEO_DEFS
       },
       {
         id: 'PEO-2021',
-        name: 'Program Educational Objectives 2021 (Historical Archive)',
+        name: 'Program Educational Objectives 2021',
         count: 4,
         status: 'ARCHIVED',
         statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
         effective: 'AY 2021–2025',
         notes: 'Legacy 4-objective model used prior to 2026 OBE review.',
+        parentGaId: 'GA-2021',
         items: DEFAULT_FLOW_PEO_DEFS.slice(0, 4)
       }
     ];
@@ -9188,12 +9194,13 @@ ${worksheetsXml}
     window.GA_VERSION_REGISTRY = [
       {
         id: 'GA-2027',
-        name: 'Graduate Attributes 2027 (Draft Smart Era)',
+        name: 'Graduate Attributes 2027',
         count: 9,
         status: 'UNLOCKED DRAFT',
         statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         effective: 'AY 2027–2031',
         notes: 'Includes ethical AI stewardship, digital agility, and climate-resilient engineering.',
+        parentMvvId: 'MVV-2025',
         items: DEFAULT_FLOW_GA_DEFS.map((ga, idx) => {
           if (idx === 0) return { ...ga, desc: 'Creates innovative, proactive, and AI-enabled strategies with a willingness to challenge the status quo using emerging technologies aligned with organizational goals.' };
           if (idx === 2) return { ...ga, desc: 'Pioneers in utilizing modern cloud, edge, and cyber-physical technologies aiming for universal digital inclusivity.' };
@@ -9202,22 +9209,24 @@ ${worksheetsXml}
       },
       {
         id: 'GA-2024',
-        name: 'Graduate Attributes 2024 (Active Institutional Standard)',
+        name: 'Graduate Attributes 2024',
         count: 9,
         status: 'ACTIVE BATCH',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: 'AY 2024–Present',
         notes: 'Current APC institutional graduate profile (GA A through GA I).',
+        parentMvvId: 'MVV-2025',
         items: DEFAULT_FLOW_GA_DEFS
       },
       {
         id: 'GA-2021',
-        name: 'Graduate Attributes 2021 (Historical Archive)',
+        name: 'Graduate Attributes 2021',
         count: 8,
         status: 'ARCHIVED',
         statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
         effective: 'AY 2021–2024',
         notes: 'Legacy 8-attribute institutional graduate profile.',
+        parentMvvId: 'MVV-2020',
         items: DEFAULT_FLOW_GA_DEFS.slice(0, 8)
       }
     ];
@@ -9225,7 +9234,7 @@ ${worksheetsXml}
     window.MVV_VERSION_REGISTRY = [
       {
         id: 'MVV-2025',
-        name: 'APC Institutional MVV 2025–2030 (Active Strategic Direction)',
+        name: 'APC Institutional MVV 2025–2030',
         status: 'ACTIVE BATCH',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         effective: '2025–2030',
@@ -9237,7 +9246,7 @@ ${worksheetsXml}
       },
       {
         id: 'MVV-2020',
-        name: 'APC Institutional MVV 2020–2024 (Historical Strategic Framework)',
+        name: 'APC Institutional MVV 2020–2024',
         status: 'ARCHIVED',
         statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
         effective: '2020–2024',
@@ -9253,7 +9262,7 @@ ${worksheetsXml}
       {
         id: 'CPE-2027',
         code: 'CPE 2027',
-        name: 'BSCpE 2027–2031 (Draft AI & Cloud Track)',
+        name: 'BSCpE 2027–2031',
         units: '184.0',
         courses: 74,
         terms: 12,
@@ -9265,7 +9274,7 @@ ${worksheetsXml}
       {
         id: 'CPE-2026',
         code: 'CPE 2026',
-        name: 'BSCpE 2026–2030 (Active Baseline)',
+        name: 'BSCpE 2026–2030',
         units: '184.0',
         courses: 74,
         terms: 12,
@@ -9277,7 +9286,7 @@ ${worksheetsXml}
       {
         id: 'CPE-2025',
         code: 'CPE 2025',
-        name: 'BSCpE 2025–2029 (Previous Batch)',
+        name: 'BSCpE 2025–2029',
         units: '184.0',
         courses: 74,
         terms: 12,
@@ -9289,7 +9298,7 @@ ${worksheetsXml}
       {
         id: 'CPE-2021',
         code: 'CPE 2021',
-        name: 'BSCpE 2021–2025 (Historical Archive)',
+        name: 'BSCpE 2021–2025',
         units: '178.0',
         courses: 71,
         terms: 12,
@@ -10092,6 +10101,11 @@ ${worksheetsXml}
       const iconEl = document.getElementById('domainModalIcon');
       const titleEl = document.getElementById('domainModalTitle');
       const subtitleEl = document.getElementById('domainModalSubtitle');
+      const parentContainer = document.getElementById('domainParentInheritContainer');
+      const parentSelect = document.getElementById('domainParentSelect');
+      const parentLabel = document.getElementById('domainParentInheritLabel');
+      const parentIcon = document.getElementById('domainParentInheritIcon');
+      const parentHelp = document.getElementById('domainParentHelp');
       const baseSelect = document.getElementById('domainBaseSelect');
       const idInput = document.getElementById('domainNewId');
       const nameInput = document.getElementById('domainNewName');
@@ -10110,22 +10124,64 @@ ${worksheetsXml}
 
       if (domain === 'so') {
         registry = window.SO_VERSION_REGISTRY || [];
-        domainLabel = 'Student Outcomes (SO)';
+        domainLabel = 'Student Outcomes';
         defaultId = `SO-${nextYr}`;
-        defaultName = `Student Outcomes ${nextYr} (Expanded Framework)`;
+        defaultName = `Student Outcomes ${nextYr}`;
         icon = '🎯';
+
+        // Parent step: PEO Objectives
+        if (parentContainer) parentContainer.classList.remove('hidden');
+        if (parentIcon) parentIcon.textContent = '🏆';
+        if (parentLabel) parentLabel.textContent = 'Upstream Objective Alignment • Inherit from PEO';
+        if (parentHelp) parentHelp.textContent = 'Select which PEO version this new Student Outcomes framework will directly support and link to.';
+        if (parentSelect) {
+          const peoList = window.PEO_VERSION_REGISTRY || [];
+          parentSelect.innerHTML = peoList.map(p => `
+            <option value="${p.id}">
+              ${p.id} &bull; ${p.name} [${p.status}]
+            </option>
+          `).join('');
+        }
       } else if (domain === 'peo') {
         registry = window.PEO_VERSION_REGISTRY || [];
-        domainLabel = 'Program Educational Objectives (PEO)';
+        domainLabel = 'Program Educational Objectives';
         defaultId = `PEO-${nextYr}`;
-        defaultName = `Program Educational Objectives ${nextYr} (Next-Gen Goals)`;
+        defaultName = `Program Educational Objectives ${nextYr}`;
         icon = '🏆';
+
+        // Parent step: GA Graduate Attributes
+        if (parentContainer) parentContainer.classList.remove('hidden');
+        if (parentIcon) parentIcon.textContent = '🏛️';
+        if (parentLabel) parentLabel.textContent = 'Upstream Profile Alignment • Inherit from GA';
+        if (parentHelp) parentHelp.textContent = 'Select which Graduate Attributes profile this PEO version will align with and fulfill.';
+        if (parentSelect) {
+          const gaList = window.GA_VERSION_REGISTRY || [];
+          parentSelect.innerHTML = gaList.map(g => `
+            <option value="${g.id}">
+              ${g.id} &bull; ${g.name} [${g.status}]
+            </option>
+          `).join('');
+        }
       } else if (domain === 'ga') {
         registry = window.GA_VERSION_REGISTRY || [];
-        domainLabel = 'Graduate Attributes (GA)';
+        domainLabel = 'Graduate Attributes';
         defaultId = `GA-${nextYr}`;
-        defaultName = `Graduate Attributes ${nextYr} (Smart Era Profile)`;
+        defaultName = `Graduate Attributes ${nextYr}`;
         icon = '🏛️';
+
+        // Parent step: MVV Institutional Direction
+        if (parentContainer) parentContainer.classList.remove('hidden');
+        if (parentIcon) parentIcon.textContent = '📜';
+        if (parentLabel) parentLabel.textContent = 'Institutional Mission Alignment • Inherit from MVV';
+        if (parentHelp) parentHelp.textContent = 'Select which Institutional MVV strategic statement this Graduate Attribute profile embodies.';
+        if (parentSelect) {
+          const mvvList = window.MVV_VERSION_REGISTRY || [];
+          parentSelect.innerHTML = mvvList.map(m => `
+            <option value="${m.id}">
+              ${m.id} &bull; ${m.name} [${m.status}]
+            </option>
+          `).join('');
+        }
       } else if (domain === 'mvv') {
         registry = window.MVV_VERSION_REGISTRY || [];
         domainLabel = 'Institutional MVV';
@@ -10133,32 +10189,59 @@ ${worksheetsXml}
         defaultName = `APC Institutional MVV ${nextYr}–${nextYr + 5}`;
         defaultEff = `${nextYr}–${nextYr + 5}`;
         icon = '📜';
+        // Top-level tier: no step above
+        if (parentContainer) parentContainer.classList.add('hidden');
       } else if (domain === 'curric') {
         registry = window.CURRIC_EDITIONS_REGISTRY || [];
         domainLabel = 'Curriculums & Batches';
         defaultId = `CPE-${nextYr}`;
-        defaultName = `BSCpE ${nextYr}–${nextYr + 4} (Next Batch)`;
+        defaultName = `BSCpE ${nextYr}–${nextYr + 4}`;
         icon = '📑';
+
+        // Parent step: SO framework
+        if (parentContainer) parentContainer.classList.remove('hidden');
+        if (parentIcon) parentIcon.textContent = '🎯';
+        if (parentLabel) parentLabel.textContent = 'Accreditation SO Standard • Inherit from SO';
+        if (parentHelp) parentHelp.textContent = 'Select which Student Outcomes standard this curriculum batch course matrix will map against.';
+        if (parentSelect) {
+          const soList = window.SO_VERSION_REGISTRY || [];
+          parentSelect.innerHTML = soList.map(s => `
+            <option value="${s.id}">
+              ${s.id} &bull; ${s.name} [${s.status}]
+            </option>
+          `).join('');
+        }
       }
 
       if (iconEl) iconEl.textContent = icon;
       if (titleEl) titleEl.textContent = `Create New ${domainLabel} Version`;
-      if (subtitleEl) subtitleEl.textContent = `Clone baseline & create independent revision for ${domainLabel}`;
+      if (subtitleEl) subtitleEl.textContent = `Configure upstream step alignment and optional base cloning for ${domainLabel}`;
 
       if (baseSelect) {
-        baseSelect.innerHTML = registry.map(item => `
+        let baseOptionsHtml = `<option value="none">-- Start Fresh (No Base Clone) --</option>`;
+        baseOptionsHtml += registry.map(item => `
           <option value="${item.id}">
-            ${item.id} &bull; ${item.name || item.code} (${item.status || 'Archived'})
+            ${item.id} &bull; ${item.name || item.code} [${item.status || 'Archived'}]
           </option>
         `).join('');
+        baseSelect.innerHTML = baseOptionsHtml;
+        // Default to active or first item
+        const active = registry.find(r => r.status === 'ACTIVE BATCH') || registry[0];
+        if (active) baseSelect.value = active.id;
       }
 
       if (idInput) idInput.value = defaultId;
       if (nameInput) nameInput.value = defaultName;
       if (effInput) effInput.value = defaultEff;
-      if (notesInput) notesInput.value = `Cloned baseline for ${domainLabel} revision.`;
+      if (notesInput) notesInput.value = `New revision created for ${domainLabel}.`;
 
       window.handleDomainBaseSelectChange();
+    };
+
+    window.handleDomainParentSelectChange = function() {
+      // Optional hook when parent step is toggled
+      const parentSelect = document.getElementById('domainParentSelect');
+      if (!parentSelect) return;
     };
 
     window.handleDomainBaseSelectChange = function() {
@@ -10166,23 +10249,32 @@ ${worksheetsXml}
       const domain = typeSelect ? typeSelect.value : 'so';
       const baseSelect = document.getElementById('domainBaseSelect');
       const helpEl = document.getElementById('domainBaseHelp');
+      const badgeEl = document.getElementById('domainBaseModeBadge');
       if (!baseSelect || !helpEl) return;
 
       const baseId = baseSelect.value;
+      if (!baseId || baseId === 'none') {
+        if (badgeEl) badgeEl.textContent = 'Fresh Template';
+        helpEl.textContent = 'Starting fresh without cloning an existing version. Standard default statements will be provided for you to customize.';
+        return;
+      }
+
+      if (badgeEl) badgeEl.textContent = 'Clone Baseline';
+
       if (domain === 'so') {
         const item = (window.SO_VERSION_REGISTRY || []).find(x => x.id === baseId);
-        helpEl.textContent = `Inherits ${item ? (item.count || (item.items ? item.items.length : 13)) : 13} outcome statements from ${baseId}. You can customize statements directly in version history.`;
+        helpEl.textContent = `Clones ${item ? (item.count || (item.items ? item.items.length : 13)) : 13} outcome statements from ${baseId}. You can customize statements directly in version history.`;
       } else if (domain === 'peo') {
         const item = (window.PEO_VERSION_REGISTRY || []).find(x => x.id === baseId);
-        helpEl.textContent = `Inherits ${item ? (item.count || (item.items ? item.items.length : 5)) : 5} educational objectives from ${baseId}.`;
+        helpEl.textContent = `Clones ${item ? (item.count || (item.items ? item.items.length : 5)) : 5} educational objectives from ${baseId}.`;
       } else if (domain === 'ga') {
         const item = (window.GA_VERSION_REGISTRY || []).find(x => x.id === baseId);
-        helpEl.textContent = `Inherits ${item ? (item.count || (item.items ? item.items.length : 9)) : 9} institutional graduate attributes from ${baseId}.`;
+        helpEl.textContent = `Clones ${item ? (item.count || (item.items ? item.items.length : 9)) : 9} institutional graduate attributes from ${baseId}.`;
       } else if (domain === 'mvv') {
-        helpEl.textContent = `Inherits Vision, Mission, Values, and SoE Goal statements from ${baseId}.`;
+        helpEl.textContent = `Clones Vision, Mission, Values, and SoE Goal statements from ${baseId}.`;
       } else if (domain === 'curric') {
         const item = (window.CURRIC_EDITIONS_REGISTRY || []).find(x => x.id === baseId);
-        helpEl.textContent = `Inherits degree structure (${item ? item.units : '184.0'} units, ${item ? item.courses : 74} courses) from batch ${baseId}.`;
+        helpEl.textContent = `Clones degree structure (${item ? item.units : '184.0'} units, ${item ? item.courses : 74} courses) from batch ${baseId}.`;
       }
     };
 
@@ -10191,11 +10283,12 @@ ${worksheetsXml}
       const role = (window.currentActiveRole || 'admin').toLowerCase();
       const domain = document.getElementById('domainSelectType')?.value || 'so';
       const baseId = document.getElementById('domainBaseSelect')?.value;
+      const parentId = document.getElementById('domainParentSelect')?.value || null;
       const newId = document.getElementById('domainNewId')?.value.trim();
       const name = document.getElementById('domainNewName')?.value.trim();
       const effective = document.getElementById('domainEffective')?.value.trim();
       let status = document.getElementById('domainStatusSelect')?.value || 'UNLOCKED DRAFT';
-      const notes = document.getElementById('domainNotes')?.value.trim() || 'New revision initialized from baseline.';
+      const notes = document.getElementById('domainNotes')?.value.trim() || 'New revision initialized.';
 
       if (!newId || !name) {
         if (typeof showToast === 'function') showToast('⚠ Please provide a valid Version ID and Name.');
@@ -10215,8 +10308,10 @@ ${worksheetsXml}
         statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
       }
 
+      const isClone = (baseId && baseId !== 'none');
+
       if (domain === 'so') {
-        const base = (window.SO_VERSION_REGISTRY || []).find(x => x.id === baseId) || window.SO_VERSION_REGISTRY[0];
+        const base = isClone ? (window.SO_VERSION_REGISTRY || []).find(x => x.id === baseId) : null;
         const clonedItems = base?.items ? JSON.parse(JSON.stringify(base.items)) : JSON.parse(JSON.stringify(DEFAULT_FLOW_SO_DEFS));
         const entry = {
           id: newId,
@@ -10227,7 +10322,8 @@ ${worksheetsXml}
           statusClass: statusClass,
           effective: effective,
           notes: notes,
-          clonedFrom: baseId,
+          clonedFrom: isClone ? baseId : 'Fresh Template',
+          parentPeoId: parentId || (base ? base.parentPeoId : 'PEO-2026'),
           items: clonedItems
         };
         const idx = (window.SO_VERSION_REGISTRY || []).findIndex(x => x.id === newId);
@@ -10237,7 +10333,7 @@ ${worksheetsXml}
         window.switchVhDomain('so');
         window.renderVhSoDomain(newId);
       } else if (domain === 'peo') {
-        const base = (window.PEO_VERSION_REGISTRY || []).find(x => x.id === baseId) || window.PEO_VERSION_REGISTRY[0];
+        const base = isClone ? (window.PEO_VERSION_REGISTRY || []).find(x => x.id === baseId) : null;
         const clonedItems = base?.items ? JSON.parse(JSON.stringify(base.items)) : JSON.parse(JSON.stringify(DEFAULT_FLOW_PEO_DEFS));
         const entry = {
           id: newId,
@@ -10247,7 +10343,8 @@ ${worksheetsXml}
           statusClass: statusClass,
           effective: effective,
           notes: notes,
-          clonedFrom: baseId,
+          clonedFrom: isClone ? baseId : 'Fresh Template',
+          parentGaId: parentId || (base ? base.parentGaId : 'GA-2024'),
           items: clonedItems
         };
         const idx = (window.PEO_VERSION_REGISTRY || []).findIndex(x => x.id === newId);
@@ -10257,7 +10354,7 @@ ${worksheetsXml}
         window.switchVhDomain('peo');
         window.renderVhPeoDomain(newId);
       } else if (domain === 'ga') {
-        const base = (window.GA_VERSION_REGISTRY || []).find(x => x.id === baseId) || window.GA_VERSION_REGISTRY[0];
+        const base = isClone ? (window.GA_VERSION_REGISTRY || []).find(x => x.id === baseId) : null;
         const clonedItems = base?.items ? JSON.parse(JSON.stringify(base.items)) : JSON.parse(JSON.stringify(DEFAULT_FLOW_GA_DEFS));
         const entry = {
           id: newId,
@@ -10267,7 +10364,8 @@ ${worksheetsXml}
           statusClass: statusClass,
           effective: effective,
           notes: notes,
-          clonedFrom: baseId,
+          clonedFrom: isClone ? baseId : 'Fresh Template',
+          parentMvvId: parentId || (base ? base.parentMvvId : 'MVV-2025'),
           items: clonedItems
         };
         const idx = (window.GA_VERSION_REGISTRY || []).findIndex(x => x.id === newId);
@@ -10277,7 +10375,7 @@ ${worksheetsXml}
         window.switchVhDomain('ga');
         window.renderVhGaDomain(newId);
       } else if (domain === 'mvv') {
-        const base = (window.MVV_VERSION_REGISTRY || []).find(x => x.id === baseId) || window.MVV_VERSION_REGISTRY[0];
+        const base = isClone ? (window.MVV_VERSION_REGISTRY || []).find(x => x.id === baseId) : null;
         const entry = {
           id: newId,
           name: name,
@@ -10285,11 +10383,11 @@ ${worksheetsXml}
           statusClass: statusClass,
           effective: effective,
           notes: notes,
-          clonedFrom: baseId,
-          vision: base?.vision || '',
-          mission: base?.mission || '',
-          values: base?.values || '',
-          soeGoal: base?.soeGoal || ''
+          clonedFrom: isClone ? baseId : 'Fresh Template',
+          vision: base?.vision || 'Asia Pacific College envisions itself to be the preferred Higher Education Institution bridging academe and industry.',
+          mission: base?.mission || 'Asia Pacific College aims to provide lifelong learning graduates anchored on integrity and professionalism.',
+          values: base?.values || 'Integrity, Industry, Innovation that works',
+          soeGoal: base?.soeGoal || 'To produce competent computer engineers equipped with technical expertise and professional ethics.'
         };
         const idx = (window.MVV_VERSION_REGISTRY || []).findIndex(x => x.id === newId);
         if (idx >= 0) window.MVV_VERSION_REGISTRY[idx] = entry;
@@ -10298,7 +10396,7 @@ ${worksheetsXml}
         window.switchVhDomain('mvv');
         window.renderVhMvvDomain(newId);
       } else if (domain === 'curric') {
-        const base = (window.CURRIC_EDITIONS_REGISTRY || []).find(x => x.id === baseId) || window.CURRIC_EDITIONS_REGISTRY[0];
+        const base = isClone ? (window.CURRIC_EDITIONS_REGISTRY || []).find(x => x.id === baseId) : null;
         const entry = {
           id: newId,
           code: newId.replace('-', ' '),
@@ -10310,7 +10408,8 @@ ${worksheetsXml}
           statusClass: statusClass,
           effective: effective,
           notes: notes,
-          clonedFrom: baseId
+          clonedFrom: isClone ? baseId : 'Fresh Template',
+          parentSoId: parentId || 'SO-2026'
         };
         const idx = (window.CURRIC_EDITIONS_REGISTRY || []).findIndex(x => x.id === newId);
         if (idx >= 0) window.CURRIC_EDITIONS_REGISTRY[idx] = entry;
@@ -10321,8 +10420,10 @@ ${worksheetsXml}
       }
 
       window.closeCreateDomainVersionModal();
+      const parentMsg = parentId ? ` linked to ${parentId}` : '';
+      const baseMsg = isClone ? ` based on ${baseId}` : ' (fresh template)';
       if (typeof showToast === 'function') {
-        showToast(`✓ Created new version '${newId}' successfully based on '${baseId}'!`);
+        showToast(`✓ Created new version '${newId}' successfully${parentMsg}${baseMsg}!`);
       }
     };
 
