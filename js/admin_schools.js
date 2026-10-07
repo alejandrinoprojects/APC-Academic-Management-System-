@@ -2036,13 +2036,6 @@
                   <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                 </button>
 
-                <!-- Curriculum Dashboard Button -->
-                <button type="button" id="nav-cpe-dashboard" onclick="navigateView('dashboard')"
-                  class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
-                  <span class="text-amber-400">📊</span>
-                  <span class="font-semibold text-slate-300 group-hover:text-amber-300">Curriculum Dashboard</span>
-                </button>
-
                 <!-- Versioning History Button (Under Management Homepage) -->
                 <button type="button" id="nav-versioning-history" onclick="navigateView('versioning-history')"
                   class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
@@ -2070,6 +2063,11 @@
                     </span>
                   </button>
                   <div id="cpeY2027Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                    <button type="button" onclick="setSidebarYear('2027'); navigateView('dashboard');"
+                      class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                      <span class="text-amber-400">📊</span>
+                      <span class="truncate">Curriculum Dashboard</span>
+                    </button>
                     <button type="button" onclick="setSidebarYear('2027'); navigateView('obe')"
                       class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                       <span class="text-amber-400">🗺️</span>
@@ -2104,6 +2102,11 @@
                   </button>
                   <div id="cpeY1Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
                     <!-- 1st Year Direct Tools -->
+                    <button type="button" onclick="setSidebarYear(1); navigateView('dashboard');"
+                      class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                      <span class="text-amber-400">📊</span>
+                      <span class="truncate">Curriculum Dashboard</span>
+                    </button>
                     <button type="button" onclick="openFlowchartForYear(1)"
                       class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                       <span class="text-sky-400">📊</span>
@@ -2157,6 +2160,11 @@
                     </span>
                   </button>
                   <div id="cpeY2Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                    <button type="button" onclick="setSidebarYear(2); navigateView('dashboard');"
+                      class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                      <span class="text-amber-400">📊</span>
+                      <span class="truncate">Curriculum Dashboard</span>
+                    </button>
                     <button type="button" onclick="openFlowchartForYear(2)"
                       class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                       <span class="text-sky-400">📊</span>
@@ -2210,6 +2218,11 @@
                     </span>
                   </button>
                   <div id="cpeY3Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                    <button type="button" onclick="setSidebarYear(3); navigateView('dashboard');"
+                      class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                      <span class="text-amber-400">📊</span>
+                      <span class="truncate">Curriculum Dashboard</span>
+                    </button>
                     <button type="button" onclick="openFlowchartForYear(3)"
                       class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                       <span class="text-sky-400">📊</span>
@@ -2263,6 +2276,11 @@
                     </span>
                   </button>
                   <div id="cpeY4Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                    <button type="button" onclick="setSidebarYear(4); navigateView('dashboard');"
+                      class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                      <span class="text-amber-400">📊</span>
+                      <span class="truncate">Curriculum Dashboard</span>
+                    </button>
                     <button type="button" onclick="openFlowchartForYear(4)"
                       class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                       <span class="text-sky-400">📊</span>

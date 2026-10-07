@@ -3727,29 +3727,103 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     let currentRegistrarTab = 1;
     let currentPrintArrowStyle = 'orthogonal';
-    let currentRegistrarViewFormat = 'doc'; // 'doc' | 'sheet'
+    let currentRegistrarViewFormat = 'doc'; // 'doc' | 'pdf' | 'sheet'
+    let currentGeneratedPdfBlobUrl = null;
+
+    function renderRegistrarPdfView(tabIdx) {
+      const idx = tabIdx || currentRegistrarTab || 1;
+      const pdfWrapper = document.getElementById('regDocPdfWrapper');
+      const frame = document.getElementById('regDocPdfFrame');
+      const loader = document.getElementById('pdfLoadingIndicator');
+      const activeDoc = document.getElementById('regDocView_' + idx);
+
+      if (!activeDoc || !pdfWrapper || !frame) return;
+
+      if (loader) loader.classList.remove('hidden');
+
+      // Make sure doc content is mounted
+      if (!activeDoc.innerHTML.trim() && window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[idx]) {
+        activeDoc.innerHTML = window.REGISTRAR_DOCS[idx];
+      }
+
+      const isLandscape = (idx === 1 || idx === 5 || idx === 6);
+      const opt = {
+        margin: [0.35, 0.35, 0.35, 0.35],
+        filename: `APC_Curriculum_Sheet_${idx}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'] }
+      };
+
+      if (typeof html2pdf !== 'undefined') {
+        html2pdf().set(opt).from(activeDoc).toPdf().get('pdf').then(function(pdfObj) {
+          const blob = pdfObj.output('blob');
+          if (currentGeneratedPdfBlobUrl) {
+            URL.revokeObjectURL(currentGeneratedPdfBlobUrl);
+          }
+          currentGeneratedPdfBlobUrl = URL.createObjectURL(blob);
+          frame.src = currentGeneratedPdfBlobUrl;
+          if (loader) loader.classList.add('hidden');
+        }).catch(function(err) {
+          console.warn('[PDF Gen] html2pdf fallback:', err);
+          if (loader) loader.classList.add('hidden');
+        });
+      } else {
+        if (loader) loader.classList.add('hidden');
+      }
+    }
+
+    function downloadCurrentPdfDoc() {
+      const idx = currentRegistrarTab || 1;
+      const activeDoc = document.getElementById('regDocView_' + idx);
+      if (!activeDoc) return;
+      const isLandscape = (idx === 1 || idx === 5 || idx === 6);
+      const opt = {
+        margin: [0.35, 0.35, 0.35, 0.35],
+        filename: `APC_Curriculum_Sheet_${idx}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'] }
+      };
+      if (typeof html2pdf !== 'undefined') {
+        html2pdf().set(opt).from(activeDoc).save();
+      } else {
+        window.print();
+      }
+    }
 
     function setRegistrarViewFormat(format) {
-      currentRegistrarViewFormat = (format === 'sheet') ? 'sheet' : 'doc';
+      currentRegistrarViewFormat = format;
       const docWrapper = document.getElementById('allRegistrarDocsWrapper');
+      const pdfWrapper = document.getElementById('regDocPdfWrapper');
       const sheetWrapper = document.getElementById('regDocSpreadsheetWrapper');
       const btnDoc = document.getElementById('btnRegViewDoc');
+      const btnPdf = document.getElementById('btnRegViewPdf');
       const btnSheet = document.getElementById('btnRegViewSheet');
-      if (currentRegistrarViewFormat === 'sheet') {
+
+      const activeClass = 'px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
+      const inactiveClass = 'px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none';
+
+      if (btnDoc) btnDoc.className = (format === 'doc') ? activeClass : inactiveClass;
+      if (btnPdf) btnPdf.className = (format === 'pdf') ? activeClass : inactiveClass;
+      if (btnSheet) btnSheet.className = (format === 'sheet') ? activeClass : inactiveClass;
+
+      if (format === 'pdf') {
         if (docWrapper) docWrapper.classList.add('hidden');
+        if (sheetWrapper) sheetWrapper.classList.add('hidden');
+        if (pdfWrapper) pdfWrapper.classList.remove('hidden');
+        renderRegistrarPdfView(currentRegistrarTab || 1);
+      } else if (format === 'sheet') {
+        if (docWrapper) docWrapper.classList.add('hidden');
+        if (pdfWrapper) pdfWrapper.classList.add('hidden');
         if (sheetWrapper) sheetWrapper.classList.remove('hidden');
-
-        if (btnDoc) btnDoc.className = inactiveToolbarStyle;
-        if (btnSheet) btnSheet.className = activeToolbarStyle;
-
         renderRegistrarSpreadsheetGrid(currentRegistrarTab || 1);
       } else {
         if (sheetWrapper) sheetWrapper.classList.add('hidden');
+        if (pdfWrapper) pdfWrapper.classList.add('hidden');
         if (docWrapper) docWrapper.classList.remove('hidden');
-
-        if (btnDoc) btnDoc.className = activeToolbarStyle;
-        if (btnSheet) btnSheet.className = inactiveToolbarStyle;
-
         if (currentRegistrarTab === 1) {
           setTimeout(drawPrintArrows, 60);
         }
@@ -3849,6 +3923,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       // If in spreadsheet view mode, re-render the spreadsheet grid for the active sheet tab
       if (currentRegistrarViewFormat === 'sheet' && typeof renderRegistrarSpreadsheetGrid === 'function') {
         renderRegistrarSpreadsheetGrid(tabIdx);
+      }
+      // If in PDF view mode, re-render the PDF document for the active sheet tab
+      if (currentRegistrarViewFormat === 'pdf' && typeof renderRegistrarPdfView === 'function') {
+        renderRegistrarPdfView(tabIdx);
       }
 
       // Redraw arrows if switching to Tab 1

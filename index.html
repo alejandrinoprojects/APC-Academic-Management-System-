@@ -46,6 +46,7 @@
   </script>
   <script src="js/theme_manager.js"></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <link rel="stylesheet" href="css/apc_styles.css">
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
@@ -245,13 +246,6 @@
                             <span class="font-semibold text-slate-300 group-hover:text-amber-300">Management Homepage</span>
                           </button>
 
-                          <!-- Curriculum Dashboard Button -->
-                          <button type="button" id="nav-cpe-dashboard" onclick="navigateView('dashboard')"
-                            class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
-                            <span class="text-amber-400">📊</span>
-                            <span class="font-semibold text-slate-300 group-hover:text-amber-300">Curriculum Dashboard</span>
-                          </button>
-
                           <!-- Versioning History Button (On the same level as Management Homepage) -->
                           <button type="button" id="nav-versioning-history" onclick="navigateView('versioning-history')"
                             class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
@@ -279,6 +273,11 @@
                               </span>
                             </button>
                             <div id="cpeY2027Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                              <button type="button" onclick="setSidebarYear('2027'); navigateView('dashboard');"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">📊</span>
+                                <span class="truncate">Curriculum Dashboard</span>
+                              </button>
                               <button type="button" onclick="setSidebarYear('2027'); openCurriculumMapForCurriculum('CPE-2027')"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-amber-400">🗺️</span>
@@ -313,6 +312,11 @@
                             </button>
                             <div id="cpeY1Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
                               <!-- 1st Year Direct Tools -->
+                              <button type="button" onclick="setSidebarYear(1); navigateView('dashboard');"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">📊</span>
+                                <span class="truncate">Curriculum Dashboard</span>
+                              </button>
                               <button type="button" onclick="setSidebarYear(1); openCurriculumMapForCurriculum('CPE-2026')"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-amber-400">🗺️</span>
@@ -371,6 +375,11 @@
                               </span>
                             </button>
                             <div id="cpeY2Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                              <button type="button" onclick="setSidebarYear(2); navigateView('dashboard');"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">📊</span>
+                                <span class="truncate">Curriculum Dashboard</span>
+                              </button>
                               <button type="button" onclick="setSidebarYear(2); openCurriculumMapForCurriculum('CPE-2025')"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-amber-400">🗺️</span>
@@ -429,6 +438,11 @@
                               </span>
                             </button>
                             <div id="cpeY3Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                              <button type="button" onclick="setSidebarYear(3); navigateView('dashboard');"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">📊</span>
+                                <span class="truncate">Curriculum Dashboard</span>
+                              </button>
                               <button type="button" onclick="setSidebarYear(3); openCurriculumMapForCurriculum('CPE-2024')"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-amber-400">🗺️</span>
@@ -487,6 +501,11 @@
                               </span>
                             </button>
                             <div id="cpeY4Cont" class="hidden mt-0.5 space-y-0.5 pl-2.5 border-l border-slate-700/60 ml-3">
+                              <button type="button" onclick="setSidebarYear(4); navigateView('dashboard');"
+                                class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
+                                <span class="text-amber-400">📊</span>
+                                <span class="truncate">Curriculum Dashboard</span>
+                              </button>
                               <button type="button" onclick="setSidebarYear(4); openCurriculumMapForCurriculum('CPE-2023')"
                                 class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left text-[11px] group">
                                 <span class="text-amber-400">🗺️</span>
@@ -4285,19 +4304,19 @@
                 </button>
               </div>
 
-              <!-- Center: Document / Spreadsheet / Executive Dashboard Mode Toggle -->
+              <!-- Center: Document / PDF / Spreadsheet Mode Toggle -->
               <div class="inline-flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-none border border-slate-300 dark:border-slate-700 shadow-2xs">
                 <button type="button" id="btnRegViewDoc" onclick="setRegistrarViewFormat('doc')" class="px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700" title="Display as printable formatted official document">
                   <svg class="w-3.5 h-3.5 text-apc-blue dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                   <span>Document View</span>
                 </button>
+                <button type="button" id="btnRegViewPdf" onclick="setRegistrarViewFormat('pdf')" class="px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none" title="Render as Authentic Letter-Size PDF Document with automatic page breaks">
+                  <svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9h1m-1 4h6m-6 4h6"/></svg>
+                  <span>PDF View</span>
+                </button>
                 <button type="button" id="btnRegViewSheet" onclick="setRegistrarViewFormat('sheet')" class="px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none" title="Display as structured spreadsheet grid matching export table format">
                   <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                   <span>Spreadsheet View</span>
-                </button>
-                <button type="button" id="btnRegViewDash" onclick="navigateView('dashboard')" class="px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none" title="Open Executive Curriculum Dashboard">
-                  <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                  <span>Curriculum Dashboard</span>
                 </button>
               </div>
               <div class="flex flex-wrap items-center gap-2">
@@ -4370,6 +4389,22 @@
             <div id="regDocView_5" class="reg-doc-page reg-doc-letter-landscape hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
             <div id="regDocView_6" class="reg-doc-page reg-doc-letter-landscape hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
             <div id="regDocView_7" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
+          </div>
+
+          <!-- PDF VIEWER CONTAINER (Authentic Letter Paper with Browser-Native Automatic Page Breaks) -->
+          <div id="regDocPdfWrapper" class="hidden w-full flex flex-col items-center py-2 space-y-2">
+            <div id="pdfLoadingIndicator" class="w-full max-w-4xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 p-4 flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 shadow-xs">
+              <div class="flex items-center space-x-2">
+                <svg class="animate-spin h-4 w-4 text-rose-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                <span class="font-bold">Generating authentic Letter-size PDF document...</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="downloadCurrentPdfDoc()" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-none shadow-xs text-xs flex items-center gap-1 cursor-pointer">
+                  <span>📥 Download PDF</span>
+                </button>
+              </div>
+            </div>
+            <iframe id="regDocPdfFrame" class="w-full max-w-5xl h-[880px] bg-slate-800 border border-slate-400 dark:border-slate-700 shadow-lg" src="about:blank" title="Official Document PDF Viewer"></iframe>
           </div>
 
           <!-- SPREADSHEET GRID CONTAINER (Structured Grid View Matching Official Sheet Export Format) -->
