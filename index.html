@@ -3928,6 +3928,24 @@
               </div>
             </div>
 
+            <!-- Segmented Dashboard Navigation Tabs -->
+            <div class="border-b border-slate-200 dark:border-slate-800 flex items-center gap-2 overflow-x-auto bg-slate-100/60 dark:bg-slate-900/60 p-1.5 border border-slate-200 dark:border-slate-800">
+              <button id="dashTabBtn_compliance" type="button" onclick="switchDashboardTab('compliance')" class="dash-tab-btn flex items-center space-x-2 px-4 py-2.5 text-xs font-bold transition rounded-none cursor-pointer border-b-2 border-[#002855] dark:border-[#E5A823] text-[#002855] dark:text-[#E5A823] bg-white dark:bg-[#131923] shadow-xs">
+                <span>⚖️</span>
+                <span>CHED Curricular Compliance</span>
+              </button>
+              <button id="dashTabBtn_termLoad" type="button" onclick="switchDashboardTab('termLoad')" class="dash-tab-btn flex items-center space-x-2 px-4 py-2.5 text-xs font-bold transition rounded-none cursor-pointer border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                <span>📅</span>
+                <span>12-Trimester Term Load</span>
+              </button>
+              <button id="dashTabBtn_distribution" type="button" onclick="switchDashboardTab('distribution')" class="dash-tab-btn flex items-center space-x-2 px-4 py-2.5 text-xs font-bold transition rounded-none cursor-pointer border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+                <span>📊</span>
+                <span>Technical Distribution &amp; Comparative Summary</span>
+              </button>
+            </div>
+
+            <!-- Tab 1: CHED Curricular Compliance -->
+            <div id="dashTabContent_compliance" class="space-y-4">
             <!-- CHED CMO No. 92 Curricular Compliance Audit (Clickable categories open Spreadsheet filtered to that category) -->
             <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-5">
               <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
@@ -4036,7 +4054,11 @@
                 </div>
               </div>
             </div>
+            </div>
+            <!-- End Tab 1: Compliance -->
 
+            <!-- Tab 2: 12-Trimester Term Load Breakdown -->
+            <div id="dashTabContent_termLoad" class="hidden space-y-4">
             <!-- 1. TERM-BY-TERM CREDIT LOAD & BREAKDOWN (12 TRIMESTERS) -->
             <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-4">
               <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
@@ -4138,7 +4160,11 @@
                 </table>
               </div>
             </div>
+            </div>
+            <!-- End Tab 2: Term Load -->
 
+            <!-- Tab 3: Technical Distribution & Comparative Summary -->
+            <div id="dashTabContent_distribution" class="hidden space-y-4">
             <!-- 2. TECHNICAL VS NON-TECHNICAL DISTRIBUTION & STATUTORY AUDIT (SHEET 7 SUMMARY OF UNITS) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
               
@@ -4308,6 +4334,8 @@
               </div>
 
             </div>
+            </div>
+            <!-- End Tab 3: Distribution & Comparative Summary -->
           </div>
         </section>
 

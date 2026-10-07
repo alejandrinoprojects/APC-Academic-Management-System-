@@ -3592,7 +3592,29 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     window.updateCurriculumDashboardInfo = updateCurriculumDashboardInfo;
 
     function switchDashboardTab(tabName) {
-      // Kept for backwards compatibility if invoked anywhere
+      if (!tabName) tabName = 'compliance';
+      if (tabName === 'terms' || tabName === 'term-load') tabName = 'termLoad';
+      if (tabName === 'comparative' || tabName === 'summary') tabName = 'distribution';
+
+      const allTabs = ['compliance', 'termLoad', 'distribution'];
+      allTabs.forEach(t => {
+        const contentEl = document.getElementById('dashTabContent_' + t);
+        const btnEl = document.getElementById('dashTabBtn_' + t);
+        if (contentEl) {
+          if (t === tabName) {
+            contentEl.classList.remove('hidden');
+          } else {
+            contentEl.classList.add('hidden');
+          }
+        }
+        if (btnEl) {
+          if (t === tabName) {
+            btnEl.className = 'dash-tab-btn flex items-center space-x-2 px-4 py-2.5 text-xs font-bold transition rounded-none cursor-pointer border-b-2 border-[#002855] dark:border-[#E5A823] text-[#002855] dark:text-[#E5A823] bg-white dark:bg-[#131923] shadow-xs';
+          } else {
+            btnEl.className = 'dash-tab-btn flex items-center space-x-2 px-4 py-2.5 text-xs font-bold transition rounded-none cursor-pointer border-b-2 border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white';
+          }
+        }
+      });
       updateCurriculumDashboardInfo();
     }
     window.switchDashboardTab = switchDashboardTab;
@@ -3844,8 +3866,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
         // ONLY Flowchart (Sheet 1) is landscape. Everything else (Sheets 2 to 7) is Letter Portrait Narrow Margin!
         const isLandscape = (idx === 1);
-        const isLargeSheet = (idx === 3 || idx === 4 || idx === 6);
-        const renderScale = (idx === 1) ? 1.0 : (isLargeSheet ? 0.95 : 1.1);
+        const renderScale = 1.0;
 
         if (docWrapper && !isRegistrarEditingActive) {
           docWrapper.classList.remove('hidden');
@@ -3912,8 +3933,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const activeDoc = document.getElementById('regDocView_' + idx);
       if (!activeDoc) return;
       const isLandscape = (idx === 1);
-      const isLargeSheet = (idx === 3 || idx === 4 || idx === 6);
-      const renderScale = (idx === 1) ? 1.0 : (isLargeSheet ? 0.95 : 1.1);
+      const renderScale = 1.0;
       const opt = {
         margin: [0.2, 0.25, 0.2, 0.25], // Narrow margin
         filename: `APC_Curriculum_Sheet_${idx}.pdf`,

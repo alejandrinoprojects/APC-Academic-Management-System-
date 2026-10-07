@@ -392,12 +392,12 @@
     .reg-doc-page {
       background-color: #ffffff !important;
       color: #0f172a !important;
-      box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.16), 0 2px 8px -1px rgba(0, 0, 0, 0.1) !important;
-      border: 1px solid #94a3b8 !important;
+      box-shadow: none !important;
+      border: none !important;
       border-radius: 0 !important;
-      margin: 1.5rem auto !important;
+      margin: 0 auto !important;
       box-sizing: border-box !important;
-      overflow-x: auto !important;
+      overflow-x: hidden !important;
     }
 
     /* Standard Letter Landscape (Flowchart Sheet 1 Only): 11in x 8.5in (1056px @ 96dpi) */
@@ -418,33 +418,31 @@
       padding: 0.25in 0.25in !important;
     }
 
-    /* Visual Onscreen Sheet Separation (Clean Desk Gap Distance) */
+    /* Visual Sheet Page Break: Semantic page break for html2pdf with zero visual gap artifacts */
     .doc-page-break {
       page-break-before: always !important;
       break-before: page !important;
-      position: relative !important;
-      height: 44px !important;
-      margin-top: 2rem !important;
-      margin-bottom: 2rem !important;
-      background-color: #cbd5e1 !important;
-      border-top: 1px solid #94a3b8 !important;
-      border-bottom: 1px solid #94a3b8 !important;
-      box-shadow: inset 0 10px 12px -6px rgba(0, 0, 0, 0.25), inset 0 -10px 12px -6px rgba(0, 0, 0, 0.25) !important;
-      user-select: none !important;
+      display: block !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      max-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      overflow: hidden !important;
     }
     .dark .doc-page-break {
-      background-color: #0b0f17 !important;
-      border-top-color: #334155 !important;
-      border-bottom-color: #334155 !important;
-      box-shadow: inset 0 10px 14px -6px rgba(0, 0, 0, 0.6), inset 0 -10px 14px -6px rgba(0, 0, 0, 0.6) !important;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
     }
     .reg-doc-letter-portrait .doc-page-break {
-      margin-left: -0.25in !important;
-      margin-right: -0.25in !important;
+      margin: 0 !important;
     }
     .reg-doc-letter-landscape .doc-page-break {
-      margin-left: -0.25in !important;
-      margin-right: -0.25in !important;
+      margin: 0 !important;
     }
     @media print {
       .doc-page-break {
