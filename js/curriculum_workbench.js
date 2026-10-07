@@ -3121,7 +3121,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // Hide all application views
-      const allViews = ['home', 'curriculum-home', 'past-curriculums', 'past-flowchart', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
+      const allViews = ['home', 'curriculum-home', 'versioning-history', 'past-curriculums', 'past-flowchart', 'flowchart', 'catalog', 'obe', 'dashboard', 'compliance', 'delegation', 'audit', 'registrar', 'syllabus', 'course', 'spreadsheet'];
       
       allViews.forEach(v => {
         const el = document.getElementById('view-' + v);
@@ -3174,6 +3174,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         if (viewId === 'curriculum-home' && typeof renderAuditTable === 'function') {
           renderAuditTable();
         }
+        if (viewId === 'versioning-history' && typeof renderVersioningHistoryView === 'function') {
+          renderVersioningHistoryView();
+        }
       }
 
       // Update Path Bar indicator
@@ -3181,6 +3184,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (topPill) {
         if (viewId === 'home') topPill.innerText = 'Schools';
         else if (viewId === 'curriculum-home') topPill.innerText = 'Schools > SoE > BSCpE > Curriculum Management';
+        else if (viewId === 'versioning-history') topPill.innerText = 'Schools > SoE > BSCpE > Versioning History';
         else if (viewId === 'past-curriculums') topPill.innerText = 'Schools > SoE > BSCpE > Historical Editions Archive';
         else if (viewId === 'past-flowchart') topPill.innerText = 'Schools > SoE > BSCpE > Historical Flowchart';
         else if (viewId === 'flowchart') topPill.innerText = 'Schools > SoE > BSCpE > Flowchart';
@@ -7763,7 +7767,7 @@ ${worksheetsXml}
 
       // 3. Tab Labels
       const tabLblMatrix = document.getElementById('obe-tab-label-matrix');
-      if (tabLblMatrix) tabLblMatrix.textContent = `Curriculum Map (Course-to-SO Progression)`;
+      if (tabLblMatrix) tabLblMatrix.textContent = `SO to Course`;
 
       const tabLblPeo = document.getElementById('obe-tab-label-peo');
       if (tabLblPeo) tabLblPeo.textContent = `PEO-to-SO Relational Schedule (PEO ${verStr} • SO ${verStr})`;
@@ -7873,9 +7877,11 @@ ${worksheetsXml}
       } else if (tabKey === 'peo' || tabKey === 'peo-so') {
         if (tabPeoSo) tabPeoSo.classList.remove('hidden');
         if (btnPeoSo) btnPeoSo.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold whitespace-nowrap';
+        if (typeof renderPeoSoAlignmentTable === 'function') renderPeoSoAlignmentTable();
       } else if (tabKey === 'vision' || tabKey === 'vmg') {
         if (tabVmg) tabVmg.classList.remove('hidden');
         if (btnVmg) btnVmg.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold whitespace-nowrap';
+        if (typeof renderPeoGaAlignmentTable === 'function') renderPeoGaAlignmentTable();
       }
       updateAllObeVersionBadges();
     }
@@ -7883,7 +7889,7 @@ ${worksheetsXml}
     // =========================================================================
     // CURRICULUM MAP HIERARCHY & VERSION REGISTRY MODULE
     // =========================================================================
-    window.CURRICULUM_MAPS = [
+    const DEFAULT_CURRICULUM_MAPS = [
       {
         id: 'CM-BSCpE-2026',
         name: 'BSCpE 2026–2030 Active Batch',
@@ -7901,7 +7907,8 @@ ${worksheetsXml}
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         createdAt: '2026-01-15',
         program: 'BSCpE',
-        notes: 'Official active batch baseline with 184.0 units and 74 mapped courses.'
+        notes: 'Official active batch baseline with 184.0 units and 74 mapped courses.',
+        approvedBy: 'Executive Director'
       },
       {
         id: 'CM-BSCpE-2027',
@@ -7916,11 +7923,12 @@ ${worksheetsXml}
         gaCount: 9,
         mvvVersion: 'MVV 2025',
         mapRevision: 'Map 2027',
-        status: 'NEXT YEAR BATCH',
-        statusClass: 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700',
+        status: 'DRAFT (PENDING EXD APPROVAL)',
+        statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         createdAt: '2027-03-10',
         program: 'BSCpE',
-        notes: 'Annual batch update with PEO 2027 AI engineering electives.'
+        notes: 'Annual batch update with PEO 2027 AI engineering electives.',
+        approvedBy: 'Pending ExD Review'
       },
       {
         id: 'CM-BSCpE-2025',
@@ -7939,11 +7947,12 @@ ${worksheetsXml}
         statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700',
         createdAt: '2025-06-15',
         program: 'BSCpE',
-        notes: 'Previous year batch legacy mapping.'
+        notes: 'Previous year batch legacy mapping.',
+        approvedBy: 'Executive Director (Archived)'
       },
       {
         id: 'CM-BSCpE-2021',
-        name: 'BSCpE 2021–2025 Historical Edition',
+        name: 'BSCpE 2021–2025 Historical Baseline',
         curriculumVersion: 'CPE 2021',
         curriculumLabel: 'CPE 2021 (AY 2021–2025)',
         soVersion: 'SO 2021',
@@ -7958,9 +7967,18 @@ ${worksheetsXml}
         statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
         createdAt: '2021-06-15',
         program: 'BSCpE',
-        notes: 'Pre-CMO92 historical baseline.'
+        notes: 'Pre-CMO92 historical baseline.',
+        approvedBy: 'Executive Director (Archived)'
       }
     ];
+
+    window.CURRICULUM_MAPS = (function() {
+      try {
+        const stored = localStorage.getItem('apc_curriculum_maps');
+        if (stored) return JSON.parse(stored);
+      } catch(e) {}
+      return DEFAULT_CURRICULUM_MAPS;
+    })();
     window.currentActiveCurriculumMap = 'CM-BSCpE-2026';
 
     window.openCurriculumMapTab = function() {
@@ -8210,7 +8228,35 @@ ${worksheetsXml}
 
     window.openSaveCurriculumMapModal = function() {
       const modal = document.getElementById('saveCurriculumMapModal');
-      if (modal) modal.classList.remove('hidden');
+      if (!modal) return;
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      const statusSelect = document.getElementById('snapshotMapStatus');
+      const activeOption = document.getElementById('snapshotOptionActive');
+      const alertEl = document.getElementById('snapshotGovernanceAlert');
+      
+      if (statusSelect) {
+        if (role === 'exd') {
+          if (activeOption) {
+            activeOption.disabled = false;
+            activeOption.textContent = 'ACTIVE BATCH (Executive Director Approved)';
+          }
+          if (alertEl) {
+            alertEl.className = 'p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-start gap-2';
+            alertEl.innerHTML = '<span class="text-xs">👑</span><div><span class="font-bold uppercase tracking-wider text-[10px]">ExD Authority:</span> As Executive Director, you can approve and activate curriculum maps directly into <strong>ACTIVE BATCH</strong> status.</div>';
+          }
+        } else {
+          if (activeOption) {
+            activeOption.disabled = true;
+            activeOption.textContent = 'ACTIVE BATCH (Requires Executive Director Approval)';
+          }
+          statusSelect.value = 'DRAFT (PENDING EXD APPROVAL)';
+          if (alertEl) {
+            alertEl.className = 'p-2.5 bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-800 dark:text-amber-300 flex items-start gap-2';
+            alertEl.innerHTML = '<span class="text-xs">⚖️</span><div><span class="font-bold uppercase tracking-wider text-[10px]">Governance Policy:</span> Only the <strong>Executive Director (ExD)</strong> can approve a curriculum map version for <strong>ACTIVE</strong> status. Your submission will be stored as <strong>DRAFT (PENDING EXD APPROVAL)</strong>.</div>';
+          }
+        }
+      }
+      modal.classList.remove('hidden');
     };
 
     window.closeSaveCurriculumMapModal = function() {
@@ -8220,18 +8266,45 @@ ${worksheetsXml}
 
     window.handleSaveCurriculumMapSubmit = function(e) {
       if (e) e.preventDefault();
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
       const name = document.getElementById('snapshotMapName')?.value || 'BSCpE Next Batch Curriculum Map';
       const mapVer = document.getElementById('snapshotMapVersion')?.value || ('Map ' + (new Date().getFullYear() + 1));
       const cVer = document.getElementById('snapshotCurricVer')?.value || ('CPE ' + (new Date().getFullYear() + 1));
-      const status = document.getElementById('snapshotMapStatus')?.value || 'NEXT YEAR BATCH';
+      let status = document.getElementById('snapshotMapStatus')?.value || 'DRAFT (PENDING EXD APPROVAL)';
       const soVer = document.getElementById('snapshotSoVer')?.value || 'SO 2026';
       const peoVer = document.getElementById('snapshotPeoVer')?.value || 'PEO 2027';
       const gaVer = document.getElementById('snapshotGaVer')?.value || 'GA 2024';
       const notes = document.getElementById('snapshotMapNotes')?.value || 'Annual curriculum map snapshot.';
 
+      // Enforce ExD Governance Rule
+      if (status === 'ACTIVE BATCH' && role !== 'exd') {
+        status = 'DRAFT (PENDING EXD APPROVAL)';
+        if (typeof showToast === 'function') {
+          showToast('🔒 Only the Executive Director can activate. Saved as Draft pending ExD approval.');
+        }
+      }
+
       const yrMatch = cVer.match(/\d{4}/);
       const yr = yrMatch ? yrMatch[0] : (new Date().getFullYear() + 1);
       const newId = `CM-BSCpE-${yr}`;
+
+      // If active, demote previous active maps
+      if (status === 'ACTIVE BATCH' && role === 'exd') {
+        (window.CURRICULUM_MAPS || []).forEach(m => {
+          if (m.status === 'ACTIVE BATCH') {
+            m.status = 'PREV BATCH';
+            m.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
+          }
+        });
+      }
+
+      let statusClass = 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700';
+      if (status === 'ACTIVE BATCH') {
+        statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+      } else if (status.includes('DRAFT')) {
+        statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
+      }
+
       const newEntry = {
         id: newId,
         name: name,
@@ -8246,10 +8319,11 @@ ${worksheetsXml}
         mvvVersion: 'MVV 2025',
         mapRevision: mapVer,
         status: status,
-        statusClass: status.includes('ACTIVE') ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-blue-100 text-blue-800 border-blue-300',
+        statusClass: statusClass,
         createdAt: new Date().toISOString().split('T')[0],
         program: 'BSCpE',
-        notes: notes
+        notes: notes,
+        approvedBy: (status === 'ACTIVE BATCH') ? 'Executive Director' : 'Pending ExD Review'
       };
 
       if (!window.CURRICULUM_MAPS) window.CURRICULUM_MAPS = [];
@@ -8259,13 +8333,60 @@ ${worksheetsXml}
       } else {
         window.CURRICULUM_MAPS.unshift(newEntry);
       }
+      try {
+        localStorage.setItem('apc_curriculum_maps', JSON.stringify(window.CURRICULUM_MAPS));
+      } catch (err) {}
+
       window.currentActiveCurriculumMap = newId;
       if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
       closeSaveCurriculumMapModal();
       if (typeof showToast === 'function') {
-        showToast(`✓ Saved Annual Curriculum Map '${name}' successfully!`);
+        showToast(`✓ Saved Curriculum Map '${name}' (${status}) successfully!`);
       }
       renderCurriculumMapHierarchy();
+      if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView(newId);
+    };
+
+    window.approveCurriculumMapVersion = function(mapId) {
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      if (role !== 'exd') {
+        if (typeof showToast === 'function') {
+          showToast('🔒 Approval Restricted: Only the Executive Director (ExD) can approve a curriculum map to become ACTIVE.');
+        }
+        return;
+      }
+      const map = (window.CURRICULUM_MAPS || []).find(m => m.id === mapId);
+      if (!map) return;
+
+      // Demote existing active maps
+      (window.CURRICULUM_MAPS || []).forEach(m => {
+        if (m.status === 'ACTIVE BATCH') {
+          m.status = 'PREV BATCH';
+          m.statusClass = 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700';
+        }
+      });
+
+      map.status = 'ACTIVE BATCH';
+      map.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+      map.approvedBy = 'Executive Director';
+      map.approvedAt = new Date().toISOString().split('T')[0];
+
+      try {
+        localStorage.setItem('apc_curriculum_maps', JSON.stringify(window.CURRICULUM_MAPS));
+      } catch (e) {}
+
+      window.currentActiveCurriculumMap = mapId;
+      if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
+      if (typeof renderCurriculumMapHierarchy === 'function') renderCurriculumMapHierarchy();
+      if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView(mapId);
+      if (typeof showToast === 'function') {
+        showToast(`✓ Map '${map.name}' approved and activated by Executive Director!`);
+      }
+    };
+
+    window.activateInspectedVersion = function() {
+      const mapId = window.currentInspectedVersionId || window.currentActiveCurriculumMap || 'CM-BSCpE-2026';
+      window.approveCurriculumMapVersion(mapId);
     };
 
     // =========================================================================
@@ -8353,6 +8474,408 @@ ${worksheetsXml}
       try {
         localStorage.setItem('apc_obe_peo_ga_links', JSON.stringify(links));
       } catch (e) {}
+    };
+
+    // =========================================================================
+    // DYNAMIC & EDITABLE OBE ALIGNMENT TABLES (PEO-SO & PEO-GA)
+    // =========================================================================
+    window.renderPeoSoAlignmentTable = function() {
+      const tbody = document.getElementById('peoSoAlignmentTableBody');
+      if (!tbody) return;
+      const links = window.getPeoSoLinks() || {};
+      const soList = FLOW_SO_DEFS || [];
+
+      tbody.innerHTML = soList.map(so => {
+        const linkedPeos = links[so.id] || [];
+        const peoCells = [1, 2, 3, 4, 5].map(pNum => {
+          const isLinked = linkedPeos.includes(pNum);
+          return `
+            <td class="py-2.5 px-3 text-center border-r border-slate-100 dark:border-slate-800">
+              <button type="button" onclick="togglePeoSoCheck('${so.id}', ${pNum})"
+                class="inline-flex items-center justify-center w-7 h-7 text-xs font-black transition cursor-pointer ${
+                  isLinked
+                    ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-xs'
+                    : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600'
+                }"
+                title="Click to toggle link: SO-${so.id} ↔ PEO ${pNum}">
+                ${isLinked ? '✔' : '−'}
+              </button>
+            </td>
+          `;
+        }).join('');
+
+        return `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/40 transition border-b border-slate-100 dark:border-slate-800">
+            <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[280px]">
+              <div class="flex items-start gap-2">
+                <span class="font-mono font-black text-indigo-700 dark:text-indigo-400 text-xs shrink-0">${so.code}:</span>
+                <div>
+                  <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${so.title}</div>
+                  <div class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${so.desc}</div>
+                </div>
+              </div>
+            </td>
+            ${peoCells}
+          </tr>
+        `;
+      }).join('');
+    };
+
+    window.togglePeoSoCheck = function(soId, peoNum) {
+      const links = window.getPeoSoLinks() || {};
+      if (!links[soId]) links[soId] = [];
+      const idx = links[soId].indexOf(peoNum);
+      if (idx >= 0) {
+        links[soId].splice(idx, 1);
+      } else {
+        links[soId].push(peoNum);
+        links[soId].sort((a, b) => a - b);
+      }
+      window.savePeoSoLinks(links);
+      renderPeoSoAlignmentTable();
+      if (typeof renderObeMatrix === 'function') renderObeMatrix();
+      if (typeof renderCurriculumMapMatrix === 'function') renderCurriculumMapMatrix();
+      if (typeof showToast === 'function') {
+        const action = idx >= 0 ? 'Removed link' : 'Linked';
+        showToast(`${action}: SO-${soId.toUpperCase()} ↔ PEO ${peoNum}`);
+      }
+    };
+
+    window.renderPeoGaAlignmentTable = function() {
+      const tbody = document.getElementById('peoGaAlignmentTableBody');
+      if (!tbody) return;
+      const links = window.getPeoGaLinks() || {};
+      const peoList = FLOW_PEO_DEFS || [];
+      const gaLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+
+      tbody.innerHTML = peoList.map(peo => {
+        const linkedGas = links[peo.id] || [];
+        const gaCells = gaLetters.map((letter, idx) => {
+          const gaNum = idx + 1;
+          const isLinked = linkedGas.includes(gaNum);
+          return `
+            <td class="py-2.5 px-2 text-center border-r border-slate-100 dark:border-slate-800">
+              <button type="button" onclick="togglePeoGaCheck(${peo.id}, ${gaNum})"
+                class="inline-flex items-center justify-center w-7 h-7 text-xs font-black transition cursor-pointer ${
+                  isLinked
+                    ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-xs'
+                    : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600'
+                }"
+                title="Click to toggle alignment: PEO ${peo.id} ↔ GA ${letter}">
+                ${isLinked ? '✔' : '−'}
+              </button>
+            </td>
+          `;
+        }).join('');
+
+        return `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/40 transition border-b border-slate-100 dark:border-slate-800">
+            <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[280px]">
+              <div class="flex items-start gap-2">
+                <span class="font-mono font-black text-amber-600 dark:text-amber-400 text-xs shrink-0">${peo.code}:</span>
+                <div>
+                  <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${peo.title}</div>
+                  <div class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${peo.desc}</div>
+                </div>
+              </div>
+            </td>
+            ${gaCells}
+          </tr>
+        `;
+      }).join('');
+    };
+
+    window.togglePeoGaCheck = function(peoId, gaNum) {
+      const links = window.getPeoGaLinks() || {};
+      if (!links[peoId]) links[peoId] = [];
+      const idx = links[peoId].indexOf(gaNum);
+      if (idx >= 0) {
+        links[peoId].splice(idx, 1);
+      } else {
+        links[peoId].push(gaNum);
+        links[peoId].sort((a, b) => a - b);
+      }
+      window.savePeoGaLinks(links);
+      renderPeoGaAlignmentTable();
+      if (typeof renderObeMatrix === 'function') renderObeMatrix();
+      if (typeof renderCurriculumMapMatrix === 'function') renderCurriculumMapMatrix();
+      if (typeof showToast === 'function') {
+        const action = idx >= 0 ? 'Removed alignment' : 'Aligned';
+        showToast(`${action}: PEO ${peoId} ↔ GA ${String.fromCharCode(64 + gaNum)}`);
+      }
+    };
+
+    // =========================================================================
+    // VERSIONING HISTORY & ACCREDITATION LINEAGE MODULE
+    // =========================================================================
+    window.renderVersioningHistoryView = function(inspectedId) {
+      const maps = window.CURRICULUM_MAPS || [];
+      const activeMap = maps.find(m => m.status === 'ACTIVE BATCH') || maps[0];
+      const targetId = inspectedId || window.currentInspectedVersionId || (activeMap ? activeMap.id : 'CM-BSCpE-2026');
+      window.currentInspectedVersionId = targetId;
+      const targetMap = maps.find(m => m.id === targetId) || activeMap || maps[0];
+
+      // Update KPI Cards
+      const kpiActive = document.getElementById('vh-kpi-active-ver');
+      if (kpiActive && activeMap) {
+        kpiActive.textContent = `${activeMap.curriculumVersion} • ${activeMap.mapRevision}`;
+      }
+      const kpiTotal = document.getElementById('vh-kpi-total-ver');
+      if (kpiTotal) {
+        kpiTotal.textContent = `${maps.length} Registered Versions`;
+      }
+
+      // Populate Master Version Registry Table
+      const regBody = document.getElementById('vh-registry-table-body');
+      if (regBody) {
+        const role = (window.currentActiveRole || 'admin').toLowerCase();
+        regBody.innerHTML = maps.map(m => {
+          const isInspecting = (m.id === targetId);
+          const isActive = (m.status === 'ACTIVE BATCH');
+          let actionBtn = '';
+          if (isActive) {
+            actionBtn = `<span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Active Baseline</span>`;
+          } else if (role === 'exd') {
+            actionBtn = `<button type="button" onclick="approveCurriculumMapVersion('${m.id}')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] cursor-pointer shadow-xs transition" title="Approve & Activate Version as Executive Director">✅ Approve (ExD)</button>`;
+          } else {
+            actionBtn = `<button type="button" onclick="showToast('🔒 Only the Executive Director can approve and activate curriculum maps.')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-500 font-bold text-[10px] border border-slate-300 dark:border-slate-700 cursor-pointer" title="Only Executive Director can activate">🔒 Needs ExD</button>`;
+          }
+
+          return `
+            <tr onclick="renderVersioningHistoryView('${m.id}')" class="cursor-pointer transition border-b border-slate-100 dark:border-slate-800 ${
+              isInspecting
+                ? 'bg-amber-500/10 dark:bg-amber-500/15 font-bold'
+                : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+            }">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-[#002855] dark:text-amber-400">
+                <div class="flex items-center gap-1.5">
+                  ${isInspecting ? '<span class="text-amber-500">👉</span>' : ''}
+                  <span>${m.id}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${m.name}</div>
+                <div class="text-[10px] text-slate-500 font-mono">${m.mapRevision}</div>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${m.statusClass || 'bg-slate-100 text-slate-800 border-slate-300'}">
+                  ${m.status}
+                </span>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">
+                ${m.curriculumVersion}
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">
+                ${m.gaVersion || 'GA 2024'}
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">
+                ${m.peoVersion || 'PEO 2026'}
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">
+                ${m.soVersion || 'SO 2026'}
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">
+                ${m.mvvVersion || 'MVV 2025'}
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                74 Courses
+              </td>
+              <td class="py-2.5 px-3 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-[11px] text-slate-500">
+                ${m.createdAt || '2026-01-15'}
+              </td>
+              <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button type="button" onclick="renderVersioningHistoryView('${m.id}')" class="px-2 py-1 bg-[#002855] text-[#E5A823] font-bold text-[10px] hover:bg-[#001f42] cursor-pointer">
+                    🔍 Inspect
+                  </button>
+                  ${actionBtn}
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Update Deep Inspector Header
+      if (targetMap) {
+        const titleEl = document.getElementById('vh-inspect-title');
+        if (titleEl) titleEl.textContent = `${targetMap.name} (${targetMap.id})`;
+        const subEl = document.getElementById('vh-inspect-subtitle');
+        if (subEl) subEl.textContent = `${targetMap.notes || 'Curriculum map snapshot.'} • Status: ${targetMap.status} (Effective: ${targetMap.createdAt || '2026-01-15'})`;
+        const badgeEl = document.getElementById('vh-current-inspecting-badge');
+        if (badgeEl) badgeEl.textContent = targetMap.id;
+
+        const actBtn = document.getElementById('vh-activate-version-btn');
+        if (actBtn) {
+          const role = (window.currentActiveRole || 'admin').toLowerCase();
+          if (targetMap.status === 'ACTIVE BATCH') {
+            actBtn.innerHTML = `<span>✓</span><span>Currently Active Baseline</span>`;
+            actBtn.className = 'px-3 py-1.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold border border-emerald-300 dark:border-emerald-700 flex items-center gap-1.5 cursor-default';
+            actBtn.onclick = null;
+          } else if (role === 'exd') {
+            actBtn.innerHTML = `<span>✅</span><span>Approve & Set Active (ExD)</span>`;
+            actBtn.className = 'px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold border border-emerald-500 flex items-center gap-1.5 cursor-pointer shadow-xs transition';
+            actBtn.onclick = () => window.approveCurriculumMapVersion(targetMap.id);
+          } else {
+            actBtn.innerHTML = `<span>🔒</span><span>Requires ExD Approval to Activate</span>`;
+            actBtn.className = 'px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-500 text-xs font-bold border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 cursor-pointer';
+            actBtn.onclick = () => {
+              if (typeof showToast === 'function') {
+                showToast('🔒 Approval Restricted: Only the Executive Director (ExD) can approve and activate a curriculum map.');
+              }
+            };
+          }
+        }
+      }
+
+      // Populate Inspector Subtab 1: Course I-E-D Matrix (74 Courses)
+      const matrixTbody = document.getElementById('vh-matrix-table-body');
+      if (matrixTbody) {
+        const courses = window.OFFICIAL_BASELINE_74_COURSES || [];
+        const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+        const peoSoLinks = window.getPeoSoLinks() || {};
+        const peoGaLinks = window.getPeoGaLinks() || {};
+
+        matrixTbody.innerHTML = courses.map(c => {
+          const coursePeos = new Set();
+          const courseGas = new Set();
+          const soCells = SO_KEYS.map((key, idx) => {
+            const val = (c.sos && c.sos[idx]) ? c.sos[idx].trim().toUpperCase() : '-';
+            let color = 'text-slate-400';
+            if (val === 'I') {
+              color = 'text-sky-600 dark:text-sky-400 font-bold bg-sky-50 dark:bg-sky-950/40';
+            } else if (val === 'E') {
+              color = 'text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40';
+            } else if (val === 'D') {
+              color = 'text-purple-600 dark:text-purple-400 font-black bg-purple-50 dark:bg-purple-950/40';
+            }
+            if (val === 'I' || val === 'E' || val === 'D') {
+              const peos = peoSoLinks[key] || [];
+              peos.forEach(p => {
+                coursePeos.add(p);
+                (peoGaLinks[p] || []).forEach(g => courseGas.add(g));
+              });
+            }
+            return `<td class="py-2 px-1 text-center border-r border-slate-200 dark:border-slate-800 ${color} font-mono">${val}</td>`;
+          }).join('');
+
+          const peoStr = Array.from(coursePeos).sort((a,b)=>a-b).map(p => `PEO ${p}`).join(', ') || '—';
+          const gaLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+          const gaStr = Array.from(courseGas).sort((a,b)=>a-b).map(g => `GA ${gaLetters[g-1] || g}`).join(', ') || '—';
+
+          return `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/40 border-b border-slate-100 dark:border-slate-800">
+              <td class="py-2 px-3 border-r border-slate-200 dark:border-slate-800 font-mono font-bold text-xs sticky left-0 bg-white dark:bg-[#111722] text-[#002855] dark:text-amber-400">${c.code}</td>
+              <td class="py-2 px-3 border-r border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-800 dark:text-slate-200">${c.title}</td>
+              <td class="py-2 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">${c.units || '3.0'}</td>
+              <td class="py-2 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">Y${c.year || 1}T${c.term || 1}</td>
+              ${soCells}
+              <td class="py-2 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-[10px] text-purple-700 dark:text-purple-300 font-bold bg-purple-50/30 dark:bg-purple-950/20">${peoStr}</td>
+              <td class="py-2 px-2 text-center font-mono text-[10px] text-[#002855] dark:text-amber-300 font-bold bg-amber-50/30 dark:bg-amber-950/20">${gaStr}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Populate Inspector Subtab 2: PEO-to-SO Schedule
+      const peoSoTbody = document.getElementById('vh-peo-so-table-body');
+      if (peoSoTbody) {
+        const links = window.getPeoSoLinks() || {};
+        const soList = FLOW_SO_DEFS || [];
+        peoSoTbody.innerHTML = soList.map(so => {
+          const linkedPeos = links[so.id] || [];
+          const peoCols = [1, 2, 3, 4, 5].map(pNum => {
+            const hasLink = linkedPeos.includes(pNum);
+            return `
+              <td class="py-2.5 px-3 text-center border-r border-slate-200 dark:border-slate-800 font-mono font-black ${
+                hasLink ? 'text-emerald-600 bg-emerald-50/40 dark:bg-emerald-950/20' : 'text-slate-300'
+              }">${hasLink ? '✔' : '−'}</td>
+            `;
+          }).join('');
+
+          return `
+            <tr class="border-b border-slate-100 dark:border-slate-800">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono font-bold text-xs text-indigo-700 dark:text-indigo-400 text-center">${so.code}</td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs">
+                <div class="font-bold text-slate-800 dark:text-slate-200">${so.title}</div>
+                <div class="text-[10px] text-slate-500">${so.desc}</div>
+              </td>
+              ${peoCols}
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Populate Inspector Subtab 3: PEO-to-GA Alignment
+      const peoGaTbody = document.getElementById('vh-peo-ga-table-body');
+      if (peoGaTbody) {
+        const links = window.getPeoGaLinks() || {};
+        const peoList = FLOW_PEO_DEFS || [];
+        const gaCols = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        peoGaTbody.innerHTML = peoList.map(peo => {
+          const linkedGas = links[peo.id] || [];
+          const cells = gaCols.map(gNum => {
+            const hasLink = linkedGas.includes(gNum);
+            return `
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono font-black ${
+                hasLink ? 'text-emerald-600 bg-emerald-50/40 dark:bg-emerald-950/20' : 'text-slate-300'
+              }">${hasLink ? '✔' : '−'}</td>
+            `;
+          }).join('');
+
+          return `
+            <tr class="border-b border-slate-100 dark:border-slate-800">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs">
+                <div class="font-bold font-mono text-[#002855] dark:text-amber-400">${peo.code}: ${peo.title}</div>
+                <div class="text-[10px] text-slate-500">${peo.desc}</div>
+              </td>
+              ${cells}
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Populate Inspector Subtab 4: SO and PEO Definitions
+      const soListEl = document.getElementById('vh-def-sos-list');
+      if (soListEl) {
+        soListEl.innerHTML = (FLOW_SO_DEFS || []).map(so => `
+          <div class="p-2 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800">
+            <span class="font-mono font-bold text-indigo-700 dark:text-indigo-400">${so.code}:</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200 ml-1">${so.title}</span>
+            <p class="text-[11px] text-slate-500 mt-0.5">${so.desc}</p>
+          </div>
+        `).join('');
+      }
+
+      const peoListEl = document.getElementById('vh-def-peos-list');
+      if (peoListEl) {
+        peoListEl.innerHTML = (FLOW_PEO_DEFS || []).map(peo => `
+          <div class="p-2 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800">
+            <span class="font-mono font-bold text-amber-600 dark:text-amber-400">${peo.code}:</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200 ml-1">${peo.title}</span>
+            <p class="text-[11px] text-slate-500 mt-0.5">${peo.desc}</p>
+          </div>
+        `).join('');
+      }
+    };
+
+    window.switchVhInspectorTab = function(tabId) {
+      const tabs = ['matrix', 'peo-so', 'peo-ga', 'definitions', 'mvv'];
+      tabs.forEach(t => {
+        const content = document.getElementById(`vh-content-${t}`);
+        const btn = document.getElementById(`vh-subtab-${t}`);
+        if (content) {
+          if (t === tabId) content.classList.remove('hidden');
+          else content.classList.add('hidden');
+        }
+        if (btn) {
+          if (t === tabId) {
+            btn.className = 'pb-2 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer whitespace-nowrap text-xs font-bold';
+          } else {
+            btn.className = 'pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap text-xs font-bold';
+          }
+        }
+      });
     };
 
     window.activeFlowTrace = {
@@ -9278,6 +9801,10 @@ ${worksheetsXml}
     window.switchObeTab = switchObeTab;
     window.renderObeMatrix = renderObeMatrix;
     window.cycleObeProgression = cycleObeProgression;
+    window.renderPeoSoAlignmentTable = renderPeoSoAlignmentTable;
+    window.renderPeoGaAlignmentTable = renderPeoGaAlignmentTable;
+    window.renderVersioningHistoryView = renderVersioningHistoryView;
+    window.switchVhInspectorTab = switchVhInspectorTab;
 
     // Initialize categories, legend, role state, and audit trail on load
     try {
@@ -9287,6 +9814,10 @@ ${worksheetsXml}
       switchRole('admin', false);
       applyRolePermissions();
       updateAllObeVersionBadges();
+      if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
+      if (typeof renderPeoSoAlignmentTable === 'function') renderPeoSoAlignmentTable();
+      if (typeof renderPeoGaAlignmentTable === 'function') renderPeoGaAlignmentTable();
+      if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView();
       if (typeof renderFlowGraph === 'function') renderFlowGraph();
     } catch (e) {
       console.warn('Initial setup warning:', e);
