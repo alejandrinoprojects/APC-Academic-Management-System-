@@ -3848,26 +3848,36 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       activeDoc.classList.remove('hidden');
 
       const isLandscape = (idx === 1 || idx === 5 || idx === 6);
+      const isLargeSheet = (idx === 3 || idx === 4 || idx === 6);
+      const renderScale = isLargeSheet ? 0.95 : 1.15;
+
       const opt = {
-        margin: [0.3, 0.3, 0.3, 0.3],
+        margin: [0.25, 0.25, 0.25, 0.25],
         filename: `APC_Curriculum_Sheet_${idx}.pdf`,
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 1.4, useCORS: true, logging: false },
+        image: { type: 'jpeg', quality: 0.92 },
+        html2canvas: { 
+          scale: renderScale, 
+          useCORS: true, 
+          logging: false,
+          scrollY: 0
+        },
         jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
         pagebreak: { mode: ['css', 'legacy'] }
       };
 
       if (typeof html2pdf !== 'undefined') {
-        html2pdf().set(opt).from(activeDoc).toPdf().get('pdf').then(function(pdfObj) {
-          const blob = pdfObj.output('blob');
-          const blobUrl = URL.createObjectURL(blob);
-          registrarPdfBlobCache[idx] = blobUrl;
-          frame.src = blobUrl;
-          if (loader) loader.classList.add('hidden');
-        }).catch(function(err) {
-          console.warn('[PDF Gen] html2pdf fallback:', err);
-          if (loader) loader.classList.add('hidden');
-        });
+        setTimeout(function() {
+          html2pdf().set(opt).from(activeDoc).toPdf().get('pdf').then(function(pdfObj) {
+            const blob = pdfObj.output('blob');
+            const blobUrl = URL.createObjectURL(blob);
+            registrarPdfBlobCache[idx] = blobUrl;
+            frame.src = blobUrl;
+            if (loader) loader.classList.add('hidden');
+          }).catch(function(err) {
+            console.warn('[PDF Gen] html2pdf fallback:', err);
+            if (loader) loader.classList.add('hidden');
+          });
+        }, 30);
       } else {
         if (loader) loader.classList.add('hidden');
       }
