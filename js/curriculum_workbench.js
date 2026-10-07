@@ -1528,10 +1528,14 @@
               <div class="text-[10px] font-mono text-slate-500 dark:text-slate-400">${p.cohort} • ${p.units}</div>
             </td>
             <td class="py-2.5 px-2 border-r border-slate-200 dark:border-slate-800 text-center font-mono text-[10px] text-slate-600 dark:text-slate-400">
-              <div title="Lineage: ${p.mvv} ➔ ${p.ga} ➔ ${p.peo} ➔ ${p.so}">
-                <span class="text-indigo-600 dark:text-indigo-400 font-bold">${p.so || 'SO-2027'}</span>
-                <span class="text-slate-400"> ➔ </span>
-                <span class="text-slate-500">${p.peo || 'PEO-2027'}</span>
+              <div class="flex items-center justify-center gap-1 flex-wrap" title="Full Alignment Chain: ${p.mvv || 'MVV 2025'} ➔ ${p.ga || 'GA 2027'} ➔ ${p.peo || 'PEO 2027'} ➔ ${p.so || 'SO 2027'}">
+                <span class="text-slate-500 dark:text-slate-400 font-semibold">${p.mvv || 'MVV 2025'}</span>
+                <span class="text-slate-400 text-[9px]">&rarr;</span>
+                <span class="text-slate-600 dark:text-slate-300 font-semibold">${p.ga || 'GA 2027'}</span>
+                <span class="text-slate-400 text-[9px]">&rarr;</span>
+                <span class="text-purple-600 dark:text-purple-400 font-semibold">${p.peo || 'PEO 2027'}</span>
+                <span class="text-slate-400 text-[9px]">&rarr;</span>
+                <span class="text-indigo-600 dark:text-indigo-400 font-bold">${p.so || 'SO 2027'}</span>
               </div>
             </td>
             <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-center">
@@ -1723,6 +1727,7 @@
 
       // Refresh UI components
       renderExdApprovalInbox();
+      if (typeof renderPrimaryCurricCards === 'function') renderPrimaryCurricCards();
       if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
       if (typeof renderCurriculumMapHierarchy === 'function') renderCurriculumMapHierarchy();
       if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView(id);
@@ -2094,6 +2099,9 @@
           const cProgTag = document.getElementById('curricHomeProgramTag');
           if (cHeading) cHeading.innerHTML = `<span>${progCode} Curriculum Management</span> <span class="text-[#E5A823]">Homepage</span>`;
           if (cProgTag) cProgTag.innerText = `${progCode} CPE2026 Curriculum`;
+          if (typeof renderPrimaryCurricCards === 'function') {
+            renderPrimaryCurricCards();
+          }
           if (typeof renderAuditTable === 'function') {
             renderAuditTable();
           }
@@ -3374,6 +3382,36 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const peoVer = document.getElementById('newCurricPeoVersion')?.value || 'PEO 2027';
       const gaVer = document.getElementById('newCurricGaVersion')?.value || 'GA 2024';
 
+      const editionId = `CPE-${startYr}`;
+      const editionCode = `CPE ${startYr}`;
+
+      // 1. Add to / Update CURRIC_EDITIONS_REGISTRY
+      if (!window.CURRIC_EDITIONS_REGISTRY) window.CURRIC_EDITIONS_REGISTRY = [];
+      const newEdition = {
+        id: editionId,
+        code: editionCode,
+        name: `${prog} ${startYr}–${endYr}`,
+        units: '184.0',
+        courses: 74,
+        terms: 12,
+        status: 'UNLOCKED DRAFT',
+        statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
+        effective: `AY ${startYr}–${endYr}`,
+        notes: `Newly provisioned ${prog} batch curriculum. Unlocked draft for editing.`
+      };
+
+      const existingEdIdx = window.CURRIC_EDITIONS_REGISTRY.findIndex(ed => ed.id === editionId);
+      if (existingEdIdx >= 0) {
+        window.CURRIC_EDITIONS_REGISTRY[existingEdIdx] = newEdition;
+      } else {
+        window.CURRIC_EDITIONS_REGISTRY.unshift(newEdition);
+      }
+      try {
+        localStorage.setItem('apc_curric_editions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY));
+        localStorage.setItem('apc_curric_versions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY));
+      } catch(e) {}
+
+      // 2. Add to CURRICULUM_MAPS
       const newMapId = `CM-${prog}-${startYr}`;
       const newMap = {
         id: newMapId,
@@ -3396,19 +3434,28 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       };
 
       if (!window.CURRICULUM_MAPS) window.CURRICULUM_MAPS = [];
-      window.CURRICULUM_MAPS.unshift(newMap);
+      const existingMapIdx = window.CURRICULUM_MAPS.findIndex(m => m.id === newMapId);
+      if (existingMapIdx >= 0) {
+        window.CURRICULUM_MAPS[existingMapIdx] = newMap;
+      } else {
+        window.CURRICULUM_MAPS.unshift(newMap);
+      }
       window.currentActiveCurriculumMap = newMapId;
+      try {
+        localStorage.setItem('apc_curriculum_maps', JSON.stringify(window.CURRICULUM_MAPS));
+      } catch(e) {}
+
       if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
+      if (typeof renderPrimaryCurricCards === 'function') renderPrimaryCurricCards();
+      if (typeof renderExdApprovalInbox === 'function') renderExdApprovalInbox();
 
       closeCreateCurriculumModal();
       if (typeof showToast === 'function') {
-        showToast(`✓ Successfully created ${prog} revision with Curriculum Map '${newMap.name}'!`);
+        showToast(`✓ Created ${newEdition.name} with Flowchart, Spreadsheet & Official Docs ready!`);
       }
-      if (typeof openCurriculumMapTab === 'function') {
-        openCurriculumMapTab();
-      } else {
-        selectProgram(prog, 'curriculum-home');
-      }
+
+      // Navigate to curriculum-home view so user directly sees the new curriculum card
+      selectProgram(prog, 'curriculum-home');
     };
 
     function toggleMobileSidebar() {
@@ -9627,6 +9674,277 @@ ${worksheetsXml}
       }
     ];
 
+    // Load persisted editions if available
+    try {
+      const savedEditions = localStorage.getItem('apc_curric_editions') || localStorage.getItem('apc_curric_versions');
+      if (savedEditions) {
+        const parsed = JSON.parse(savedEditions);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          window.CURRIC_EDITIONS_REGISTRY = parsed;
+        }
+      }
+    } catch (e) {}
+
+    // Dynamic Curriculum Management Cards Renderer
+    window.openFlowchartForCurriculum = function(editionId) {
+      if (typeof openFlowchartForYear === 'function') {
+        openFlowchartForYear(1);
+      }
+      const topPill = document.getElementById('topBarPathPill');
+      const prog = currentSelectedProgram || 'BSCpE';
+      const edition = (window.CURRIC_EDITIONS_REGISTRY || []).find(e => e.id === editionId);
+      const label = edition ? (edition.code || edition.name) : editionId;
+      if (topPill) {
+        topPill.innerText = `Schools > SoE > ${prog} > Flowchart (${label})`;
+      }
+    };
+
+    window.openSpreadsheetForCurriculum = function(editionId) {
+      if (typeof openSpreadsheetForYear === 'function') {
+        openSpreadsheetForYear(1);
+      }
+      const topPill = document.getElementById('topBarPathPill');
+      const prog = currentSelectedProgram || 'BSCpE';
+      const edition = (window.CURRIC_EDITIONS_REGISTRY || []).find(e => e.id === editionId);
+      const label = edition ? (edition.code || edition.name) : editionId;
+      if (topPill) {
+        topPill.innerText = `Schools > SoE > ${prog} > Spreadsheet (${label})`;
+      }
+    };
+
+    window.openDocsForCurriculum = function(editionId) {
+      if (typeof openDocsForYear === 'function') {
+        openDocsForYear(1, 1);
+      }
+      const topPill = document.getElementById('topBarPathPill');
+      const prog = currentSelectedProgram || 'BSCpE';
+      const edition = (window.CURRIC_EDITIONS_REGISTRY || []).find(e => e.id === editionId);
+      const label = edition ? (edition.code || edition.name) : editionId;
+      if (topPill) {
+        topPill.innerText = `Schools > SoE > ${prog} > Official Documents (${label})`;
+      }
+    };
+
+    window.renderPrimaryCurricCards = function() {
+      const grid = document.getElementById('primaryCurricCardsGrid');
+      if (!grid) return;
+
+      const editions = (window.CURRIC_EDITIONS_REGISTRY || []).filter(e => e.status !== 'HISTORICAL');
+      const activeBatch = editions.find(e => e.status === 'ACTIVE BATCH') || editions[0];
+      const batchTag = document.getElementById('curricSequenceBatchTag');
+      if (batchTag && activeBatch) {
+        batchTag.innerText = `${activeBatch.code || activeBatch.id} Curriculum`;
+      }
+
+      // Built-in academic year sequences for the standard active cohort
+      const defaultSequenceCards = [
+        {
+          yearLabel: '1st Year',
+          code: 'CPE2026',
+          title: 'CPE2026 Curriculum',
+          statusBadge: '🔒 Enrolled • Read-Only',
+          horizon: '4 Years',
+          units: '184.0 u',
+          courses: '74 Subj',
+          yearNum: 1
+        },
+        {
+          yearLabel: '2nd Year',
+          code: 'CPE2025',
+          title: 'CPE2025 Curriculum',
+          statusBadge: '🔒 Enrolled • Read-Only',
+          horizon: '4 Years',
+          units: '184.0 u',
+          courses: '74 Subj',
+          yearNum: 2
+        },
+        {
+          yearLabel: '3rd Year',
+          code: 'CPE2024',
+          title: 'CPE2024 Curriculum',
+          statusBadge: '🔒 Enrolled • Read-Only',
+          horizon: '4 Years',
+          units: '184.0 u',
+          courses: '74 Subj',
+          yearNum: 3
+        },
+        {
+          yearLabel: '4th Year',
+          code: 'CPE2023',
+          title: 'CPE2023 Curriculum',
+          statusBadge: '🔒 Enrolled • Read-Only',
+          horizon: '4 Years',
+          units: '184.0 u',
+          courses: '74 Subj',
+          yearNum: 4
+        }
+      ];
+
+      // Identify newly created / custom revisions outside the 4 baseline cohorts
+      const baselineCodes = ['CPE 2026', 'CPE 2025', 'CPE 2024', 'CPE 2023', 'CPE-2026', 'CPE-2025', 'CPE-2024', 'CPE-2023'];
+      const customEditions = editions.filter(e => !baselineCodes.includes(e.id) && !baselineCodes.includes(e.code));
+
+      let html = '';
+
+      // 1. Render custom / newly authored revisions FIRST (e.g. CPE 2027)
+      customEditions.forEach(ed => {
+        const isDraft = ed.status === 'UNLOCKED DRAFT' || ed.status.includes('DRAFT');
+        const badgeColor = isDraft
+          ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700'
+          : (ed.status === 'ACTIVE BATCH'
+            ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700'
+            : 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700');
+        
+        const cohortTag = ed.effective ? ed.effective : (ed.code || ed.id);
+
+        html += `
+          <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#E5A823]">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 bg-[#E5A823] text-slate-950 font-black text-xs font-mono">Next Year Batch</span>
+                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">${ed.code || ed.id}</span>
+                </div>
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${badgeColor}">
+                  ${ed.status}
+                </span>
+              </div>
+              <div>
+                <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
+                  ${ed.name || (ed.code + ' Curriculum')}
+                </h3>
+              </div>
+              <div class="grid grid-cols-3 gap-2 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center font-mono">
+                <div>
+                  <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Horizon</div>
+                  <div class="text-xs font-black text-slate-800 dark:text-slate-200">${cohortTag}</div>
+                </div>
+                <div>
+                  <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Total Units</div>
+                  <div class="text-xs font-black text-slate-800 dark:text-slate-200">${ed.units || '184.0'} u</div>
+                </div>
+                <div>
+                  <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Courses</div>
+                  <div class="text-xs font-black text-slate-800 dark:text-slate-200">${ed.courses || 74} Subj</div>
+                </div>
+              </div>
+            </div>
+            <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+              <button type="button" onclick="openFlowchartForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${ed.code} Flowchart">
+                <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                <span>Flowchart</span>
+              </button>
+              <button type="button" onclick="openSpreadsheetForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${ed.code} Spreadsheet">
+                <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Spreadsheet</span>
+              </button>
+              <button type="button" onclick="openDocsForCurriculum('${ed.id}')" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${ed.code} Official Documents">
+                <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Official Docs</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      // 2. Render standard 4 academic year cards
+      defaultSequenceCards.forEach(c => {
+        html += `
+          <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">${c.yearLabel}</span>
+                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">${c.code}</span>
+                </div>
+                <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px] font-bold border border-slate-300 dark:border-slate-700">${c.statusBadge}</span>
+              </div>
+              <div>
+                <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
+                  ${c.title}
+                </h3>
+              </div>
+              <div class="grid grid-cols-3 gap-2 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-center font-mono">
+                <div>
+                  <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Horizon</div>
+                  <div class="text-xs font-black text-slate-800 dark:text-slate-200">${c.horizon}</div>
+                </div>
+                <div>
+                  <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Total Units</div>
+                  <div class="text-xs font-black text-slate-800 dark:text-slate-200">${c.units}</div>
+                </div>
+                <div>
+                  <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Courses</div>
+                  <div class="text-xs font-black text-slate-800 dark:text-slate-200">${c.courses}</div>
+                </div>
+              </div>
+            </div>
+            <div class="pt-4 grid grid-cols-3 gap-2 text-center">
+              <a href="/soe/cpe/flowchart?year=${c.yearNum}" onclick="event.preventDefault(); openFlowchartForYear(${c.yearNum})" class="w-full py-2 px-1.5 bg-[#002855] hover:bg-[#003875] text-[#E5A823] border border-[#002855] text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${c.yearLabel} Flowchart">
+                <svg class="w-3.5 h-3.5 text-[#E5A823] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                <span>Flowchart</span>
+              </a>
+              <a href="/soe/cpe/spreadsheet?year=${c.yearNum}" onclick="event.preventDefault(); openSpreadsheetForYear(${c.yearNum})" class="w-full py-2 px-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${c.yearLabel} Spreadsheet">
+                <svg class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span>Spreadsheet</span>
+              </a>
+              <button type="button" onclick="openDocsForYear(${c.yearNum})" class="w-full py-2 px-1.5 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer shadow-xs whitespace-nowrap" title="Open ${c.yearLabel} Official Documents">
+                <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Official Docs</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      // 3. Render Historical Editions Card
+      html += `
+        <div onclick="navigateView('past-curriculums')" class="bg-slate-50/70 dark:bg-slate-900/40 border border-slate-200/90 dark:border-slate-800 p-5 sm:p-6 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group border-t-4 border-t-slate-400 dark:border-t-slate-600 cursor-pointer">
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 bg-slate-700 text-white font-black text-xs font-mono">PAST</span>
+              <span class="text-xs font-mono font-bold text-slate-500">AY 2018–2025</span>
+            </div>
+            <div>
+              <h3 class="text-base font-black text-slate-800 dark:text-slate-200 uppercase tracking-tight group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
+                Historical Editions
+              </h3>
+            </div>
+            <div class="grid grid-cols-2 gap-2 py-2.5 bg-white/80 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 text-center font-mono">
+              <div>
+                <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Revisions</div>
+                <div class="text-xs font-black text-slate-700 dark:text-slate-300">4 Cycles</div>
+              </div>
+              <div>
+                <div class="text-[9px] text-slate-400 font-sans uppercase font-bold">Span</div>
+                <div class="text-xs font-black text-slate-700 dark:text-slate-300">2018–2025</div>
+              </div>
+            </div>
+          </div>
+          <div class="pt-4">
+            <button type="button" onclick="event.stopPropagation(); navigateView('past-curriculums')" class="w-full py-2 px-3 bg-slate-700 hover:bg-slate-800 text-amber-300 border border-slate-600 text-xs font-bold transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer shadow-xs hover:shadow-sm" title="View Past Curriculums, Flowcharts, Spreadsheets &amp; Docs">
+              <svg class="w-3.5 h-3.5 text-amber-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="truncate">Open Historical Editions &rarr;</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      // 4. Render Author New Revision Card
+      html += `
+        <div id="authorNewCurriculumCard" onclick="openCreateCurriculumModal()" class="bg-gradient-to-br from-slate-50 to-amber-50/30 dark:from-[#131923] dark:to-amber-950/20 border-2 border-dashed border-[#E5A823]/60 hover:border-[#E5A823] p-5 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 cursor-pointer group min-h-[220px]">
+          <div class="w-12 h-12 bg-[#E5A823]/15 group-hover:bg-[#E5A823] border border-[#E5A823]/60 text-[#002855] group-hover:text-slate-950 flex items-center justify-center text-2xl font-black transition-all duration-200 shadow-xs group-hover:scale-110">
+            +
+          </div>
+          <h3 class="mt-3 text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
+            Author New Revision
+          </h3>
+        </div>
+      `;
+
+      grid.innerHTML = html;
+    };
+
     window.currentVhDomain = 'maps';
     window.currentInspectedSoId = 'SO-2026';
     window.currentInspectedPeoId = 'PEO-2026';
@@ -11962,6 +12280,7 @@ ${worksheetsXml}
       if (typeof renderPeoGaAlignmentTable === 'function') renderPeoGaAlignmentTable();
       if (typeof renderVersioningHistoryView === 'function') renderVersioningHistoryView();
       if (typeof renderFlowGraph === 'function') renderFlowGraph();
+      if (typeof renderPrimaryCurricCards === 'function') renderPrimaryCurricCards();
     } catch (e) {
       console.warn('Initial setup warning:', e);
     }
