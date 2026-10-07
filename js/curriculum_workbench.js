@@ -8246,205 +8246,23 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (typeof window.renderFlowGraph === 'function') window.renderFlowGraph();
     };
 
-    window.traceFlowLineage = function(type, id) {
-      if (window.activeFlowTrace.type === type && String(window.activeFlowTrace.id) === String(id)) {
-        window.clearFlowTrace();
-        return;
-      }
-      window.activeFlowTrace = { type, id };
-      if (typeof window.renderFlowGraph === 'function') window.renderFlowGraph();
+    window.flowWheelIndices = { ga: 0, peo: 0, so: 0, course: 0 };
+
+    window.isCurriculumLocked = function() {
+      const activeMapId = window.currentActiveCurriculumMap || 'CM-BSCpE-2026';
+      const map = (window.CURRICULUM_MAPS || []).find(m => m.id === activeMapId);
+      if (!map) return true;
+      return map.status === 'ACTIVE BATCH' || map.status === 'PREV BATCH' || map.status === 'ARCHIVED';
     };
 
-    window.renderFlowGraph = function() {
-      const colGA = document.getElementById('flowColGA');
-      const colPEO = document.getElementById('flowColPEO');
-      const colSO = document.getElementById('flowColSO');
-      const colCourses = document.getElementById('flowColCourses');
-      if (!colGA || !colPEO || !colSO || !colCourses) return;
-
-      const peoSoLinks = window.getPeoSoLinks();
-      const peoGaLinks = window.getPeoGaLinks();
+    window.getFlowColumnLists = function() {
       const allCourses = (window.OFFICIAL_BASELINE_74_COURSES && window.OFFICIAL_BASELINE_74_COURSES.length > 0)
         ? window.OFFICIAL_BASELINE_74_COURSES
         : [];
-
-      const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
-
-      let activeGAs = null;
-      let activePEOs = null;
-      let activeSOs = null;
-      let activeCourses = null;
-
-      const tr = window.activeFlowTrace;
-      const traceBadge = document.getElementById('flowGraphTraceBadge');
-      const traceText = document.getElementById('flowGraphTraceText');
-
-      if (tr && tr.type && tr.id !== null) {
-        if (traceBadge) traceBadge.classList.remove('hidden');
-
-        if (tr.type === 'ga') {
-          activeGAs = new Set([Number(tr.id)]);
-          activePEOs = new Set(Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(Number(tr.id))).map(Number));
-          activeSOs = new Set(Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).some(p => activePEOs.has(p))));
-          activeCourses = new Set();
-          allCourses.forEach(c => {
-            const sos = c.sos || [];
-            const hasMapped = SO_KEYS.some((letter, idx) => activeSOs.has(letter) && (sos[idx] === 'I' || sos[idx] === 'E' || sos[idx] === 'D'));
-            if (hasMapped) activeCourses.add(c.code);
-          });
-          if (traceText) traceText.textContent = `Traced GA ${tr.id}: ${activePEOs.size} PEOs ➔ ${activeSOs.size} SOs ➔ ${activeCourses.size} Courses mapped downstream.`;
-
-        } else if (tr.type === 'peo') {
-          activePEOs = new Set([Number(tr.id)]);
-          activeGAs = new Set(peoGaLinks[tr.id] || []);
-          activeSOs = new Set(Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(Number(tr.id))));
-          activeCourses = new Set();
-          allCourses.forEach(c => {
-            const sos = c.sos || [];
-            const hasMapped = SO_KEYS.some((letter, idx) => activeSOs.has(letter) && (sos[idx] === 'I' || sos[idx] === 'E' || sos[idx] === 'D'));
-            if (hasMapped) activeCourses.add(c.code);
-          });
-          if (traceText) traceText.textContent = `Traced PEO ${tr.id}: Linked upstream to ${activeGAs.size} GAs ➔ Downstream to ${activeSOs.size} SOs & ${activeCourses.size} Courses.`;
-
-        } else if (tr.type === 'so') {
-          activeSOs = new Set([String(tr.id)]);
-          activePEOs = new Set(peoSoLinks[tr.id] || []);
-          activeGAs = new Set();
-          activePEOs.forEach(p => (peoGaLinks[p] || []).forEach(g => activeGAs.add(g)));
-          activeCourses = new Set();
-          const soIdx = SO_KEYS.indexOf(String(tr.id));
-          allCourses.forEach(c => {
-            const sos = c.sos || [];
-            if (soIdx >= 0 && (sos[soIdx] === 'I' || sos[soIdx] === 'E' || sos[soIdx] === 'D')) {
-              activeCourses.add(c.code);
-            }
-          });
-          if (traceText) traceText.textContent = `Traced SO-${tr.id}: Linked upstream to ${activePEOs.size} PEOs & ${activeGAs.size} GAs ➔ ${activeCourses.size} Courses mapped.`;
-
-        } else if (tr.type === 'course') {
-          activeCourses = new Set([String(tr.id)]);
-          const c = allCourses.find(course => course.code === tr.id);
-          activeSOs = new Set();
-          if (c && c.sos) {
-            SO_KEYS.forEach((letter, idx) => {
-              if (c.sos[idx] === 'I' || c.sos[idx] === 'E' || c.sos[idx] === 'D') {
-                activeSOs.add(letter);
-              }
-            });
-          }
-          activePEOs = new Set();
-          activeSOs.forEach(s => (peoSoLinks[s] || []).forEach(p => activePEOs.add(p)));
-          activeGAs = new Set();
-          activePEOs.forEach(p => (peoGaLinks[p] || []).forEach(g => activeGAs.add(g)));
-          if (traceText) traceText.textContent = `Traced Course [${tr.id}]: Maps to ${activeSOs.size} SOs ➔ ${activePEOs.size} PEOs ➔ ${activeGAs.size} Institutional GAs.`;
-        }
-      } else {
-        if (traceBadge) traceBadge.classList.add('hidden');
-        if (traceText) traceText.textContent = 'Click any node below to isolate its cascading relationship through GA ➔ PEO ➔ SO ➔ Courses.';
-      }
-
-      // Render Column 1: GA
-      colGA.innerHTML = FLOW_GA_DEFS.map(ga => {
-        const isMatched = activeGAs ? activeGAs.has(ga.id) : true;
-        const isDirect = tr && tr.type === 'ga' && Number(tr.id) === ga.id;
-        const linkedPeoList = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id)).map(p => `PEO ${p}`);
-        const cardClass = isDirect
-          ? 'bg-amber-50 dark:bg-[#1C2534] border-2 border-[#002855] dark:border-[#E5A823] ring-2 ring-apc-gold shadow-md opacity-100'
-          : (isMatched
-              ? 'bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 shadow-xs hover:border-[#002855] opacity-100'
-              : 'bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-800 opacity-30 hover:opacity-100');
-
-        return `
-          <div onclick="traceFlowLineage('ga', ${ga.id})" class="p-2.5 rounded-none transition cursor-pointer space-y-1.5 ${cardClass}" title="Click to trace GA ${ga.id}">
-            <div class="flex items-center justify-between">
-              <span class="font-mono font-bold text-[11px] text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
-              <button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('ga', ${ga.id})" class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit PEO links for ${ga.code}">✏️ Link PEOs</button>
-            </div>
-            <h6 class="font-bold text-xs text-slate-800 dark:text-slate-100 leading-tight">${ga.title}</h6>
-            <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">${ga.desc}</p>
-            <div class="pt-1 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[10px] font-mono">
-              <span class="text-slate-500">Linked:</span>
-              <span class="font-bold text-purple-700 dark:text-purple-300">${linkedPeoList.length ? linkedPeoList.join(', ') : 'None'}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      // Render Column 2: PEO
-      colPEO.innerHTML = FLOW_PEO_DEFS.map(peo => {
-        const isMatched = activePEOs ? activePEOs.has(peo.id) : true;
-        const isDirect = tr && tr.type === 'peo' && Number(tr.id) === peo.id;
-        const gaList = (peoGaLinks[peo.id] || []).map(g => `GA ${g}`);
-        const soList = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
-        const cardClass = isDirect
-          ? 'bg-purple-50 dark:bg-[#1E1F35] border-2 border-purple-600 dark:border-purple-400 ring-2 ring-apc-gold shadow-md opacity-100'
-          : (isMatched
-              ? 'bg-white dark:bg-[#151D2A] border border-purple-200 dark:border-purple-900/60 shadow-xs hover:border-purple-500 opacity-100'
-              : 'bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-800 opacity-30 hover:opacity-100');
-
-        return `
-          <div onclick="traceFlowLineage('peo', ${peo.id})" class="p-2.5 rounded-none transition cursor-pointer space-y-1.5 ${cardClass}" title="Click to trace PEO ${peo.id}">
-            <div class="flex items-center justify-between">
-              <span class="font-mono font-bold text-[11px] text-purple-700 dark:text-purple-300">${peo.code}</span>
-              <button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('peo', ${peo.id})" class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit GAs and SOs for ${peo.code}">✏️ Edit Links</button>
-            </div>
-            <h6 class="font-bold text-xs text-slate-800 dark:text-slate-100 leading-tight">${peo.title}</h6>
-            <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">${peo.desc}</p>
-            <div class="pt-1 border-t border-purple-100 dark:border-purple-900/40 flex items-center justify-between text-[10px] font-mono">
-              <span class="text-slate-500">← ${gaList.length} GAs</span>
-              <span class="font-bold text-indigo-600 dark:text-indigo-400">${soList.length} SOs →</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      // Render Column 3: SO
-      colSO.innerHTML = FLOW_SO_DEFS.map((so, soIdx) => {
-        const isMatched = activeSOs ? activeSOs.has(so.id) : true;
-        const isDirect = tr && tr.type === 'so' && tr.id === so.id;
-        const peoList = (peoSoLinks[so.id] || []).map(p => `PEO ${p}`);
-        
-        let iCount = 0, eCount = 0, dCount = 0;
-        allCourses.forEach(c => {
-          const rating = (c.sos && c.sos[soIdx]) ? c.sos[soIdx].trim().toUpperCase() : '-';
-          if (rating === 'I') iCount++;
-          else if (rating === 'E') eCount++;
-          else if (rating === 'D') dCount++;
-        });
-        const totalMapped = iCount + eCount + dCount;
-
-        const cardClass = isDirect
-          ? 'bg-indigo-50 dark:bg-[#191D33] border-2 border-indigo-600 dark:border-indigo-400 ring-2 ring-apc-gold shadow-md opacity-100'
-          : (isMatched
-              ? 'bg-white dark:bg-[#151D2A] border border-indigo-200 dark:border-indigo-900/60 shadow-xs hover:border-indigo-500 opacity-100'
-              : 'bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-800 opacity-30 hover:opacity-100');
-
-        return `
-          <div onclick="traceFlowLineage('so', '${so.id}')" class="p-2.5 rounded-none transition cursor-pointer space-y-1.5 ${cardClass}" title="Click to trace SO-${so.id}">
-            <div class="flex items-center justify-between">
-              <span class="font-mono font-bold text-[11px] text-indigo-700 dark:text-indigo-300">${so.code}</span>
-              <button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('so', '${so.id}')" class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-200 hover:bg-[#002855] hover:text-[#E5A823] border border-indigo-300 dark:border-indigo-800 transition cursor-pointer" title="Edit PEO links for ${so.code}">✏️ Edit PEOs</button>
-            </div>
-            <h6 class="font-bold text-xs text-slate-800 dark:text-slate-100 leading-tight">${so.title}</h6>
-            <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">${so.desc}</p>
-            <div class="pt-1 border-t border-indigo-100 dark:border-indigo-900/40 flex items-center justify-between text-[10px] font-mono">
-              <span class="text-slate-500">← ${peoList.join(', ')}</span>
-              <span class="font-bold text-emerald-700 dark:text-emerald-400">${totalMapped} Courses</span>
-            </div>
-            <div class="flex items-center gap-1 font-mono text-[9px]">
-              <span class="px-1 bg-emerald-100 text-emerald-800 font-bold">I:${iCount}</span>
-              <span class="px-1 bg-amber-100 text-amber-800 font-bold">E:${eCount}</span>
-              <span class="px-1 bg-indigo-100 text-indigo-800 font-bold">D:${dCount}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      // Render Column 4: Courses
       const searchQ = (document.getElementById('flowGraphSearchInput')?.value || '').trim().toLowerCase();
       const yrFilter = document.getElementById('flowGraphYearFilter')?.value || 'all';
 
-      let filteredCourses = allCourses.filter(c => {
+      const filteredCourses = allCourses.filter(c => {
         if (yrFilter !== 'all' && String(c.year) !== yrFilter) return false;
         if (searchQ) {
           const mCode = (c.code || '').toLowerCase().includes(searchQ);
@@ -8454,64 +8272,393 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         return true;
       });
 
-      const counterEl = document.getElementById('flowCourseCounter');
-      if (counterEl) counterEl.textContent = `${filteredCourses.length} Courses`;
+      return {
+        ga: FLOW_GA_DEFS || [],
+        peo: FLOW_PEO_DEFS || [],
+        so: FLOW_SO_DEFS || [],
+        course: filteredCourses
+      };
+    };
 
-      if (filteredCourses.length === 0) {
-        colCourses.innerHTML = `<div class="p-6 text-center text-slate-400 italic font-mono text-xs">No courses match filters.</div>`;
-      } else {
-        colCourses.innerHTML = filteredCourses.map(c => {
-          const isMatched = activeCourses ? activeCourses.has(c.code) : true;
-          const isDirect = tr && tr.type === 'course' && tr.id === c.code;
+    window.rotateWheel = function(col, delta) {
+      const lists = window.getFlowColumnLists();
+      const list = lists[col] || [];
+      if (list.length === 0) return;
+      
+      let newIdx = (window.flowWheelIndices[col] || 0) + delta;
+      if (newIdx < 0) newIdx = list.length - 1;
+      if (newIdx >= list.length) newIdx = 0;
+      
+      window.flowWheelIndices[col] = newIdx;
+      const centerItem = list[newIdx];
+      if (centerItem) {
+        window.syncTraceFromWheel(col, centerItem);
+      }
+      window.renderFlowGraph();
+    };
 
-          const mappedPills = [];
-          (c.sos || []).forEach((rating, sIdx) => {
-            const val = (rating || '-').trim().toUpperCase();
-            if (val === 'I' || val === 'E' || val === 'D') {
-              const sKey = SO_KEYS[sIdx];
-              let pColor = val === 'I' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : (val === 'E' ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-indigo-100 text-indigo-800 border-indigo-300');
-              mappedPills.push(`
-                <span onclick="event.stopPropagation(); cycleObeProgression('${c.code}', ${sIdx}); if(typeof renderFlowGraph==='function') renderFlowGraph();" 
-                      class="px-1 py-0.2 rounded-none border font-mono text-[9px] font-bold cursor-pointer hover:ring-1 hover:ring-apc-gold ${pColor}" 
-                      title="SO-${sKey} [${val}]: Click to cycle I ➔ E ➔ D ➔ Unmap">
-                  ${sKey.toUpperCase()}:${val}
-                </span>
-              `);
+    window.setWheelIndex = function(col, idx) {
+      const lists = window.getFlowColumnLists();
+      const list = lists[col] || [];
+      if (idx < 0 || idx >= list.length) return;
+      window.flowWheelIndices[col] = idx;
+      const centerItem = list[idx];
+      if (centerItem) {
+        window.syncTraceFromWheel(col, centerItem);
+      }
+      window.renderFlowGraph();
+    };
+
+    window.onWheelScroll = function(event, col) {
+      if (event) {
+        event.preventDefault();
+        const delta = event.deltaY > 0 ? 1 : -1;
+        window.rotateWheel(col, delta);
+      }
+    };
+
+    window.syncTraceFromWheel = function(col, item) {
+      const peoSoLinks = window.getPeoSoLinks();
+      const peoGaLinks = window.getPeoGaLinks();
+      const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+      const lists = window.getFlowColumnLists();
+
+      if (col === 'ga') {
+        window.activeFlowTrace = { type: 'ga', id: item.id };
+        const linkedPeos = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(item.id)).map(Number);
+        if (linkedPeos.length > 0) {
+          const pIdx = lists.peo.findIndex(p => p.id === linkedPeos[0]);
+          if (pIdx >= 0) window.flowWheelIndices.peo = pIdx;
+          const linkedSos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(linkedPeos[0]));
+          if (linkedSos.length > 0) {
+            const sIdx = lists.so.findIndex(s => s.id === linkedSos[0]);
+            if (sIdx >= 0) window.flowWheelIndices.so = sIdx;
+            const soIndex = SO_KEYS.indexOf(linkedSos[0]);
+            if (soIndex >= 0) {
+              const cIdx = lists.course.findIndex(c => c.sos && (c.sos[soIndex] === 'I' || c.sos[soIndex] === 'E' || c.sos[soIndex] === 'D'));
+              if (cIdx >= 0) window.flowWheelIndices.course = cIdx;
             }
-          });
+          }
+        }
+      } else if (col === 'peo') {
+        window.activeFlowTrace = { type: 'peo', id: item.id };
+        const gas = peoGaLinks[item.id] || [];
+        if (gas.length > 0) {
+          const gIdx = lists.ga.findIndex(g => g.id === gas[0]);
+          if (gIdx >= 0) window.flowWheelIndices.ga = gIdx;
+        }
+        const sos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(item.id));
+        if (sos.length > 0) {
+          const sIdx = lists.so.findIndex(s => s.id === sos[0]);
+          if (sIdx >= 0) window.flowWheelIndices.so = sIdx;
+          const soIndex = SO_KEYS.indexOf(sos[0]);
+          if (soIndex >= 0) {
+            const cIdx = lists.course.findIndex(c => c.sos && (c.sos[soIndex] === 'I' || c.sos[soIndex] === 'E' || c.sos[soIndex] === 'D'));
+            if (cIdx >= 0) window.flowWheelIndices.course = cIdx;
+          }
+        }
+      } else if (col === 'so') {
+        window.activeFlowTrace = { type: 'so', id: item.id };
+        const peos = peoSoLinks[item.id] || [];
+        if (peos.length > 0) {
+          const pIdx = lists.peo.findIndex(p => p.id === peos[0]);
+          if (pIdx >= 0) window.flowWheelIndices.peo = pIdx;
+          const gas = peoGaLinks[peos[0]] || [];
+          if (gas.length > 0) {
+            const gIdx = lists.ga.findIndex(g => g.id === gas[0]);
+            if (gIdx >= 0) window.flowWheelIndices.ga = gIdx;
+          }
+        }
+        const soIndex = SO_KEYS.indexOf(String(item.id));
+        if (soIndex >= 0) {
+          const cIdx = lists.course.findIndex(c => c.sos && (c.sos[soIndex] === 'I' || c.sos[soIndex] === 'E' || c.sos[soIndex] === 'D'));
+          if (cIdx >= 0) window.flowWheelIndices.course = cIdx;
+        }
+      } else if (col === 'course') {
+        window.activeFlowTrace = { type: 'course', id: item.code };
+        if (item.sos) {
+          const firstMappedIdx = item.sos.findIndex(v => v === 'I' || v === 'E' || v === 'D');
+          if (firstMappedIdx >= 0) {
+            const soKey = SO_KEYS[firstMappedIdx];
+            const sIdx = lists.so.findIndex(s => s.id === soKey);
+            if (sIdx >= 0) window.flowWheelIndices.so = sIdx;
+            const peos = peoSoLinks[soKey] || [];
+            if (peos.length > 0) {
+              const pIdx = lists.peo.findIndex(p => p.id === peos[0]);
+              if (pIdx >= 0) window.flowWheelIndices.peo = pIdx;
+              const gas = peoGaLinks[peos[0]] || [];
+              if (gas.length > 0) {
+                const gIdx = lists.ga.findIndex(g => g.id === gas[0]);
+                if (gIdx >= 0) window.flowWheelIndices.ga = gIdx;
+              }
+            }
+          }
+        }
+      }
+    };
 
-          const cardClass = isDirect
-            ? 'bg-emerald-50 dark:bg-[#12231E] border-2 border-emerald-600 dark:border-emerald-400 ring-2 ring-apc-gold shadow-md opacity-100'
-            : (isMatched
-                ? 'bg-white dark:bg-[#151D2A] border border-emerald-200 dark:border-emerald-900/60 shadow-xs hover:border-emerald-500 opacity-100'
-                : 'bg-slate-50 dark:bg-[#111722] border border-slate-200 dark:border-slate-800 opacity-30 hover:opacity-100');
+    window.traceFlowLineage = function(type, id) {
+      if (window.activeFlowTrace.type === type && String(window.activeFlowTrace.id) === String(id)) {
+        window.clearFlowTrace();
+        return;
+      }
+      const lists = window.getFlowColumnLists();
+      if (type === 'ga') {
+        const idx = lists.ga.findIndex(g => g.id === Number(id));
+        if (idx >= 0) window.setWheelIndex('ga', idx);
+      } else if (type === 'peo') {
+        const idx = lists.peo.findIndex(p => p.id === Number(id));
+        if (idx >= 0) window.setWheelIndex('peo', idx);
+      } else if (type === 'so') {
+        const idx = lists.so.findIndex(s => s.id === String(id));
+        if (idx >= 0) window.setWheelIndex('so', idx);
+      } else if (type === 'course') {
+        const idx = lists.course.findIndex(c => c.code === String(id));
+        if (idx >= 0) window.setWheelIndex('course', idx);
+      }
+    };
 
+    window.renderFlowGraph = function() {
+      const colGA = document.getElementById('flowColGA');
+      const colPEO = document.getElementById('flowColPEO');
+      const colSO = document.getElementById('flowColSO');
+      const colCourses = document.getElementById('flowColCourses');
+      if (!colGA || !colPEO || !colSO || !colCourses) return;
+
+      const isLocked = window.isCurriculumLocked();
+      const peoSoLinks = window.getPeoSoLinks();
+      const peoGaLinks = window.getPeoGaLinks();
+      const lists = window.getFlowColumnLists();
+      const allCourses = lists.course;
+      const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+
+      // Ensure valid wheel indices
+      ['ga', 'peo', 'so', 'course'].forEach(k => {
+        const len = (lists[k] || []).length;
+        if (len === 0) window.flowWheelIndices[k] = 0;
+        else if (window.flowWheelIndices[k] >= len) window.flowWheelIndices[k] = len - 1;
+        else if (window.flowWheelIndices[k] < 0) window.flowWheelIndices[k] = 0;
+      });
+
+      // Update position counters
+      const posGA = document.getElementById('wheelPosGA');
+      if (posGA) posGA.textContent = lists.ga.length ? `${window.flowWheelIndices.ga + 1} / ${lists.ga.length}` : '0 / 0';
+      const posPEO = document.getElementById('wheelPosPEO');
+      if (posPEO) posPEO.textContent = lists.peo.length ? `${window.flowWheelIndices.peo + 1} / ${lists.peo.length}` : '0 / 0';
+      const posSO = document.getElementById('wheelPosSO');
+      if (posSO) posSO.textContent = lists.so.length ? `${window.flowWheelIndices.so + 1} / ${lists.so.length}` : '0 / 0';
+      const posCourse = document.getElementById('wheelPosCourse');
+      if (posCourse) posCourse.textContent = lists.course.length ? `${window.flowWheelIndices.course + 1} / ${lists.course.length}` : '0 / 0';
+
+      const tr = window.activeFlowTrace;
+      const traceBadge = document.getElementById('flowGraphTraceBadge');
+      const traceText = document.getElementById('flowGraphTraceText');
+
+      if (tr && tr.type && tr.id !== null) {
+        if (traceBadge) traceBadge.classList.remove('hidden');
+        if (tr.type === 'ga') {
+          const linkedPeos = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(Number(tr.id)));
+          if (traceText) traceText.textContent = `Aligned GA ${tr.id}: Cascades to ${linkedPeos.length} PEOs ➔ SOs ➔ Courses.`;
+        } else if (tr.type === 'peo') {
+          const gas = peoGaLinks[tr.id] || [];
+          const sos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(Number(tr.id)));
+          if (traceText) traceText.textContent = `Aligned PEO ${tr.id}: Links upstream to ${gas.length} GAs ➔ Downstream to ${sos.length} SOs.`;
+        } else if (tr.type === 'so') {
+          const peos = peoSoLinks[tr.id] || [];
+          if (traceText) traceText.textContent = `Aligned SO-${tr.id}: Links to ${peos.length} PEOs ➔ Mapped across courses.`;
+        } else if (tr.type === 'course') {
+          if (traceText) traceText.textContent = `Aligned Course [${tr.id}]: Maps to active SO, PEO, and GA in center row.`;
+        }
+      } else {
+        if (traceBadge) traceBadge.classList.add('hidden');
+        if (traceText) traceText.textContent = 'Rotate any cylinder or click an item to align cascading lineage across all tiers.';
+      }
+
+      // Slot configuration for 5 items: k = -2, -1, 0, 1, 2
+      const slotConfigs = {
+        '-2': { transform: 'translateY(8px) rotateX(46deg) scale(0.82)', opacity: '0.35', zIndex: '5', height: '56px' },
+        '-1': { transform: 'translateY(4px) rotateX(24deg) scale(0.92)', opacity: '0.70', zIndex: '15', height: '64px' },
+        '0':  { transform: 'translateY(0px) rotateX(0deg) scale(1)', opacity: '1', zIndex: '30', height: '70px' },
+        '1':  { transform: 'translateY(-4px) rotateX(-24deg) scale(0.92)', opacity: '0.70', zIndex: '15', height: '64px' },
+        '2':  { transform: 'translateY(-8px) rotateX(-46deg) scale(0.82)', opacity: '0.35', zIndex: '5', height: '56px' }
+      };
+
+      // Helper to generate 5 slots
+      function render5Slots(list, centerIdx, renderItem) {
+        if (list.length === 0) {
+          return '<div class="p-6 text-center text-slate-400 italic font-mono text-xs">No items</div>';
+        }
+        const offsets = [-2, -1, 0, 1, 2];
+        return offsets.map(k => {
+          let itemIdx = (centerIdx + k) % list.length;
+          if (itemIdx < 0) itemIdx += list.length;
+          const item = list[itemIdx];
+          const cfg = slotConfigs[String(k)];
+          const isCenter = (k === 0);
+          return renderItem(item, itemIdx, k, isCenter, cfg);
+        }).join('');
+      }
+
+      // 1. Render Column 1: GA Cylinder
+      colGA.innerHTML = render5Slots(lists.ga, window.flowWheelIndices.ga, (ga, idx, k, isCenter, cfg) => {
+        const linkedPeoList = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id)).map(p => `PEO ${p}`);
+        if (isCenter) {
           return `
-            <div onclick="traceFlowLineage('course', '${c.code}')" class="p-2.5 rounded-none transition cursor-pointer space-y-1.5 ${cardClass}" title="Click to trace ${c.code}">
+            <div onclick="setWheelIndex('ga', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-amber-50/90 dark:bg-[#1C2534] border-2 border-[#002855] dark:border-[#E5A823] ring-2 ring-inset ring-apc-gold shadow-md" title="Selected GA: ${ga.code}">
               <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1.5">
-                  <span class="font-mono font-bold text-xs text-emerald-800 dark:text-emerald-300">${c.code}</span>
-                  <span class="text-[9px] font-mono text-slate-400">Y${c.year} T${c.term}</span>
-                </div>
-                <button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('course', '${c.code}')" class="px-1.5 py-0.5 text-[9px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-[#002855] hover:text-[#E5A823] border border-emerald-300 dark:border-emerald-800 transition cursor-pointer" title="Edit SO mappings for ${c.code}">+ Edit SOs</button>
+                <span class="font-mono font-bold text-[11px] text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-slate-300 dark:border-slate-700">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('ga', ${ga.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit PEO links">✏️ Link</button>`}
               </div>
-              <h6 class="font-bold text-xs text-slate-800 dark:text-slate-100 leading-tight">${c.title}</h6>
-              <div class="flex items-center justify-between text-[10px] text-slate-500">
-                <span>Units: ${c.units !== undefined ? c.units : 3}.0</span>
-                <span>${mappedPills.length} Mapped SOs</span>
-              </div>
-              <div class="flex flex-wrap gap-1 pt-1 border-t border-emerald-100 dark:border-emerald-900/40">
-                ${mappedPills.length ? mappedPills.join('') : '<span class="text-[10px] text-slate-400 italic">No SOs mapped yet</span>'}
+              <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${ga.title}</h6>
+              <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-0.5 border-t border-slate-200 dark:border-slate-700/60">
+                <span>Linked:</span>
+                <span class="font-bold text-purple-700 dark:text-purple-300 truncate">${linkedPeoList.length ? linkedPeoList.join(', ') : 'None'}</span>
               </div>
             </div>
           `;
-        }).join('');
-      }
+        }
+        return `
+          <div onclick="setWheelIndex('ga', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 hover:opacity-100" title="Click to rotate ${ga.code} to center">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-[10px] text-slate-700 dark:text-slate-300">${ga.code}</span>
+              <span class="text-[9px] font-mono text-purple-600 dark:text-purple-400">${linkedPeoList.length} PEOs</span>
+            </div>
+            <div class="text-[10px] font-medium text-slate-600 dark:text-slate-400 truncate">${ga.title}</div>
+          </div>
+        `;
+      });
+
+      // 2. Render Column 2: PEO Cylinder
+      colPEO.innerHTML = render5Slots(lists.peo, window.flowWheelIndices.peo, (peo, idx, k, isCenter, cfg) => {
+        const gaList = (peoGaLinks[peo.id] || []).map(g => `GA ${g}`);
+        const soList = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
+        if (isCenter) {
+          return `
+            <div onclick="setWheelIndex('peo', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-purple-50/90 dark:bg-[#1E1F35] border-2 border-purple-600 dark:border-purple-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Selected PEO: ${peo.code}">
+              <div class="flex items-center justify-between">
+                <span class="font-mono font-bold text-[11px] text-purple-800 dark:text-purple-300">${peo.code}</span>
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-purple-300 dark:border-purple-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('peo', ${peo.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit Links">✏️ Edit</button>`}
+              </div>
+              <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${peo.title}</h6>
+              <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-0.5 border-t border-purple-200 dark:border-purple-900/40">
+                <span>&larr; ${gaList.length} GAs</span>
+                <span class="font-bold text-indigo-600 dark:text-indigo-400">${soList.length} SOs &rarr;</span>
+              </div>
+            </div>
+          `;
+        }
+        return `
+          <div onclick="setWheelIndex('peo', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-purple-200 dark:border-purple-900/50 hover:opacity-100" title="Click to rotate ${peo.code} to center">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-[10px] text-purple-700 dark:text-purple-400">${peo.code}</span>
+              <span class="text-[9px] font-mono text-indigo-600 dark:text-indigo-400">${soList.length} SOs</span>
+            </div>
+            <div class="text-[10px] font-medium text-slate-600 dark:text-slate-400 truncate">${peo.title}</div>
+          </div>
+        `;
+      });
+
+      // 3. Render Column 3: SO Cylinder
+      colSO.innerHTML = render5Slots(lists.so, window.flowWheelIndices.so, (so, idx, k, isCenter, cfg) => {
+        const peoList = (peoSoLinks[so.id] || []).map(p => `PEO ${p}`);
+        const soKeyIdx = SO_KEYS.indexOf(so.id);
+        let iCount = 0, eCount = 0, dCount = 0;
+        allCourses.forEach(c => {
+          const rating = (c.sos && c.sos[soKeyIdx]) ? c.sos[soKeyIdx].trim().toUpperCase() : '-';
+          if (rating === 'I') iCount++;
+          else if (rating === 'E') eCount++;
+          else if (rating === 'D') dCount++;
+        });
+        const totalMapped = iCount + eCount + dCount;
+
+        if (isCenter) {
+          return `
+            <div onclick="setWheelIndex('so', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-indigo-50/90 dark:bg-[#191D33] border-2 border-indigo-600 dark:border-indigo-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Selected SO: ${so.code}">
+              <div class="flex items-center justify-between">
+                <span class="font-mono font-bold text-[11px] text-indigo-800 dark:text-indigo-300">${so.code}</span>
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-indigo-300 dark:border-indigo-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('so', '${so.id}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-200 hover:bg-[#002855] hover:text-[#E5A823] border border-indigo-300 dark:border-indigo-800 transition cursor-pointer" title="Edit PEO Links">✏️ Edit</button>`}
+              </div>
+              <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${so.title}</h6>
+              <div class="flex items-center justify-between text-[10px] font-mono pt-0.5 border-t border-indigo-200 dark:border-indigo-900/40">
+                <span class="text-slate-500 truncate">&larr; ${peoList.length ? peoList.join(', ') : 'None'}</span>
+                <div class="flex items-center gap-1 shrink-0">
+                  <span class="px-1 bg-emerald-100 text-emerald-800 font-bold text-[9px]">I:${iCount}</span>
+                  <span class="px-1 bg-amber-100 text-amber-800 font-bold text-[9px]">E:${eCount}</span>
+                  <span class="px-1 bg-indigo-100 text-indigo-800 font-bold text-[9px]">D:${dCount}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        return `
+          <div onclick="setWheelIndex('so', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-indigo-200 dark:border-indigo-900/50 hover:opacity-100" title="Click to rotate ${so.code} to center">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-[10px] text-indigo-700 dark:text-indigo-400">${so.code}</span>
+              <span class="text-[9px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">${totalMapped} Subj</span>
+            </div>
+            <div class="text-[10px] font-medium text-slate-600 dark:text-slate-400 truncate">${so.title}</div>
+          </div>
+        `;
+      });
+
+      // 4. Render Column 4: Courses Cylinder
+      colCourses.innerHTML = render5Slots(lists.course, window.flowWheelIndices.course, (c, idx, k, isCenter, cfg) => {
+        const mappedPills = [];
+        (c.sos || []).forEach((rating, sIdx) => {
+          const val = (rating || '-').trim().toUpperCase();
+          if (val === 'I' || val === 'E' || val === 'D') {
+            const sKey = SO_KEYS[sIdx];
+            let pColor = val === 'I' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : (val === 'E' ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-indigo-100 text-indigo-800 border-indigo-300');
+            mappedPills.push(`
+              <span onclick="event.stopPropagation(); if(typeof isCurriculumLocked==='function'&&isCurriculumLocked()){if(typeof showToast==='function')showToast('🔒 Locked: Active enrolled batch is read-only');return;} cycleObeProgression('${c.code}', ${sIdx}); if(typeof renderFlowGraph==='function') renderFlowGraph();" 
+                    class="px-1 py-0.2 rounded-none border font-mono text-[9px] font-bold cursor-pointer hover:ring-1 hover:ring-apc-gold ${pColor}" 
+                    title="SO-${sKey} [${val}]: ${isLocked ? 'Locked' : 'Click to cycle'}">
+                ${sKey.toUpperCase()}:${val}
+              </span>
+            `);
+          }
+        });
+
+        if (isCenter) {
+          return `
+            <div onclick="setWheelIndex('course', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-emerald-50/90 dark:bg-[#12231E] border-2 border-emerald-600 dark:border-emerald-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Selected Course: ${c.code}">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-xs text-emerald-900 dark:text-emerald-300">${c.code}</span>
+                  <span class="text-[9px] font-mono text-slate-500">Y${c.year} T${c.term}</span>
+                </div>
+                ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-emerald-300 dark:border-emerald-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('course', '${c.code}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-[#002855] hover:text-[#E5A823] border border-emerald-300 dark:border-emerald-800 transition cursor-pointer" title="Edit SOs">+ SOs</button>`}
+              </div>
+              <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${c.title}</h6>
+              <div class="flex items-center justify-between text-[10px] font-mono pt-0.5 border-t border-emerald-200 dark:border-emerald-900/40">
+                <span class="text-slate-500">Units: ${c.units !== undefined ? c.units : 3}.0</span>
+                <div class="flex items-center gap-1 overflow-hidden max-w-[130px]">
+                  ${mappedPills.length ? mappedPills.slice(0, 3).join('') : '<span class="text-slate-400 italic text-[9px]">None</span>'}
+                  ${mappedPills.length > 3 ? `<span class="text-[9px] text-emerald-700 font-bold">+${mappedPills.length - 3}</span>` : ''}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        return `
+          <div onclick="setWheelIndex('course', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-emerald-200 dark:border-emerald-900/50 hover:opacity-100" title="Click to rotate ${c.code} to center">
+            <div class="flex items-center justify-between">
+              <span class="font-mono font-bold text-[10px] text-emerald-800 dark:text-emerald-300">${c.code}</span>
+              <span class="text-[9px] font-mono text-slate-400">Y${c.year} T${c.term}</span>
+            </div>
+            <div class="text-[10px] font-medium text-slate-600 dark:text-slate-400 truncate">${c.title}</div>
+          </div>
+        `;
+      });
     };
 
     window.flowEditTarget = { type: null, id: null };
 
     window.openFlowLinkEditor = function(type, id) {
+      if (typeof isCurriculumLocked === 'function' && isCurriculumLocked()) {
+        if (typeof showToast === 'function') showToast('🔒 Locked: Active enrolled batch is read-only. Edits apply to Next Year Batch (2027).');
+        return;
+      }
       window.flowEditTarget = { type, id };
       const modal = document.getElementById('flowGraphLinkModal');
       const titleEl = document.getElementById('flowModalTitle');
@@ -8827,6 +8974,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function cycleObeProgression(courseCode, soIndex) {
+      if (typeof isCurriculumLocked === 'function' && isCurriculumLocked()) {
+        if (typeof showToast === 'function') showToast('🔒 Locked: Active enrolled batch is read-only. Edits apply to Next Year Batch (2027).');
+        return;
+      }
       const course = (window.OFFICIAL_BASELINE_74_COURSES || []).find(c => c.code === courseCode);
       if (!course) return;
 

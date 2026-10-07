@@ -1316,37 +1316,24 @@
                   <span class="group-hover:-translate-x-0.5 transition-transform">&larr;</span>
                   <span id="curricHomeWorkbenchBtnText">PD Workbench</span>
                 </button>
-                <button type="button" onclick="openCurriculumMapTab()" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] border border-[#E5A823]/60 font-bold text-xs flex items-center gap-2 transition cursor-pointer shadow-xs group" title="Open Curriculum Map &amp; Hierarchy Versioning">
-                  <span>🗺️</span>
-                  <span>Curriculum Map Versioning</span>
-                </button>
               </div>
             </div>
           </div>
 
           <!-- Executive Curriculum Map Versioning Strip on Management Homepage -->
-          <div class="p-4 sm:p-5 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823]/70 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div class="space-y-1.5 max-w-2xl">
-              <div class="flex items-center gap-2 flex-wrap">
-                <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Curriculum Map Package</span>
-                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">Map 2026</span>
-                <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE BATCH</span>
-              </div>
-              <h3 class="text-sm sm:text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">
-                Curriculum Map &amp; Hierarchy Versioning (GA &gt; PEO &gt; SO &gt; I-E-D Matrix)
-              </h3>
-              <p class="text-xs text-slate-600 dark:text-slate-300">
-                Encapsulates the versioned hierarchical lineage and competency ratings (<strong>GA &rarr; PEO &rarr; SO &rarr; I-E-D Matrix &rarr; 74 Courses</strong>) for this degree program.
-              </p>
-            </div>
-            <div class="flex flex-wrap items-center gap-2 shrink-0">
-              <button type="button" onclick="openCurriculumMapTab()" class="px-3.5 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-black uppercase tracking-wider border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+          <div class="px-4 py-3 bg-white dark:bg-[#111722] border-l-4 border-l-[#002855] dark:border-l-[#E5A823] border border-slate-200 dark:border-slate-800 shadow-xs flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <span class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-100 flex items-center gap-1.5 font-mono">
                 <span>🗺️</span>
-                <span>Open Curriculum Map</span>
-              </button>
-              <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition flex items-center gap-1 cursor-pointer">
-                <span>+</span>
-                <span>Save New Map</span>
+                <span>Curriculum Map:</span>
+              </span>
+              <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[11px] font-bold border border-blue-300 dark:border-blue-700">Map 2026</span>
+              <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">🔒 ACTIVE BATCH &bull; LOCKED</span>
+              <span class="text-xs font-mono text-slate-500 hidden md:inline">(GA 2024 &rarr; PEO 2026 &rarr; SO 2026 &rarr; 74 Courses)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="openCurriculumMapTab()" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs" title="Open Curriculum Map &amp; Hierarchy View">
+                <span>Open Curriculum Map &rarr;</span>
               </button>
             </div>
           </div>
@@ -1368,9 +1355,12 @@
             <!-- Card 1: CPE2026 Curriculum -->
             <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">1st Year</span>
-                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">CPE2026</span>
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">1st Year</span>
+                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">CPE2026</span>
+                  </div>
+                  <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px] font-bold border border-slate-300 dark:border-slate-700">🔒 Enrolled &bull; Read-Only</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
@@ -1411,9 +1401,12 @@
             <!-- Card 2: CPE2025 Curriculum -->
             <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">2nd Year</span>
-                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">CPE2025</span>
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">2nd Year</span>
+                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">CPE2025</span>
+                  </div>
+                  <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px] font-bold border border-slate-300 dark:border-slate-700">🔒 Enrolled &bull; Read-Only</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
@@ -1454,9 +1447,12 @@
             <!-- Card 3: CPE2024 Curriculum -->
             <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">3rd Year</span>
-                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">CPE2024</span>
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">3rd Year</span>
+                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">CPE2024</span>
+                  </div>
+                  <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px] font-bold border border-slate-300 dark:border-slate-700">🔒 Enrolled &bull; Read-Only</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
@@ -1497,9 +1493,12 @@
             <!-- Card 4: CPE2023 Curriculum -->
             <div class="bg-white dark:bg-[#131923] border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 p-5 sm:p-6 flex flex-col justify-between group border-t-4 border-t-[#002855] dark:border-t-[#E5A823]">
               <div class="space-y-3">
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">4th Year</span>
-                  <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">CPE2023</span>
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 bg-[#002855] text-[#E5A823] font-black text-xs font-mono">4th Year</span>
+                    <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">CPE2023</span>
+                  </div>
+                  <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[10px] font-bold border border-slate-300 dark:border-slate-700">🔒 Enrolled &bull; Read-Only</span>
                 </div>
                 <div>
                   <h3 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight group-hover:text-[#002855] dark:group-hover:text-[#E5A823] transition-colors">
@@ -2684,38 +2683,29 @@
             <!-- TAB 0: CURRICULUM MAP HIERARCHY & VERSION REGISTRY -->
             <div id="obe-content-hierarchy" class="space-y-4">
               <!-- Curriculum Map Control Strip -->
-              <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
-                <div class="space-y-1">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Active Curriculum Map</span>
-                    <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700">Map Version: <span id="curricMapActiveVer">Map 2026</span></span>
-                    <span id="curricMapActiveTag" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE BATCH</span>
-                  </div>
-                  <h3 id="curricMapActiveTitle" class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">
-                    BSCpE 2026–2030 Active Batch (CM-BSCpE-2026)
+              <div class="p-3.5 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Active Map</span>
+                  <h3 id="curricMapActiveTitle" class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight font-mono">
+                    BSCpE 2026–2030 Active Batch
                   </h3>
-                  <p class="text-[11px] text-slate-500 dark:text-slate-400">
-                    Saves the specific Curriculum &rarr; Student Outcomes &rarr; PEO &rarr; GA hierarchy for this curriculum edition.
-                  </p>
+                  <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700" id="curricMapActiveVer">Map 2026</span>
+                  <span id="curricMapActiveTag" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE &bull; LOCKED</span>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
                   <div class="flex items-center gap-1.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 px-2.5 py-1">
                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Select Map:</span>
                     <select id="curriculumMapSelect" onchange="selectCurriculumMap(this.value)" class="bg-transparent text-xs font-mono font-bold text-[#002855] dark:text-amber-400 outline-none cursor-pointer">
-                      <option value="CM-BSCpE-2026">CPE 2026 (Map 2026 · Active Batch)</option>
-                      <option value="CM-BSCpE-2027">CPE 2027 (Map 2027 · Next Year Batch)</option>
-                      <option value="CM-BSCpE-2025">CPE 2025 (Map 2025 · Prev Batch)</option>
-                      <option value="CM-BSCpE-2021">CPE 2021 (Map 2021 · Historical)</option>
+                      <option value="CM-BSCpE-2026">CPE 2026 (Map 2026 · Active · Locked)</option>
+                      <option value="CM-BSCpE-2027">CPE 2027 (Map 2027 · Next Year · Editable)</option>
+                      <option value="CM-BSCpE-2025">CPE 2025 (Map 2025 · Previous · Locked)</option>
+                      <option value="CM-BSCpE-2021">CPE 2021 (Map 2021 · Historical · Locked)</option>
                     </select>
                   </div>
                   <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs">
                     <span>+</span>
-                    <span>Save Next Year Batch Map</span>
-                  </button>
-                  <button type="button" onclick="verifyCurriculumMapRequisites()" class="px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition flex items-center gap-1 cursor-pointer">
-                    <span>✓</span>
-                    <span>Check Requisites</span>
+                    <span>Draft Next Year Batch</span>
                   </button>
                 </div>
               </div>
@@ -2725,14 +2715,11 @@
                 <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                   <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 bg-amber-400 shrink-0"></span>
-                    <h4 class="font-extrabold text-slate-900 dark:text-white text-xs uppercase tracking-wider">
-                      Interactive Hierarchy Graph (Click any node to navigate or switch batch)
+                    <h4 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">
+                      Curriculum Hierarchy Architecture
                     </h4>
                   </div>
-                  <div class="flex items-center gap-2 text-[10px] font-mono text-slate-500">
-                    <span class="px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">Policy: Annual Cohort Batching</span>
-                    <span>Interactive DAG</span>
-                  </div>
+                  <span class="text-[10px] font-mono text-slate-400">GA &rarr; PEO &rarr; SO &rarr; Courses</span>
                 </div>
 
                 <!-- Graph Schema Flowchart with Clickable Nodes -->
@@ -2742,16 +2729,14 @@
                     <!-- Left: Graduate Attributes (GA) -->
                     <div class="flex flex-col gap-4 w-48 shrink-0">
                       <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 1 &bull; Root</div>
-                      <div id="graphNodeGA" onclick="switchObeTab('vision'); if(typeof showToast==='function') showToast('Viewing 9 Graduate Attributes (GA 2024)');" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 hover:ring-2 hover:ring-apc-gold cursor-pointer group" title="Click to view Graduate Attributes & Institutional Alignment">
+                      <div id="graphNodeGA" onclick="switchObeTab('vision'); if(typeof showToast==='function') showToast('Viewing 9 Graduate Attributes (GA 2024)');" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 hover:ring-2 hover:ring-apc-gold cursor-pointer group" title="Click to view Graduate Attributes &amp; Institutional Alignment">
                         <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelGA">GA 2024</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Graduate Attributes (9 GAs)</div>
                         <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold">ACTIVE</span>
-                        <span class="text-[8px] text-amber-500 font-mono block mt-1">↗ Click to view</span>
                       </div>
-                      <div id="graphLabelMVV" onclick="switchObeTab('vision'); if(typeof showToast==='function') showToast('Viewing Institutional Vision, Mission, & Goals (2025)');" class="p-2 border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 text-center cursor-pointer hover:border-amber-400 hover:scale-105 transition" title="Click to view Institutional VMG">
+                      <div id="graphLabelMVV" onclick="switchObeTab('vision'); if(typeof showToast==='function') showToast('Viewing Institutional Vision, Mission, &amp; Goals (2025)');" class="p-2 border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 text-center cursor-pointer hover:border-amber-400 hover:scale-105 transition" title="Click to view Institutional VMG">
                         <div class="font-mono text-[11px] text-slate-500 font-bold">MVV 2025 (Peer)</div>
                         <div class="text-[9px] text-slate-400">Institutional VMG</div>
-                        <span class="text-[8px] text-slate-400 font-mono block">↗ Click to view</span>
                       </div>
                     </div>
 
@@ -2765,24 +2750,22 @@
                     <!-- Middle-Left: Program Educational Objectives (PEO) -->
                     <div class="flex flex-col gap-3 w-48 shrink-0">
                       <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 2 &bull; PEO</div>
-                      <div id="graphNodePEO_2026" onclick="switchObeTab('peo'); if(typeof showToast==='function') showToast('Viewing PEO 2026 (5 Objectives)');" class="p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 cursor-pointer ring-1 ring-apc-gold" title="Click to view PEO 2026 Objectives & Matrix">
+                      <div id="graphNodePEO_2026" onclick="switchObeTab('peo'); if(typeof showToast==='function') showToast('Viewing PEO 2026 (5 Objectives)');" class="p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-105 cursor-pointer ring-1 ring-apc-gold" title="Click to view PEO 2026 Objectives &amp; Matrix">
                         <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]">PEO 2026</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">5 Objectives (Baseline)</div>
                         <span class="node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold">ACTIVE</span>
-                        <span class="text-[8px] text-purple-400 font-mono block mt-1">↗ Click to view</span>
                       </div>
                       <div id="graphNodePEO_2027" onclick="switchObeTab('peo'); if(typeof showToast==='function') showToast('Viewing PEO 2027 Next Batch Objectives');" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-75 hover:opacity-100" title="Click to view PEO 2027 Next Batch Objectives">
                         <div class="font-mono font-bold text-xs text-slate-700 dark:text-slate-300">PEO 2027</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">5 Objectives (AI Specialized)</div>
                         <span class="node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300">NEXT BATCH</span>
-                        <span class="text-[8px] text-slate-400 font-mono block mt-1">↗ Click to view</span>
                       </div>
                     </div>
 
                     <!-- Arrow PEO -> SO with Map Link Badge -->
                     <div class="flex flex-col items-center justify-center shrink-0 px-1 space-y-3">
                       <div class="text-center">
-                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/70 text-blue-900 dark:text-blue-200 text-[9px] font-mono font-bold border border-blue-300 dark:border-blue-700 block cursor-pointer hover:scale-105 transition" id="graphLabelMapRev" onclick="verifyCurriculumMapRequisites()" title="Curriculum Map Link: Click to verify requisite constraints">Map 2026</span>
+                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/70 text-blue-900 dark:text-blue-200 text-[9px] font-mono font-bold border border-blue-300 dark:border-blue-700 block cursor-pointer hover:scale-105 transition" id="graphLabelMapRev" onclick="if(typeof verifyCurriculumMapRequisites==='function') verifyCurriculumMapRequisites()" title="Curriculum Map Link">Map 2026</span>
                         <div class="w-12 h-0.5 bg-[#002855] dark:bg-amber-400 mx-auto my-0.5"></div>
                       </div>
                       <span class="text-xs font-mono text-slate-400">&larr;</span>
@@ -2795,13 +2778,11 @@
                         <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]">SO 2026</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">13 CHED CMO 92 SOs</div>
                         <span class="node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold">ACTIVE</span>
-                        <span class="text-[8px] text-indigo-400 font-mono block mt-1">↗ Click to view</span>
                       </div>
                       <div id="graphNodeSO_2025" onclick="switchObeTab('matrix'); if(typeof showToast==='function') showToast('Viewing SO 2025 Learning Progression Matrix');" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-105 cursor-pointer opacity-75 hover:opacity-100" title="Click to open SO 2025 Matrix">
                         <div class="font-mono font-bold text-xs text-slate-700 dark:text-slate-300">SO 2025</div>
                         <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">13 CHED CMO 92 SOs</div>
                         <span class="node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-500">PREV BATCH</span>
-                        <span class="text-[8px] text-slate-400 font-mono block mt-1">↗ Click to view</span>
                       </div>
                     </div>
 
@@ -2814,7 +2795,6 @@
                           <span class="px-1 bg-amber-100 text-amber-800 border border-amber-300" title="Enabling">E</span>
                           <span class="px-1 bg-indigo-100 text-indigo-800 border border-indigo-300" title="Demonstrative">D</span>
                         </div>
-                        <span class="text-[7px] text-emerald-600 font-mono block mt-0.5">↗ Open Matrix</span>
                       </div>
                       <div class="flex items-center gap-1 text-slate-400">
                         <div class="w-6 h-0.5 bg-[#002855] dark:bg-amber-400"></div>
@@ -2914,206 +2894,166 @@
               </div>
 
               <!-- ========================================================================= -->
-              <!-- OPTION 1: EDITABLE MULTI-COLUMN RELATIONAL FLOW GRAPH (GA -> PEO -> SO -> COURSES) -->
+              <!-- OPTION 1: ROTATING CYLINDER WHEEL FLOW GRAPH (GA -> PEO -> SO -> COURSES) -->
               <!-- ========================================================================= -->
-              <div class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-md space-y-4">
+              <div class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-md space-y-3">
                 
                 <!-- Section Header & Filter Ribbon -->
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
-                  <div>
-                    <div class="flex items-center gap-2">
-                      <span class="w-3 h-3 bg-[#E5A823] shrink-0"></span>
-                      <h4 class="font-black text-slate-900 dark:text-white text-sm uppercase tracking-wider">
-                        Full Hierarchy Relational Flow Graph (GA &rarr; PEO &rarr; SO &rarr; Courses)
-                      </h4>
-                    </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                      Interactive multi-column mapping interface. Click any node to trace end-to-end cascading lineage; click <span class="font-mono text-amber-600 dark:text-amber-400 font-bold">✏️ Edit</span> or competency pills to re-map directly on the graph.
-                    </p>
+                <div class="flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-200 dark:border-slate-800 pb-2.5">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-[#E5A823] shrink-0"></span>
+                    <h4 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">
+                      Relational Cylinder Wheel (GA &rarr; PEO &rarr; SO &rarr; Courses)
+                    </h4>
+                    <span class="px-1.5 py-0.2 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[9px] font-bold border border-blue-300 dark:border-blue-700">5-Item Focused View</span>
                   </div>
 
                   <!-- Controls & Filters -->
                   <div class="flex flex-wrap items-center gap-2">
-                    <div>
-                      <input type="text" id="flowGraphSearchInput" oninput="renderFlowGraph()" placeholder="Filter courses (e.g. CALC, CPE)..." class="px-2.5 py-1.5 bg-slate-50 dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs font-mono rounded-none outline-none focus:border-[#E5A823] w-48" />
-                    </div>
-                    <select id="flowGraphYearFilter" onchange="renderFlowGraph()" class="px-2 py-1.5 bg-slate-50 dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs font-mono rounded-none outline-none cursor-pointer">
-                      <option value="all">All Year Levels</option>
-                      <option value="1">Year 1 Courses</option>
-                      <option value="2">Year 2 Courses</option>
-                      <option value="3">Year 3 Courses</option>
-                      <option value="4">Year 4 Courses</option>
+                    <input type="text" id="flowGraphSearchInput" oninput="renderFlowGraph()" placeholder="Filter courses..." class="px-2 py-1 bg-slate-50 dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs font-mono rounded-none outline-none focus:border-[#E5A823] w-36" />
+                    <select id="flowGraphYearFilter" onchange="renderFlowGraph()" class="px-2 py-1 bg-slate-50 dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 text-xs font-mono rounded-none outline-none cursor-pointer">
+                      <option value="all">All Years</option>
+                      <option value="1">Year 1</option>
+                      <option value="2">Year 2</option>
+                      <option value="3">Year 3</option>
+                      <option value="4">Year 4</option>
                     </select>
-                    <button type="button" onclick="clearFlowTrace()" id="flowGraphClearTraceBtn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer">
-                      <span>↺</span>
-                      <span>Clear Trace</span>
+                    <button type="button" onclick="clearFlowTrace()" id="flowGraphClearTraceBtn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer">
+                      <span>↺ Clear</span>
                     </button>
                   </div>
                 </div>
 
                 <!-- Active Lineage Trace Breadcrumb Ribbon -->
-                <div id="flowGraphTraceBar" class="p-2.5 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 text-xs font-mono flex flex-wrap items-center justify-between gap-2">
+                <div id="flowGraphTraceBar" class="p-2 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 text-[11px] font-mono flex flex-wrap items-center justify-between gap-2">
                   <div class="flex items-center gap-2 flex-wrap">
-                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-bold text-[10px] uppercase">Active Path</span>
-                    <span id="flowGraphTraceText" class="text-slate-700 dark:text-slate-300 font-medium">Click any node below to isolate its cascading relationship through GA &rarr; PEO &rarr; SO &rarr; Courses.</span>
+                    <span class="px-1.5 py-0.2 bg-[#002855] text-[#E5A823] font-bold text-[9px] uppercase">Active Path</span>
+                    <span id="flowGraphTraceText" class="text-slate-700 dark:text-slate-300 font-medium">Rotate any cylinder or click an item to align cascading lineage across all tiers.</span>
                   </div>
-                  <div id="flowGraphTraceBadge" class="hidden text-[10px] px-2 py-0.5 bg-amber-100 text-amber-900 dark:bg-amber-900/60 dark:text-amber-200 font-bold border border-amber-300 dark:border-amber-700">
+                  <div id="flowGraphTraceBadge" class="hidden text-[9px] px-1.5 py-0.2 bg-amber-100 text-amber-900 dark:bg-amber-900/60 dark:text-amber-200 font-bold border border-amber-300 dark:border-amber-700">
                     ISOLATING PATH
                   </div>
                 </div>
 
-                <!-- 4-Column Interactive Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                <!-- 4-Column iOS Rotating Cylinder Wheel Grid -->
+                <div class="relative bg-slate-100/70 dark:bg-[#0A0F17] p-2 border border-slate-200 dark:border-slate-800">
                   
-                  <!-- Column 1: Graduate Attributes -->
-                  <div class="flex flex-col bg-slate-50/70 dark:bg-[#0D131C] border border-slate-200 dark:border-slate-800 p-2.5 space-y-2">
-                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1.5 shrink-0">
-                      <div class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 bg-slate-600 dark:bg-slate-400"></span>
-                        <h5 class="font-black text-slate-800 dark:text-slate-200 uppercase text-[11px] font-mono">Tier 1 &bull; GA (9)</h5>
-                      </div>
-                      <span class="text-[9px] font-mono text-slate-400">Root Institutional</span>
-                    </div>
-                    <div id="flowColGA" class="overflow-y-auto max-h-[580px] space-y-2 pr-1">
-                      <!-- Rendered dynamically -->
-                    </div>
+                  <!-- Unified Center Focal Alignment Lens across all 4 cylinders -->
+                  <div class="pointer-events-none absolute inset-x-2 top-[175px] h-[72px] border-y-2 border-[#E5A823] bg-[#E5A823]/10 dark:bg-[#E5A823]/15 z-20 shadow-xs flex items-center justify-between px-2">
+                    <span class="text-[8px] font-mono font-black text-[#002855] dark:text-[#E5A823] tracking-wider uppercase bg-white/90 dark:bg-black/80 px-1 py-0.5 border border-[#E5A823]/40">Center Alignment Line</span>
+                    <span class="text-[8px] font-mono text-slate-600 dark:text-slate-300 bg-white/90 dark:bg-black/80 px-1 py-0.5 border border-slate-300 dark:border-slate-700">GA &rarr; PEO &rarr; SO &rarr; Course</span>
                   </div>
 
-                  <!-- Column 2: Program Educational Objectives -->
-                  <div class="flex flex-col bg-purple-50/20 dark:bg-[#0D131C] border border-slate-200 dark:border-slate-800 p-2.5 space-y-2">
-                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1.5 shrink-0">
-                      <div class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 bg-purple-600 dark:bg-purple-400"></span>
-                        <h5 class="font-black text-purple-900 dark:text-purple-300 uppercase text-[11px] font-mono">Tier 2 &bull; PEO (5)</h5>
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 text-xs relative z-10">
+                    
+                    <!-- Cylinder Column 1: Graduate Attributes -->
+                    <div class="flex flex-col bg-white dark:bg-[#0D131C] border border-slate-200 dark:border-slate-800 p-2 space-y-1 relative shadow-xs">
+                      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1 shrink-0">
+                        <div class="flex items-center gap-1.5">
+                          <span class="w-2 h-2 bg-slate-600 dark:bg-slate-400"></span>
+                          <h5 class="font-black text-slate-800 dark:text-slate-200 uppercase text-[11px] font-mono">Tier 1 &bull; GA (9)</h5>
+                        </div>
+                        <div class="flex items-center gap-1">
+                          <span id="wheelPosGA" class="text-[9px] font-mono text-slate-400 font-bold">1 / 9</span>
+                          <button type="button" onclick="rotateWheel('ga', -1)" class="w-5 h-5 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px] cursor-pointer" title="Previous GA">▲</button>
+                          <button type="button" onclick="rotateWheel('ga', 1)" class="w-5 h-5 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px] cursor-pointer" title="Next GA">▼</button>
+                        </div>
                       </div>
-                      <span class="text-[9px] font-mono text-purple-600 dark:text-purple-400 font-bold">Bridge Tier</span>
-                    </div>
-                    <div id="flowColPEO" class="overflow-y-auto max-h-[580px] space-y-2 pr-1">
-                      <!-- Rendered dynamically -->
-                    </div>
-                  </div>
-
-                  <!-- Column 3: Student Outcomes -->
-                  <div class="flex flex-col bg-indigo-50/20 dark:bg-[#0D131C] border border-slate-200 dark:border-slate-800 p-2.5 space-y-2">
-                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1.5 shrink-0">
-                      <div class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400"></span>
-                        <h5 class="font-black text-indigo-900 dark:text-indigo-300 uppercase text-[11px] font-mono">Tier 3 &bull; SO (13)</h5>
+                      
+                      <!-- iOS Cylinder Drum Viewport (5 visible slots) -->
+                      <div id="cylinderContainerGA" onwheel="onWheelScroll(event, 'ga')" class="relative overflow-hidden h-[360px] select-none" style="perspective: 900px;">
+                        <div class="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-white dark:from-[#0D131C] to-transparent z-20"></div>
+                        <div id="flowColGA" class="h-full flex flex-col justify-between py-1 relative z-10">
+                          <!-- Rendered dynamically -->
+                        </div>
+                        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white dark:from-[#0D131C] to-transparent z-20"></div>
                       </div>
-                      <span class="text-[9px] font-mono text-indigo-600 dark:text-indigo-400 font-bold">CHED CMO 92</span>
                     </div>
-                    <div id="flowColSO" class="overflow-y-auto max-h-[580px] space-y-2 pr-1">
-                      <!-- Rendered dynamically -->
-                    </div>
-                  </div>
 
-                  <!-- Column 4: Courses with I-E-D mapping -->
-                  <div class="flex flex-col bg-emerald-50/20 dark:bg-[#0D131C] border border-slate-200 dark:border-slate-800 p-2.5 space-y-2">
-                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1.5 shrink-0">
-                      <div class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 bg-emerald-600 dark:bg-emerald-400"></span>
-                        <h5 class="font-black text-emerald-900 dark:text-emerald-300 uppercase text-[11px] font-mono">Tier 4 &bull; Courses</h5>
+                    <!-- Cylinder Column 2: Program Educational Objectives -->
+                    <div class="flex flex-col bg-white dark:bg-[#0D131C] border border-slate-200 dark:border-slate-800 p-2 space-y-1 relative shadow-xs">
+                      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1 shrink-0">
+                        <div class="flex items-center gap-1.5">
+                          <span class="w-2 h-2 bg-purple-600 dark:bg-purple-400"></span>
+                          <h5 class="font-black text-purple-900 dark:text-purple-300 uppercase text-[11px] font-mono">Tier 2 &bull; PEO (5)</h5>
+                        </div>
+                        <div class="flex items-center gap-1">
+                          <span id="wheelPosPEO" class="text-[9px] font-mono text-purple-600 dark:text-purple-400 font-bold">1 / 5</span>
+                          <button type="button" onclick="rotateWheel('peo', -1)" class="w-5 h-5 flex items-center justify-center bg-purple-50 hover:bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-[10px] cursor-pointer" title="Previous PEO">▲</button>
+                          <button type="button" onclick="rotateWheel('peo', 1)" class="w-5 h-5 flex items-center justify-center bg-purple-50 hover:bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-[10px] cursor-pointer" title="Next PEO">▼</button>
+                        </div>
                       </div>
-                      <span id="flowCourseCounter" class="text-[9px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">74 Courses</span>
-                    </div>
-                    <div id="flowColCourses" class="overflow-y-auto max-h-[580px] space-y-2 pr-1">
-                      <!-- Rendered dynamically -->
-                    </div>
-                  </div>
 
+                      <div id="cylinderContainerPEO" onwheel="onWheelScroll(event, 'peo')" class="relative overflow-hidden h-[360px] select-none" style="perspective: 900px;">
+                        <div class="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-white dark:from-[#0D131C] to-transparent z-20"></div>
+                        <div id="flowColPEO" class="h-full flex flex-col justify-between py-1 relative z-10">
+                          <!-- Rendered dynamically -->
+                        </div>
+                        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white dark:from-[#0D131C] to-transparent z-20"></div>
+                      </div>
+                    </div>
+
+                    <!-- Cylinder Column 3: Student Outcomes -->
+                    <div class="flex flex-col bg-white dark:bg-[#0D131C] border border-slate-200 dark:border-slate-800 p-2 space-y-1 relative shadow-xs">
+                      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1 shrink-0">
+                        <div class="flex items-center gap-1.5">
+                          <span class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400"></span>
+                          <h5 class="font-black text-indigo-900 dark:text-indigo-300 uppercase text-[11px] font-mono">Tier 3 &bull; SO (13)</h5>
+                        </div>
+                        <div class="flex items-center gap-1">
+                          <span id="wheelPosSO" class="text-[9px] font-mono text-indigo-600 dark:text-indigo-400 font-bold">1 / 13</span>
+                          <button type="button" onclick="rotateWheel('so', -1)" class="w-5 h-5 flex items-center justify-center bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[10px] cursor-pointer" title="Previous SO">▲</button>
+                          <button type="button" onclick="rotateWheel('so', 1)" class="w-5 h-5 flex items-center justify-center bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[10px] cursor-pointer" title="Next SO">▼</button>
+                        </div>
+                      </div>
+
+                      <div id="cylinderContainerSO" onwheel="onWheelScroll(event, 'so')" class="relative overflow-hidden h-[360px] select-none" style="perspective: 900px;">
+                        <div class="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-white dark:from-[#0D131C] to-transparent z-20"></div>
+                        <div id="flowColSO" class="h-full flex flex-col justify-between py-1 relative z-10">
+                          <!-- Rendered dynamically -->
+                        </div>
+                        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white dark:from-[#0D131C] to-transparent z-20"></div>
+                      </div>
+                    </div>
+
+                    <!-- Cylinder Column 4: Courses -->
+                    <div class="flex flex-col bg-white dark:bg-[#0D131C] border border-slate-200 dark:border-slate-800 p-2 space-y-1 relative shadow-xs">
+                      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1 shrink-0">
+                        <div class="flex items-center gap-1.5">
+                          <span class="w-2 h-2 bg-emerald-600 dark:bg-emerald-400"></span>
+                          <h5 class="font-black text-emerald-900 dark:text-emerald-300 uppercase text-[11px] font-mono">Tier 4 &bull; Courses</h5>
+                        </div>
+                        <div class="flex items-center gap-1">
+                          <span id="wheelPosCourse" class="text-[9px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">1 / 74</span>
+                          <button type="button" onclick="rotateWheel('course', -1)" class="w-5 h-5 flex items-center justify-center bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] cursor-pointer" title="Previous Course">▲</button>
+                          <button type="button" onclick="rotateWheel('course', 1)" class="w-5 h-5 flex items-center justify-center bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] cursor-pointer" title="Next Course">▼</button>
+                        </div>
+                      </div>
+
+                      <div id="cylinderContainerCourses" onwheel="onWheelScroll(event, 'course')" class="relative overflow-hidden h-[360px] select-none" style="perspective: 900px;">
+                        <div class="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-white dark:from-[#0D131C] to-transparent z-20"></div>
+                        <div id="flowColCourses" class="h-full flex flex-col justify-between py-1 relative z-10">
+                          <!-- Rendered dynamically -->
+                        </div>
+                        <div class="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white dark:from-[#0D131C] to-transparent z-20"></div>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
 
               </div>
 
-              <!-- Curriculum Map I-E-D Competency Mapping Layer (Courses -> SO a-m) -->
-              <div class="p-4 bg-white dark:bg-[#111722] border-2 border-emerald-600/70 shadow-xs space-y-3">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2.5">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2 py-0.5 bg-emerald-700 text-white font-mono font-bold text-[10px] uppercase">Curriculum Map I-E-D Layer</span>
-                    <h5 class="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">
-                      Course-to-Outcome Competency Progression (I &bull; E &bull; D)
-                    </h5>
-                  </div>
-                  <button type="button" onclick="switchObeTab('matrix')" class="px-3 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs">
-                    <span>🎯</span>
-                    <span>View / Edit Full I-E-D Matrix (74 Courses)</span>
-                  </button>
+              <!-- Curriculum Map I-E-D Competency Layer (Compact) -->
+              <div class="p-3 bg-white dark:bg-[#111722] border border-emerald-600/60 shadow-xs flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 bg-emerald-700 text-white font-mono font-bold text-[10px] uppercase">I-E-D Competency</span>
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Course-to-Outcome Progression:</span>
                 </div>
-
-                <p class="text-xs text-slate-600 dark:text-slate-300">
-                  This Curriculum Map stores not just the static hierarchy, but also the specific <strong>I-E-D competency ratings</strong> linking every course in the curriculum to each Student Outcome (<span class="font-mono font-bold">SO a–m</span>):
-                </p>
-
-                <!-- I-E-D Tier Cards / Examples -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <div class="p-3 bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 font-mono font-bold text-[10px] border border-emerald-300 dark:border-emerald-700">I &bull; Introductory</span>
-                      <span class="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">Foundational</span>
-                    </div>
-                    <p class="text-[11px] text-slate-600 dark:text-slate-300">
-                      Introduces fundamental concepts, definitions, and theories without prerequisite mastery.
-                    </p>
-                    <div class="text-[10px] font-mono text-slate-500 pt-1 border-t border-emerald-200/60 dark:border-emerald-800/60">
-                      Example: <span class="font-bold text-slate-800 dark:text-slate-200">CALCONE (Calculus 1)</span> &rarr; <span class="text-emerald-700 dark:text-emerald-400 font-bold">[I] on SO-a &amp; SO-e</span>
-                    </div>
-                  </div>
-
-                  <div class="p-3 bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300 font-mono font-bold text-[10px] border border-amber-300 dark:border-amber-700">E &bull; Enabling</span>
-                      <span class="text-[10px] font-mono text-amber-700 dark:text-amber-400 font-bold">Intermediate</span>
-                    </div>
-                    <p class="text-[11px] text-slate-600 dark:text-slate-300">
-                      Synthesizes foundational skills with core engineering principles, laboratory work, and design exercises.
-                    </p>
-                    <div class="text-[10px] font-mono text-slate-500 pt-1 border-t border-amber-200/60 dark:border-amber-800/60">
-                      Example: <span class="font-bold text-slate-800 dark:text-slate-200">HEALTHS (Basic OSH)</span> &rarr; <span class="text-amber-700 dark:text-amber-400 font-bold">[E] on SO-c, SO-h, SO-j</span>
-                    </div>
-                  </div>
-
-                  <div class="p-3 bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 space-y-1.5">
-                    <div class="flex items-center justify-between">
-                      <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-mono font-bold text-[10px] border border-indigo-300 dark:border-indigo-700">D &bull; Demonstrative</span>
-                      <span class="text-[10px] font-mono text-indigo-700 dark:text-indigo-400 font-bold">Capstone / Mastery</span>
-                    </div>
-                    <p class="text-[11px] text-slate-600 dark:text-slate-300">
-                      Evaluates comprehensive student competency, capstone defense, and professional engineering practice.
-                    </p>
-                    <div class="text-[10px] font-mono text-slate-500 pt-1 border-t border-indigo-200/60 dark:border-indigo-800/60">
-                      Example: <span class="font-bold text-slate-800 dark:text-slate-200">CPEDES2 &amp; INTERN1</span> &rarr; <span class="text-indigo-700 dark:text-indigo-400 font-bold">[D] across SO a–m</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Requisite Rule Enforcement Matrix -->
-              <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-3">
-                <div class="flex items-center justify-between">
-                  <h5 class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                    <span class="text-emerald-600 font-bold">✓</span>
-                    <span>Hierarchical Requisite Integrity Engine</span>
-                  </h5>
-                  <span class="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 border border-emerald-300 dark:border-emerald-800">
-                    100% Requisite Rule Compliant
-                  </span>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
-                  <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
-                    <div class="text-[10px] text-slate-400 uppercase">Link 1: Curriculum &rarr; SO</div>
-                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck1">CPE 2026 &ge; SO 2026</div>
-                    <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Batch references valid concurrent SO</div>
-                  </div>
-                  <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
-                    <div class="text-[10px] text-slate-400 uppercase">Link 2: SO &rarr; PEO</div>
-                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck2">SO 2026 &ge; PEO 2026</div>
-                    <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Forward-only relational mapping</div>
-                  </div>
-                  <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
-                    <div class="text-[10px] text-slate-400 uppercase">Link 3: PEO &rarr; GA</div>
-                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck3">PEO 2026 &ge; GA 2024</div>
-                    <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Root attribute alignment verified</div>
-                  </div>
+                <div class="flex items-center gap-3 flex-wrap text-xs font-mono">
+                  <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-300 dark:border-emerald-700">I &bull; Introductory</span>
+                  <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-700">E &bull; Enabling</span>
+                  <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 font-bold border border-indigo-300 dark:border-indigo-700">D &bull; Demonstrative</span>
                 </div>
               </div>
 
