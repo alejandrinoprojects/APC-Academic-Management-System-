@@ -1456,74 +1456,28 @@
     function getPendingProposals() {
       const pendingList = [];
 
-      // 1. Check Curriculum Maps
-      (window.CURRICULUM_MAPS || []).forEach(m => {
-        const isPending = (m.status === 'UNLOCKED DRAFT' || m.status.includes('PENDING') || m.status.includes('DRAFT'));
-        if (isPending) {
-          pendingList.push({
-            type: 'map',
-            id: m.id,
-            title: m.name,
-            domain: 'OBE Curriculum Map',
-            cohort: m.curriculumLabel || m.curriculumVersion || 'AY 2027–2031',
-            status: m.status,
-            statusClass: m.statusClass || 'bg-amber-100 text-amber-800 border-amber-300',
-            author: m.approvedBy || 'Program Director',
-            notes: m.notes || 'Curriculum map with outcomes & prerequisite sequences.',
-            units: '184.0 Units • 74 Courses',
-            mvv: m.mvvVersion || 'MVV 2025',
-            ga: m.gaVersion || 'GA 2027',
-            peo: m.peoVersion || 'PEO 2027',
-            so: m.soVersion || 'SO 2027',
-            raw: m
-          });
-        }
-      });
-
-      // 2. Check Curriculum Batches / Editions
+      // Only Curriculums populate the Executive Director Approval Inbox
       (window.CURRIC_EDITIONS_REGISTRY || []).forEach(c => {
         const isPending = (c.status === 'UNLOCKED DRAFT' || c.status.includes('PENDING') || c.status.includes('DRAFT'));
         if (isPending && !pendingList.some(p => p.id === c.id)) {
+          // Find matching curriculum map if any
+          const matchingMap = (window.CURRICULUM_MAPS || []).find(m => m.id.includes(c.id) || (m.curriculumVersion && m.curriculumVersion.includes(c.code)));
           pendingList.push({
             type: 'curric',
             id: c.id,
             title: c.name,
-            domain: 'Curriculum Edition',
+            domain: 'Curriculum',
             cohort: c.effective || 'AY 2027–2031',
             status: c.status,
             statusClass: c.statusClass || 'bg-amber-100 text-amber-800 border-amber-300',
             author: 'Program Director',
             notes: c.notes || 'Degree batch curriculum structure.',
             units: `${c.units || '184.0'} Units • ${c.courses || 74} Courses`,
-            mvv: 'MVV 2025',
-            ga: 'GA 2027',
-            peo: 'PEO 2027',
-            so: c.parentSoId || 'SO 2027',
+            mvv: matchingMap?.mvvVersion || 'MVV 2025',
+            ga: matchingMap?.gaVersion || 'GA 2027',
+            peo: matchingMap?.peoVersion || 'PEO 2027',
+            so: c.parentSoId || matchingMap?.soVersion || 'SO 2027',
             raw: c
-          });
-        }
-      });
-
-      // 3. Check Student Outcomes (SO) Versions
-      (window.SO_VERSION_REGISTRY || []).forEach(so => {
-        const isPending = (so.status === 'UNLOCKED DRAFT' || so.status.includes('PENDING') || so.status.includes('DRAFT'));
-        if (isPending && !pendingList.some(p => p.id === so.id)) {
-          pendingList.push({
-            type: 'so',
-            id: so.id,
-            title: so.name,
-            domain: 'Student Outcomes (SO)',
-            cohort: so.effective || 'AY 2027–2031',
-            status: so.status,
-            statusClass: so.statusClass || 'bg-amber-100 text-amber-800 border-amber-300',
-            author: 'Program Director',
-            notes: so.notes || 'Student outcomes revisions under CHED CMO 92.',
-            units: `${so.count || (so.items ? so.items.length : 13)} Outcomes`,
-            mvv: 'MVV 2025',
-            ga: 'GA 2027',
-            peo: so.parentPeoId || 'PEO 2027',
-            so: so.id,
-            raw: so
           });
         }
       });
@@ -1726,6 +1680,17 @@
           curric.approvedBy = 'Executive Director';
           curric.approvedAt = today;
           try { localStorage.setItem('apc_curric_editions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY)); } catch(e) {}
+
+          // Also activate the associated Curriculum Map for this curriculum batch if present
+          (window.CURRICULUM_MAPS || []).forEach(m => {
+            if (m.id.includes(curric.id) || (m.curriculumVersion && m.curriculumVersion.includes(curric.code || curric.id))) {
+              m.status = 'ACTIVE BATCH';
+              m.statusClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+              m.approvedBy = 'Executive Director';
+              m.approvedAt = today;
+            }
+          });
+          try { localStorage.setItem('apc_curriculum_maps', JSON.stringify(window.CURRICULUM_MAPS)); } catch(e) {}
         }
       } else if (type === 'so') {
         const so = (window.SO_VERSION_REGISTRY || []).find(s => s.id === id);
@@ -8679,10 +8644,10 @@ ${worksheetsXml}
       if (badge) {
         if (curricYr >= soYr) {
           badge.className = 'text-emerald-700 dark:text-emerald-400 font-bold';
-          badge.textContent = `✓ VALID: Newer links to older/concurrent (${curricYr} >= ${soYr})`;
+          badge.textContent = `✓ Valid Alignment`;
         } else {
           badge.className = 'text-rose-600 dark:text-rose-400 font-bold';
-          badge.textContent = `⚠ WARNING: Older version cannot link to newer (${curricYr} < ${soYr})`;
+          badge.textContent = `⚠ Subpart is Newer than Curriculum`;
         }
       }
     };
