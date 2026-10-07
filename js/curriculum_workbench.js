@@ -5708,10 +5708,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       html += `<thead class="bg-slate-100 dark:bg-slate-800 sticky top-0 z-20 border-b border-slate-300 dark:border-slate-700 text-[11px] select-none shadow-xs">
         <!-- Field Titles Row -->
         <tr class="text-[11px] uppercase font-bold text-slate-700 dark:text-slate-200">
-          <th class="py-2 px-2 text-center w-12 min-w-[50px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Row</th>
-          <th class="py-2 px-2 w-44 min-w-[170px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Academic Span</th>
-          <th class="py-2 px-2 w-32 min-w-[130px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Academic Year</th>
-          <th class="py-2 px-2 w-32 min-w-[120px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap">Code</th>
+          <th class="py-2 px-2 text-center w-12 min-w-[50px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap sticky left-0 z-30 bg-slate-100 dark:bg-slate-800 shadow-[1px_0_0_0_rgba(203,213,225,1)] dark:shadow-[1px_0_0_0_rgba(51,65,85,1)]">Row</th>
+          <th class="py-2 px-2 w-32 min-w-[120px] border-r border-slate-300 dark:border-slate-700 whitespace-nowrap sticky left-[50px] z-30 bg-slate-100 dark:bg-slate-800 shadow-[2px_0_4px_-1px_rgba(0,0,0,0.12)]">Code</th>
           <th class="py-2 px-3 border-r border-slate-300 dark:border-slate-700 min-w-[320px] whitespace-nowrap">Descriptive Title</th>`;
 
       if (showGeneral) {
@@ -5750,6 +5748,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const idx = r.originalIndex;
         const displayRow = rowNum + 1;
         const bg = (rowNum % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/70 dark:bg-slate-900/60';
+        const stickyBg = (rowNum % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50 dark:bg-slate-900';
         const prereqStr = (c.prereqs || []).map(p => (typeof p === 'object' && p !== null && p.code) ? p.code : String(p)).join(', ');
         const coreqStr = Array.isArray(c.coreqs) ? c.coreqs.join(', ') : '';
 
@@ -5759,14 +5758,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const disClass = !isAssigned ? 'opacity-60 cursor-not-allowed' : '';
 
         html += `<tr class="${bg} hover:bg-amber-50/40 dark:hover:bg-slate-800 transition border-b border-slate-200 dark:border-slate-700/60">
-          <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-500 border-r border-slate-200 dark:border-slate-700/60 text-[11px] min-w-[50px]">${displayRow}</td>
-          <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-700/60 font-mono text-[10px] text-slate-700 dark:text-slate-300 whitespace-nowrap min-w-[170px]">
-            <span class="px-1.5 py-0.5 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-bold border border-blue-200 dark:border-blue-800">${c.cohortLabel || 'CPE2026 Curriculum'}</span>
-          </td>
-          <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-700/60 font-mono text-[10px] text-slate-600 dark:text-slate-400 whitespace-nowrap text-center font-semibold min-w-[130px]">
-            ${c.ay || 'AY 2026–2027'}
-          </td>
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[120px]">
+          <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-500 border-r border-slate-200 dark:border-slate-700/60 text-[11px] min-w-[50px] sticky left-0 z-10 ${stickyBg} shadow-[1px_0_0_0_rgba(226,232,240,1)] dark:shadow-[1px_0_0_0_rgba(51,65,85,1)]">${displayRow}</td>
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[120px] sticky left-[50px] z-10 ${stickyBg} shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)]">
             <input type="text" value="${c.code || ''}" ${disAttr} onfocus="selectExcelCell('A${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'code', this.value)" class="w-full min-w-[105px] px-1.5 py-0.5 font-mono font-bold text-xs text-[#002855] dark:text-blue-300 uppercase bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[320px]">
@@ -5865,11 +5858,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         totalToRender = Math.max(excelGridTotalRows, renderedCount + 20);
         for (let r = renderedCount + 1; r <= totalToRender; r++) {
           const bg = (r % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50';
+          const stickyBg = (r % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50 dark:bg-slate-900';
           html += `<tr class="${bg} hover:bg-amber-50/30 dark:hover:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-slate-400">
-            <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-600 border-r border-slate-200 dark:border-slate-800 text-[11px] min-w-[50px]">${r}</td>
-            <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-800 font-mono text-[10px] min-w-[170px]"></td>
-            <td class="py-1 px-2 border-r border-slate-200 dark:border-slate-800 font-mono text-[10px] min-w-[130px]"></td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[120px]">
+            <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-600 border-r border-slate-200 dark:border-slate-800 text-[11px] min-w-[50px] sticky left-0 z-10 ${stickyBg} shadow-[1px_0_0_0_rgba(226,232,240,1)] dark:shadow-[1px_0_0_0_rgba(51,65,85,1)]">${r}</td>
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[120px] sticky left-[50px] z-10 ${stickyBg} shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)]">
               <input type="text" placeholder="" onfocus="selectExcelCell('A${r}', this)" onchange="onEmptySheetCellChange(${r}, 'code', this.value)" class="w-full min-w-[105px] px-1.5 py-0.5 font-mono font-bold text-xs uppercase text-[#002855] dark:text-blue-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[320px]">
