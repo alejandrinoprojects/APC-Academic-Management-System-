@@ -723,15 +723,6 @@
         `;
       }
       modal.classList.remove('hidden');
-      const editBtn = document.getElementById('btnPillarModalEdit');
-      if (editBtn) {
-        const role = (window.currentActiveRole || 'admin').toLowerCase();
-        if (role === 'admin' || role === 'a') {
-          editBtn.classList.remove('hidden');
-        } else {
-          editBtn.classList.add('hidden');
-        }
-      }
       if (window.spaRouter && typeof window.spaRouter.onModalOpen === 'function') {
         window.spaRouter.onModalOpen('pillar', { pillar: pillar });
       }
@@ -745,51 +736,130 @@
       }
     }
 
-    function openEditPillarsModal() {
+    // =========================================================================
+    // INLINE INSTITUTIONAL STATEMENTS EDITING (INSIDE VERSIONING HISTORY)
+    // =========================================================================
+    function toggleInstMvvInlineEditor(forceState) {
       const role = (window.currentActiveRole || 'admin').toLowerCase();
       if (role !== 'admin' && role !== 'a') {
         if (typeof showToast === 'function') {
-          showToast('🔒 Access Restricted: Only the System Administrator can edit institutional MVV and Graduate Attributes. ExD and PD are not allowed to edit.');
+          showToast('🔒 Access Restricted: Only the System Administrator can edit institutional MVV statements.');
         }
         return;
       }
-      closePillarModal();
-      const modal = document.getElementById('editPillarsModal');
-      if (!modal) return;
-      const data = getPillarsData();
-      const mInput = document.getElementById('editPillarMissionInput');
-      const vInput = document.getElementById('editPillarVisionInput');
-      const valInput = document.getElementById('editPillarValuesInput');
-      const gasInput = document.getElementById('editPillarGasInput');
-      if (mInput) mInput.value = data.mission;
-      if (vInput) vInput.value = data.vision;
-      if (valInput) valInput.value = data.values;
-      if (gasInput) {
-        const gasList = (data.gas && Array.isArray(data.gas)) ? data.gas : DEFAULT_PILLARS.gas;
-        gasInput.value = gasList.map(g => `${g.code}: ${g.title} - ${g.desc}`).join('\n');
+      const editor = document.getElementById('instMvvInlineEditor');
+      const cards = document.getElementById('instMvvCardsContainer');
+      const lbl = document.getElementById('lblToggleInstMvvEdit');
+      if (!editor) return;
+
+      const isOpening = (forceState !== undefined) ? forceState : editor.classList.contains('hidden');
+      if (isOpening) {
+        const data = getPillarsData();
+        const mInput = document.getElementById('inlineInstMissionInput');
+        const vInput = document.getElementById('inlineInstVisionInput');
+        const valInput = document.getElementById('inlineInstValuesInput');
+        if (mInput) mInput.value = data.mission || '';
+        if (vInput) vInput.value = data.vision || '';
+        if (valInput) valInput.value = data.values || '';
+
+        editor.classList.remove('hidden');
+        if (cards) cards.classList.add('hidden');
+        if (lbl) lbl.textContent = 'Close Editor';
+      } else {
+        editor.classList.add('hidden');
+        if (cards) cards.classList.remove('hidden');
+        if (lbl) lbl.textContent = 'Edit MVV Statements';
       }
-      modal.classList.remove('hidden');
     }
 
-    function closeEditPillarsModal() {
-      const modal = document.getElementById('editPillarsModal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function saveCustomPillars(event) {
-      if (event) event.preventDefault();
+    function saveInstMvvInline() {
       const role = (window.currentActiveRole || 'admin').toLowerCase();
       if (role !== 'admin' && role !== 'a') {
         if (typeof showToast === 'function') {
-          showToast('🔒 Access Restricted: Only the System Administrator can edit institutional MVV and Graduate Attributes.');
+          showToast('🔒 Access Restricted: Only the System Administrator can edit institutional MVV statements.');
         }
         return;
       }
-      const mInput = document.getElementById('editPillarMissionInput');
-      const vInput = document.getElementById('editPillarVisionInput');
-      const valInput = document.getElementById('editPillarValuesInput');
-      const gasInput = document.getElementById('editPillarGasInput');
-      
+      const mInput = document.getElementById('inlineInstMissionInput');
+      const vInput = document.getElementById('inlineInstVisionInput');
+      const valInput = document.getElementById('inlineInstValuesInput');
+
+      const current = getPillarsData();
+      const updated = {
+        ...current,
+        mission: mInput ? mInput.value.trim() : current.mission,
+        vision: vInput ? vInput.value.trim() : current.vision,
+        values: valInput ? valInput.value.trim() : current.values
+      };
+
+      try {
+        localStorage.setItem('apc_custom_pillars', JSON.stringify(updated));
+      } catch (e) {}
+
+      // Update registry in-memory representation
+      if (window.MVV_VERSION_REGISTRY) {
+        const activeMvv = window.MVV_VERSION_REGISTRY.find(m => m.id === 'MVV-2025');
+        if (activeMvv) {
+          activeMvv.mission = updated.mission;
+          activeMvv.vision = updated.vision;
+          activeMvv.values = updated.values;
+        }
+      }
+
+      if (typeof window.bumpCurrentObeRevision === 'function') {
+        window.bumpCurrentObeRevision('Institutional MVV Statements updated');
+      }
+
+      toggleInstMvvInlineEditor(false);
+      renderInstMvvTable();
+
+      if (typeof showToast === 'function') {
+        showToast('✓ Successfully updated Institutional MVV Statements and committed to version history!');
+      }
+    }
+
+    function toggleInstGaInlineEditor(forceState) {
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      if (role !== 'admin' && role !== 'a') {
+        if (typeof showToast === 'function') {
+          showToast('🔒 Access Restricted: Only the System Administrator can edit institutional Graduate Attributes.');
+        }
+        return;
+      }
+      const editor = document.getElementById('instGaInlineEditor');
+      const cards = document.getElementById('instGaCardsContainer');
+      const lbl = document.getElementById('lblToggleInstGaEdit');
+      if (!editor) return;
+
+      const isOpening = (forceState !== undefined) ? forceState : editor.classList.contains('hidden');
+      if (isOpening) {
+        const data = getPillarsData();
+        const gasInput = document.getElementById('inlineInstGasInput');
+        if (gasInput) {
+          const gasList = (data.gas && Array.isArray(data.gas)) ? data.gas : DEFAULT_PILLARS.gas;
+          gasInput.value = gasList.map(g => `${g.code}: ${g.title} - ${g.desc}`).join('\n');
+        }
+
+        editor.classList.remove('hidden');
+        if (cards) cards.classList.add('hidden');
+        if (lbl) lbl.textContent = 'Close Editor';
+      } else {
+        editor.classList.add('hidden');
+        if (cards) cards.classList.remove('hidden');
+        if (lbl) lbl.textContent = 'Edit Graduate Attributes';
+      }
+    }
+
+    function saveInstGaInline() {
+      const role = (window.currentActiveRole || 'admin').toLowerCase();
+      if (role !== 'admin' && role !== 'a') {
+        if (typeof showToast === 'function') {
+          showToast('🔒 Access Restricted: Only the System Administrator can edit institutional Graduate Attributes.');
+        }
+        return;
+      }
+      const gasInput = document.getElementById('inlineInstGasInput');
+
       let parsedGas = DEFAULT_PILLARS.gas;
       if (gasInput && gasInput.value.trim()) {
         const lines = gasInput.value.split('\n').filter(l => l.trim());
@@ -806,24 +876,39 @@
         }
       }
 
+      const current = getPillarsData();
       const updated = {
-        mission: mInput ? mInput.value.trim() : DEFAULT_PILLARS.mission,
-        vision: vInput ? vInput.value.trim() : DEFAULT_PILLARS.vision,
-        values: valInput ? valInput.value.trim() : DEFAULT_PILLARS.values,
+        ...current,
         gas: parsedGas
       };
+
       try {
         localStorage.setItem('apc_custom_pillars', JSON.stringify(updated));
       } catch (e) {}
 
-      // Bump mid-year revision for active OBE year
-      if (typeof window.bumpCurrentObeRevision === 'function') {
-        window.bumpCurrentObeRevision('Institutional Statements / Graduate Attributes updated mid-year');
+      // Update registry in-memory representation
+      if (window.GA_VERSION_REGISTRY) {
+        const activeGa = window.GA_VERSION_REGISTRY.find(g => g.id === 'GA-2024');
+        if (activeGa) {
+          activeGa.count = parsedGas.length;
+          activeGa.items = parsedGas.map(g => ({
+            code: g.code,
+            domain: g.category || 'Institutional',
+            title: g.title,
+            desc: g.desc
+          }));
+        }
       }
 
-      closeEditPillarsModal();
+      if (typeof window.bumpCurrentObeRevision === 'function') {
+        window.bumpCurrentObeRevision('Institutional Graduate Attributes updated');
+      }
+
+      toggleInstGaInlineEditor(false);
+      renderInstGaTable();
+
       if (typeof showToast === 'function') {
-        showToast('Institutional statements and Graduate Attributes saved successfully!');
+        showToast(`✓ Successfully updated ${parsedGas.length} Institutional Graduate Attributes!`);
       }
     }
 
@@ -838,10 +923,10 @@
       try {
         localStorage.removeItem('apc_custom_pillars');
       } catch (e) {}
-      const mInput = document.getElementById('editPillarMissionInput');
-      const vInput = document.getElementById('editPillarVisionInput');
-      const valInput = document.getElementById('editPillarValuesInput');
-      const gasInput = document.getElementById('editPillarGasInput');
+      const mInput = document.getElementById('inlineInstMissionInput');
+      const vInput = document.getElementById('inlineInstVisionInput');
+      const valInput = document.getElementById('inlineInstValuesInput');
+      const gasInput = document.getElementById('inlineInstGasInput');
       if (mInput) mInput.value = DEFAULT_PILLARS.mission;
       if (vInput) vInput.value = DEFAULT_PILLARS.vision;
       if (valInput) valInput.value = DEFAULT_PILLARS.values;
@@ -905,6 +990,15 @@
       const id = targetId || currentInspectedInstMvvId || 'MVV-2025';
       currentInspectedInstMvvId = id;
       const targetMvv = registry.find(m => m.id === id) || registry[0];
+
+      if (id === 'MVV-2025') {
+        const livePillars = getPillarsData();
+        if (livePillars) {
+          if (livePillars.mission) targetMvv.mission = livePillars.mission;
+          if (livePillars.vision) targetMvv.vision = livePillars.vision;
+          if (livePillars.values) targetMvv.values = livePillars.values;
+        }
+      }
 
       const tbody = document.getElementById('instMvvTableBody');
       if (tbody) {
@@ -986,6 +1080,19 @@
       currentInspectedInstGaId = id;
       const targetGa = registry.find(g => g.id === id) || registry[0];
 
+      if (id === 'GA-2024') {
+        const livePillars = getPillarsData();
+        if (livePillars && Array.isArray(livePillars.gas)) {
+          targetGa.count = livePillars.gas.length;
+          targetGa.items = livePillars.gas.map(g => ({
+            code: g.code,
+            domain: g.category || 'Institutional',
+            title: g.title,
+            desc: g.desc
+          }));
+        }
+      }
+
       const tbody = document.getElementById('instGaTableBody');
       if (tbody) {
         tbody.innerHTML = registry.map(ga => {
@@ -1048,6 +1155,17 @@
         }
       }
     }
+
+    window.toggleInstMvvInlineEditor = toggleInstMvvInlineEditor;
+    window.saveInstMvvInline = saveInstMvvInline;
+    window.toggleInstGaInlineEditor = toggleInstGaInlineEditor;
+    window.saveInstGaInline = saveInstGaInline;
+    window.resetPillarsToDefault = resetPillarsToDefault;
+    window.openInstitutionalVersioningModal = openInstitutionalVersioningModal;
+    window.closeInstitutionalVersioningModal = closeInstitutionalVersioningModal;
+    window.switchInstVhTab = switchInstVhTab;
+    window.renderInstMvvTable = renderInstMvvTable;
+    window.renderInstGaTable = renderInstGaTable;
 
     let addModalTempBanner = null;
     let addModalTempLogo = null;
@@ -2600,7 +2718,7 @@
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' || e.key === 'Esc') {
         if (typeof closePillarModal === 'function') closePillarModal();
-        if (typeof closeEditPillarsModal === 'function') closeEditPillarsModal();
+        if (typeof closeInstitutionalVersioningModal === 'function') closeInstitutionalVersioningModal();
         if (typeof closeCategoryManagerModal === 'function') closeCategoryManagerModal();
         if (typeof closeCourseEditModal === 'function') closeCourseEditModal();
         if (typeof closeBatchModal === 'function') closeBatchModal();
