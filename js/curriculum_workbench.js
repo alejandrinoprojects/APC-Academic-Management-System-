@@ -7531,18 +7531,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function getActiveObeYear() {
-      if (window.currentSidebarYear) {
-        const yMap = { 1: '2026', 2: '2025', 3: '2024', 4: '2023', '1': '2026', '2': '2025', '3': '2024', '4': '2023' };
-        if (yMap[window.currentSidebarYear]) {
-          return yMap[window.currentSidebarYear];
-        }
-      }
-      const cfg = getObeConfig();
-      return cfg.activeYear || '2026';
+      return '2026';
     }
 
     function getObeVersionString(year) {
-      const yr = year ? String(year) : getActiveObeYear();
+      const yr = '2026';
       const cfg = getObeConfig();
       const revData = (cfg.revisions && cfg.revisions[yr]) ? cfg.revisions[yr] : { subCount: 0 };
       if (!revData.subCount || revData.subCount <= 0) {
@@ -7553,24 +7546,20 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function setObeActiveYear(year, showUserToast = true) {
-      const yrStr = String(year);
+      const yrStr = '2026';
       const cfg = getObeConfig();
       cfg.activeYear = yrStr;
       if (!cfg.revisions[yrStr]) {
         cfg.revisions[yrStr] = { subCount: 0, lastUpdated: new Date().toISOString() };
       }
       saveObeConfig(cfg);
-
-      const reverseMap = { '2026': 1, '2025': 2, '2024': 3, '2023': 4 };
-      if (reverseMap[yrStr]) {
-        window.currentSidebarYear = reverseMap[yrStr];
-      }
+      window.currentSidebarYear = 1;
 
       updateAllObeVersionBadges();
       renderObeMatrix();
 
       if (showUserToast && typeof showToast === 'function') {
-        showToast(`Switched active OBE Map to Curriculum Year ${yrStr} (Version: ${getObeVersionString(yrStr)})`);
+        showToast(`Active OBE Map: Curriculum Year 2026 (Version: ${getObeVersionString(yrStr)})`);
       }
     }
 
@@ -7619,14 +7608,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const pillsContainers = [document.getElementById('obe-year-pills'), document.getElementById('obe-year-pills-layer')];
       pillsContainers.forEach(container => {
         if (!container) return;
-        const availableYears = ['2026', '2025', '2024', '2023'];
+        const availableYears = ['2026'];
         let html = '';
         availableYears.forEach(y => {
-          const isActive = (y === activeYr);
           const yVer = getObeVersionString(y);
-          const activeClasses = isActive
-            ? 'bg-[#002855] text-[#E5A823] font-bold border-[#002855] shadow-xs'
-            : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-300 dark:border-slate-700 font-medium';
+          const activeClasses = 'bg-[#002855] text-[#E5A823] font-bold border-[#002855] shadow-xs';
           html += `
             <button type="button" onclick="setObeActiveYear('${y}')" class="px-2.5 py-1 text-xs border -ml-[1px] first:ml-0 transition cursor-pointer ${activeClasses}">
               CPE${y} <span class="font-mono text-[10px] opacity-80">(v${yVer})</span>
@@ -8255,6 +8241,97 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       return map.status === 'ACTIVE BATCH' || map.status === 'PREV BATCH' || map.status === 'ARCHIVED';
     };
 
+    window.getLinkedItemIds = function(type, id) {
+      const peoSoLinks = window.getPeoSoLinks() || {};
+      const peoGaLinks = window.getPeoGaLinks() || {};
+      const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+      const allCourses = (window.OFFICIAL_BASELINE_74_COURSES && window.OFFICIAL_BASELINE_74_COURSES.length > 0)
+        ? window.OFFICIAL_BASELINE_74_COURSES
+        : [];
+
+      const linkedGas = new Set();
+      const linkedPeos = new Set();
+      const linkedSos = new Set();
+      const linkedCourses = new Set();
+
+      if (type === 'ga') {
+        const gaId = Number(id);
+        linkedGas.add(gaId);
+        Object.keys(peoGaLinks).forEach(p => {
+          if ((peoGaLinks[p] || []).includes(gaId)) {
+            linkedPeos.add(Number(p));
+          }
+        });
+        Object.keys(peoSoLinks).forEach(s => {
+          const peos = peoSoLinks[s] || [];
+          if (peos.some(p => linkedPeos.has(Number(p)))) {
+            linkedSos.add(s);
+          }
+        });
+        allCourses.forEach(c => {
+          if (c.sos) {
+            c.sos.forEach((v, idx) => {
+              if ((v === 'I' || v === 'E' || v === 'D') && linkedSos.has(SO_KEYS[idx])) {
+                linkedCourses.add(c.code);
+              }
+            });
+          }
+        });
+      } else if (type === 'peo') {
+        const peoId = Number(id);
+        linkedPeos.add(peoId);
+        (peoGaLinks[peoId] || []).forEach(g => linkedGas.add(Number(g)));
+        Object.keys(peoSoLinks).forEach(s => {
+          if ((peoSoLinks[s] || []).includes(peoId)) {
+            linkedSos.add(s);
+          }
+        });
+        allCourses.forEach(c => {
+          if (c.sos) {
+            c.sos.forEach((v, idx) => {
+              if ((v === 'I' || v === 'E' || v === 'D') && linkedSos.has(SO_KEYS[idx])) {
+                linkedCourses.add(c.code);
+              }
+            });
+          }
+        });
+      } else if (type === 'so') {
+        const soId = String(id).toLowerCase();
+        linkedSos.add(soId);
+        (peoSoLinks[soId] || []).forEach(p => linkedPeos.add(Number(p)));
+        linkedPeos.forEach(p => {
+          (peoGaLinks[p] || []).forEach(g => linkedGas.add(Number(g)));
+        });
+        const soIdx = SO_KEYS.indexOf(soId);
+        if (soIdx >= 0) {
+          allCourses.forEach(c => {
+            if (c.sos && (c.sos[soIdx] === 'I' || c.sos[soIdx] === 'E' || c.sos[soIdx] === 'D')) {
+              linkedCourses.add(c.code);
+            }
+          });
+        }
+      } else if (type === 'course') {
+        const courseCode = String(id);
+        linkedCourses.add(courseCode);
+        const c = allCourses.find(x => x.code === courseCode);
+        if (c && c.sos) {
+          c.sos.forEach((v, idx) => {
+            if (v === 'I' || v === 'E' || v === 'D') {
+              linkedSos.add(SO_KEYS[idx]);
+            }
+          });
+        }
+        linkedSos.forEach(s => {
+          (peoSoLinks[s] || []).forEach(p => linkedPeos.add(Number(p)));
+        });
+        linkedPeos.forEach(p => {
+          (peoGaLinks[p] || []).forEach(g => linkedGas.add(Number(g)));
+        });
+      }
+
+      return { linkedGas, linkedPeos, linkedSos, linkedCourses };
+    };
+
     window.getFlowColumnLists = function() {
       const allCourses = (window.OFFICIAL_BASELINE_74_COURSES && window.OFFICIAL_BASELINE_74_COURSES.length > 0)
         ? window.OFFICIAL_BASELINE_74_COURSES
@@ -8262,7 +8339,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const searchQ = (document.getElementById('flowGraphSearchInput')?.value || '').trim().toLowerCase();
       const yrFilter = document.getElementById('flowGraphYearFilter')?.value || 'all';
 
-      const filteredCourses = allCourses.filter(c => {
+      let baseCourses = allCourses.filter(c => {
         if (yrFilter !== 'all' && String(c.year) !== yrFilter) return false;
         if (searchQ) {
           const mCode = (c.code || '').toLowerCase().includes(searchQ);
@@ -8272,11 +8349,34 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         return true;
       });
 
+      let gaList = FLOW_GA_DEFS || [];
+      let peoList = FLOW_PEO_DEFS || [];
+      let soList = FLOW_SO_DEFS || [];
+      let courseList = baseCourses;
+
+      const tr = window.activeFlowTrace;
+      if (tr && tr.type && tr.id !== null) {
+        const { linkedGas, linkedPeos, linkedSos, linkedCourses } = window.getLinkedItemIds(tr.type, tr.id);
+
+        if (tr.type !== 'ga' && linkedGas.size > 0) {
+          gaList = gaList.filter(g => linkedGas.has(g.id));
+        }
+        if (tr.type !== 'peo' && linkedPeos.size > 0) {
+          peoList = peoList.filter(p => linkedPeos.has(p.id));
+        }
+        if (tr.type !== 'so' && linkedSos.size > 0) {
+          soList = soList.filter(s => linkedSos.has(s.id));
+        }
+        if (tr.type !== 'course') {
+          courseList = courseList.filter(c => linkedCourses.has(c.code));
+        }
+      }
+
       return {
-        ga: FLOW_GA_DEFS || [],
-        peo: FLOW_PEO_DEFS || [],
-        so: FLOW_SO_DEFS || [],
-        course: filteredCourses
+        ga: gaList,
+        peo: peoList,
+        so: soList,
+        course: courseList
       };
     };
 
@@ -8286,26 +8386,52 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (list.length === 0) return;
       
       let newIdx = (window.flowWheelIndices[col] || 0) + delta;
-      if (newIdx < 0) newIdx = list.length - 1;
-      if (newIdx >= list.length) newIdx = 0;
+      if (list.length < 5) {
+        if (newIdx < 0) newIdx = 0;
+        if (newIdx >= list.length) newIdx = list.length - 1;
+      } else {
+        if (newIdx < 0) newIdx = list.length - 1;
+        if (newIdx >= list.length) newIdx = 0;
+      }
       
       window.flowWheelIndices[col] = newIdx;
-      const centerItem = list[newIdx];
-      if (centerItem) {
-        window.syncTraceFromWheel(col, centerItem);
+
+      // If rotating the active focus column, update the focused item ID so downstream columns cascade
+      if (window.activeFlowTrace && window.activeFlowTrace.type === col) {
+        const item = list[newIdx];
+        if (item) {
+          window.activeFlowTrace.id = (col === 'course') ? item.code : item.id;
+        }
       }
+
       window.renderFlowGraph();
     };
 
-    window.setWheelIndex = function(col, idx) {
+    window.setWheelIndex = function(col, idx, toggleTrace = false) {
       const lists = window.getFlowColumnLists();
       const list = lists[col] || [];
       if (idx < 0 || idx >= list.length) return;
-      window.flowWheelIndices[col] = idx;
-      const centerItem = list[idx];
-      if (centerItem) {
-        window.syncTraceFromWheel(col, centerItem);
+      const item = list[idx];
+      if (!item) return;
+
+      const itemId = (col === 'course') ? item.code : item.id;
+
+      if (toggleTrace) {
+        if (window.activeFlowTrace && window.activeFlowTrace.type === col && String(window.activeFlowTrace.id) === String(itemId)) {
+          window.clearFlowTrace();
+          return;
+        } else {
+          window.traceFlowLineage(col, itemId);
+          return;
+        }
       }
+
+      window.flowWheelIndices[col] = idx;
+
+      if (window.activeFlowTrace && window.activeFlowTrace.type === col) {
+        window.activeFlowTrace.id = itemId;
+      }
+
       window.renderFlowGraph();
     };
 
@@ -8317,105 +8443,34 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
     };
 
-    window.syncTraceFromWheel = function(col, item) {
-      const peoSoLinks = window.getPeoSoLinks();
-      const peoGaLinks = window.getPeoGaLinks();
-      const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
-      const lists = window.getFlowColumnLists();
-
-      if (col === 'ga') {
-        window.activeFlowTrace = { type: 'ga', id: item.id };
-        const linkedPeos = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(item.id)).map(Number);
-        if (linkedPeos.length > 0) {
-          const pIdx = lists.peo.findIndex(p => p.id === linkedPeos[0]);
-          if (pIdx >= 0) window.flowWheelIndices.peo = pIdx;
-          const linkedSos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(linkedPeos[0]));
-          if (linkedSos.length > 0) {
-            const sIdx = lists.so.findIndex(s => s.id === linkedSos[0]);
-            if (sIdx >= 0) window.flowWheelIndices.so = sIdx;
-            const soIndex = SO_KEYS.indexOf(linkedSos[0]);
-            if (soIndex >= 0) {
-              const cIdx = lists.course.findIndex(c => c.sos && (c.sos[soIndex] === 'I' || c.sos[soIndex] === 'E' || c.sos[soIndex] === 'D'));
-              if (cIdx >= 0) window.flowWheelIndices.course = cIdx;
-            }
-          }
-        }
-      } else if (col === 'peo') {
-        window.activeFlowTrace = { type: 'peo', id: item.id };
-        const gas = peoGaLinks[item.id] || [];
-        if (gas.length > 0) {
-          const gIdx = lists.ga.findIndex(g => g.id === gas[0]);
-          if (gIdx >= 0) window.flowWheelIndices.ga = gIdx;
-        }
-        const sos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(item.id));
-        if (sos.length > 0) {
-          const sIdx = lists.so.findIndex(s => s.id === sos[0]);
-          if (sIdx >= 0) window.flowWheelIndices.so = sIdx;
-          const soIndex = SO_KEYS.indexOf(sos[0]);
-          if (soIndex >= 0) {
-            const cIdx = lists.course.findIndex(c => c.sos && (c.sos[soIndex] === 'I' || c.sos[soIndex] === 'E' || c.sos[soIndex] === 'D'));
-            if (cIdx >= 0) window.flowWheelIndices.course = cIdx;
-          }
-        }
-      } else if (col === 'so') {
-        window.activeFlowTrace = { type: 'so', id: item.id };
-        const peos = peoSoLinks[item.id] || [];
-        if (peos.length > 0) {
-          const pIdx = lists.peo.findIndex(p => p.id === peos[0]);
-          if (pIdx >= 0) window.flowWheelIndices.peo = pIdx;
-          const gas = peoGaLinks[peos[0]] || [];
-          if (gas.length > 0) {
-            const gIdx = lists.ga.findIndex(g => g.id === gas[0]);
-            if (gIdx >= 0) window.flowWheelIndices.ga = gIdx;
-          }
-        }
-        const soIndex = SO_KEYS.indexOf(String(item.id));
-        if (soIndex >= 0) {
-          const cIdx = lists.course.findIndex(c => c.sos && (c.sos[soIndex] === 'I' || c.sos[soIndex] === 'E' || c.sos[soIndex] === 'D'));
-          if (cIdx >= 0) window.flowWheelIndices.course = cIdx;
-        }
-      } else if (col === 'course') {
-        window.activeFlowTrace = { type: 'course', id: item.code };
-        if (item.sos) {
-          const firstMappedIdx = item.sos.findIndex(v => v === 'I' || v === 'E' || v === 'D');
-          if (firstMappedIdx >= 0) {
-            const soKey = SO_KEYS[firstMappedIdx];
-            const sIdx = lists.so.findIndex(s => s.id === soKey);
-            if (sIdx >= 0) window.flowWheelIndices.so = sIdx;
-            const peos = peoSoLinks[soKey] || [];
-            if (peos.length > 0) {
-              const pIdx = lists.peo.findIndex(p => p.id === peos[0]);
-              if (pIdx >= 0) window.flowWheelIndices.peo = pIdx;
-              const gas = peoGaLinks[peos[0]] || [];
-              if (gas.length > 0) {
-                const gIdx = lists.ga.findIndex(g => g.id === gas[0]);
-                if (gIdx >= 0) window.flowWheelIndices.ga = gIdx;
-              }
-            }
-          }
-        }
-      }
-    };
-
     window.traceFlowLineage = function(type, id) {
-      if (window.activeFlowTrace.type === type && String(window.activeFlowTrace.id) === String(id)) {
+      if (window.activeFlowTrace && window.activeFlowTrace.type === type && String(window.activeFlowTrace.id) === String(id)) {
         window.clearFlowTrace();
         return;
       }
+      window.activeFlowTrace = { type, id };
       const lists = window.getFlowColumnLists();
-      if (type === 'ga') {
-        const idx = lists.ga.findIndex(g => g.id === Number(id));
-        if (idx >= 0) window.setWheelIndex('ga', idx);
-      } else if (type === 'peo') {
-        const idx = lists.peo.findIndex(p => p.id === Number(id));
-        if (idx >= 0) window.setWheelIndex('peo', idx);
-      } else if (type === 'so') {
-        const idx = lists.so.findIndex(s => s.id === String(id));
-        if (idx >= 0) window.setWheelIndex('so', idx);
-      } else if (type === 'course') {
-        const idx = lists.course.findIndex(c => c.code === String(id));
-        if (idx >= 0) window.setWheelIndex('course', idx);
-      }
+      ['ga', 'peo', 'so', 'course'].forEach(col => {
+        if (col === type) {
+          const idx = (lists[col] || []).findIndex(item => String(col === 'course' ? item.code : item.id) === String(id));
+          window.flowWheelIndices[col] = idx >= 0 ? idx : 0;
+        } else {
+          window.flowWheelIndices[col] = 0;
+        }
+      });
+      window.renderFlowGraph();
+    };
+
+    window.clearFlowTrace = function() {
+      window.activeFlowTrace = { type: null, id: null };
+      const lists = window.getFlowColumnLists();
+      ['ga', 'peo', 'so', 'course'].forEach(col => {
+        const len = (lists[col] || []).length;
+        if (window.flowWheelIndices[col] >= len) {
+          window.flowWheelIndices[col] = 0;
+        }
+      });
+      window.renderFlowGraph();
     };
 
     window.renderFlowGraph = function() {
@@ -8426,8 +8481,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (!colGA || !colPEO || !colSO || !colCourses) return;
 
       const isLocked = window.isCurriculumLocked();
-      const peoSoLinks = window.getPeoSoLinks();
-      const peoGaLinks = window.getPeoGaLinks();
+      const peoSoLinks = window.getPeoSoLinks() || {};
+      const peoGaLinks = window.getPeoGaLinks() || {};
       const lists = window.getFlowColumnLists();
       const allCourses = lists.course;
       const SO_KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
@@ -8440,38 +8495,57 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         else if (window.flowWheelIndices[k] < 0) window.flowWheelIndices[k] = 0;
       });
 
-      // Update position counters
-      const posGA = document.getElementById('wheelPosGA');
-      if (posGA) posGA.textContent = lists.ga.length ? `${window.flowWheelIndices.ga + 1} / ${lists.ga.length}` : '0 / 0';
-      const posPEO = document.getElementById('wheelPosPEO');
-      if (posPEO) posPEO.textContent = lists.peo.length ? `${window.flowWheelIndices.peo + 1} / ${lists.peo.length}` : '0 / 0';
-      const posSO = document.getElementById('wheelPosSO');
-      if (posSO) posSO.textContent = lists.so.length ? `${window.flowWheelIndices.so + 1} / ${lists.so.length}` : '0 / 0';
-      const posCourse = document.getElementById('wheelPosCourse');
-      if (posCourse) posCourse.textContent = lists.course.length ? `${window.flowWheelIndices.course + 1} / ${lists.course.length}` : '0 / 0';
-
       const tr = window.activeFlowTrace;
+      const isTraceActive = Boolean(tr && tr.type && tr.id !== null);
+
+      // Update position counters with dynamic focus / linked indicators
+      const posGA = document.getElementById('wheelPosGA');
+      if (posGA) {
+        const isFocus = (tr && tr.type === 'ga');
+        const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
+        posGA.textContent = lists.ga.length ? `${window.flowWheelIndices.ga + 1} / ${lists.ga.length}${suffix}` : '0 / 0';
+      }
+      const posPEO = document.getElementById('wheelPosPEO');
+      if (posPEO) {
+        const isFocus = (tr && tr.type === 'peo');
+        const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
+        posPEO.textContent = lists.peo.length ? `${window.flowWheelIndices.peo + 1} / ${lists.peo.length}${suffix}` : '0 / 0';
+      }
+      const posSO = document.getElementById('wheelPosSO');
+      if (posSO) {
+        const isFocus = (tr && tr.type === 'so');
+        const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
+        posSO.textContent = lists.so.length ? `${window.flowWheelIndices.so + 1} / ${lists.so.length}${suffix}` : '0 / 0';
+      }
+      const posCourse = document.getElementById('wheelPosCourse');
+      if (posCourse) {
+        const isFocus = (tr && tr.type === 'course');
+        const suffix = isTraceActive ? (isFocus ? ' (focus)' : ' linked') : '';
+        posCourse.textContent = lists.course.length ? `${window.flowWheelIndices.course + 1} / ${lists.course.length}${suffix}` : '0 / 0';
+      }
+
       const traceBadge = document.getElementById('flowGraphTraceBadge');
       const traceText = document.getElementById('flowGraphTraceText');
 
-      if (tr && tr.type && tr.id !== null) {
+      if (isTraceActive) {
         if (traceBadge) traceBadge.classList.remove('hidden');
+        const numCourses = lists.course.length;
+        const numPeos = lists.peo.length;
+        const numSos = lists.so.length;
+        const numGas = lists.ga.length;
+
         if (tr.type === 'ga') {
-          const linkedPeos = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(Number(tr.id)));
-          if (traceText) traceText.textContent = `Aligned GA ${tr.id}: Cascades to ${linkedPeos.length} PEOs ➔ SOs ➔ Courses.`;
+          if (traceText) traceText.textContent = `Aligned GA ${tr.id}: Narrowed to ${numPeos} linked PEOs ➔ ${numSos} SOs ➔ ${numCourses} courses.`;
         } else if (tr.type === 'peo') {
-          const gas = peoGaLinks[tr.id] || [];
-          const sos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(Number(tr.id)));
-          if (traceText) traceText.textContent = `Aligned PEO ${tr.id}: Links upstream to ${gas.length} GAs ➔ Downstream to ${sos.length} SOs.`;
+          if (traceText) traceText.textContent = `Aligned PEO ${tr.id}: Narrowed to ${numGas} upstream GAs ➔ ${numSos} SOs ➔ ${numCourses} courses.`;
         } else if (tr.type === 'so') {
-          const peos = peoSoLinks[tr.id] || [];
-          if (traceText) traceText.textContent = `Aligned SO-${tr.id}: Links to ${peos.length} PEOs ➔ Mapped across courses.`;
+          if (traceText) traceText.textContent = `Aligned SO-${tr.id}: Narrowed to ${numPeos} linked PEOs ➔ ${numCourses} mapped courses.`;
         } else if (tr.type === 'course') {
-          if (traceText) traceText.textContent = `Aligned Course [${tr.id}]: Maps to active SO, PEO, and GA in center row.`;
+          if (traceText) traceText.textContent = `Aligned Course [${tr.id}]: Narrowed to ${numSos} mapped SOs ➔ ${numPeos} PEOs ➔ ${numGas} GAs.`;
         }
       } else {
         if (traceBadge) traceBadge.classList.add('hidden');
-        if (traceText) traceText.textContent = 'Rotate any cylinder or click an item to align cascading lineage across all tiers.';
+        if (traceText) traceText.textContent = 'Showing full catalog. Click any card to isolate and narrow cylinders to linked items only.';
       }
 
       // Slot configuration for 5 items: k = -2, -1, 0, 1, 2
@@ -8483,15 +8557,28 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         '2':  { transform: 'translateY(-8px) rotateX(-46deg) scale(0.82)', opacity: '0.35', zIndex: '5', height: '56px' }
       };
 
-      // Helper to generate 5 slots
+      // Helper to generate 5 slots handling short lists cleanly
       function render5Slots(list, centerIdx, renderItem) {
-        if (list.length === 0) {
-          return '<div class="p-6 text-center text-slate-400 italic font-mono text-xs">No items</div>';
+        if (!list || list.length === 0) {
+          return '<div class="h-full flex items-center justify-center p-6 text-center text-slate-400 italic font-mono text-xs">No linked items in this path</div>';
         }
         const offsets = [-2, -1, 0, 1, 2];
+        const N = list.length;
+        if (N < 5) {
+          return offsets.map(k => {
+            const targetIdx = centerIdx + k;
+            const cfg = slotConfigs[String(k)];
+            const isCenter = (k === 0);
+            if (targetIdx < 0 || targetIdx >= N) {
+              return `<div style="height: ${cfg.height}; opacity: 0; pointer-events: none;" class="p-2"></div>`;
+            }
+            const item = list[targetIdx];
+            return renderItem(item, targetIdx, k, isCenter, cfg);
+          }).join('');
+        }
         return offsets.map(k => {
-          let itemIdx = (centerIdx + k) % list.length;
-          if (itemIdx < 0) itemIdx += list.length;
+          let itemIdx = (centerIdx + k) % N;
+          if (itemIdx < 0) itemIdx += N;
           const item = list[itemIdx];
           const cfg = slotConfigs[String(k)];
           const isCenter = (k === 0);
@@ -8502,11 +8589,15 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       // 1. Render Column 1: GA Cylinder
       colGA.innerHTML = render5Slots(lists.ga, window.flowWheelIndices.ga, (ga, idx, k, isCenter, cfg) => {
         const linkedPeoList = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id)).map(p => `PEO ${p}`);
+        const isCurrentTrace = (tr && tr.type === 'ga' && String(tr.id) === String(ga.id));
         if (isCenter) {
           return `
-            <div onclick="setWheelIndex('ga', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-amber-50/90 dark:bg-[#1C2534] border-2 border-[#002855] dark:border-[#E5A823] ring-2 ring-inset ring-apc-gold shadow-md" title="Selected GA: ${ga.code}">
+            <div onclick="setWheelIndex('ga', ${idx}, true)" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-amber-50/90 dark:bg-[#1C2534] border-2 border-[#002855] dark:border-[#E5A823] ring-2 ring-inset ring-apc-gold shadow-md" title="Click to ${isCurrentTrace ? 'clear filter (show all)' : 'isolate linked path'}">
               <div class="flex items-center justify-between">
-                <span class="font-mono font-bold text-[11px] text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-[11px] text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
+                  ${isCurrentTrace ? '<span class="px-1 bg-amber-200 dark:bg-amber-900/60 text-amber-950 dark:text-amber-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-slate-300 dark:border-slate-700">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('ga', ${ga.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit PEO links">✏️ Link</button>`}
               </div>
               <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${ga.title}</h6>
@@ -8518,7 +8609,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           `;
         }
         return `
-          <div onclick="setWheelIndex('ga', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 hover:opacity-100" title="Click to rotate ${ga.code} to center">
+          <div onclick="setWheelIndex('ga', ${idx}, false)" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 hover:opacity-100" title="Click to rotate ${ga.code} to center">
             <div class="flex items-center justify-between">
               <span class="font-mono font-bold text-[10px] text-slate-700 dark:text-slate-300">${ga.code}</span>
               <span class="text-[9px] font-mono text-purple-600 dark:text-purple-400">${linkedPeoList.length} PEOs</span>
@@ -8532,11 +8623,15 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       colPEO.innerHTML = render5Slots(lists.peo, window.flowWheelIndices.peo, (peo, idx, k, isCenter, cfg) => {
         const gaList = (peoGaLinks[peo.id] || []).map(g => `GA ${g}`);
         const soList = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
+        const isCurrentTrace = (tr && tr.type === 'peo' && String(tr.id) === String(peo.id));
         if (isCenter) {
           return `
-            <div onclick="setWheelIndex('peo', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-purple-50/90 dark:bg-[#1E1F35] border-2 border-purple-600 dark:border-purple-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Selected PEO: ${peo.code}">
+            <div onclick="setWheelIndex('peo', ${idx}, true)" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-purple-50/90 dark:bg-[#1E1F35] border-2 border-purple-600 dark:border-purple-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Click to ${isCurrentTrace ? 'clear filter (show all)' : 'isolate linked path'}">
               <div class="flex items-center justify-between">
-                <span class="font-mono font-bold text-[11px] text-purple-800 dark:text-purple-300">${peo.code}</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-[11px] text-purple-800 dark:text-purple-300">${peo.code}</span>
+                  ${isCurrentTrace ? '<span class="px-1 bg-purple-200 dark:bg-purple-900/60 text-purple-950 dark:text-purple-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-purple-300 dark:border-purple-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('peo', ${peo.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit Links">✏️ Edit</button>`}
               </div>
               <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${peo.title}</h6>
@@ -8548,7 +8643,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           `;
         }
         return `
-          <div onclick="setWheelIndex('peo', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-purple-200 dark:border-purple-900/50 hover:opacity-100" title="Click to rotate ${peo.code} to center">
+          <div onclick="setWheelIndex('peo', ${idx}, false)" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-purple-200 dark:border-purple-900/50 hover:opacity-100" title="Click to rotate ${peo.code} to center">
             <div class="flex items-center justify-between">
               <span class="font-mono font-bold text-[10px] text-purple-700 dark:text-purple-400">${peo.code}</span>
               <span class="text-[9px] font-mono text-indigo-600 dark:text-indigo-400">${soList.length} SOs</span>
@@ -8570,12 +8665,16 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           else if (rating === 'D') dCount++;
         });
         const totalMapped = iCount + eCount + dCount;
+        const isCurrentTrace = (tr && tr.type === 'so' && String(tr.id) === String(so.id));
 
         if (isCenter) {
           return `
-            <div onclick="setWheelIndex('so', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-indigo-50/90 dark:bg-[#191D33] border-2 border-indigo-600 dark:border-indigo-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Selected SO: ${so.code}">
+            <div onclick="setWheelIndex('so', ${idx}, true)" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-indigo-50/90 dark:bg-[#191D33] border-2 border-indigo-600 dark:border-indigo-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Click to ${isCurrentTrace ? 'clear filter (show all)' : 'isolate linked path'}">
               <div class="flex items-center justify-between">
-                <span class="font-mono font-bold text-[11px] text-indigo-800 dark:text-indigo-300">${so.code}</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-[11px] text-indigo-800 dark:text-indigo-300">${so.code}</span>
+                  ${isCurrentTrace ? '<span class="px-1 bg-indigo-200 dark:bg-indigo-900/60 text-indigo-950 dark:text-indigo-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
+                </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-indigo-300 dark:border-indigo-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('so', '${so.id}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-indigo-100 dark:bg-indigo-950/60 text-indigo-900 dark:text-indigo-200 hover:bg-[#002855] hover:text-[#E5A823] border border-indigo-300 dark:border-indigo-800 transition cursor-pointer" title="Edit PEO Links">✏️ Edit</button>`}
               </div>
               <h6 class="font-bold text-[11px] text-slate-900 dark:text-slate-100 leading-tight truncate">${so.title}</h6>
@@ -8591,7 +8690,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           `;
         }
         return `
-          <div onclick="setWheelIndex('so', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-indigo-200 dark:border-indigo-900/50 hover:opacity-100" title="Click to rotate ${so.code} to center">
+          <div onclick="setWheelIndex('so', ${idx}, false)" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-indigo-200 dark:border-indigo-900/50 hover:opacity-100" title="Click to rotate ${so.code} to center">
             <div class="flex items-center justify-between">
               <span class="font-mono font-bold text-[10px] text-indigo-700 dark:text-indigo-400">${so.code}</span>
               <span class="text-[9px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">${totalMapped} Subj</span>
@@ -8618,14 +8717,16 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
             `);
           }
         });
+        const isCurrentTrace = (tr && tr.type === 'course' && String(tr.id) === String(c.code));
 
         if (isCenter) {
           return `
-            <div onclick="setWheelIndex('course', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-emerald-50/90 dark:bg-[#12231E] border-2 border-emerald-600 dark:border-emerald-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Selected Course: ${c.code}">
+            <div onclick="setWheelIndex('course', ${idx}, true)" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-2 rounded-none transition cursor-pointer flex flex-col justify-between bg-emerald-50/90 dark:bg-[#12231E] border-2 border-emerald-600 dark:border-emerald-400 ring-2 ring-inset ring-apc-gold shadow-md" title="Click to ${isCurrentTrace ? 'clear filter (show all)' : 'isolate linked path'}">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-1.5">
                   <span class="font-mono font-bold text-xs text-emerald-900 dark:text-emerald-300">${c.code}</span>
                   <span class="text-[9px] font-mono text-slate-500">Y${c.year} T${c.term}</span>
+                  ${isCurrentTrace ? '<span class="px-1 bg-emerald-200 dark:bg-emerald-900/60 text-emerald-950 dark:text-emerald-200 font-mono text-[9px] font-bold">★ FOCUS</span>' : ''}
                 </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-emerald-300 dark:border-emerald-800">🔒 Locked</span>' : `<button type="button" onclick="event.stopPropagation(); openFlowLinkEditor('course', '${c.code}')" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-[#002855] hover:text-[#E5A823] border border-emerald-300 dark:border-emerald-800 transition cursor-pointer" title="Edit SOs">+ SOs</button>`}
               </div>
@@ -8641,7 +8742,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           `;
         }
         return `
-          <div onclick="setWheelIndex('course', ${idx})" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-emerald-200 dark:border-emerald-900/50 hover:opacity-100" title="Click to rotate ${c.code} to center">
+          <div onclick="setWheelIndex('course', ${idx}, false)" style="transform: ${cfg.transform}; opacity: ${cfg.opacity}; z-index: ${cfg.zIndex}; height: ${cfg.height};" class="p-1.5 rounded-none transition cursor-pointer flex flex-col justify-between bg-white dark:bg-[#151D2A] border border-emerald-200 dark:border-emerald-900/50 hover:opacity-100" title="Click to rotate ${c.code} to center">
             <div class="flex items-center justify-between">
               <span class="font-mono font-bold text-[10px] text-emerald-800 dark:text-emerald-300">${c.code}</span>
               <span class="text-[9px] font-mono text-slate-400">Y${c.year} T${c.term}</span>

@@ -2928,10 +2928,11 @@
                 <div id="flowGraphTraceBar" class="p-2 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 text-[11px] font-mono flex flex-wrap items-center justify-between gap-2">
                   <div class="flex items-center gap-2 flex-wrap">
                     <span class="px-1.5 py-0.2 bg-[#002855] text-[#E5A823] font-bold text-[9px] uppercase">Active Path</span>
-                    <span id="flowGraphTraceText" class="text-slate-700 dark:text-slate-300 font-medium">Rotate any cylinder or click an item to align cascading lineage across all tiers.</span>
+                    <span id="flowGraphTraceText" class="text-slate-700 dark:text-slate-300 font-medium">Click any card to isolate and narrow cylinders to linked items only.</span>
                   </div>
-                  <div id="flowGraphTraceBadge" class="hidden text-[9px] px-1.5 py-0.2 bg-amber-100 text-amber-900 dark:bg-amber-900/60 dark:text-amber-200 font-bold border border-amber-300 dark:border-amber-700">
-                    ISOLATING PATH
+                  <div id="flowGraphTraceBadge" class="hidden text-[9px] px-2 py-0.5 bg-amber-100 text-amber-900 dark:bg-amber-900/60 dark:text-amber-200 font-bold border border-amber-300 dark:border-amber-700 flex items-center gap-1.5">
+                    <span>LINKED FILTER ACTIVE</span>
+                    <button type="button" onclick="clearFlowTrace()" class="px-1.5 py-0.2 bg-amber-200 hover:bg-amber-300 dark:bg-amber-800 dark:hover:bg-amber-700 text-amber-950 dark:text-amber-100 font-mono text-[9px] border border-amber-400 dark:border-amber-600 transition cursor-pointer">✕ Reset (Show All)</button>
                   </div>
                 </div>
 
