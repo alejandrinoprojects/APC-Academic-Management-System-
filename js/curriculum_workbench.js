@@ -3798,31 +3798,61 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     // =========================================================================
     let currentRegistrarTab = 1;
     let currentPrintArrowStyle = 'orthogonal';
-    let currentRegistrarViewFormat = 'doc'; // 'doc' | 'pdf' | 'sheet'
-    let currentGeneratedPdfBlobUrl = null;
+    let currentRegistrarViewFormat = 'doc'; // 'doc' (PDF Document System) | 'sheet' (Spreadsheet Grid)
+    const registrarPdfBlobCache = {};
 
     function renderRegistrarPdfView(tabIdx) {
       const idx = tabIdx || currentRegistrarTab || 1;
       const pdfWrapper = document.getElementById('regDocPdfWrapper');
       const frame = document.getElementById('regDocPdfFrame');
       const loader = document.getElementById('pdfLoadingIndicator');
+      const loaderText = document.getElementById('pdfLoadingText');
       const activeDoc = document.getElementById('regDocView_' + idx);
+      const docWrapper = document.getElementById('allRegistrarDocsWrapper');
 
       if (!activeDoc || !pdfWrapper || !frame) return;
-
-      if (loader) loader.classList.remove('hidden');
 
       // Make sure doc content is mounted
       if (!activeDoc.innerHTML.trim() && window.REGISTRAR_DOCS && window.REGISTRAR_DOCS[idx]) {
         activeDoc.innerHTML = window.REGISTRAR_DOCS[idx];
       }
 
+      // Check cache first for 0ms instant tab switching
+      if (registrarPdfBlobCache[idx]) {
+        if (frame.src !== registrarPdfBlobCache[idx]) {
+          frame.src = registrarPdfBlobCache[idx];
+        }
+        if (loader) loader.classList.add('hidden');
+        return;
+      }
+
+      // Show loader with friendly title
+      if (loader) {
+        loader.classList.remove('hidden');
+        if (loaderText) {
+          loaderText.textContent = `Rendering authentic Letter-size PDF (${getRegistrarDocTitle(idx)})...`;
+        }
+      }
+
+      // Ensure docWrapper layout is available off-screen for html2canvas
+      if (docWrapper && !isRegistrarEditingActive) {
+        docWrapper.classList.remove('hidden');
+        docWrapper.style.position = 'fixed';
+        docWrapper.style.left = '-99999px';
+        docWrapper.style.top = '0';
+        docWrapper.style.opacity = '0';
+        docWrapper.style.pointerEvents = 'none';
+        docWrapper.style.zIndex = '-1';
+      }
+
+      activeDoc.classList.remove('hidden');
+
       const isLandscape = (idx === 1 || idx === 5 || idx === 6);
       const opt = {
-        margin: [0.35, 0.35, 0.35, 0.35],
+        margin: [0.3, 0.3, 0.3, 0.3],
         filename: `APC_Curriculum_Sheet_${idx}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 1.4, useCORS: true, logging: false },
         jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
         pagebreak: { mode: ['css', 'legacy'] }
       };
@@ -3830,11 +3860,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (typeof html2pdf !== 'undefined') {
         html2pdf().set(opt).from(activeDoc).toPdf().get('pdf').then(function(pdfObj) {
           const blob = pdfObj.output('blob');
-          if (currentGeneratedPdfBlobUrl) {
-            URL.revokeObjectURL(currentGeneratedPdfBlobUrl);
-          }
-          currentGeneratedPdfBlobUrl = URL.createObjectURL(blob);
-          frame.src = currentGeneratedPdfBlobUrl;
+          const blobUrl = URL.createObjectURL(blob);
+          registrarPdfBlobCache[idx] = blobUrl;
+          frame.src = blobUrl;
           if (loader) loader.classList.add('hidden');
         }).catch(function(err) {
           console.warn('[PDF Gen] html2pdf fallback:', err);
@@ -3847,14 +3875,23 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     function downloadCurrentPdfDoc() {
       const idx = currentRegistrarTab || 1;
+      if (registrarPdfBlobCache[idx]) {
+        const link = document.createElement('a');
+        link.href = registrarPdfBlobCache[idx];
+        link.download = `APC_Curriculum_Sheet_${idx}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      }
       const activeDoc = document.getElementById('regDocView_' + idx);
       if (!activeDoc) return;
       const isLandscape = (idx === 1 || idx === 5 || idx === 6);
       const opt = {
-        margin: [0.35, 0.35, 0.35, 0.35],
+        margin: [0.3, 0.3, 0.3, 0.3],
         filename: `APC_Curriculum_Sheet_${idx}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 1.4, useCORS: true, logging: false },
         jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
         pagebreak: { mode: ['css', 'legacy'] }
       };
@@ -3871,32 +3908,53 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const pdfWrapper = document.getElementById('regDocPdfWrapper');
       const sheetWrapper = document.getElementById('regDocSpreadsheetWrapper');
       const btnDoc = document.getElementById('btnRegViewDoc');
-      const btnPdf = document.getElementById('btnRegViewPdf');
       const btnSheet = document.getElementById('btnRegViewSheet');
 
       const activeClass = 'px-3 py-1 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer rounded-none bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs border border-slate-200 dark:border-slate-700';
       const inactiveClass = 'px-3 py-1 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer rounded-none';
 
       if (btnDoc) btnDoc.className = (format === 'doc') ? activeClass : inactiveClass;
-      if (btnPdf) btnPdf.className = (format === 'pdf') ? activeClass : inactiveClass;
       if (btnSheet) btnSheet.className = (format === 'sheet') ? activeClass : inactiveClass;
 
-      if (format === 'pdf') {
-        if (docWrapper) docWrapper.classList.add('hidden');
-        if (sheetWrapper) sheetWrapper.classList.add('hidden');
-        if (pdfWrapper) pdfWrapper.classList.remove('hidden');
-        renderRegistrarPdfView(currentRegistrarTab || 1);
-      } else if (format === 'sheet') {
-        if (docWrapper) docWrapper.classList.add('hidden');
+      if (format === 'sheet') {
         if (pdfWrapper) pdfWrapper.classList.add('hidden');
+        if (docWrapper) {
+          docWrapper.classList.add('hidden');
+          docWrapper.style.position = '';
+          docWrapper.style.left = '';
+          docWrapper.style.top = '';
+          docWrapper.style.opacity = '';
+          docWrapper.style.pointerEvents = '';
+          docWrapper.style.zIndex = '';
+        }
         if (sheetWrapper) sheetWrapper.classList.remove('hidden');
         renderRegistrarSpreadsheetGrid(currentRegistrarTab || 1);
       } else {
+        // format === 'doc' -> Uses PDF System!
         if (sheetWrapper) sheetWrapper.classList.add('hidden');
-        if (pdfWrapper) pdfWrapper.classList.add('hidden');
-        if (docWrapper) docWrapper.classList.remove('hidden');
-        if (currentRegistrarTab === 1) {
-          setTimeout(drawPrintArrows, 60);
+        if (isRegistrarEditingActive) {
+          if (pdfWrapper) pdfWrapper.classList.add('hidden');
+          if (docWrapper) {
+            docWrapper.classList.remove('hidden');
+            docWrapper.style.position = '';
+            docWrapper.style.left = '';
+            docWrapper.style.top = '';
+            docWrapper.style.opacity = '';
+            docWrapper.style.pointerEvents = '';
+            docWrapper.style.zIndex = '';
+          }
+        } else {
+          if (pdfWrapper) pdfWrapper.classList.remove('hidden');
+          if (docWrapper) {
+            docWrapper.classList.remove('hidden');
+            docWrapper.style.position = 'fixed';
+            docWrapper.style.left = '-99999px';
+            docWrapper.style.top = '0';
+            docWrapper.style.opacity = '0';
+            docWrapper.style.pointerEvents = 'none';
+            docWrapper.style.zIndex = '-1';
+          }
+          renderRegistrarPdfView(currentRegistrarTab || 1);
         }
       }
     }
@@ -3995,8 +4053,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (currentRegistrarViewFormat === 'sheet' && typeof renderRegistrarSpreadsheetGrid === 'function') {
         renderRegistrarSpreadsheetGrid(tabIdx);
       }
-      // If in PDF view mode, re-render the PDF document for the active sheet tab
-      if (currentRegistrarViewFormat === 'pdf' && typeof renderRegistrarPdfView === 'function') {
+      // If in Document View (PDF system), re-render the PDF document for the active sheet tab
+      if (currentRegistrarViewFormat === 'doc' && typeof renderRegistrarPdfView === 'function' && !isRegistrarEditingActive) {
         renderRegistrarPdfView(tabIdx);
       }
 
@@ -4031,6 +4089,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const container = document.getElementById(activeDocId);
       const saveBtn = document.getElementById('btnSaveRegistrarDoc');
       const toggleText = document.getElementById('editRegistrarDocText');
+      const docWrapper = document.getElementById('allRegistrarDocsWrapper');
+      const pdfWrapper = document.getElementById('regDocPdfWrapper');
       if (!container) return;
 
       isRegistrarEditingActive = !isRegistrarEditingActive;
@@ -4045,6 +4105,31 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           el.classList.remove('reg-editing-node');
         }
       });
+
+      if (isRegistrarEditingActive) {
+        if (pdfWrapper) pdfWrapper.classList.add('hidden');
+        if (docWrapper) {
+          docWrapper.classList.remove('hidden');
+          docWrapper.style.position = '';
+          docWrapper.style.left = '';
+          docWrapper.style.top = '';
+          docWrapper.style.opacity = '';
+          docWrapper.style.pointerEvents = '';
+          docWrapper.style.zIndex = '';
+        }
+      } else {
+        if (currentRegistrarViewFormat === 'doc') {
+          if (pdfWrapper) pdfWrapper.classList.remove('hidden');
+          if (docWrapper) {
+            docWrapper.style.position = 'fixed';
+            docWrapper.style.left = '-99999px';
+            docWrapper.style.top = '0';
+            docWrapper.style.opacity = '0';
+            docWrapper.style.pointerEvents = 'none';
+            docWrapper.style.zIndex = '-1';
+          }
+        }
+      }
 
       if (saveBtn) {
         if (isRegistrarEditingActive) saveBtn.classList.remove('hidden');
@@ -4191,6 +4276,25 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
       appendAuditLog(newEntry);
 
+      if (registrarPdfBlobCache[currentRegistrarTab || 1]) {
+        URL.revokeObjectURL(registrarPdfBlobCache[currentRegistrarTab || 1]);
+        delete registrarPdfBlobCache[currentRegistrarTab || 1];
+      }
+      if (currentRegistrarViewFormat === 'doc') {
+        const docWrapper = document.getElementById('allRegistrarDocsWrapper');
+        const pdfWrapper = document.getElementById('regDocPdfWrapper');
+        if (pdfWrapper) pdfWrapper.classList.remove('hidden');
+        if (docWrapper) {
+          docWrapper.style.position = 'fixed';
+          docWrapper.style.left = '-99999px';
+          docWrapper.style.top = '0';
+          docWrapper.style.opacity = '0';
+          docWrapper.style.pointerEvents = 'none';
+          docWrapper.style.zIndex = '-1';
+        }
+        renderRegistrarPdfView(currentRegistrarTab || 1);
+      }
+
       if (typeof showToast === 'function') {
         showToast(`✓ Document changes saved and recorded in System Audit Trail!`);
       }
@@ -4249,6 +4353,16 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function printCurrentRegistrarDoc() {
+      const frame = document.getElementById('regDocPdfFrame');
+      if (currentRegistrarViewFormat === 'doc' && frame && frame.contentWindow) {
+        try {
+          frame.contentWindow.focus();
+          frame.contentWindow.print();
+          return;
+        } catch (e) {
+          console.warn('[Print PDF frame fallback]:', e);
+        }
+      }
       if (currentRegistrarTab === 1) {
         drawPrintArrows();
       }
@@ -4588,6 +4702,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
 
     window.switchRegistrarDocTab = switchRegistrarDocTab;
     window.navigateRegistrarDoc = navigateRegistrarDoc;
+    window.openRegistrarDoc = navigateRegistrarDoc;
     window.getRegistrarDocTitle = getRegistrarDocTitle;
     window.toggleRegistrarDocEdit = toggleRegistrarDocEdit;
     window.saveRegistrarDocEdits = saveRegistrarDocEdits;

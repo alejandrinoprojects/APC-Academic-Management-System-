@@ -4037,134 +4037,276 @@
               </div>
             </div>
 
-            <!-- OFFICIAL CURRICULUM DOCUMENTS INFORMATION & BREAKDOWN -->
-            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-5">
-              <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
+            <!-- 1. TERM-BY-TERM CREDIT LOAD & BREAKDOWN (12 TRIMESTERS) -->
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
                 <div>
                   <h4 class="font-extrabold text-slate-900 dark:text-white text-base tracking-tight flex items-center gap-2">
-                    <span>📑</span>
-                    <span>Official Curriculum Documents Summary</span>
+                    <span>📅</span>
+                    <span>Term-by-Term Credit Load Breakdown (4 Academic Years &bull; 12 Trimesters)</span>
                   </h4>
-                  <p class="text-xs text-slate-500 dark:text-slate-400">Key metrics, term distribution, and course structures from the official 7 institutional curriculum sheets. Click any document card to open the sheet directly.</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Complete breakdown of Lecture units, Laboratory units, and Total units per trimester from Sheet 1 Official Flowchart &amp; Sheet 2 Prospectus.</p>
                 </div>
-                <button type="button" onclick="navigateView('registrar')" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-white dark:text-[#E5A823] border border-[#E5A823]/40 text-xs font-bold shadow-xs transition cursor-pointer flex items-center gap-1.5">
-                  <span>📂</span>
-                  <span>Open Official Documents Center &rarr;</span>
-                </button>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="px-2 py-0.5 bg-blue-50 dark:bg-blue-950 text-blue-900 dark:text-blue-200 font-mono font-bold border border-blue-200 dark:border-blue-800">
+                    Grand Total: 184 Units (139 Lec + 45 Lab)
+                  </span>
+                  <button type="button" onclick="openRegistrarDoc(1)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold border border-slate-300 dark:border-slate-600 transition cursor-pointer">
+                    View in Flowchart &rarr;
+                  </button>
+                </div>
               </div>
 
-              <!-- Official Documents Grid -->
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-                
-                <!-- Doc 1: Official Flowchart -->
-                <div onclick="openRegistrarDoc(1)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-blue-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
-                  <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition flex items-center gap-1.5">
-                        <span>🗺️</span>
-                        <span>Sheet 1: Flowchart</span>
-                      </span>
-                      <span class="text-[10px] bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 px-1.5 py-0.5 font-bold font-mono">12 Terms Matrix</span>
-                    </div>
-                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Full 4-Year x 3-Trimester prerequisite progression map with course connections, prerequisite arrows, and lecture/lab unit distributions.</p>
-                  </div>
-                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500 font-mono">12 Terms &bull; 74 Courses</span>
-                    <span class="text-blue-600 dark:text-blue-400 font-bold group-hover:underline">Open Flowchart &rarr;</span>
-                  </div>
-                </div>
-
-                <!-- Doc 2: Curriculum Prospectus -->
-                <div onclick="openRegistrarDoc(2)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-amber-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
-                  <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition flex items-center gap-1.5">
-                        <span>📜</span>
-                        <span>Sheet 2: Prospectus</span>
-                      </span>
-                      <span class="text-[10px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 px-1.5 py-0.5 font-bold font-mono">Year 1 &ndash; Year 4</span>
-                    </div>
-                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Yearly breakdown of course codes, descriptive titles, contact hours, lecture/lab credits, and prerequisite/co-requisite requirements.</p>
-                  </div>
-                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500 font-mono">All 4 Academic Years</span>
-                    <span class="text-amber-600 dark:text-amber-400 font-bold group-hover:underline">Open Prospectus &rarr;</span>
-                  </div>
-                </div>
-
-                <!-- Doc 3: Course Catalog -->
-                <div onclick="openRegistrarDoc(3)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-emerald-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
-                  <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition flex items-center gap-1.5">
-                        <span>📚</span>
-                        <span>Sheet 3: Course Catalog</span>
-                      </span>
-                      <span class="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-1.5 py-0.5 font-bold font-mono">74 Courses</span>
-                    </div>
-                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Complete course specifications, institutional learning outcomes, formal course descriptions, and laboratory contact requirements.</p>
-                  </div>
-                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500 font-mono">Descriptions &amp; Outlines</span>
-                    <span class="text-emerald-600 dark:text-emerald-400 font-bold group-hover:underline">Open Catalog &rarr;</span>
-                  </div>
-                </div>
-
-                <!-- Doc 4: Program of Study -->
-                <div onclick="openRegistrarDoc(4)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-purple-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
-                  <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-purple-600 transition flex items-center gap-1.5">
-                        <span>📑</span>
-                        <span>Sheet 4: Program of Study</span>
-                      </span>
-                      <span class="text-[10px] bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 px-1.5 py-0.5 font-bold font-mono">Graduation Path</span>
-                    </div>
-                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Official graduation curriculum pathway defining required course sequencing, residency standards, and total semester unit loads.</p>
-                  </div>
-                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500 font-mono">Statutory Roadmap</span>
-                    <span class="text-purple-600 dark:text-purple-400 font-bold group-hover:underline">Open Program &rarr;</span>
-                  </div>
-                </div>
-
-                <!-- Doc 5: Curriculum Map -->
-                <div onclick="openRegistrarDoc(5)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-indigo-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
-                  <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition flex items-center gap-1.5">
-                        <span>🎯</span>
-                        <span>Sheet 5: Curriculum Map</span>
-                      </span>
-                      <span class="text-[10px] bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 px-1.5 py-0.5 font-bold font-mono">13 SOs Matrix</span>
-                    </div>
-                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Program Educational Objectives (PEO) and Student Outcomes (SO) matrix with Introductory, Enabling, and Demonstrative (I-E-D) designations.</p>
-                  </div>
-                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500 font-mono">Outcome Alignment</span>
-                    <span class="text-indigo-600 dark:text-indigo-400 font-bold group-hover:underline">Open Map &rarr;</span>
-                  </div>
-                </div>
-
-                <!-- Doc 7: Summary of Units -->
-                <div onclick="openRegistrarDoc(7)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-rose-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
-                  <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-rose-600 transition flex items-center gap-1.5">
-                        <span>📊</span>
-                        <span>Sheet 7: Summary of Units</span>
-                      </span>
-                      <span class="text-[10px] bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 px-1.5 py-0.5 font-bold font-mono">172.0 Units Total</span>
-                    </div>
-                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Official classification of Technical (Math, Natural Sciences, Core Engineering, Electives) and Non-Technical (GE, PE, NSTP) credit audits.</p>
-                  </div>
-                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500 font-mono">100% CMO Compliance</span>
-                    <span class="text-rose-600 dark:text-rose-400 font-bold group-hover:underline">Open Summary &rarr;</span>
-                  </div>
-                </div>
-
+              <!-- 12-Trimester Table -->
+              <div class="overflow-x-auto border border-slate-200 dark:border-slate-700">
+                <table class="w-full text-center text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-[#002855] text-white text-[11px] font-bold">
+                      <th class="p-2 border-r border-slate-700 text-left min-w-[120px]">Year Level</th>
+                      <th colspan="3" class="p-2 border-r border-slate-700 bg-[#002855]">1st Year</th>
+                      <th colspan="3" class="p-2 border-r border-slate-700 bg-[#003366]">2nd Year</th>
+                      <th colspan="3" class="p-2 border-r border-slate-700 bg-[#002855]">3rd Year</th>
+                      <th colspan="3" class="p-2 border-r border-slate-700 bg-[#003366]">4th Year</th>
+                      <th rowspan="2" class="p-2 bg-[#E5A823] text-slate-950 font-black">Total</th>
+                    </tr>
+                    <tr class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-mono font-bold border-b border-slate-300 dark:border-slate-700">
+                      <th class="p-1.5 border-r border-slate-300 dark:border-slate-700 text-left font-sans">Unit Metric</th>
+                      <th class="p-1.5 border-r border-slate-200 dark:border-slate-700">T1</th>
+                      <th class="p-1.5 border-r border-slate-200 dark:border-slate-700">T2</th>
+                      <th class="p-1.5 border-r border-slate-300 dark:border-slate-700">T3</th>
+                      <th class="p-1.5 border-r border-slate-200 dark:border-slate-700">T1</th>
+                      <th class="p-1.5 border-r border-slate-200 dark:border-slate-700">T2</th>
+                      <th class="p-1.5 border-r border-slate-300 dark:border-slate-700">T3</th>
+                      <th class="p-1.5 border-r border-slate-200 dark:border-slate-700">T1</th>
+                      <th class="p-1.5 border-r border-slate-200 dark:border-slate-700">T2</th>
+                      <th class="p-1.5 border-r border-slate-300 dark:border-slate-700">T3</th>
+                      <th class="p-1.5 border-r border-slate-200 dark:border-slate-700">T1</th>
+                      <th class="p-1.5 border-r border-slate-200 dark:border-slate-700">T2</th>
+                      <th class="p-1.5 border-r border-slate-300 dark:border-slate-700">T3</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-mono text-[11px] text-slate-800 dark:text-slate-200">
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                      <td class="p-2 border-r border-slate-200 dark:border-slate-700 text-left font-sans font-bold">Lecture Units</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">15</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">14</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700">14</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">14</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">15</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700">18</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">17</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">13</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700">14</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">9</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">0</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700">0</td>
+                      <td class="p-2 bg-slate-100 dark:bg-slate-800 font-black text-slate-900 dark:text-white">139</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                      <td class="p-2 border-r border-slate-200 dark:border-slate-700 text-left font-sans font-bold">Laboratory Units</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">3</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">3</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700">3</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">3</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">3</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700">3</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">3</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">3</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700">0</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">0</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700">0</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700">0</td>
+                      <td class="p-2 bg-slate-100 dark:bg-slate-800 font-black text-slate-900 dark:text-white">45</td>
+                    </tr>
+                    <tr class="bg-blue-50/70 dark:bg-blue-950/40 font-black text-slate-900 dark:text-white">
+                      <td class="p-2 border-r border-slate-200 dark:border-slate-700 text-left font-sans">Total Term Units</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-300">18</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-300">17</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700 text-blue-700 dark:text-blue-300">17</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-300">17</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-300">18</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700 text-blue-700 dark:text-blue-300">21</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-300">20</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-300">16</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700 text-blue-700 dark:text-blue-300">14</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-300">15</td>
+                      <td class="p-1.5 border-r border-slate-200 dark:border-slate-700 text-blue-700 dark:text-blue-300">6</td>
+                      <td class="p-1.5 border-r border-slate-300 dark:border-slate-700 text-blue-700 dark:text-blue-300">6</td>
+                      <td class="p-2 bg-amber-400 dark:bg-amber-500 text-slate-950 font-black text-sm">184</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
+            </div>
+
+            <!-- 2. TECHNICAL VS NON-TECHNICAL DISTRIBUTION & STATUTORY AUDIT (SHEET 7 SUMMARY OF UNITS) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              
+              <!-- Left: Technical vs Non-Technical Table -->
+              <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                  <h4 class="font-extrabold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                    <span>📊</span>
+                    <span>Technical vs. Non-Technical Distribution (Sheet 7)</span>
+                  </h4>
+                  <button type="button" onclick="openRegistrarDoc(7)" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
+                    Open Sheet 7 &rarr;
+                  </button>
+                </div>
+                <div class="overflow-x-auto border border-slate-200 dark:border-slate-700 text-xs">
+                  <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-100 dark:bg-slate-800 text-[10px] uppercase font-bold text-slate-700 dark:text-slate-300">
+                      <tr>
+                        <th class="p-2 border-b border-slate-200 dark:border-slate-700">Course Classification</th>
+                        <th class="p-2 border-b border-slate-200 dark:border-slate-700 text-center">CHED Min</th>
+                        <th class="p-2 border-b border-slate-200 dark:border-slate-700 text-center">APC Actual</th>
+                        <th class="p-2 border-b border-slate-200 dark:border-slate-700 text-center">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800 text-[11px]">
+                      <tr class="bg-slate-50 dark:bg-slate-800/40 font-bold text-slate-900 dark:text-slate-100">
+                        <td colspan="4" class="p-1.5 bg-blue-50/70 dark:bg-blue-950/40 text-[#002855] dark:text-blue-300">I. TECHNICAL COURSES (134 Units Total)</td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">A. Mathematics</td>
+                        <td class="p-2 text-center font-mono">12</td>
+                        <td class="p-2 text-center font-mono font-bold text-blue-600 dark:text-blue-400">12</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">B. Physical Sciences</td>
+                        <td class="p-2 text-center font-mono">8</td>
+                        <td class="p-2 text-center font-mono font-bold text-blue-600 dark:text-blue-400">8</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">C. Basic Engineering Sciences</td>
+                        <td class="p-2 text-center font-mono">7</td>
+                        <td class="p-2 text-center font-mono font-bold text-blue-600 dark:text-blue-400">8</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">+1 SURPLUS</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">D. Allied Engineering Courses</td>
+                        <td class="p-2 text-center font-mono">8</td>
+                        <td class="p-2 text-center font-mono font-bold text-blue-600 dark:text-blue-400">8</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">E. Professional Core Courses</td>
+                        <td class="p-2 text-center font-mono">72</td>
+                        <td class="p-2 text-center font-mono font-bold text-blue-600 dark:text-blue-400">89</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">+17 SURPLUS</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">F. Cognates / Electives</td>
+                        <td class="p-2 text-center font-mono">9</td>
+                        <td class="p-2 text-center font-mono font-bold text-blue-600 dark:text-blue-400">9</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr class="bg-slate-50 dark:bg-slate-800/40 font-bold text-slate-900 dark:text-slate-100">
+                        <td colspan="4" class="p-1.5 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-300">II. NON-TECHNICAL COURSES (50 Units Total)</td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">A. Social Sciences &amp; GE Core</td>
+                        <td class="p-2 text-center font-mono">24</td>
+                        <td class="p-2 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">24</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">B. GEC Electives</td>
+                        <td class="p-2 text-center font-mono">9</td>
+                        <td class="p-2 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">9</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">C. Mandated: Life &amp; Works of Rizal</td>
+                        <td class="p-2 text-center font-mono">3</td>
+                        <td class="p-2 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">3</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">D. Physical Education (PE 1 to 4)</td>
+                        <td class="p-2 text-center font-mono">8</td>
+                        <td class="p-2 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">8</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr>
+                        <td class="p-2 pl-4">E. National Service Training (NSTP 1-2)</td>
+                        <td class="p-2 text-center font-mono">6</td>
+                        <td class="p-2 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">6</td>
+                        <td class="p-2 text-center"><span class="px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800">PASSED</span></td>
+                      </tr>
+                      <tr class="bg-slate-900 text-white font-black text-xs">
+                        <td class="p-2.5">PROGRAM TOTAL UNITS</td>
+                        <td class="p-2.5 text-center font-mono">166</td>
+                        <td class="p-2.5 text-center font-mono text-amber-400 font-black text-sm">184</td>
+                        <td class="p-2.5 text-center"><span class="px-2 py-0.5 text-[10px] font-black bg-emerald-500 text-slate-950">100% COMPLIANT</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Right: Comparative Summary Table (Sheet 6) -->
+              <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                  <h4 class="font-extrabold text-slate-900 dark:text-white text-sm flex items-center gap-2">
+                    <span>⚖️</span>
+                    <span>Comparative Summary Across Standards (Sheet 6)</span>
+                  </h4>
+                  <button type="button" onclick="openRegistrarDoc(6)" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
+                    Open Sheet 6 &rarr;
+                  </button>
+                </div>
+                <div class="overflow-x-auto border border-slate-200 dark:border-slate-700 text-xs">
+                  <table class="w-full text-center border-collapse">
+                    <thead class="bg-[#002855] text-white text-[10px] font-bold">
+                      <tr>
+                        <th class="p-2 text-left border-r border-slate-700">Curricular Benchmark</th>
+                        <th class="p-2 border-r border-slate-700">Lecture</th>
+                        <th class="p-2 border-r border-slate-700">Lab</th>
+                        <th class="p-2">Total Units</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800 font-mono text-[11px] text-slate-800 dark:text-slate-200">
+                      <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                        <td class="p-2 text-left font-sans font-bold">CHED CMO No. 92 Standard</td>
+                        <td class="p-2">142</td>
+                        <td class="p-2">24</td>
+                        <td class="p-2 font-black text-blue-700 dark:text-blue-400 text-sm">166.0</td>
+                      </tr>
+                      <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                        <td class="p-2 text-left font-sans font-bold">Historical BSCpE Baseline (2018)</td>
+                        <td class="p-2">171</td>
+                        <td class="p-2">33</td>
+                        <td class="p-2 font-black text-slate-600 dark:text-slate-400 text-sm">204.0</td>
+                      </tr>
+                      <tr class="bg-amber-50/80 dark:bg-amber-950/30 hover:bg-amber-100/80">
+                        <td class="p-2 text-left font-sans font-black text-slate-900 dark:text-white">Active APC BSCpE (2026/2027)</td>
+                        <td class="p-2 font-bold text-slate-900 dark:text-white">139</td>
+                        <td class="p-2 font-bold text-slate-900 dark:text-white">45</td>
+                        <td class="p-2 font-black text-[#002855] dark:text-amber-400 text-base">184.0</td>
+                      </tr>
+                      <tr class="bg-emerald-50/70 dark:bg-emerald-950/30">
+                        <td class="p-2 text-left font-sans font-bold text-emerald-800 dark:text-emerald-300">Institutional Net Surplus</td>
+                        <td class="p-2 font-bold text-emerald-700 dark:text-emerald-400">-3</td>
+                        <td class="p-2 font-bold text-emerald-700 dark:text-emerald-400">+21</td>
+                        <td class="p-2 font-black text-emerald-700 dark:text-emerald-400 text-sm">+18.0</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Strategic Specialization Callout -->
+                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 space-y-1">
+                  <div class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    <span>💡</span>
+                    <span>Curricular Specialization Tracks:</span>
+                  </div>
+                  <p class="leading-relaxed">Includes 3 industry-aligned elective clusters (Software Development, Machine Learning, and Robotics Technology) with comprehensive 12-unit Capstone and Industry Immersion (INTERN 1 &amp; 2).</p>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
@@ -4422,8 +4564,8 @@
             </div>
           </div>
 
-          <!-- DOCUMENT PAGES CONTAINER (Printable Official Paper Layout) -->
-          <div id="allRegistrarDocsWrapper" class="w-full flex justify-center py-4 bg-slate-200/60 dark:bg-slate-950/40">
+          <!-- DOCUMENT PAGES CONTAINER (Staged off-screen for editing and PDF generation) -->
+          <div id="allRegistrarDocsWrapper" class="w-full flex justify-center py-4 bg-slate-200/60 dark:bg-slate-950/40" style="position: fixed; left: -99999px; top: 0; opacity: 0; pointer-events: none; z-index: -1;">
             <div id="regDocView_1" class="reg-doc-page reg-doc-letter-landscape bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
             <div id="regDocView_2" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
             <div id="regDocView_3" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
@@ -4433,12 +4575,12 @@
             <div id="regDocView_7" class="reg-doc-page reg-doc-letter-portrait hidden bg-white w-full text-slate-900 font-sans mx-auto print-page-wrapper"></div>
           </div>
 
-          <!-- PDF VIEWER CONTAINER (Authentic Letter Paper with Browser-Native Automatic Page Breaks) -->
-          <div id="regDocPdfWrapper" class="hidden w-full flex flex-col items-center py-2 space-y-2">
-            <div id="pdfLoadingIndicator" class="w-full max-w-4xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 p-4 flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 shadow-xs">
-              <div class="flex items-center space-x-2">
+          <!-- PDF VIEWER CONTAINER (Document View: Authentic Letter Paper with Browser-Native Page Breaks) -->
+          <div id="regDocPdfWrapper" class="w-full flex flex-col py-2 space-y-2">
+            <div id="pdfLoadingIndicator" class="hidden w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 p-3.5 flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 shadow-xs">
+              <div class="flex items-center space-x-2.5">
                 <svg class="animate-spin h-4 w-4 text-rose-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
-                <span class="font-bold">Generating authentic Letter-size PDF document...</span>
+                <span id="pdfLoadingText" class="font-bold">Rendering authentic Letter-size PDF document...</span>
               </div>
               <div class="flex items-center space-x-2">
                 <button type="button" onclick="downloadCurrentPdfDoc()" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-none shadow-xs text-xs flex items-center gap-1 cursor-pointer">
@@ -4446,7 +4588,7 @@
                 </button>
               </div>
             </div>
-            <iframe id="regDocPdfFrame" class="w-full max-w-5xl h-[880px] bg-slate-800 border border-slate-400 dark:border-slate-700 shadow-lg" src="about:blank" title="Official Document PDF Viewer"></iframe>
+            <iframe id="regDocPdfFrame" class="w-full h-[calc(100vh-210px)] min-h-[920px] bg-slate-800 border border-slate-300 dark:border-slate-700 shadow-md" src="about:blank" title="Official Document PDF Viewer"></iframe>
           </div>
 
           <!-- SPREADSHEET GRID CONTAINER (Structured Grid View Matching Official Sheet Export Format) -->
