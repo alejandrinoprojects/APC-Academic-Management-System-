@@ -4036,6 +4036,136 @@
                 </div>
               </div>
             </div>
+
+            <!-- OFFICIAL CURRICULUM DOCUMENTS INFORMATION & BREAKDOWN -->
+            <div class="bg-white dark:bg-[#131923] border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-5">
+              <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
+                <div>
+                  <h4 class="font-extrabold text-slate-900 dark:text-white text-base tracking-tight flex items-center gap-2">
+                    <span>📑</span>
+                    <span>Official Curriculum Documents Summary</span>
+                  </h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Key metrics, term distribution, and course structures from the official 7 institutional curriculum sheets. Click any document card to open the sheet directly.</p>
+                </div>
+                <button type="button" onclick="navigateView('registrar')" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-white dark:text-[#E5A823] border border-[#E5A823]/40 text-xs font-bold shadow-xs transition cursor-pointer flex items-center gap-1.5">
+                  <span>📂</span>
+                  <span>Open Official Documents Center &rarr;</span>
+                </button>
+              </div>
+
+              <!-- Official Documents Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                
+                <!-- Doc 1: Official Flowchart -->
+                <div onclick="openRegistrarDoc(1)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-blue-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition flex items-center gap-1.5">
+                        <span>🗺️</span>
+                        <span>Sheet 1: Flowchart</span>
+                      </span>
+                      <span class="text-[10px] bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 px-1.5 py-0.5 font-bold font-mono">12 Terms Matrix</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Full 4-Year x 3-Trimester prerequisite progression map with course connections, prerequisite arrows, and lecture/lab unit distributions.</p>
+                  </div>
+                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+                    <span class="text-slate-500 font-mono">12 Terms &bull; 74 Courses</span>
+                    <span class="text-blue-600 dark:text-blue-400 font-bold group-hover:underline">Open Flowchart &rarr;</span>
+                  </div>
+                </div>
+
+                <!-- Doc 2: Curriculum Prospectus -->
+                <div onclick="openRegistrarDoc(2)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-amber-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition flex items-center gap-1.5">
+                        <span>📜</span>
+                        <span>Sheet 2: Prospectus</span>
+                      </span>
+                      <span class="text-[10px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 px-1.5 py-0.5 font-bold font-mono">Year 1 &ndash; Year 4</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Yearly breakdown of course codes, descriptive titles, contact hours, lecture/lab credits, and prerequisite/co-requisite requirements.</p>
+                  </div>
+                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+                    <span class="text-slate-500 font-mono">All 4 Academic Years</span>
+                    <span class="text-amber-600 dark:text-amber-400 font-bold group-hover:underline">Open Prospectus &rarr;</span>
+                  </div>
+                </div>
+
+                <!-- Doc 3: Course Catalog -->
+                <div onclick="openRegistrarDoc(3)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-emerald-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition flex items-center gap-1.5">
+                        <span>📚</span>
+                        <span>Sheet 3: Course Catalog</span>
+                      </span>
+                      <span class="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-1.5 py-0.5 font-bold font-mono">74 Courses</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Complete course specifications, institutional learning outcomes, formal course descriptions, and laboratory contact requirements.</p>
+                  </div>
+                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+                    <span class="text-slate-500 font-mono">Descriptions &amp; Outlines</span>
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold group-hover:underline">Open Catalog &rarr;</span>
+                  </div>
+                </div>
+
+                <!-- Doc 4: Program of Study -->
+                <div onclick="openRegistrarDoc(4)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-purple-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-purple-600 transition flex items-center gap-1.5">
+                        <span>📑</span>
+                        <span>Sheet 4: Program of Study</span>
+                      </span>
+                      <span class="text-[10px] bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 px-1.5 py-0.5 font-bold font-mono">Graduation Path</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Official graduation curriculum pathway defining required course sequencing, residency standards, and total semester unit loads.</p>
+                  </div>
+                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+                    <span class="text-slate-500 font-mono">Statutory Roadmap</span>
+                    <span class="text-purple-600 dark:text-purple-400 font-bold group-hover:underline">Open Program &rarr;</span>
+                  </div>
+                </div>
+
+                <!-- Doc 5: Curriculum Map -->
+                <div onclick="openRegistrarDoc(5)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-indigo-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition flex items-center gap-1.5">
+                        <span>🎯</span>
+                        <span>Sheet 5: Curriculum Map</span>
+                      </span>
+                      <span class="text-[10px] bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 px-1.5 py-0.5 font-bold font-mono">13 SOs Matrix</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Program Educational Objectives (PEO) and Student Outcomes (SO) matrix with Introductory, Enabling, and Demonstrative (I-E-D) designations.</p>
+                  </div>
+                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+                    <span class="text-slate-500 font-mono">Outcome Alignment</span>
+                    <span class="text-indigo-600 dark:text-indigo-400 font-bold group-hover:underline">Open Map &rarr;</span>
+                  </div>
+                </div>
+
+                <!-- Doc 7: Summary of Units -->
+                <div onclick="openRegistrarDoc(7)" class="p-4 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:border-rose-500 hover:shadow-xs transition cursor-pointer group flex flex-col justify-between">
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 dark:text-white group-hover:text-rose-600 transition flex items-center gap-1.5">
+                        <span>📊</span>
+                        <span>Sheet 7: Summary of Units</span>
+                      </span>
+                      <span class="text-[10px] bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 px-1.5 py-0.5 font-bold font-mono">172.0 Units Total</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">Official classification of Technical (Math, Natural Sciences, Core Engineering, Electives) and Non-Technical (GE, PE, NSTP) credit audits.</p>
+                  </div>
+                  <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+                    <span class="text-slate-500 font-mono">100% CMO Compliance</span>
+                    <span class="text-rose-600 dark:text-rose-400 font-bold group-hover:underline">Open Summary &rarr;</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>
         </section>
 
