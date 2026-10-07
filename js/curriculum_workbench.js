@@ -686,7 +686,7 @@
       if (progChev) progChev.classList.add('rotate-90');
 
       // 5. Open Curriculums Management & Revision 2026-2030 ONLY for curriculum-specific views
-      const isCurriculumView = ['curriculum-home', 'flowchart', 'spreadsheet', 'registrar', 'obe', 'catalog', 'dashboard', 'compliance', 'delegation', 'audit'].includes(viewType) || (!viewType);
+      const isCurriculumView = ['curriculum-home', 'versioning-history', 'flowchart', 'spreadsheet', 'registrar', 'obe', 'catalog', 'dashboard', 'compliance', 'delegation', 'audit'].includes(viewType) || (!viewType);
 
       const curricCont = document.getElementById(progId + 'CurricCont');
       const curricChev = document.getElementById(progId + 'CurricChev');
@@ -832,6 +832,9 @@
         } else if (viewType === 'curriculum-home') {
           const curBtn = document.querySelector(`#node-${progId}-curriculums > button`);
           if (curBtn) curBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
+        } else if (viewType === 'versioning-history') {
+          const vhBtn = document.getElementById('nav-versioning-history');
+          if (vhBtn) vhBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
         } else if (!viewType || viewType === 'flowchart') {
           const fcBtn = document.getElementById(`nav-${progId}-flowchart`);
           if (fcBtn) fcBtn.classList.add('bg-[#E5A823]/20', 'text-[#E5A823]', 'font-bold', 'border-l-2', 'border-[#E5A823]');
@@ -3227,10 +3230,27 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         }
 
         if (viewId === 'versioning-history') {
+          // Keep the left panel tree expanded to Curriculum Management
+          const schoolsCont = document.getElementById('schoolsFolderCont');
+          if (schoolsCont) schoolsCont.classList.remove('hidden');
+          const schoolsChev = document.getElementById('schoolsFolderChev');
+          if (schoolsChev) schoolsChev.classList.add('rotate-90');
+
+          const soeCont = document.getElementById('soeFolderCont');
+          if (soeCont) soeCont.classList.remove('hidden');
+          const soeChev = document.getElementById('soeFolderChev');
+          if (soeChev) soeChev.classList.add('rotate-90');
+
           const cpeFolder = document.getElementById('cpeFolderCont');
           if (cpeFolder) cpeFolder.classList.remove('hidden');
+          const cpeFolderChev = document.getElementById('cpeFolderChev');
+          if (cpeFolderChev) cpeFolderChev.classList.add('rotate-90');
+
           const cpeCurric = document.getElementById('cpeCurricCont');
           if (cpeCurric) cpeCurric.classList.remove('hidden');
+          const cpeCurricChev = document.getElementById('cpeCurricChev');
+          if (cpeCurricChev) cpeCurricChev.classList.add('rotate-90');
+
           if (window.innerWidth >= 768) {
             const sidebar = document.getElementById('sidebar');
             if (sidebar) sidebar.classList.remove('-translate-x-full');
