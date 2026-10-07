@@ -1778,7 +1778,7 @@
           if (typeof setSpreadsheetYearScope === 'function') {
             setSpreadsheetYearScope(scope);
           }
-          const yearLabel = (scope === 'all') ? 'Master Spreadsheet (All 16 Years)' : `Curriculum Spreadsheet (Year ${scope})`;
+          const yearLabel = (scope === 'all') ? 'Curriculum Spreadsheet (CPE 2026)' : `Curriculum Spreadsheet (CPE ${scope === '1' ? '2026' : (scope === '2' ? '2025' : (scope === '3' ? '2024' : '2023'))})`;
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > ${yearLabel}`;
         } else if (targetView === 'dashboard' || targetView === 'compliance') {
           pText = `Schools > ${progInfo.schoolShort} > ${progCode} > Curriculum Dashboard`;
@@ -3542,7 +3542,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         setTimeout(() => notesEl.focus(), 100);
       }
       if (titleEl) {
-        titleEl.innerText = config.type === 'registrar' ? 'Save & Sync Document Revision' : 'Save & Sync Master Spreadsheet';
+        titleEl.innerText = config.type === 'registrar' ? 'Save & Sync Document Revision' : 'Save & Sync Curriculum Spreadsheet';
       }
       if (subEl) {
         subEl.innerText = 'Provide description notes for the permanent System Audit Trail.';
@@ -4652,7 +4652,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       // 4. Update top breadcrumbs
-      const yearLabel = (scope === 'all') ? 'Master Spreadsheet (All 16 Years)' : `Curriculum Spreadsheet (Year ${scope})`;
+      const yearLabel = (scope === 'all') ? 'Curriculum Spreadsheet (CPE 2026)' : `Curriculum Spreadsheet (CPE ${scope === '1' ? '2026' : (scope === '2' ? '2025' : (scope === '3' ? '2024' : '2023'))})`;
       if (topPill) {
         topPill.innerText = `Schools > ${progInfo.schoolShort} > ${prog} > ${yearLabel}`;
       }
@@ -4896,49 +4896,34 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const titleEl = document.getElementById('spreadsheetHeaderTitle');
       const subtitleEl = document.getElementById('spreadsheetHeaderSubtitle');
       if (titleEl && subtitleEl) {
-        if (sheetYearFilter === 'all') {
-          titleEl.innerText = 'Master Spreadsheet (All 16 Years)';
-          subtitleEl.innerText = 'Complete 16-Year Curricular Program Horizon • 296 Courses • Full Master Catalog and OBE Outcomes Matrix.';
-        } else {
-          const yrTitles = {
-            '1': 'Curriculum Spreadsheet (Year 1)',
-            '2': 'Curriculum Spreadsheet (Year 2)',
-            '3': 'Curriculum Spreadsheet (Year 3)',
-            '4': 'Curriculum Spreadsheet (Year 4)'
-          };
-          const yrSubtitles = {
-            '1': 'CPE2026 Curriculum • 22 Courses • Terms 1–3 • Official BSCpE Program',
-            '2': 'CPE2025 Curriculum • 21 Courses • Terms 4–6 • Official BSCpE Program',
-            '3': 'CPE2024 Curriculum • 22 Courses • Terms 7–9 • Official BSCpE Program',
-            '4': 'CPE2023 Curriculum • 9 Courses • Terms 10–12 • Official BSCpE Program'
-          };
-          titleEl.innerText = yrTitles[sheetYearFilter] || `Curriculum Spreadsheet (Year ${sheetYearFilter})`;
-          subtitleEl.innerText = yrSubtitles[sheetYearFilter] || `Academic Year ${sheetYearFilter} Courses`;
-        }
+        const yrTitles = {
+          '1': 'Curriculum Spreadsheet (CPE 2026)',
+          '2': 'Curriculum Spreadsheet (CPE 2025)',
+          '3': 'Curriculum Spreadsheet (CPE 2024)',
+          '4': 'Curriculum Spreadsheet (CPE 2023)',
+          'all': 'Curriculum Spreadsheet (CPE 2026)'
+        };
+        const yrSubtitles = {
+          '1': 'Complete 4-Year Curricular Program • 74 Courses • 184.0 Units across 12 Trimesters & Full OBE Outcomes Matrix.',
+          '2': 'Complete 4-Year Curricular Program (CPE 2025) • 74 Courses • 184.0 Units across 12 Trimesters & Full OBE Outcomes Matrix.',
+          '3': 'Complete 4-Year Curricular Program (CPE 2024) • 74 Courses • 184.0 Units across 12 Trimesters & Full OBE Outcomes Matrix.',
+          '4': 'Complete 4-Year Curricular Program (CPE 2023) • 74 Courses • 184.0 Units across 12 Trimesters & Full OBE Outcomes Matrix.',
+          'all': 'Complete 4-Year Curricular Program • 74 Courses • 184.0 Units across 12 Trimesters & Full OBE Outcomes Matrix.'
+        };
+        titleEl.innerText = yrTitles[sheetYearFilter] || `Curriculum Spreadsheet (Curriculum ${sheetYearFilter})`;
+        subtitleEl.innerText = yrSubtitles[sheetYearFilter] || `Complete 4-Year Curricular Program • 74 Courses`;
       }
 
       const notice = document.getElementById('sheetYearScopeNotice');
       const noticeText = document.getElementById('sheetYearScopeNoticeText');
       if (notice && noticeText) {
-        if (sheetYearFilter === 'all') {
-          notice.classList.add('hidden');
-        } else {
-          notice.classList.remove('hidden');
-          const spanLabels = {
-            '1': 'Year 1 Curriculum (22 Courses • Terms 1–3)',
-            '2': 'Year 2 Curriculum (21 Courses • Terms 4–6)',
-            '3': 'Year 3 Curriculum (22 Courses • Terms 7–9)',
-            '4': 'Year 4 Curriculum (9 Courses • Terms 10–12)'
-          };
-          const spanLabel = spanLabels[sheetYearFilter] || `Year ${sheetYearFilter}`;
-          noticeText.innerText = `Currently displaying ${spanLabel}.`;
-        }
+        notice.classList.add('hidden');
       }
 
       const topPill = document.getElementById('topBarPathPill');
       if (topPill && currentSelectedProgram) {
         const pInfo = (typeof PROGRAM_TO_SCHOOL_MAP !== 'undefined' && PROGRAM_TO_SCHOOL_MAP[currentSelectedProgram]) || { schoolShort: 'SoE' };
-        const label = (sheetYearFilter === 'all') ? 'Master Spreadsheet (All 16 Years)' : `Curriculum Spreadsheet (Year ${sheetYearFilter})`;
+        const label = `Curriculum Spreadsheet (${sheetYearFilter === 'all' ? 'CPE 2026' : 'Curriculum ' + sheetYearFilter})`;
         topPill.innerText = `Schools > ${pInfo.schoolShort} > ${currentSelectedProgram} > ${label}`;
       }
 
@@ -6045,12 +6030,14 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       showToastNotification(`Course ${c.code} removed from spreadsheet.`);
     }
 
-    function setSpreadsheetYearScope(scope) {
+    function setSpreadsheetYearScope(scope, optionalStanding = 'all') {
       const yearFilter = document.getElementById('sheetYearFilter');
-      if (yearFilter) yearFilter.value = String(scope);
+      if (yearFilter) {
+        yearFilter.value = (scope === 'all' || !scope) ? '1' : String(scope);
+      }
       const standingFilter = document.getElementById('sheetStandingFilter');
       if (standingFilter) {
-        standingFilter.value = (scope === 'all') ? 'all' : String(scope);
+        standingFilter.value = optionalStanding;
       }
       if (typeof sheetFilterChange === 'function') {
         sheetFilterChange();
@@ -6076,8 +6063,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const count = sheetUnsavedEditsCount > 0 ? sheetUnsavedEditsCount : ALL_COURSES.length;
       openSaveRevisionModal({
         type: 'spreadsheet',
-        target: `Master Spreadsheet (${ALL_COURSES.length} Courses)`,
-        defaultNote: `Synchronized course records, units, and prerequisites across master spreadsheet`,
+        target: `Curriculum Spreadsheet (${ALL_COURSES.length} Courses)`,
+        defaultNote: `Synchronized course records, units, and prerequisites across curriculum spreadsheet`,
         onConfirm: function(notes) {
           executeSaveSpreadsheetChanges(notes);
         }
@@ -6121,9 +6108,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         action: 'SPREADSHEET_SYNC',
         actionLabel: 'Spreadsheet Synced',
         badgeClass: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
-        target: 'BSCpE Master Spreadsheet',
+        target: 'BSCpE Curriculum Spreadsheet',
         targetType: 'Curriculum Spreadsheet',
-        description: notes || `Saved and synced ${ALL_COURSES.length} courses across master spreadsheet`,
+        description: notes || `Saved and synced ${ALL_COURSES.length} courses across curriculum spreadsheet`,
         hash: Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join(''),
         diffs: [
           { field: 'coursesTotal', oldVal: `${ALL_COURSES.length} Courses`, newVal: `${ALL_COURSES.length} Courses (Synced)` },
@@ -6144,7 +6131,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
 
       if (typeof showToast === 'function') {
-        showToast(`✓ Master Spreadsheet saved and recorded in System Audit Trail!`);
+        showToast(`✓ Curriculum Spreadsheet saved and recorded in System Audit Trail!`);
       }
     }
 
@@ -10572,6 +10559,10 @@ ${worksheetsXml}
     };
 
     window.onWheelScroll = function(event, col) {
+      if (window.flowViewMode !== 'cylinder') {
+        // Allow natural vertical scrolling of the column in tree/list mode
+        return;
+      }
       if (event) {
         event.preventDefault();
         const delta = event.deltaY > 0 ? 1 : -1;
@@ -10660,7 +10651,7 @@ ${worksheetsXml}
         if (isTree) {
           cont.style.perspective = 'none';
           cont.style.height = 'auto';
-          cont.className = 'relative overflow-y-auto max-h-[520px] select-none p-1 space-y-1.5';
+          cont.className = 'relative overflow-y-auto max-h-[640px] overscroll-contain p-1 space-y-1.5 focus:outline-none';
           cont.querySelectorAll('.pointer-events-none.absolute').forEach(el => el.style.display = 'none');
         } else {
           cont.style.perspective = '900px';
