@@ -112,6 +112,8 @@
     'spreadsheet': 'spreadsheet',
     'curriculum-home': 'curriculum-home',
     'curriculum': 'curriculum-home',
+    'versioning-history': 'versioning-history',
+    'versioning': 'versioning-history',
     'past-curriculums': 'past-curriculums',
     'historical': 'past-curriculums',
     'past-flowchart': 'past-flowchart',
@@ -135,6 +137,7 @@
     'flowchart': 'flowchart',
     'spreadsheet': 'spreadsheet',
     'curriculum-home': 'curriculum-home',
+    'versioning-history': 'versioning-history',
     'past-curriculums': 'historical',
     'past-flowchart': 'past-flowchart',
     'dashboard': 'dashboard',
@@ -538,6 +541,12 @@
         } else if (view === 'homePdProgramView') {
           if (typeof window.selectProgram === 'function') {
             window.selectProgram(prog, 'homePdProgramView');
+          }
+        } else if (view === 'versioning-history') {
+          if (typeof window.selectProgram === 'function') {
+            window.selectProgram(prog, 'versioning-history');
+          } else if (typeof window.navigateView === 'function') {
+            window.navigateView('versioning-history');
           }
         } else {
           if (typeof window.selectProgram === 'function') {

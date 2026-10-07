@@ -905,6 +905,20 @@
       color: #002855 !important;
     }
 
+    /* Permanent Desktop Left Sidebar Display (Prevent Accidental Collapse) */
+    @media (min-width: 768px) {
+      aside#sidebar {
+        position: relative !important;
+        transform: none !important;
+        display: flex !important;
+        visibility: visible !important;
+        width: 20rem !important;
+      }
+      #mobileSidebarBackdrop {
+        display: none !important;
+      }
+    }
+
     /* Light Mode Stat / Metric / KPI Cards */
     html:not(.dark) .stat-card,
     html:not(.dark) .kpi-metric-box,

@@ -3056,6 +3056,12 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const sidebar = document.getElementById('sidebar');
       const backdrop = document.getElementById('mobileSidebarBackdrop');
       if (!sidebar) return;
+      if (window.innerWidth >= 768) {
+        sidebar.classList.remove('-translate-x-full');
+        if (backdrop) backdrop.classList.add('hidden');
+        isMobileSidebarOpen = false;
+        return;
+      }
       isMobileSidebarOpen = !isMobileSidebarOpen;
       if (isMobileSidebarOpen) {
         sidebar.classList.remove('-translate-x-full');
@@ -3134,6 +3140,11 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       });
 
       // Clear left panel regdoc buttons if not in registrar view
+      if (window.innerWidth >= 768) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) sidebar.classList.remove('-translate-x-full');
+      }
+
       if (viewId !== 'registrar') {
         for (let i = 1; i <= 7; i++) {
           const navBtn = document.getElementById(`nav-regdoc-${i}`);
@@ -3190,6 +3201,10 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           if (cpeFolder) cpeFolder.classList.remove('hidden');
           const cpeCurric = document.getElementById('cpeCurricCont');
           if (cpeCurric) cpeCurric.classList.remove('hidden');
+          if (window.innerWidth >= 768) {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.remove('-translate-x-full');
+          }
           if (typeof renderVersioningHistoryView === 'function') {
             renderVersioningHistoryView();
           }
@@ -9003,8 +9018,247 @@ ${worksheetsXml}
     };
 
     // =========================================================================
-    // VERSIONING HISTORY & ACCREDITATION LINEAGE MODULE
+    // INDEPENDENT DOMAIN VERSION REGISTRIES & LINEAGE MODULE
     // =========================================================================
+    window.SO_VERSION_REGISTRY = [
+      {
+        id: 'SO-2027',
+        name: 'Student Outcomes 2027 (Draft Next-Gen & AI)',
+        standard: 'CHED CMO 92 s.2017 + AI & Edge Specialization',
+        count: 13,
+        status: 'UNLOCKED DRAFT',
+        statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
+        effective: 'AY 2027–2031',
+        notes: 'Updated outcomes incorporating edge AI, cyber-physical systems, and sustainable computing in SO-k and SO-m.',
+        items: [
+          { code: 'SO-a', domain: 'Engineering Sciences', title: 'Engineering Knowledge Application', desc: 'Apply knowledge of mathematics, natural science, computing fundamentals and engineering sciences to solve complex engineering problems.' },
+          { code: 'SO-b', domain: 'Investigation', title: 'Investigation of Complex Problems', desc: 'Conduct investigations of complex engineering problems using research-based knowledge, experimental design, and data interpretation.' },
+          { code: 'SO-c', domain: 'System Design', title: 'Design Solutions for Complex Problems', desc: 'Design intelligent systems, hardware components, or computing processes that meet specified operational, economic, and safety constraints.' },
+          { code: 'SO-d', domain: 'Teamwork', title: 'Individual & Agile Team Functioning', desc: 'Function effectively as an individual, team member, or leader in diverse, cross-functional and agile engineering teams.' },
+          { code: 'SO-e', domain: 'Problem Solving', title: 'Evaluation & First Principles', desc: 'Identify, formulate, and analyze complex engineering problems reaching substantiated conclusions using first principles of math and science.' },
+          { code: 'SO-f', domain: 'Ethics', title: 'Professional & Algorithmic Ethics', desc: 'Apply ethical principles and commit to professional ethics, responsibilities, and norms of engineering practice including data privacy.' },
+          { code: 'SO-g', domain: 'Communication', title: 'Effective Technical Communication', desc: 'Communicate effectively on complex engineering activities with peers, cross-disciplinary teams, and society through reports and presentations.' },
+          { code: 'SO-h', domain: 'Societal Context', title: 'Sustainability & Global Impact', desc: 'Assess the impact of professional engineering solutions in societal, environmental, economic, and global contexts for sustainable development.' },
+          { code: 'SO-i', domain: 'Lifelong Learning', title: 'Continuous Professional Learning', desc: 'Recognize the necessity of and possess the ability to engage in independent lifelong learning in the context of rapid technological disruption.' },
+          { code: 'SO-j', domain: 'Contemporary Issues', title: 'Contextual Reasoning & Legal Issues', desc: 'Apply contextual reasoning to assess societal, health, safety, cybersecurity, legal, and cultural issues relevant to professional engineering practice.' },
+          { code: 'SO-k', domain: 'Modern Tools & AI', title: 'Modern Tool Synthesis & Applied AI', desc: 'Synthesize modern IT and engineering tools, including neural compilers, cloud SDKs, embedded simulators, and predictive modeling with understanding of limitations.' },
+          { code: 'SO-l', domain: 'Project Management', title: 'Engineering Economics & Project Delivery', desc: 'Demonstrate knowledge of project management principles, engineering economics, and risk governance in multi-stakeholder projects.' },
+          { code: 'SO-m', domain: 'Program Specific', title: 'Intelligent Systems & Edge Architecture', desc: 'Architect, implement, and deploy specialized computer engineering solutions spanning edge AI accelerators, robotics, and cyber-physical systems.' }
+        ]
+      },
+      {
+        id: 'SO-2026',
+        name: 'Student Outcomes 2026 (Active Baseline)',
+        standard: 'CHED CMO 92 s.2017 (Standard Engineering a–m)',
+        count: 13,
+        status: 'ACTIVE BATCH',
+        statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
+        effective: 'AY 2026–2030',
+        notes: 'Active accreditation baseline with 13 official CHED student outcomes.',
+        items: DEFAULT_FLOW_SO_DEFS
+      },
+      {
+        id: 'SO-2021',
+        name: 'Student Outcomes 2021 (Historical Archive)',
+        standard: 'CHED CMO 92 s.2017 (Initial 12 Outcomes a–l)',
+        count: 12,
+        status: 'ARCHIVED',
+        statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+        effective: 'AY 2021–2025',
+        notes: 'Pre-expansion 12-outcome framework prior to specialization track expansion.',
+        items: DEFAULT_FLOW_SO_DEFS.slice(0, 12)
+      }
+    ];
+
+    window.PEO_VERSION_REGISTRY = [
+      {
+        id: 'PEO-2027',
+        name: 'Program Educational Objectives 2027 (Draft)',
+        count: 5,
+        status: 'UNLOCKED DRAFT',
+        statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
+        effective: 'AY 2027–2031',
+        notes: 'Expanded to highlight AI innovation, autonomous systems, and global technopreneurship.',
+        items: [
+          { id: 1, code: 'PEO 1', domain: 'Intelligent Systems', title: 'Complex Solutions & Emerging AI Technologies', desc: 'Synthesize advanced computer engineering principles and generative/edge AI technologies to architect adaptive, resilient hardware-software systems.' },
+          { id: 2, code: 'PEO 2', domain: 'Ethics & Climate', title: 'Sustainable, Resilient & Ethical Computing', desc: 'Integrate cyber ethics, data governance, and green computing principles to deliver socially beneficial solutions for global well-being.' },
+          { id: 3, code: 'PEO 3', domain: 'Lifelong Growth', title: 'Continuous Professional & Research Mastery', desc: 'Pursue lifelong professional development through advanced post-graduate studies, industry cloud/hardware certifications, or self-directed research.' },
+          { id: 4, code: 'PEO 4', domain: 'Tech Leadership', title: 'Cross-Functional Leadership & Technopreneurship', desc: 'Lead interdisciplinary teams and technology ventures with inclusive governance, fostering innovation that bridges research and industry.' },
+          { id: 5, code: 'PEO 5', domain: 'Global Dialogue', title: 'Technical Communication & Multi-Sector Engagement', desc: 'Communicate complex technical concepts with precision to diverse audiences including industry executives, engineers, and public stakeholders.' }
+        ]
+      },
+      {
+        id: 'PEO-2026',
+        name: 'Program Educational Objectives 2026 (Active Baseline)',
+        count: 5,
+        status: 'ACTIVE BATCH',
+        statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
+        effective: 'AY 2026–2030',
+        notes: 'Active baseline for BSCpE 3 to 5 years after graduation.',
+        items: DEFAULT_FLOW_PEO_DEFS
+      },
+      {
+        id: 'PEO-2021',
+        name: 'Program Educational Objectives 2021 (Historical Archive)',
+        count: 4,
+        status: 'ARCHIVED',
+        statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+        effective: 'AY 2021–2025',
+        notes: 'Legacy 4-objective model used prior to 2026 OBE review.',
+        items: DEFAULT_FLOW_PEO_DEFS.slice(0, 4)
+      }
+    ];
+
+    window.GA_VERSION_REGISTRY = [
+      {
+        id: 'GA-2027',
+        name: 'Graduate Attributes 2027 (Draft Smart Era)',
+        count: 9,
+        status: 'UNLOCKED DRAFT',
+        statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
+        effective: 'AY 2027–2031',
+        notes: 'Includes ethical AI stewardship, digital agility, and climate-resilient engineering.',
+        items: DEFAULT_FLOW_GA_DEFS.map((ga, idx) => {
+          if (idx === 0) return { ...ga, desc: 'Creates innovative, proactive, and AI-enabled strategies with a willingness to challenge the status quo using emerging technologies aligned with organizational goals.' };
+          if (idx === 2) return { ...ga, desc: 'Pioneers in utilizing modern cloud, edge, and cyber-physical technologies aiming for universal digital inclusivity.' };
+          return ga;
+        })
+      },
+      {
+        id: 'GA-2024',
+        name: 'Graduate Attributes 2024 (Active Institutional Standard)',
+        count: 9,
+        status: 'ACTIVE BATCH',
+        statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
+        effective: 'AY 2024–Present',
+        notes: 'Current APC institutional graduate profile (GA A through GA I).',
+        items: DEFAULT_FLOW_GA_DEFS
+      },
+      {
+        id: 'GA-2021',
+        name: 'Graduate Attributes 2021 (Historical Archive)',
+        count: 8,
+        status: 'ARCHIVED',
+        statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+        effective: 'AY 2021–2024',
+        notes: 'Legacy 8-attribute institutional graduate profile.',
+        items: DEFAULT_FLOW_GA_DEFS.slice(0, 8)
+      }
+    ];
+
+    window.MVV_VERSION_REGISTRY = [
+      {
+        id: 'MVV-2025',
+        name: 'APC Institutional MVV 2025–2030 (Active Strategic Direction)',
+        status: 'ACTIVE BATCH',
+        statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
+        effective: '2025–2030',
+        notes: 'Active institutional mission, vision, core values, and School of Engineering goals.',
+        vision: 'Asia Pacific College envisions itself to be the preferred Higher Education Institution bridging academe and industry with its programs founded on the concepts and applications of IT, guided by the core values of integrity, industry, and innovation that works.',
+        mission: 'Asia Pacific College, powered by education and industry professionals as faculty and a balanced curriculum, aims to provide business and the ICT industry lifelong learning graduates anchored on integrity and professionalism.',
+        values: 'Integrity, Industry, Innovation that works',
+        soeGoal: 'To produce competent computer engineers equipped with technical expertise, professional ethics, multidisciplinary teamwork capabilities, and lifelong learning attitudes.'
+      },
+      {
+        id: 'MVV-2020',
+        name: 'APC Institutional MVV 2020–2024 (Historical Strategic Framework)',
+        status: 'ARCHIVED',
+        statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+        effective: '2020–2024',
+        notes: 'Historical strategic direction prior to the 2025 institutional strategic plan.',
+        vision: 'Asia Pacific College aims to be a leading IT and business educational institution developing professional graduates.',
+        mission: 'Asia Pacific College delivers quality technological education anchored on industry partnerships.',
+        values: 'Integrity, Industry, Innovation',
+        soeGoal: 'To train computer engineering graduates ready for the IT workforce.'
+      }
+    ];
+
+    window.CURRIC_EDITIONS_REGISTRY = [
+      {
+        id: 'CPE-2027',
+        code: 'CPE 2027',
+        name: 'BSCpE 2027–2031 (Draft AI & Cloud Track)',
+        units: '184.0',
+        courses: 74,
+        terms: 12,
+        status: 'UNLOCKED DRAFT',
+        statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
+        effective: 'AY 2027–2031',
+        notes: 'Annual batch update with PEO 2027 AI engineering electives. Unlocked for editing.'
+      },
+      {
+        id: 'CPE-2026',
+        code: 'CPE 2026',
+        name: 'BSCpE 2026–2030 (Active Baseline)',
+        units: '184.0',
+        courses: 74,
+        terms: 12,
+        status: 'ACTIVE BATCH',
+        statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
+        effective: 'AY 2026–2030',
+        notes: 'Official active batch baseline with 184.0 units across 12 trimesters.'
+      },
+      {
+        id: 'CPE-2025',
+        code: 'CPE 2025',
+        name: 'BSCpE 2025–2029 (Previous Batch)',
+        units: '184.0',
+        courses: 74,
+        terms: 12,
+        status: 'ARCHIVED',
+        statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+        effective: 'AY 2025–2029',
+        notes: 'Previous year batch legacy mapping.'
+      },
+      {
+        id: 'CPE-2021',
+        code: 'CPE 2021',
+        name: 'BSCpE 2021–2025 (Historical Archive)',
+        units: '178.0',
+        courses: 71,
+        terms: 12,
+        status: 'HISTORICAL',
+        statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+        effective: 'AY 2021–2025',
+        notes: 'Pre-CMO92 historical baseline with 178.0 units and 71 courses.'
+      }
+    ];
+
+    window.currentVhDomain = 'maps';
+    window.currentInspectedSoId = 'SO-2026';
+    window.currentInspectedPeoId = 'PEO-2026';
+    window.currentInspectedGaId = 'GA-2024';
+    window.currentInspectedMvvId = 'MVV-2025';
+    window.currentInspectedCurricId = 'CPE-2026';
+
+    window.switchVhDomain = function(domainId) {
+      window.currentVhDomain = domainId;
+      const domains = ['maps', 'so', 'peo', 'ga', 'mvv', 'curric'];
+      domains.forEach(d => {
+        const panel = document.getElementById(`vh-domain-panel-${d}`);
+        const tab = document.getElementById(`vh-domain-tab-${d}`);
+        if (panel) {
+          if (d === domainId) panel.classList.remove('hidden');
+          else panel.classList.add('hidden');
+        }
+        if (tab) {
+          if (d === domainId) {
+            tab.className = 'px-3 py-1.5 bg-[#002855] text-[#E5A823] font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap';
+          } else {
+            tab.className = 'px-3 py-1.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap';
+          }
+        }
+      });
+
+      if (domainId === 'maps') renderVersioningHistoryView();
+      else if (domainId === 'so') renderVhSoDomain();
+      else if (domainId === 'peo') renderVhPeoDomain();
+      else if (domainId === 'ga') renderVhGaDomain();
+      else if (domainId === 'mvv') renderVhMvvDomain();
+      else if (domainId === 'curric') renderVhCurricDomain();
+    };
+
+    // --- DOMAIN 1: CURRICULUM MAPS RENDERER ---
     window.renderVersioningHistoryView = function(inspectedId) {
       const maps = window.CURRICULUM_MAPS || [];
       const activeMap = maps.find(m => m.status === 'ACTIVE BATCH') || maps[0];
@@ -9012,14 +9266,14 @@ ${worksheetsXml}
       window.currentInspectedVersionId = targetId;
       const targetMap = maps.find(m => m.id === targetId) || activeMap || maps[0];
 
-      // Update KPI Cards
+      // Update Header Metadata Chips
       const kpiActive = document.getElementById('vh-kpi-active-ver');
       if (kpiActive && activeMap) {
         kpiActive.textContent = `${activeMap.curriculumVersion} • ${activeMap.mapRevision}`;
       }
       const kpiTotal = document.getElementById('vh-kpi-total-ver');
       if (kpiTotal) {
-        kpiTotal.textContent = `${maps.length} Registered Versions`;
+        kpiTotal.textContent = `${maps.length} Versions`;
       }
 
       // Populate Master Version Registry Table
@@ -9095,7 +9349,7 @@ ${worksheetsXml}
         }).join('');
       }
 
-      // Update Deep Inspector Header
+      // Update Snapshot Inspector Header
       if (targetMap) {
         const titleEl = document.getElementById('vh-inspect-title');
         if (titleEl) titleEl.textContent = `${targetMap.name} (${targetMap.id})`;
@@ -9193,7 +9447,7 @@ ${worksheetsXml}
           const peoCols = [1, 2, 3, 4, 5].map(pNum => {
             const hasLink = linkedPeos.includes(pNum);
             return `
-              <td class="py-2.5 px-3 text-center border-r border-slate-200 dark:border-slate-800 font-mono font-black ${
+              <td class="py-2 px-3 text-center border-r border-slate-200 dark:border-slate-800 font-mono font-black ${
                 hasLink ? 'text-emerald-600 bg-emerald-50/40 dark:bg-emerald-950/20' : 'text-slate-300'
               }">${hasLink ? '✔' : '−'}</td>
             `;
@@ -9201,8 +9455,8 @@ ${worksheetsXml}
 
           return `
             <tr class="border-b border-slate-100 dark:border-slate-800">
-              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono font-bold text-xs text-indigo-700 dark:text-indigo-400 text-center">${so.code}</td>
-              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs">
+              <td class="py-2 px-3 border-r border-slate-200 dark:border-slate-800 font-mono font-bold text-xs text-indigo-700 dark:text-indigo-400 text-center">${so.code}</td>
+              <td class="py-2 px-3 border-r border-slate-200 dark:border-slate-800 text-xs">
                 <div class="font-bold text-slate-800 dark:text-slate-200">${so.title}</div>
                 <div class="text-[10px] text-slate-500">${so.desc}</div>
               </td>
@@ -9223,7 +9477,7 @@ ${worksheetsXml}
           const cells = gaCols.map(gNum => {
             const hasLink = linkedGas.includes(gNum);
             return `
-              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono font-black ${
+              <td class="py-2 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono font-black ${
                 hasLink ? 'text-emerald-600 bg-emerald-50/40 dark:bg-emerald-950/20' : 'text-slate-300'
               }">${hasLink ? '✔' : '−'}</td>
             `;
@@ -9231,7 +9485,7 @@ ${worksheetsXml}
 
           return `
             <tr class="border-b border-slate-100 dark:border-slate-800">
-              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs">
+              <td class="py-2 px-3 border-r border-slate-200 dark:border-slate-800 text-xs">
                 <div class="font-bold font-mono text-[#002855] dark:text-amber-400">${peo.code}: ${peo.title}</div>
                 <div class="text-[10px] text-slate-500">${peo.desc}</div>
               </td>
@@ -9270,21 +9524,21 @@ ${worksheetsXml}
         const is2020 = targetMap.mvvVersion === 'MVV 2020';
         mvvContainer.innerHTML = `
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1.5">
+            <div class="p-3 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1">
               <div class="flex items-center justify-between">
                 <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🏛️ Institutional Vision</span>
                 <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">${targetMap.mvvVersion || 'MVV 2025'}</span>
               </div>
               <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${is2020 ? 'Asia Pacific College aims to be a leading IT and business educational institution developing professional graduates.' : 'Asia Pacific College envisions itself to be the preferred Higher Education Institution bridging academe and industry with its programs founded on the concepts and applications of IT, guided by the core values of integrity, industry, and innovation that works.'}</p>
             </div>
-            <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1.5">
+            <div class="p-3 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1">
               <div class="flex items-center justify-between">
                 <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🚀 Institutional Mission</span>
                 <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">${targetMap.mvvVersion || 'MVV 2025'}</span>
               </div>
               <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${is2020 ? 'Asia Pacific College delivers quality technological education anchored on industry partnerships.' : 'Asia Pacific College, powered by education and industry professionals as faculty and a balanced curriculum, aims to provide business and the ICT industry lifelong learning graduates anchored on integrity and professionalism.'}</p>
             </div>
-            <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1.5">
+            <div class="p-3 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-1">
               <div class="flex items-center justify-between">
                 <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🎯 School of Engineering Goal</span>
                 <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold">${targetMap.curriculumVersion}</span>
@@ -9293,6 +9547,409 @@ ${worksheetsXml}
             </div>
           </div>
         `;
+      }
+
+      // Pre-render other domain tables so tabs have content immediately
+      renderVhSoDomain();
+      renderVhPeoDomain();
+      renderVhGaDomain();
+      renderVhMvvDomain();
+      renderVhCurricDomain();
+    };
+
+    // --- DOMAIN 2: STUDENT OUTCOMES (SO) RENDERER ---
+    window.renderVhSoDomain = function(inspectedId) {
+      const registry = window.SO_VERSION_REGISTRY || [];
+      const targetId = inspectedId || window.currentInspectedSoId || 'SO-2026';
+      window.currentInspectedSoId = targetId;
+      const targetSo = registry.find(s => s.id === targetId) || registry[0];
+
+      const tbody = document.getElementById('vh-so-table-body');
+      if (tbody) {
+        tbody.innerHTML = registry.map(so => {
+          const isInspecting = (so.id === targetId);
+          let actionBtn = '';
+          if (so.status === 'UNLOCKED DRAFT') {
+            actionBtn = `<button type="button" onclick="setObeActiveYear('2027'); navigateView('obe');" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-[10px] cursor-pointer shadow-xs transition" title="Open and edit 2027 draft SOs">✏️ Edit Draft</button>`;
+          }
+
+          return `
+            <tr onclick="renderVhSoDomain('${so.id}')" class="cursor-pointer transition border-b border-slate-100 dark:border-slate-800 ${
+              isInspecting ? 'bg-indigo-500/10 dark:bg-indigo-500/15 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+            }">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-indigo-700 dark:text-indigo-400">
+                <div class="flex items-center gap-1.5">
+                  ${isInspecting ? '<span class="text-indigo-500">👉</span>' : ''}
+                  <span>${so.id}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${so.name}</div>
+                <div class="text-[10px] text-slate-500 font-mono">${so.standard}</div>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                ${so.count} SOs
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${so.statusClass}">
+                  ${so.status}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-600 dark:text-slate-400">
+                ${so.effective}
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+                ${so.notes}
+              </td>
+              <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button type="button" onclick="renderVhSoDomain('${so.id}')" class="px-2 py-1 bg-indigo-600 text-white font-bold text-[10px] hover:bg-indigo-700 cursor-pointer">
+                    🔍 Inspect
+                  </button>
+                  ${actionBtn}
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (targetSo) {
+        const titleEl = document.getElementById('vh-so-inspect-title');
+        if (titleEl) titleEl.textContent = `${targetSo.name} (${targetSo.id})`;
+        const subEl = document.getElementById('vh-so-inspect-subtitle');
+        if (subEl) subEl.textContent = `${targetSo.standard} • ${targetSo.effective} • Status: ${targetSo.status} • ${targetSo.count} Outcomes`;
+
+        const listBody = document.getElementById('vh-so-list-body');
+        if (listBody) {
+          listBody.innerHTML = (targetSo.items || []).map(item => `
+            <div class="p-3 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800 space-y-1 shadow-2xs">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-mono font-bold text-xs border border-indigo-300 dark:border-indigo-700">${item.code}</span>
+                  <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">${item.title}</span>
+                </div>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">${item.domain}</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-1">${item.desc}</p>
+            </div>
+          `).join('');
+        }
+      }
+    };
+
+    // --- DOMAIN 3: PEO OBJECTIVES RENDERER ---
+    window.renderVhPeoDomain = function(inspectedId) {
+      const registry = window.PEO_VERSION_REGISTRY || [];
+      const targetId = inspectedId || window.currentInspectedPeoId || 'PEO-2026';
+      window.currentInspectedPeoId = targetId;
+      const targetPeo = registry.find(p => p.id === targetId) || registry[0];
+
+      const tbody = document.getElementById('vh-peo-table-body');
+      if (tbody) {
+        tbody.innerHTML = registry.map(peo => {
+          const isInspecting = (peo.id === targetId);
+          return `
+            <tr onclick="renderVhPeoDomain('${peo.id}')" class="cursor-pointer transition border-b border-slate-100 dark:border-slate-800 ${
+              isInspecting ? 'bg-amber-500/10 dark:bg-amber-500/15 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+            }">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-amber-600 dark:text-amber-400">
+                <div class="flex items-center gap-1.5">
+                  ${isInspecting ? '<span class="text-amber-500">👉</span>' : ''}
+                  <span>${peo.id}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${peo.name}</div>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs font-bold text-amber-600 dark:text-amber-400">
+                ${peo.count} PEOs
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${peo.statusClass}">
+                  ${peo.status}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-600 dark:text-slate-400">
+                ${peo.effective}
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+                ${peo.notes}
+              </td>
+              <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
+                <button type="button" onclick="renderVhPeoDomain('${peo.id}')" class="px-2 py-1 bg-[#002855] text-[#E5A823] font-bold text-[10px] hover:bg-[#001f42] cursor-pointer">
+                  🔍 Inspect
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (targetPeo) {
+        const titleEl = document.getElementById('vh-peo-inspect-title');
+        if (titleEl) titleEl.textContent = `${targetPeo.name} (${targetPeo.id})`;
+        const subEl = document.getElementById('vh-peo-inspect-subtitle');
+        if (subEl) subEl.textContent = `${targetPeo.effective} • Status: ${targetPeo.status} • ${targetPeo.count} Educational Objectives`;
+
+        const listBody = document.getElementById('vh-peo-list-body');
+        if (listBody) {
+          listBody.innerHTML = (targetPeo.items || []).map(item => `
+            <div class="p-3 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800 space-y-1 shadow-2xs">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 font-mono font-bold text-xs border border-amber-300 dark:border-amber-700">${item.code}</span>
+                  <span class="font-bold text-slate-800 dark:text-slate-100 text-xs">${item.title}</span>
+                </div>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">${item.domain}</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-1">${item.desc}</p>
+            </div>
+          `).join('');
+        }
+      }
+    };
+
+    // --- DOMAIN 4: GRADUATE ATTRIBUTES (GA) RENDERER ---
+    window.renderVhGaDomain = function(inspectedId) {
+      const registry = window.GA_VERSION_REGISTRY || [];
+      const targetId = inspectedId || window.currentInspectedGaId || 'GA-2024';
+      window.currentInspectedGaId = targetId;
+      const targetGa = registry.find(g => g.id === targetId) || registry[0];
+
+      const tbody = document.getElementById('vh-ga-table-body');
+      if (tbody) {
+        tbody.innerHTML = registry.map(ga => {
+          const isInspecting = (ga.id === targetId);
+          return `
+            <tr onclick="renderVhGaDomain('${ga.id}')" class="cursor-pointer transition border-b border-slate-100 dark:border-slate-800 ${
+              isInspecting ? 'bg-blue-500/10 dark:bg-blue-500/15 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+            }">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-blue-700 dark:text-blue-400">
+                <div class="flex items-center gap-1.5">
+                  ${isInspecting ? '<span class="text-blue-500">👉</span>' : ''}
+                  <span>${ga.id}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${ga.name}</div>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs font-bold text-blue-600 dark:text-blue-400">
+                ${ga.count} GAs
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${ga.statusClass}">
+                  ${ga.status}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-600 dark:text-slate-400">
+                ${ga.effective}
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+                ${ga.notes}
+              </td>
+              <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
+                <button type="button" onclick="renderVhGaDomain('${ga.id}')" class="px-2 py-1 bg-blue-600 text-white font-bold text-[10px] hover:bg-blue-700 cursor-pointer">
+                  🔍 Inspect
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (targetGa) {
+        const titleEl = document.getElementById('vh-ga-inspect-title');
+        if (titleEl) titleEl.textContent = `${targetGa.name} (${targetGa.id})`;
+        const subEl = document.getElementById('vh-ga-inspect-subtitle');
+        if (subEl) subEl.textContent = `${targetGa.effective} • Status: ${targetGa.status} • ${targetGa.count} Institutional Attributes`;
+
+        const listBody = document.getElementById('vh-ga-list-body');
+        if (listBody) {
+          listBody.innerHTML = (targetGa.items || []).map(item => `
+            <div class="p-3 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800 space-y-1 shadow-2xs">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono font-bold text-xs border border-blue-300 dark:border-blue-700">${item.code}</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">${item.domain}</span>
+              </div>
+              <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${item.title}</div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-1">${item.desc}</p>
+            </div>
+          `).join('');
+        }
+      }
+    };
+
+    // --- DOMAIN 5: INSTITUTIONAL MVV RENDERER ---
+    window.renderVhMvvDomain = function(inspectedId) {
+      const registry = window.MVV_VERSION_REGISTRY || [];
+      const targetId = inspectedId || window.currentInspectedMvvId || 'MVV-2025';
+      window.currentInspectedMvvId = targetId;
+      const targetMvv = registry.find(m => m.id === targetId) || registry[0];
+
+      const tbody = document.getElementById('vh-mvv-table-body');
+      if (tbody) {
+        tbody.innerHTML = registry.map(mvv => {
+          const isInspecting = (mvv.id === targetId);
+          return `
+            <tr onclick="renderVhMvvDomain('${mvv.id}')" class="cursor-pointer transition border-b border-slate-100 dark:border-slate-800 ${
+              isInspecting ? 'bg-emerald-500/10 dark:bg-emerald-500/15 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+            }">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-emerald-700 dark:text-emerald-400">
+                <div class="flex items-center gap-1.5">
+                  ${isInspecting ? '<span class="text-emerald-500">👉</span>' : ''}
+                  <span>${mvv.id}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${mvv.name}</div>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${mvv.statusClass}">
+                  ${mvv.status}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-600 dark:text-slate-400">
+                ${mvv.effective}
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+                ${mvv.notes}
+              </td>
+              <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
+                <button type="button" onclick="renderVhMvvDomain('${mvv.id}')" class="px-2 py-1 bg-emerald-600 text-white font-bold text-[10px] hover:bg-emerald-700 cursor-pointer">
+                  🔍 Inspect
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (targetMvv) {
+        const titleEl = document.getElementById('vh-mvv-inspect-title');
+        if (titleEl) titleEl.textContent = `${targetMvv.name} (${targetMvv.id})`;
+        const subEl = document.getElementById('vh-mvv-inspect-subtitle');
+        if (subEl) subEl.textContent = `${targetMvv.effective} • Status: ${targetMvv.status} • Institutional Strategic Direction`;
+
+        const cardsBody = document.getElementById('vh-mvv-cards-body');
+        if (cardsBody) {
+          cardsBody.innerHTML = `
+            <div class="p-4 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800 space-y-2 shadow-2xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🏛️ Institutional Vision</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 font-bold">${targetMvv.id}</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${targetMvv.vision}</p>
+            </div>
+            <div class="p-4 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800 space-y-2 shadow-2xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🚀 Institutional Mission</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 font-bold">${targetMvv.id}</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${targetMvv.mission}</p>
+            </div>
+            <div class="p-4 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800 space-y-2 shadow-2xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-xs text-[#002855] dark:text-[#E5A823] uppercase">🎯 School of Engineering Goal</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 font-bold">${targetMvv.id}</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${targetMvv.soeGoal}</p>
+              <div class="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500">
+                <span class="font-bold text-amber-600 dark:text-amber-400">Core Values: </span>
+                <span>${targetMvv.values}</span>
+              </div>
+            </div>
+          `;
+        }
+      }
+    };
+
+    // --- DOMAIN 6: CURRICULUMS & BATCHES RENDERER ---
+    window.renderVhCurricDomain = function(inspectedId) {
+      const registry = window.CURRIC_EDITIONS_REGISTRY || [];
+      const targetId = inspectedId || window.currentInspectedCurricId || 'CPE-2026';
+      window.currentInspectedCurricId = targetId;
+      const targetCurric = registry.find(c => c.id === targetId) || registry[0];
+
+      const tbody = document.getElementById('vh-curric-table-body');
+      if (tbody) {
+        tbody.innerHTML = registry.map(c => {
+          const isInspecting = (c.id === targetId);
+          return `
+            <tr onclick="renderVhCurricDomain('${c.id}')" class="cursor-pointer transition border-b border-slate-100 dark:border-slate-800 ${
+              isInspecting ? 'bg-purple-500/10 dark:bg-purple-500/15 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50'
+            }">
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-purple-700 dark:text-purple-400">
+                <div class="flex items-center gap-1.5">
+                  ${isInspecting ? '<span class="text-purple-500">👉</span>' : ''}
+                  <span>${c.code}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800">
+                <div class="text-xs font-bold text-slate-800 dark:text-slate-100">${c.name}</div>
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs font-bold text-purple-600 dark:text-purple-400">
+                ${c.units}u
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">
+                ${c.courses} Courses
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 font-mono text-xs">
+                ${c.terms} Terms
+              </td>
+              <td class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800">
+                <span class="px-2 py-0.5 font-mono text-[10px] font-bold border ${c.statusClass}">
+                  ${c.status}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-600 dark:text-slate-400">
+                ${c.effective}
+              </td>
+              <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button type="button" onclick="renderVhCurricDomain('${c.id}')" class="px-2 py-1 bg-purple-600 text-white font-bold text-[10px] hover:bg-purple-700 cursor-pointer">
+                    🔍 Inspect
+                  </button>
+                  <button type="button" onclick="navigateView('spreadsheet')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-[10px] border border-slate-300 dark:border-slate-700 cursor-pointer" title="Open in Spreadsheet">
+                    📊 Sheet
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (targetCurric) {
+        const titleEl = document.getElementById('vh-curric-inspect-title');
+        if (titleEl) titleEl.textContent = `${targetCurric.name} (${targetCurric.code})`;
+        const subEl = document.getElementById('vh-curric-inspect-subtitle');
+        if (subEl) subEl.textContent = `${targetCurric.effective} • Status: ${targetCurric.status} • ${targetCurric.units} Academic Units across ${targetCurric.terms} Trimesters`;
+
+        const detailBody = document.getElementById('vh-curric-detail-body');
+        if (detailBody) {
+          detailBody.innerHTML = `
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
+              <div class="p-2.5 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800">
+                <div class="text-[10px] font-bold text-slate-400 uppercase">Degree Program</div>
+                <div class="text-xs font-mono font-bold text-slate-800 dark:text-slate-100 mt-0.5">BS Computer Eng.</div>
+              </div>
+              <div class="p-2.5 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800">
+                <div class="text-[10px] font-bold text-slate-400 uppercase">Total Units</div>
+                <div class="text-xs font-mono font-bold text-purple-600 dark:text-purple-400 mt-0.5">${targetCurric.units} Units</div>
+              </div>
+              <div class="p-2.5 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800">
+                <div class="text-[10px] font-bold text-slate-400 uppercase">Total Courses</div>
+                <div class="text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 mt-0.5">${targetCurric.courses} Courses</div>
+              </div>
+              <div class="p-2.5 bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800">
+                <div class="text-[10px] font-bold text-slate-400 uppercase">Program Term Plan</div>
+                <div class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">${targetCurric.terms} Terms (4 Yrs)</div>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${targetCurric.notes}</p>
+          `;
+        }
       }
     };
 
@@ -9307,9 +9964,9 @@ ${worksheetsXml}
         }
         if (btn) {
           if (t === tabId) {
-            btn.className = 'pb-2 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer whitespace-nowrap text-xs font-bold';
+            btn.className = 'pb-1.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer whitespace-nowrap text-xs font-bold';
           } else {
-            btn.className = 'pb-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap text-xs font-bold';
+            btn.className = 'pb-1.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap text-xs font-bold';
           }
         }
       });
@@ -10505,6 +11162,12 @@ ${worksheetsXml}
     window.setFlowViewMode = setFlowViewMode;
     window.renderVersioningHistoryView = renderVersioningHistoryView;
     window.switchVhInspectorTab = switchVhInspectorTab;
+    window.switchVhDomain = switchVhDomain;
+    window.renderVhSoDomain = renderVhSoDomain;
+    window.renderVhPeoDomain = renderVhPeoDomain;
+    window.renderVhGaDomain = renderVhGaDomain;
+    window.renderVhMvvDomain = renderVhMvvDomain;
+    window.renderVhCurricDomain = renderVhCurricDomain;
 
     // Initialize categories, legend, role state, and audit trail on load
     try {
