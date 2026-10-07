@@ -9680,7 +9680,13 @@ ${worksheetsXml}
       if (savedEditions) {
         const parsed = JSON.parse(savedEditions);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          window.CURRIC_EDITIONS_REGISTRY = parsed;
+          // Keep only legitimate editions; strip out temporary 2028 draft duplicates
+          const cleaned = parsed.filter(x => !String(x.id).includes('2028') && !String(x.code).includes('2028') && !String(x.name).includes('2028'));
+          window.CURRIC_EDITIONS_REGISTRY = cleaned.length > 0 ? cleaned : window.CURRIC_EDITIONS_REGISTRY;
+          try {
+            localStorage.setItem('apc_curric_editions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY));
+            localStorage.setItem('apc_curric_versions', JSON.stringify(window.CURRIC_EDITIONS_REGISTRY));
+          } catch(e) {}
         }
       }
     } catch (e) {}
@@ -9835,11 +9841,16 @@ ${worksheetsXml}
 
       // Identify newly created / custom revisions outside the 4 baseline cohorts
       const baselineCodes = ['CPE 2026', 'CPE 2025', 'CPE 2024', 'CPE 2023', 'CPE-2026', 'CPE-2025', 'CPE-2024', 'CPE-2023'];
-      const customEditions = editions.filter(e => !baselineCodes.includes(e.id) && !baselineCodes.includes(e.code));
+      // Filter out test/dummy 2028 examples, keep only the single intended Next Year Batch curriculum (e.g. CPE 2027)
+      let customEditions = editions.filter(e => !baselineCodes.includes(e.id) && !baselineCodes.includes(e.code) && !String(e.id).includes('2028') && !String(e.code).includes('2028') && !String(e.name).includes('2028'));
+      // Only show one example card as requested
+      if (customEditions.length > 1) {
+        customEditions = [customEditions[0]];
+      }
 
       let html = '';
 
-      // 1. Render custom / newly authored revisions FIRST (e.g. CPE 2027)
+      // 1. Render the single next year batch revision (e.g. CPE 2027)
       customEditions.forEach(ed => {
         const isDraft = ed.status === 'UNLOCKED DRAFT' || ed.status.includes('DRAFT');
         const badgeColor = isDraft
