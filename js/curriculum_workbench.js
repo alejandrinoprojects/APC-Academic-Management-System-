@@ -5819,7 +5819,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       if (draftSelect && window.CURRIC_EDITIONS_REGISTRY) {
         const drafts = (window.CURRIC_EDITIONS_REGISTRY || []).filter(c => c.status === 'UNLOCKED DRAFT' || c.status.includes('DRAFT'));
         if (drafts.length > 0) {
-          draftSelect.innerHTML = drafts.map(d => `<option value="${d.id}" ${d.id === 'CPE-2027' ? 'selected' : ''}>${d.name} (${d.status})</option>`).join('');
+          draftSelect.innerHTML = drafts.map(d => `<option value="${d.id}" ${d.id === 'CPE-2027' ? 'selected' : ''}>${d.name} • ${d.status}</option>`).join('');
         }
       }
 
@@ -6214,8 +6214,8 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         const disClass = !isAssigned ? 'opacity-60 cursor-not-allowed' : '';
 
         html += `<tr class="${bg} hover:bg-amber-50/40 dark:hover:bg-slate-800 transition border-b border-slate-200 dark:border-slate-700/60">
-          <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-500 border-r border-slate-200 dark:border-slate-700/60 text-[11px] min-w-[56px] sticky left-0 z-10 ${stickyBg} shadow-[1px_0_0_0_rgba(226,232,240,1)] dark:shadow-[1px_0_0_0_rgba(51,65,85,1)]">${displayRow}</td>
-          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[130px] sticky left-[56px] z-10 ${stickyBg} shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)]">
+          <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-500 border-r border-slate-200 dark:border-slate-700/60 text-[11px] w-14 min-w-[56px] max-w-[56px] sticky left-0 z-10 ${stickyBg} shadow-[1px_0_0_0_rgba(226,232,240,1)] dark:shadow-[1px_0_0_0_rgba(51,65,85,1)]">${displayRow}</td>
+          <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 w-36 min-w-[130px] sticky left-[56px] z-10 ${stickyBg} shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)]">
             <input type="text" value="${c.code || ''}" ${disAttr} onfocus="selectExcelCell('A${displayRow}', this)" onchange="onSheetCellChange(${idx}, 'code', this.value)" class="w-full min-w-[115px] px-2 py-1 font-mono font-bold text-xs text-[#002855] dark:text-blue-300 uppercase bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 border-0 rounded-none focus:outline-none ${disClass}">
           </td>
           <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-700/60 min-w-[360px]">
@@ -6316,9 +6316,9 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
           const bg = (r % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50';
           const stickyBg = (r % 2 === 0) ? 'bg-white dark:bg-slate-900' : 'bg-slate-50 dark:bg-slate-900';
           html += `<tr class="${bg} hover:bg-amber-50/30 dark:hover:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-slate-400">
-            <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-600 border-r border-slate-200 dark:border-slate-800 text-[11px] min-w-[50px] sticky left-0 z-10 ${stickyBg} shadow-[1px_0_0_0_rgba(226,232,240,1)] dark:shadow-[1px_0_0_0_rgba(51,65,85,1)]">${r}</td>
-            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[120px] sticky left-[50px] z-10 ${stickyBg} shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)]">
-              <input type="text" placeholder="" onfocus="selectExcelCell('A${r}', this)" onchange="onEmptySheetCellChange(${r}, 'code', this.value)" class="w-full min-w-[105px] px-1.5 py-0.5 font-mono font-bold text-xs uppercase text-[#002855] dark:text-blue-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
+            <td class="py-1 px-2 text-center font-mono text-slate-400 dark:text-slate-600 border-r border-slate-200 dark:border-slate-800 text-[11px] w-14 min-w-[56px] max-w-[56px] sticky left-0 z-10 ${stickyBg} shadow-[1px_0_0_0_rgba(226,232,240,1)] dark:shadow-[1px_0_0_0_rgba(51,65,85,1)]">${r}</td>
+            <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 w-36 min-w-[130px] sticky left-[56px] z-10 ${stickyBg} shadow-[2px_0_4px_-1px_rgba(0,0,0,0.08)]">
+              <input type="text" placeholder="" onfocus="selectExcelCell('A${r}', this)" onchange="onEmptySheetCellChange(${r}, 'code', this.value)" class="w-full min-w-[115px] px-1.5 py-0.5 font-mono font-bold text-xs uppercase text-[#002855] dark:text-blue-300 bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
             </td>
             <td class="py-1 px-1 border-r border-slate-200 dark:border-slate-800 min-w-[320px]">
               <input type="text" placeholder="" onfocus="selectExcelCell('B${r}', this)" onchange="onEmptySheetCellChange(${r}, 'title', this.value)" class="w-full min-w-[300px] px-1.5 py-0.5 text-xs text-slate-800 dark:text-slate-100 font-medium bg-transparent hover:bg-white dark:hover:bg-slate-800 focus:bg-white dark:focus:bg-slate-800 focus:outline-none border-0 rounded-none">
@@ -7583,7 +7583,7 @@ ${worksheetsXml}
         const drafts = (window.CURRIC_EDITIONS_REGISTRY || []).filter(c => c.status === 'UNLOCKED DRAFT' || c.status.includes('DRAFT'));
         if (drafts.length > 0) {
           const currentVal = mainDraftSelect?.value || 'CPE-2027';
-          draftSelect.innerHTML = drafts.map(d => `<option value="${d.id}" ${d.id === currentVal ? 'selected' : ''}>${d.name} (${d.status})</option>`).join('');
+          draftSelect.innerHTML = drafts.map(d => `<option value="${d.id}" ${d.id === currentVal ? 'selected' : ''}>${d.name} • ${d.status}</option>`).join('');
         }
       }
 
@@ -8441,9 +8441,9 @@ ${worksheetsXml}
     const DEFAULT_CURRICULUM_MAPS = [
       {
         id: 'CM-BSCpE-2026',
-        name: 'BSCpE 2026–2030 Active Batch',
+        name: 'BSCpE 2026–2030',
         curriculumVersion: 'CPE 2026',
-        curriculumLabel: 'CPE 2026 (AY 2026–2030)',
+        curriculumLabel: 'CPE 2026 • AY 2026–2030',
         soVersion: 'SO 2026',
         soCount: 13,
         peoVersion: 'PEO 2026',
@@ -8452,18 +8452,18 @@ ${worksheetsXml}
         gaCount: 9,
         mvvVersion: 'MVV 2025',
         mapRevision: 'Map 2026',
-        status: 'ACTIVE BATCH',
+        status: 'ACTIVE',
         statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
         createdAt: '2026-01-15',
         program: 'BSCpE',
-        notes: 'Official active batch baseline with 184.0 units and 74 mapped courses.',
+        notes: 'Official active curriculum baseline with 184.0 units and 74 mapped courses.',
         approvedBy: 'Executive Director'
       },
       {
         id: 'CM-BSCpE-2027',
-        name: 'BSCpE 2027–2031 Next Year Batch',
+        name: 'BSCpE 2027–2031',
         curriculumVersion: 'CPE 2027',
-        curriculumLabel: 'CPE 2027 (AY 2027–2031)',
+        curriculumLabel: 'CPE 2027 • AY 2027–2031',
         soVersion: 'SO 2027',
         soCount: 13,
         peoVersion: 'PEO 2027',
@@ -8476,14 +8476,14 @@ ${worksheetsXml}
         statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         createdAt: '2027-03-10',
         program: 'BSCpE',
-        notes: 'Annual batch update with PEO 2027 AI engineering electives. Unlocked for Program Director & faculty editing.',
+        notes: 'Curriculum update with PEO 2027 AI engineering electives. Unlocked for Program Director & faculty editing.',
         approvedBy: 'Draft in Progress'
       },
       {
         id: 'CM-BSCpE-2025',
-        name: 'BSCpE 2025–2029 Previous Batch',
+        name: 'BSCpE 2025–2029',
         curriculumVersion: 'CPE 2025',
-        curriculumLabel: 'CPE 2025 (AY 2025–2029)',
+        curriculumLabel: 'CPE 2025 • AY 2025–2029',
         soVersion: 'SO 2025',
         soCount: 13,
         peoVersion: 'PEO 2025',
@@ -8492,18 +8492,18 @@ ${worksheetsXml}
         gaCount: 9,
         mvvVersion: 'MVV 2025',
         mapRevision: 'Map 2025',
-        status: 'PREV BATCH',
+        status: 'ARCHIVED',
         statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700',
         createdAt: '2025-06-15',
         program: 'BSCpE',
-        notes: 'Previous year batch legacy mapping.',
-        approvedBy: 'Executive Director (Archived)'
+        notes: 'Previous curriculum legacy mapping.',
+        approvedBy: 'Executive Director'
       },
       {
         id: 'CM-BSCpE-2021',
         name: 'BSCpE 2021–2025 Historical Baseline',
         curriculumVersion: 'CPE 2021',
-        curriculumLabel: 'CPE 2021 (AY 2021–2025)',
+        curriculumLabel: 'CPE 2021 • AY 2021–2025',
         soVersion: 'SO 2021',
         soCount: 12,
         peoVersion: 'PEO 2021',
@@ -8517,7 +8517,7 @@ ${worksheetsXml}
         createdAt: '2021-06-15',
         program: 'BSCpE',
         notes: 'Pre-CMO92 historical baseline.',
-        approvedBy: 'Executive Director (Archived)'
+        approvedBy: 'Executive Director'
       }
     ];
 
@@ -8530,7 +8530,7 @@ ${worksheetsXml}
           if (c27) {
             c27.status = 'UNLOCKED DRAFT';
             c27.statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
-            c27.name = 'BSCpE 2027–2031 Next Year Batch';
+            c27.name = 'BSCpE 2027–2031';
             c27.approvedBy = 'Draft in Progress';
           } else {
             list.splice(1, 0, DEFAULT_CURRICULUM_MAPS[1]);
@@ -8571,7 +8571,7 @@ ${worksheetsXml}
       }
 
       const titleEl = document.getElementById('curricMapActiveTitle');
-      if (titleEl) titleEl.textContent = `${map.name} (${map.id})`;
+      if (titleEl) titleEl.textContent = `${map.name} • ${map.id}`;
 
       const mapVerEl = document.getElementById('curricMapActiveVer');
       if (mapVerEl) mapVerEl.textContent = map.mapRevision;
@@ -10242,9 +10242,9 @@ ${worksheetsXml}
       // Update Snapshot Inspector Header
       if (targetMap) {
         const titleEl = document.getElementById('vh-inspect-title');
-        if (titleEl) titleEl.textContent = `${targetMap.name} (${targetMap.id})`;
+        if (titleEl) titleEl.textContent = `${targetMap.name} • ${targetMap.id}`;
         const subEl = document.getElementById('vh-inspect-subtitle');
-        if (subEl) subEl.textContent = `${targetMap.notes || 'Curriculum map snapshot.'} • Status: ${targetMap.status} (Effective: ${targetMap.createdAt || '2026-01-15'})`;
+        if (subEl) subEl.textContent = `${targetMap.notes || 'Curriculum map snapshot.'} • Status: ${targetMap.status} • Effective: ${targetMap.createdAt || '2026-01-15'}`;
         const badgeEl = document.getElementById('vh-current-inspecting-badge');
         if (badgeEl) badgeEl.textContent = targetMap.id;
 

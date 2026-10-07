@@ -1826,9 +1826,9 @@
                   <div>
                     <h3 class="font-black text-slate-900 dark:text-white text-xs flex items-center gap-1.5">
                       <span>Viewing:</span>
-                      <span id="vh-inspect-title" class="text-blue-700 dark:text-amber-400 font-mono">BSCpE 2026-2030 (CM-BSCpE-2026)</span>
+                      <span id="vh-inspect-title" class="text-blue-700 dark:text-amber-400 font-mono">BSCpE 2026–2030 • CM-BSCpE-2026</span>
                     </h3>
-                    <p class="text-[11px] text-slate-500" id="vh-inspect-subtitle">Official active batch baseline with 184.0 units and 74 mapped courses.</p>
+                    <p class="text-[11px] text-slate-500" id="vh-inspect-subtitle">Official active curriculum baseline with 184.0 units and 74 mapped courses.</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -3167,10 +3167,10 @@
                 <input type="text" id="sheetSearchInput" onkeyup="sheetFilterChange()" placeholder="Filter Code, Title, AY, Prereq..." class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none focus:ring-1 focus:ring-[#002855] text-slate-800 dark:text-slate-100 w-48 sm:w-56 placeholder-slate-400">
                 
                 <select id="sheetYearFilter" onchange="sheetFilterChange()" class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none text-slate-700 dark:text-slate-200 cursor-pointer font-bold font-mono">
-                  <option value="1" selected>CPE 2026 Curriculum (4-Year Degree • 74 Courses) ▾</option>
-                  <option value="2">CPE 2025 Curriculum (4-Year Degree • 74 Courses)</option>
-                  <option value="3">CPE 2024 Curriculum (4-Year Degree • 74 Courses)</option>
-                  <option value="4">CPE 2023 Curriculum (4-Year Degree • 74 Courses)</option>
+                  <option value="1" selected>CPE 2026 Curriculum • 74 Courses ▾</option>
+                  <option value="2">CPE 2025 Curriculum • 74 Courses</option>
+                  <option value="3">CPE 2024 Curriculum • 74 Courses</option>
+                  <option value="4">CPE 2023 Curriculum • 74 Courses</option>
                 </select>
 
                 <select id="sheetStandingFilter" onchange="sheetFilterChange()" class="px-3 py-1.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-none focus:outline-none text-slate-700 dark:text-slate-200 cursor-pointer">
@@ -3224,7 +3224,7 @@
 
             <!-- SPREADSHEET TABLE SCROLL CONTAINER (INFINITE EXCEL CANVAS) -->
             <div id="spreadsheetTableContainer" class="overflow-x-auto border border-slate-300 dark:border-slate-700 max-h-[620px] overflow-y-auto bg-slate-100 dark:bg-slate-950 relative touch-pan-x overscroll-x-contain select-auto">
-              <table id="spreadsheetTable" class="w-max min-w-[2200px] text-left text-xs border-collapse bg-white dark:bg-slate-900 table-auto">
+              <table id="spreadsheetTable" class="w-max min-w-[2200px] text-left text-xs border-separate border-spacing-0 bg-white dark:bg-slate-900 table-auto">
                 <!-- Dynamically injected by renderSpreadsheetGrid() -->
               </table>
 
@@ -3350,7 +3350,7 @@
                 <div class="flex items-center gap-2 flex-wrap">
                   <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Active Map</span>
                   <h3 id="curricMapActiveTitle" class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight font-mono">
-                    BSCpE 2026–2030 Active Batch
+                    BSCpE 2026–2030
                   </h3>
                   <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700" id="curricMapActiveVer">Map 2026</span>
                   <span id="curricMapActiveTag" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE &bull; LOCKED</span>
@@ -3360,10 +3360,10 @@
                   <div class="flex items-center gap-1.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 px-2.5 py-1">
                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Select Map:</span>
                     <select id="curriculumMapSelect" onchange="selectCurriculumMap(this.value)" class="bg-transparent text-xs font-mono font-bold text-[#002855] dark:text-amber-400 outline-none cursor-pointer">
-                      <option value="CM-BSCpE-2026">CPE 2026 (Map 2026 · Active · Locked)</option>
-                      <option value="CM-BSCpE-2027">CPE 2027 (Map 2027 · Next Year · Editable)</option>
-                      <option value="CM-BSCpE-2025">CPE 2025 (Map 2025 · Previous · Locked)</option>
-                      <option value="CM-BSCpE-2021">CPE 2021 (Map 2021 · Historical · Locked)</option>
+                      <option value="CM-BSCpE-2026">CPE 2026 • Map 2026 • Active • Locked</option>
+                      <option value="CM-BSCpE-2027">CPE 2027 • Map 2027 • Editable Draft</option>
+                      <option value="CM-BSCpE-2025">CPE 2025 • Map 2025 • Archived • Locked</option>
+                      <option value="CM-BSCpE-2021">CPE 2021 • Map 2021 • Historical • Locked</option>
                     </select>
                   </div>
                   <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs" title="Create a new Curriculum Map version">
@@ -3380,12 +3380,12 @@
                 <div onclick="navigateView('flowchart')" class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-amber-400 transition group" title="View Prerequisite Flowchart">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-[#002855] dark:text-[#E5A823]">Tier 4 &bull; Curriculum</span>
-                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardCurricStatus">ACTIVE BATCH</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardCurricStatus">ACTIVE</span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardCurricId">CPE 2026</h5>
-                  <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardCurricName">BS Computer Engineering (184.0 Units)</p>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardCurricName">BS Computer Engineering • 184.0 Units</p>
                   <div class="text-[11px] text-slate-500 font-mono pt-1 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                    <span>AY Batch:</span>
+                    <span>Academic Years:</span>
                     <span class="font-bold text-slate-800 dark:text-slate-200" id="cardCurricSpan">2026–2030</span>
                   </div>
                 </div>
@@ -4121,7 +4121,7 @@
                 <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/80 px-2.5 py-1.5 border border-slate-300 dark:border-slate-700">
                   <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Curriculum Draft:</span>
                   <select id="delegationDraftSelect" onchange="onDelegationDraftSelectChange(this.value)" class="text-xs font-mono font-bold bg-white dark:bg-slate-900 text-[#002855] dark:text-amber-400 px-2 py-0.5 border border-slate-300 dark:border-slate-700 outline-none cursor-pointer">
-                    <option value="CPE-2027" selected>BSCpE 2027–2031 (Unlocked Draft)</option>
+                    <option value="CPE-2027" selected>BSCpE 2027–2031 Unlocked Draft</option>
                   </select>
                 </div>
                 <button type="button" id="btnQuickAssignAll" onclick="quickAssignAllCourses()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Quickly distribute unassigned courses across active faculty">
@@ -5005,7 +5005,7 @@
           <div>
             <label class="block text-slate-700 dark:text-slate-200 font-bold mb-1 uppercase tracking-wider text-[11px]">Target Curriculum Draft</label>
             <select id="assignTaskCurricDraft" onchange="onAssignTaskDraftChange(this.value)" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 font-mono font-bold outline-none focus:border-[#002855] dark:focus:border-[#E5A823]">
-              <option value="CPE-2027" selected>BSCpE 2027–2031 (Draft AI &amp; Cloud Track)</option>
+              <option value="CPE-2027" selected>BSCpE 2027–2031 Draft</option>
             </select>
           </div>
 

@@ -262,6 +262,35 @@
     }
 
     /* ========================================================================= */
+    /* SPREADSHEET TABLE COLUMN FREEZE STYLES                                    */
+    /* ========================================================================= */
+    #spreadsheetTable {
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+    }
+    #spreadsheetTable th.sticky,
+    #spreadsheetTable td.sticky {
+      position: sticky !important;
+      -webkit-position: sticky !important;
+    }
+    #spreadsheetTable th:nth-child(1),
+    #spreadsheetTable td:nth-child(1) {
+      position: sticky !important;
+      left: 0 !important;
+      z-index: 15 !important;
+    }
+    #spreadsheetTable th:nth-child(2),
+    #spreadsheetTable td:nth-child(2) {
+      position: sticky !important;
+      left: 56px !important;
+      z-index: 15 !important;
+    }
+    #spreadsheetTable thead th:nth-child(1),
+    #spreadsheetTable thead th:nth-child(2) {
+      z-index: 35 !important;
+    }
+
+    /* ========================================================================= */
     /* PREREQUISITE FLOWCHART MATRIX TABLE STYLES (APC UI THEME)                 */
     /* ========================================================================= */
     .flowchart-matrix-table {
