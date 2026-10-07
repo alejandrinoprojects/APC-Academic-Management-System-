@@ -5774,14 +5774,14 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- CREATE NEW CURRICULUM REVISION MODAL -->
   <!-- ========================================================================= -->
   <div id="createCurriculumModal" onclick="if(event.target === this) closeCreateCurriculumModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-2xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
       <!-- Modal Header -->
       <div class="bg-[#002855] dark:bg-[#10151E] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
           <span class="w-7 h-7 bg-[#E5A823] text-slate-950 font-black text-sm flex items-center justify-center rounded-none shadow-xs">✨</span>
           <div>
             <h3 class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Initialize New Curriculum Revision</h3>
-            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Curriculum Setup &amp; Curriculum Map Binding</p>
+            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Curriculum Setup &amp; Map Binding</p>
           </div>
         </div>
         <button type="button" onclick="closeCreateCurriculumModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
@@ -5789,6 +5789,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
 
       <!-- Modal Body -->
       <form onsubmit="submitCreateCurriculum(event)" class="p-5 space-y-4 text-xs overflow-y-auto">
+        <!-- Degree Program -->
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Target Degree Program</label>
           <select id="newCurricProgram" onchange="updateNewCurricLineagePreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823]">
@@ -5805,6 +5806,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </select>
         </div>
 
+        <!-- Academic Years Grid -->
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year (Start)</label>
@@ -5816,95 +5818,55 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </div>
         </div>
 
-        <!-- CURRICULUM MAP BINDING (GA > PEO > SO) -->
-        <div class="border-2 border-[#002855] dark:border-[#E5A823]/60 bg-slate-50/80 dark:bg-[#10151E] p-4 space-y-3">
-          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
-            <div class="flex items-center gap-2">
-              <span class="text-base">🗺️</span>
-              <div>
-                <h4 class="font-black text-slate-900 dark:text-white text-xs uppercase tracking-wider">Curriculum Map Architecture (GA &gt; PEO &gt; SO)</h4>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400">Select the saved Curriculum Map file this curriculum binds its courses to.</p>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">GA &gt; PEO &gt; SO &gt; Courses</span>
+        <!-- Curriculum Map Binding (Clean, Decluttered) -->
+        <div class="space-y-2 pt-1">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider text-[11px]">Curriculum Map Alignment</label>
+            <span id="newCurricRuleBadge" class="text-emerald-700 dark:text-emerald-400 font-mono text-[10px] font-bold">✓ Forward-Only Verified</span>
           </div>
-
-          <div>
-            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[10px]">Select Target Curriculum Map File</label>
-            <div class="flex items-center gap-2">
-              <select id="newCurricMapSelect" onchange="updateNewCurricMapPreview()" class="w-full px-3 py-2 bg-white dark:bg-[#151C28] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono font-bold">
-                <option value="CM-BSCpE-2026" selected>Map 2026: Active Baseline (GA 2024 &gt; PEO 2026 &gt; SO 2026)</option>
-                <option value="CM-BSCpE-2027">Map 2027: Next Year Batch (GA 2024 &gt; PEO 2027 &gt; SO 2026)</option>
-                <option value="CM-BSCpE-2025">Map 2025: Previous Batch (GA 2024 &gt; PEO 2025 &gt; SO 2025)</option>
-                <option value="CM-BSCpE-2021">Map 2021: Historical Baseline (GA 2021 &gt; PEO 2021 &gt; SO 2021)</option>
-              </select>
-              <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs whitespace-nowrap border border-[#E5A823]/60 cursor-pointer" title="Create a new Curriculum Map file">
-                <span>+ New Map</span>
-              </button>
-            </div>
+          <div class="flex items-center gap-2">
+            <select id="newCurricMapSelect" onchange="updateNewCurricMapPreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono font-bold">
+              <option value="CM-BSCpE-2026" selected>CM-BSCpE-2026 &bull; Active Baseline [ACTIVE BATCH]</option>
+              <option value="CM-BSCpE-2027">CM-BSCpE-2027 &bull; Next Year Batch [UNLOCKED DRAFT]</option>
+              <option value="CM-BSCpE-2025">CM-BSCpE-2025 &bull; Previous Batch [PREV BATCH]</option>
+              <option value="CM-BSCpE-2021">CM-BSCpE-2021 &bull; Historical Baseline [ARCHIVED]</option>
+            </select>
+            <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-bold text-xs whitespace-nowrap border border-[#E5A823]/60 cursor-pointer" title="Create a new Curriculum Map file">
+              <span>+ New Map</span>
+            </button>
           </div>
-
-          <!-- Selected Curriculum Map Details & Chain Preview -->
-          <div class="p-3 bg-white dark:bg-[#0c1017] border border-slate-300 dark:border-slate-700 space-y-2">
-            <div class="flex items-center justify-between text-[10px] font-mono">
-              <span class="font-bold text-slate-600 dark:text-slate-300 uppercase">Hierarchical Lineage (Curriculum Map &gt; Courses):</span>
-              <span id="newCurricRuleBadge" class="text-emerald-700 dark:text-emerald-400 font-bold">✓ Forward-Only Verified</span>
-            </div>
-            
-            <!-- Visual hierarchy chain: GA > PEO > SO > Courses -->
-            <!-- Visual hierarchy chain: GA > PEO > SO > I-E-D Matrix > Courses -->
-            <div class="flex items-center gap-1 font-mono text-[11px] overflow-x-auto py-1.5">
-              <div class="flex items-center p-1 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700">
-                <span class="text-[9px] text-slate-400 font-bold uppercase mr-1">Curriculum Map:</span>
-                <span class="px-1.5 py-0.5 bg-slate-800 text-slate-100 font-bold text-[10px]" id="previewModalGa">GA 2024</span>
-                <span class="text-slate-400 mx-1">&gt;</span>
-                <span class="px-1.5 py-0.5 bg-purple-900 text-purple-100 font-bold text-[10px]" id="previewModalPeo">PEO 2026</span>
-                <span class="text-slate-400 mx-1">&gt;</span>
-                <span class="px-1.5 py-0.5 bg-indigo-900 text-indigo-100 font-bold text-[10px]" id="previewModalSo">SO 2026</span>
-              </div>
-              <span class="text-[#E5A823] font-bold text-sm mx-1">&gt;</span>
-              <div class="p-1 bg-emerald-900/40 text-emerald-300 border border-emerald-600/60 flex items-center gap-1 shrink-0">
-                <span class="text-[9px] font-bold uppercase">I-E-D Matrix</span>
-                <span class="text-[9px]">(I &bull; E &bull; D)</span>
-              </div>
-              <span class="text-[#E5A823] font-bold text-sm mx-1">&gt;</span>
-              <div class="p-1 bg-[#002855] text-white border border-[#E5A823]/60 flex items-center gap-1 shrink-0">
-                <span class="text-[9px] text-[#E5A823] font-bold uppercase">Curriculum:</span>
-                <span class="font-bold text-[#E5A823] text-[10px]" id="previewModalCurricCode">CPE2027</span>
-                <span class="text-[9px] text-slate-300">(74 Courses)</span>
-              </div>
-            </div>
-
-            <p class="text-[10px] text-slate-500 dark:text-slate-400 italic">
-              All courses in this curriculum will inherit and map directly to the <strong>13 Student Outcomes</strong> defined inside this Curriculum Map file using the <strong>I-E-D Competency Matrix</strong> (Introductory, Enabling, Demonstrative).
-            </p>
+          <!-- Compact lineage summary chip -->
+          <div class="flex items-center gap-2 px-2.5 py-1.5 bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-[10px] font-mono text-slate-600 dark:text-slate-300">
+            <span class="font-bold text-slate-400 uppercase">Bound Tiers:</span>
+            <span id="previewModalGa" class="font-bold text-slate-800 dark:text-slate-200">GA 2024</span>
+            <span class="text-slate-400">&rarr;</span>
+            <span id="previewModalPeo" class="font-bold text-purple-700 dark:text-purple-300">PEO 2026</span>
+            <span class="text-slate-400">&rarr;</span>
+            <span id="previewModalSo" class="font-bold text-indigo-700 dark:text-indigo-300">SO 2026</span>
+            <span class="text-slate-400">&rarr;</span>
+            <span class="font-bold text-emerald-700 dark:text-emerald-300">I-E-D Matrix</span>
+            <span id="previewModalCurricCode" class="hidden">CPE2027</span>
           </div>
         </div>
 
-        <div>
-          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Baseline Source</label>
+        <!-- Curriculum Baseline Source (Clean Radio Cards) -->
+        <div class="space-y-1.5 pt-1">
+          <label class="block font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider text-[11px]">Curriculum Baseline Source</label>
           <div class="space-y-2">
-            <label class="flex items-start gap-2 p-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 cursor-pointer">
-              <input type="radio" name="curricTemplate" value="clone" checked class="mt-0.5" />
-              <div>
-                <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Clone Active Baseline (CPE2026 Curriculum)</div>
-              </div>
+            <label class="flex items-center gap-2.5 p-2.5 border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/30 hover:border-slate-400 dark:hover:border-slate-600 cursor-pointer">
+              <input type="radio" name="curricTemplate" value="clone" checked class="accent-[#002855]" />
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-200">Clone Active Baseline: CPE2026 Curriculum</div>
             </label>
-            <label class="flex items-start gap-2 p-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 cursor-pointer">
-              <input type="radio" name="curricTemplate" value="ched" class="mt-0.5" />
-              <div>
-                <div class="font-bold text-slate-900 dark:text-slate-100 text-xs">Official CHED CMO 92 Baseline</div>
-              </div>
+            <label class="flex items-center gap-2.5 p-2.5 border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/30 hover:border-slate-400 dark:hover:border-slate-600 cursor-pointer">
+              <input type="radio" name="curricTemplate" value="ched" class="accent-[#002855]" />
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-200">Official CHED CMO 92 Baseline</div>
             </label>
-            <label class="flex items-start gap-2 p-2.5 border border-emerald-300 dark:border-emerald-700/70 bg-emerald-50/40 dark:bg-emerald-950/20 cursor-pointer">
-              <input type="radio" name="curricTemplate" value="excel" id="curricTemplateExcelRadio" class="mt-0.5" />
+            <label class="flex items-start gap-2.5 p-2.5 border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/30 hover:border-slate-400 dark:hover:border-slate-600 cursor-pointer">
+              <input type="radio" name="curricTemplate" value="excel" id="curricTemplateExcelRadio" class="accent-[#002855] mt-0.5" />
               <div class="w-full">
-                <div class="font-bold text-slate-900 dark:text-slate-100 text-xs flex items-center justify-between">
-                  <span>Import Excel Workbook (.xlsx, .xls)</span>
-                  <span class="px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-[9px] font-mono uppercase">Excel</span>
-                </div>
+                <div class="font-bold text-slate-800 dark:text-slate-200 text-xs">Import Excel Workbook (.xlsx, .xls)</div>
                 <div class="mt-1.5">
-                  <input type="file" id="newCurricExcelFile" accept=".xlsx,.xls" onchange="document.getElementById('curricTemplateExcelRadio').checked = true; sheetImportCSV(event)" class="text-[11px] text-slate-700 dark:text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:border file:border-emerald-500/50 file:text-[10px] file:font-bold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 file:cursor-pointer" />
+                  <input type="file" id="newCurricExcelFile" accept=".xlsx,.xls" onchange="document.getElementById('curricTemplateExcelRadio').checked = true; sheetImportCSV(event)" class="text-[11px] text-slate-600 dark:text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:border file:border-slate-300 dark:file:border-slate-700 file:text-[10px] file:font-bold file:bg-slate-200 dark:file:bg-slate-800 file:text-slate-800 dark:file:text-slate-200 hover:file:bg-slate-300 file:cursor-pointer" />
                 </div>
               </div>
             </label>
@@ -5912,7 +5874,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         </div>
 
         <div class="p-2.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700/60 text-amber-900 dark:text-amber-300 text-[11px] flex items-center justify-between">
-          <span class="font-bold">⚡ Prerequisite flowcharts and official registrar documentation will be auto-generated.</span>
+          <span class="font-bold">&bull; Prerequisite flowcharts and official registrar documentation will be auto-generated.</span>
         </div>
 
         <!-- Footer -->
@@ -5979,8 +5941,8 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Status</label>
             <select id="snapshotMapStatus" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs">
-              <option value="DRAFT (PENDING EXD APPROVAL)" selected>DRAFT (PENDING EXD APPROVAL)</option>
-              <option value="ACTIVE BATCH" id="snapshotOptionActive">ACTIVE BATCH (ExD Approval Required)</option>
+              <option value="DRAFT (PENDING EXD APPROVAL)" selected>DRAFT &bull; Pending ExD Approval</option>
+              <option value="ACTIVE BATCH" id="snapshotOptionActive">ACTIVE BATCH &bull; ExD Approval Required</option>
               <option value="NEXT YEAR BATCH">NEXT YEAR BATCH</option>
               <option value="PREV BATCH">PREVIOUS BATCH</option>
               <option value="ARCHIVED">ARCHIVED</option>

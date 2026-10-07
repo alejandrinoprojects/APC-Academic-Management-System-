@@ -8356,7 +8356,7 @@ ${worksheetsXml}
       },
       {
         id: 'CM-BSCpE-2027',
-        name: 'BSCpE 2027–2031 Next Year Batch (Unlocked Draft)',
+        name: 'BSCpE 2027–2031 Next Year Batch',
         curriculumVersion: 'CPE 2027',
         curriculumLabel: 'CPE 2027 (AY 2027–2031)',
         soVersion: 'SO 2027',
@@ -8366,13 +8366,13 @@ ${worksheetsXml}
         gaVersion: 'GA 2027',
         gaCount: 9,
         mvvVersion: 'MVV 2025',
-        mapRevision: 'Map 2027 (Draft v1)',
+        mapRevision: 'Map 2027',
         status: 'UNLOCKED DRAFT',
         statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         createdAt: '2027-03-10',
         program: 'BSCpE',
         notes: 'Annual batch update with PEO 2027 AI engineering electives. Unlocked for Program Director & faculty editing.',
-        approvedBy: 'Draft in Progress (Unlocked)'
+        approvedBy: 'Draft in Progress'
       },
       {
         id: 'CM-BSCpE-2025',
@@ -8425,8 +8425,8 @@ ${worksheetsXml}
           if (c27) {
             c27.status = 'UNLOCKED DRAFT';
             c27.statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
-            c27.name = 'BSCpE 2027–2031 Next Year Batch (Unlocked Draft)';
-            c27.approvedBy = 'Draft in Progress (Unlocked)';
+            c27.name = 'BSCpE 2027–2031 Next Year Batch';
+            c27.approvedBy = 'Draft in Progress';
           } else {
             list.splice(1, 0, DEFAULT_CURRICULUM_MAPS[1]);
           }
@@ -8617,7 +8617,7 @@ ${worksheetsXml}
       const sel = document.getElementById('curriculumMapSelect');
       if (!sel) return;
       sel.innerHTML = (window.CURRICULUM_MAPS || []).map(m => `
-        <option value="${m.id}">${m.curriculumVersion} (${m.mapRevision} &bull; ${m.status})</option>
+        <option value="${m.id}">${m.curriculumVersion} &bull; ${m.mapRevision} [${m.status}]</option>
       `).join('');
       if (window.currentActiveCurriculumMap) sel.value = window.currentActiveCurriculumMap;
     };
@@ -8694,7 +8694,7 @@ ${worksheetsXml}
       const currentId = window.currentActiveCurriculumMap || (maps[0] ? maps[0].id : '');
       sel.innerHTML = maps.map(m => `
         <option value="${m.id}" ${m.id === currentId ? 'selected' : ''}>
-          ${m.id} (${m.name}) &bull; ${m.status}
+          ${m.id} &bull; ${m.name} [${m.status}]
         </option>
       `).join('');
     };
@@ -8726,7 +8726,7 @@ ${worksheetsXml}
         if (role === 'exd') {
           if (activeOption) {
             activeOption.disabled = false;
-            activeOption.textContent = 'ACTIVE BATCH (Executive Director Approved)';
+            activeOption.textContent = 'ACTIVE BATCH • Executive Director Approved';
           }
           if (alertEl) {
             alertEl.className = 'p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-start gap-2';
@@ -8735,7 +8735,7 @@ ${worksheetsXml}
         } else {
           if (activeOption) {
             activeOption.disabled = true;
-            activeOption.textContent = 'ACTIVE BATCH (Requires Executive Director Approval)';
+            activeOption.textContent = 'ACTIVE BATCH • Requires Executive Director Approval';
           }
           statusSelect.value = 'DRAFT (PENDING EXD APPROVAL)';
           if (alertEl) {
