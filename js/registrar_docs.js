@@ -32,16 +32,16 @@ window.REGISTRAR_DOCS = {
           <div class="flex items-center gap-1">
             <span class="text-slate-600">Student Number:</span>
             <div id="printStudentIdDisplay" class="flex gap-0.5 font-mono">
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">2</span>
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">0</span>
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">2</span>
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">6</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
               <span class="w-1.5 h-3.5 flex items-center justify-center font-bold text-slate-500">-</span>
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">1</span>
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">0</span>
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">0</span>
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">0</span>
-              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">1</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
+              <span class="w-3.5 h-3.5 border border-black bg-white flex items-center justify-center font-bold text-[7.5px]">&nbsp;</span>
             </div>
           </div>
           <div class="flex items-center gap-2 mt-0.5 text-slate-600">
@@ -3669,78 +3669,6 @@ Microprocessors Laboratory</td>
         <h1 class="font-black text-xl uppercase tracking-widest text-slate-900">ASIA PACIFIC COLLEGE · SCHOOL OF ENGINEERING</h1>
         <h2 class="font-extrabold text-sm text-apc-navy mt-1">Comparison of CMO 87 S. 2017 and APC Proposed BS in Computer Engineering Curriculum</h2>
         <p class="text-xs text-slate-500 font-mono mt-0.5">Audit across CHEd CMO 87, APC AY 2018-2019, and APC Proposed Curriculum AY 2026</p>
-      </div>
-
-      <!-- Official Accounting Notice explaining Contact Hours vs Credit Units -->
-      <div class="mb-4 p-3 bg-blue-50 border-2 border-blue-300 rounded-none text-xs text-blue-950 flex flex-wrap items-center justify-between gap-3 shadow-sm">
-        <div class="flex items-start gap-2.5">
-          <span class="text-xl leading-none">💡</span>
-          <div>
-            <span class="font-extrabold text-blue-900 uppercase tracking-wider text-[11px] block">Curriculum Hours vs. Credit Units Clarification:</span>
-            <span class="text-[11px] leading-relaxed text-blue-800">
-              The figures in the thousands (e.g., <b>1,641</b> and <b>1,626</b>) represent <b>cumulative practical laboratory and industry internship contact hours</b> (3 terms × 520 hrs = 1,560 hrs of industry immersion).
-              Actual academic degree credit is strictly <b>184 Total Credit Units</b> (and 167 academic units excluding PE & NSTP), exactly matching CHED CMO No. 92, s. 2017 standards.
-            </span>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 font-mono text-[11px] shrink-0">
-          <span class="px-2.5 py-1 rounded-none bg-blue-200 text-blue-900 font-bold border border-blue-300">1,641 Practicum Hrs</span>
-          <span class="px-2.5 py-1 rounded-none bg-amber-400 text-slate-900 font-black border border-amber-500 shadow-sm">184 Credit Units</span>
-        </div>
-      </div>
-
-      <!-- Official Accounting Notice explaining Contact Hours vs Credit Units -->
-      <div class="mb-4 p-3 bg-blue-50 border-2 border-blue-300 rounded-none text-xs text-blue-950 flex flex-wrap items-center justify-between gap-3 shadow-sm">
-        <div class="flex items-start gap-2.5">
-          <span class="text-xl leading-none">💡</span>
-          <div>
-            <span class="font-extrabold text-blue-900 uppercase tracking-wider text-[11px] block">Curriculum Hours vs. Credit Units Clarification:</span>
-            <span class="text-[11px] leading-relaxed text-blue-800">
-              The figures in the thousands (e.g., <b>1,641</b> and <b>1,626</b>) represent <b>cumulative practical laboratory and industry internship contact hours</b> (3 terms × 520 hrs = 1,560 hrs of industry immersion).
-              Actual academic degree credit is strictly <b>184 Total Credit Units</b> (and 167 academic units excluding PE & NSTP), exactly matching CHED CMO No. 92, s. 2017 standards.
-            </span>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 font-mono text-[11px] shrink-0">
-          <span class="px-2.5 py-1 rounded-none bg-blue-200 text-blue-900 font-bold border border-blue-300">1,641 Practicum Hrs</span>
-          <span class="px-2.5 py-1 rounded-none bg-amber-400 text-slate-900 font-black border border-amber-500 shadow-sm">184 Credit Units</span>
-        </div>
-      </div>
-
-      <!-- Official Accounting Notice explaining Contact Hours vs Credit Units -->
-      <div class="mb-4 p-3 bg-blue-50 border-2 border-blue-300 rounded-none text-xs text-blue-950 flex flex-wrap items-center justify-between gap-3 shadow-sm">
-        <div class="flex items-start gap-2.5">
-          <span class="text-xl leading-none">💡</span>
-          <div>
-            <span class="font-extrabold text-blue-900 uppercase tracking-wider text-[11px] block">Curriculum Hours vs. Credit Units Clarification:</span>
-            <span class="text-[11px] leading-relaxed text-blue-800">
-              The figures in the thousands (e.g., <b>1,641</b> and <b>1,626</b>) represent <b>cumulative practical laboratory and industry internship contact hours</b> (3 terms × 520 hrs = 1,560 hrs of industry immersion).
-              Actual academic degree credit is strictly <b>184 Total Credit Units</b> (and 167 academic units excluding PE & NSTP), exactly matching CHED CMO No. 92, s. 2017 standards.
-            </span>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 font-mono text-[11px] shrink-0">
-          <span class="px-2.5 py-1 rounded-none bg-blue-200 text-blue-900 font-bold border border-blue-300">1,641 Practicum Hrs</span>
-          <span class="px-2.5 py-1 rounded-none bg-amber-400 text-slate-900 font-black border border-amber-500 shadow-sm">184 Credit Units</span>
-        </div>
-      </div>
-
-      <!-- Official Accounting Notice explaining Contact Hours vs Credit Units -->
-      <div class="mb-4 p-3 bg-blue-50 border-2 border-blue-300 rounded-none text-xs text-blue-950 flex flex-wrap items-center justify-between gap-3 shadow-sm">
-        <div class="flex items-start gap-2.5">
-          <span class="text-xl leading-none">💡</span>
-          <div>
-            <span class="font-extrabold text-blue-900 uppercase tracking-wider text-[11px] block">Curriculum Hours vs. Credit Units Clarification:</span>
-            <span class="text-[11px] leading-relaxed text-blue-800">
-              The figures in the thousands (e.g., <b>1,641</b> and <b>1,626</b>) represent <b>cumulative practical laboratory and industry internship contact hours</b> (3 terms × 520 hrs = 1,560 hrs of industry immersion).
-              Actual academic degree credit is strictly <b>184 Total Credit Units</b> (and 167 academic units excluding PE & NSTP), exactly matching CHED CMO No. 92, s. 2017 standards.
-            </span>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 font-mono text-[11px] shrink-0">
-          <span class="px-2.5 py-1 rounded-none bg-blue-200 text-blue-900 font-bold border border-blue-300">1,641 Practicum Hrs</span>
-          <span class="px-2.5 py-1 rounded-none bg-amber-400 text-slate-900 font-black border border-amber-500 shadow-sm">184 Credit Units</span>
-        </div>
       </div>
 
       <div class="overflow-x-auto">
