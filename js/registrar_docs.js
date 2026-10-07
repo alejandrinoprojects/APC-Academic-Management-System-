@@ -741,6 +741,7 @@ Software Design Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-apc-navy text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>THIRD YEAR</span>
@@ -1332,6 +1333,7 @@ Embedded System Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>CORE COURSES</span>
@@ -1873,6 +1875,7 @@ Embedded System Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>TECHNICAL ELECTIVES</span>
@@ -2246,6 +2249,7 @@ Embedded System Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 font-black text-xs uppercase tracking-wider flex items-center justify-between">
             <span>PHYSICAL EDUCATION</span>
@@ -2784,6 +2788,7 @@ Software Design Laboratory</td>
             </div>
           </div>
         </div>
+        <div class="doc-page-break" aria-hidden="true"></div>
         <div class="border border-slate-300 rounded-none overflow-hidden shadow-sm">
           <div class="bg-apc-blue text-white px-4 py-2 font-black text-xs uppercase tracking-wider">
             THIRD YEAR

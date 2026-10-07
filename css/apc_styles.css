@@ -418,34 +418,66 @@
       padding: 0.5in 0.5in !important;
     }
 
-    /* Visual Onscreen Page Break Indicator (Simulating Sheet Multi-Page Separation) */
+    /* Visual Onscreen Page Break Indicator (Simulating Physical Letter Sheet Separation on Desk) */
     .doc-page-break {
       page-break-before: always !important;
       break-before: page !important;
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 48px !important;
       margin-top: 2rem !important;
-      padding-top: 1.5rem !important;
-      border-top: 2px dashed #94a3b8 !important;
-      position: relative;
+      margin-bottom: 2rem !important;
+      background-color: #cbd5e1 !important;
+      border-top: 1px solid #94a3b8 !important;
+      border-bottom: 1px solid #94a3b8 !important;
+      box-shadow: inset 0 8px 10px -6px rgba(0, 0, 0, 0.22), inset 0 -8px 10px -6px rgba(0, 0, 0, 0.22) !important;
+      user-select: none !important;
+    }
+    .dark .doc-page-break {
+      background-color: #0b0f17 !important;
+      border-top-color: #334155 !important;
+      border-bottom-color: #334155 !important;
+      box-shadow: inset 0 8px 12px -6px rgba(0, 0, 0, 0.6), inset 0 -8px 12px -6px rgba(0, 0, 0, 0.6) !important;
+    }
+    .reg-doc-letter-portrait .doc-page-break {
+      margin-left: -0.5in !important;
+      margin-right: -0.5in !important;
+    }
+    .reg-doc-letter-landscape .doc-page-break {
+      margin-left: -0.45in !important;
+      margin-right: -0.45in !important;
     }
     .doc-page-break::before {
-      content: "— PAGE BREAK (LETTER) —";
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #f1f5f9;
-      color: #64748b;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      padding: 1px 8px;
-      border: 1px solid #cbd5e1;
+      content: "📄 PAGE BREAK (LETTER SIZE)";
+      position: static !important;
+      transform: none !important;
+      background: #f8fafc !important;
+      color: #475569 !important;
+      font-size: 10px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+      padding: 4px 14px !important;
+      border-radius: 9999px !important;
+      border: 1px solid #94a3b8 !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+    }
+    .dark .doc-page-break::before {
+      background: #1e293b !important;
+      color: #94a3b8 !important;
+      border-color: #475569 !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
     }
     @media print {
       .doc-page-break {
-        border-top: none !important;
-        margin-top: 0 !important;
-        padding-top: 0 !important;
+        display: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
       }
       .doc-page-break::before {
         display: none !important;
