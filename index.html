@@ -3316,14 +3316,6 @@
                 <h2 class="font-black text-slate-900 dark:text-white text-lg tracking-tight">Curriculum Map</h2>
               </div>
               <div class="flex items-center space-x-2">
-                <button type="button" onclick="navigateView('versioning-history')" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold rounded-none border border-[#E5A823]/40 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Open Master Versioning History Registry">
-                  <span>📜</span>
-                  <span>Versioning History</span>
-                </button>
-                <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3.5 py-1.5 bg-[#E5A823] hover:bg-amber-400 text-[#002855] text-xs font-black rounded-none border border-amber-500 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Create a new curriculum map or save current revision">
-                  <span>➕</span>
-                  <span>Create New Curriculum Map</span>
-                </button>
                 <button type="button" onclick="exportObeMatrixCSV()" class="px-3.5 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold rounded-none border border-[#E5A823]/40 shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Export complete Curriculum Map (74 Courses, PEOs, GAs) to Excel (.xlsx)">
                   <span>📥</span>
                   <span>Export Curriculum Map (.xlsx)</span>
@@ -3345,11 +3337,6 @@
                   <span>➕</span>
                   <span>New Map</span>
                 </button>
-              </div>
-              <div class="flex items-center flex-wrap gap-2">
-                <span id="obe-active-version-badge" class="px-2.5 py-1 font-mono font-bold text-xs bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 border border-blue-300 dark:border-blue-700">
-                  OBE Batch: 2026
-                </span>
               </div>
             </div>
 
@@ -5906,25 +5893,33 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       </div>
 
       <!-- Form Body -->
-      <form onsubmit="handleSaveCurriculumMapSubmit(event)" class="p-5 space-y-3.5 text-xs overflow-y-auto">
-        <!-- Governance Policy Alert (Clean inline banner) -->
-        <div id="snapshotGovernanceAlert" class="p-2 bg-amber-500/10 border-l-3 border-amber-500 text-[11px] text-amber-800 dark:text-amber-300 flex items-center justify-between">
-          <span>⚖️ Only the <strong>Executive Director</strong> can activate. Submission will be saved as <strong>DRAFT</strong>.</span>
+      <form onsubmit="handleSaveCurriculumMapSubmit(event)" class="p-6 space-y-4 text-xs overflow-y-auto">
+        <!-- Row 1: Map Name & Version -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div class="sm:col-span-2">
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Map Name</label>
+            <input type="text" id="snapshotMapName" value="BSCpE 2027 Next Batch Curriculum Map" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-bold" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Version</label>
+            <input type="text" id="snapshotCurricVer" value="CPE 2027" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
+            <input type="hidden" id="snapshotMapVersion" value="Map 2027" />
+          </div>
         </div>
 
-        <!-- Row 1: Base Version & Status -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Row 2: Base Version & Status -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Base Version to Clone</label>
-            <select id="snapshotBaseMapSelect" onchange="handleSnapshotBaseMapChange()" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold">
+            <select id="snapshotBaseMapSelect" onchange="handleSnapshotBaseMapChange()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold cursor-pointer">
               <!-- Populated dynamically -->
             </select>
           </div>
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Status</label>
-            <select id="snapshotMapStatus" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs">
-              <option value="DRAFT (PENDING EXD APPROVAL)" selected>DRAFT &bull; Pending ExD Approval</option>
-              <option value="ACTIVE BATCH" id="snapshotOptionActive">ACTIVE BATCH &bull; ExD Approval Required</option>
+            <select id="snapshotMapStatus" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs cursor-pointer">
+              <option value="DRAFT (PENDING EXD APPROVAL)" selected>DRAFT • Pending ExD Approval</option>
+              <option value="ACTIVE BATCH" id="snapshotOptionActive">ACTIVE BATCH • ExD Approval Required</option>
               <option value="NEXT YEAR BATCH">NEXT YEAR BATCH</option>
               <option value="PREV BATCH">PREVIOUS BATCH</option>
               <option value="ARCHIVED">ARCHIVED</option>
@@ -5932,31 +5927,18 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </div>
         </div>
 
-        <!-- Row 2: Map Name & Version Identifiers -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div class="sm:col-span-2">
-            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Map Name</label>
-            <input type="text" id="snapshotMapName" value="BSCpE 2027 Next Batch Curriculum Map" required class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-bold" />
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Version</label>
-            <input type="text" id="snapshotCurricVer" value="CPE 2027" required class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
-            <input type="hidden" id="snapshotMapVersion" value="Map 2027" />
-          </div>
-        </div>
-
-        <!-- Row 3: Requisite Parent Subpart Tiers (Clean 3-Column Compact Selector) -->
-        <div class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700 space-y-2">
+        <!-- Row 3: Parent Subpart Tiers -->
+        <div class="p-3.5 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700 space-y-2.5">
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider text-[11px]">Requisite Parent Subpart Tiers</span>
             <button type="button" onclick="openEditAllDefinitionsModal('all')" class="text-[#002855] dark:text-[#E5A823] hover:underline text-[11px] font-bold cursor-pointer">
               ✏️ Customize Definitions
             </button>
           </div>
-          <div class="grid grid-cols-3 gap-2">
+          <div class="grid grid-cols-3 gap-2.5">
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">SO Version</label>
-              <select id="snapshotSoVer" class="w-full px-2 py-1 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">SO Version</label>
+              <select id="snapshotSoVer" class="w-full px-2.5 py-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold cursor-pointer">
                 <option value="SO 2027">SO 2027</option>
                 <option value="SO 2026" selected>SO 2026</option>
                 <option value="SO 2025">SO 2025</option>
@@ -5964,8 +5946,8 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
               </select>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">PEO Version</label>
-              <select id="snapshotPeoVer" class="w-full px-2 py-1 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">PEO Version</label>
+              <select id="snapshotPeoVer" class="w-full px-2.5 py-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold cursor-pointer">
                 <option value="PEO 2027" selected>PEO 2027</option>
                 <option value="PEO 2026">PEO 2026</option>
                 <option value="PEO 2025">PEO 2025</option>
@@ -5973,8 +5955,8 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
               </select>
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">GA Version</label>
-              <select id="snapshotGaVer" class="w-full px-2 py-1 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">GA Version</label>
+              <select id="snapshotGaVer" class="w-full px-2.5 py-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold cursor-pointer">
                 <option value="GA 2024" selected>GA 2024</option>
                 <option value="GA 2021">GA 2021</option>
               </select>
@@ -5982,10 +5964,12 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </div>
         </div>
 
+        <div id="snapshotGovernanceAlert" class="hidden"></div>
+
         <!-- Row 4: Notes -->
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Mapping Documentation Notes</label>
-          <textarea id="snapshotMapNotes" rows="2" class="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-none" placeholder="Annual batch notes, revision scope, accreditation cycle notes..."></textarea>
+          <textarea id="snapshotMapNotes" rows="2" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-none" placeholder="Annual batch notes, revision scope, accreditation cycle notes..."></textarea>
         </div>
 
         <!-- Footer -->

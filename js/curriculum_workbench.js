@@ -8741,8 +8741,8 @@ ${worksheetsXml}
             activeOption.textContent = 'ACTIVE BATCH • Executive Director Approved';
           }
           if (alertEl) {
-            alertEl.className = 'p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-start gap-2';
-            alertEl.innerHTML = '<span class="text-xs">👑</span><div><span class="font-bold uppercase tracking-wider text-[10px]">ExD Authority:</span> As Executive Director, you can approve and activate curriculum maps directly into <strong>ACTIVE BATCH</strong> status.</div>';
+            alertEl.className = 'py-1 px-2.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5';
+            alertEl.innerHTML = '<span class="font-bold uppercase tracking-wider text-[10px]">ExD Authority:</span> As Executive Director, you can approve and activate curriculum maps directly into <strong>ACTIVE BATCH</strong> status.';
           }
         } else {
           if (activeOption) {
@@ -8751,8 +8751,8 @@ ${worksheetsXml}
           }
           statusSelect.value = 'DRAFT (PENDING EXD APPROVAL)';
           if (alertEl) {
-            alertEl.className = 'p-2.5 bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-800 dark:text-amber-300 flex items-start gap-2';
-            alertEl.innerHTML = '<span class="text-xs">⚖️</span><div><span class="font-bold uppercase tracking-wider text-[10px]">Governance Policy:</span> Only the <strong>Executive Director (ExD)</strong> can approve a curriculum map version for <strong>ACTIVE</strong> status. Your submission will be stored as <strong>DRAFT (PENDING EXD APPROVAL)</strong>.</div>';
+            alertEl.className = 'py-1 px-2.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-800 dark:text-amber-300 flex items-center gap-1.5';
+            alertEl.innerHTML = '<span class="font-bold uppercase tracking-wider text-[10px]">Governance Policy:</span> Only the Executive Director can approve a curriculum map for active status. Submissions are saved as draft.';
           }
         }
       }
