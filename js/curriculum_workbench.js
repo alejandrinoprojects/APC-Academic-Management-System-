@@ -3010,11 +3010,46 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       const prog = document.getElementById('newCurricProgram')?.value || 'BSCpE';
       const startYr = document.getElementById('newCurricStartYear')?.value || '2027';
       const endYr = document.getElementById('newCurricEndYear')?.value || '2031';
+      const mapName = document.getElementById('newCurricMapName')?.value || `${prog} ${startYr}–${endYr} Curriculum Map`;
+      const soVer = document.getElementById('newCurricSoVersion')?.value || 'SOv2026b';
+      const peoVer = document.getElementById('newCurricPeoVersion')?.value || 'PEOv2027a';
+      const gaVer = document.getElementById('newCurricGaVersion')?.value || 'GAv2026a';
+
+      const newMapId = `CM-${prog}-${startYr}`;
+      const newMap = {
+        id: newMapId,
+        name: mapName,
+        curriculumVersion: `Curriculumv${startYr}a`,
+        curriculumLabel: `${prog}${startYr} (AY ${startYr}–${endYr})`,
+        soVersion: soVer,
+        soCount: 13,
+        peoVersion: peoVer,
+        peoCount: 5,
+        gaVersion: gaVer,
+        gaCount: 9,
+        mvvVersion: 'MVVv2025',
+        mapRevision: `SO/PEO Map v${startYr}a`,
+        status: 'ACTIVE BASELINE',
+        statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
+        createdAt: new Date().toISOString().split('T')[0],
+        program: prog,
+        notes: `Saved Curriculum Map bound to newly created ${prog} ${startYr} revision.`
+      };
+
+      if (!window.CURRICULUM_MAPS) window.CURRICULUM_MAPS = [];
+      window.CURRICULUM_MAPS.unshift(newMap);
+      window.currentActiveCurriculumMap = newMapId;
+      if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
+
       closeCreateCurriculumModal();
       if (typeof showToast === 'function') {
-        showToast(`Successfully initialized ${prog} Curriculum Revision ${startYr}–${endYr}!`);
+        showToast(`✓ Successfully created ${prog} revision with Curriculum Map '${newMap.name}'!`);
       }
-      selectProgram(prog, 'curriculum-home');
+      if (typeof openCurriculumMapTab === 'function') {
+        openCurriculumMapTab();
+      } else {
+        selectProgram(prog, 'curriculum-home');
+      }
     };
 
     function toggleMobileSidebar() {
@@ -7686,40 +7721,318 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     }
 
     function switchObeTab(tabKey) {
+      const tabHierarchy = document.getElementById('obe-content-hierarchy');
       const tabMatrix = document.getElementById('obe-content-matrix') || document.getElementById('tab-obe-matrix');
       const tabPeoSo = document.getElementById('obe-content-peo') || document.getElementById('tab-obe-peo-so');
       const tabVmg = document.getElementById('obe-content-vision') || document.getElementById('tab-obe-vmg');
 
+      const btnHierarchy = document.getElementById('obe-tab-hierarchy');
       const btnMatrix = document.getElementById('obe-tab-matrix') || document.getElementById('obe-btn-matrix');
       const btnPeoSo = document.getElementById('obe-tab-peo') || document.getElementById('obe-btn-peo-so');
       const btnVmg = document.getElementById('obe-tab-vision') || document.getElementById('obe-btn-vmg');
 
-      if (!tabMatrix || !tabPeoSo || !tabVmg) return;
-
       // Hide all
-      tabMatrix.classList.add('hidden');
-      tabPeoSo.classList.add('hidden');
-      tabVmg.classList.add('hidden');
+      if (tabHierarchy) tabHierarchy.classList.add('hidden');
+      if (tabMatrix) tabMatrix.classList.add('hidden');
+      if (tabPeoSo) tabPeoSo.classList.add('hidden');
+      if (tabVmg) tabVmg.classList.add('hidden');
 
       // Reset button styles
-      [btnMatrix, btnPeoSo, btnVmg].forEach(btn => {
+      [btnHierarchy, btnMatrix, btnPeoSo, btnVmg].forEach(btn => {
         if (!btn) return;
-        btn.className = 'pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer text-xs font-bold';
+        btn.className = 'pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer text-xs font-bold whitespace-nowrap';
       });
 
-      if (tabKey === 'matrix') {
-        tabMatrix.classList.remove('hidden');
-        if (btnMatrix) btnMatrix.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold';
+      if (tabKey === 'hierarchy') {
+        if (tabHierarchy) tabHierarchy.classList.remove('hidden');
+        if (btnHierarchy) btnHierarchy.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold whitespace-nowrap';
+        if (typeof renderCurriculumMapHierarchy === 'function') renderCurriculumMapHierarchy();
+      } else if (tabKey === 'matrix') {
+        if (tabMatrix) tabMatrix.classList.remove('hidden');
+        if (btnMatrix) btnMatrix.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold whitespace-nowrap';
         renderObeMatrix();
       } else if (tabKey === 'peo' || tabKey === 'peo-so') {
-        tabPeoSo.classList.remove('hidden');
-        if (btnPeoSo) btnPeoSo.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold';
+        if (tabPeoSo) tabPeoSo.classList.remove('hidden');
+        if (btnPeoSo) btnPeoSo.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold whitespace-nowrap';
       } else if (tabKey === 'vision' || tabKey === 'vmg') {
-        tabVmg.classList.remove('hidden');
-        if (btnVmg) btnVmg.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold';
+        if (tabVmg) tabVmg.classList.remove('hidden');
+        if (btnVmg) btnVmg.className = 'pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer text-xs font-bold whitespace-nowrap';
       }
       updateAllObeVersionBadges();
     }
+
+    // =========================================================================
+    // CURRICULUM MAP HIERARCHY & VERSION REGISTRY MODULE
+    // =========================================================================
+    window.CURRICULUM_MAPS = [
+      {
+        id: 'CM-BSCpE-2026',
+        name: 'BSCpE 2026–2030 Approved Baseline',
+        curriculumVersion: 'Curriculumv2026a',
+        curriculumLabel: 'CPE2026 (AY 2026–2030)',
+        soVersion: 'SOv2026a',
+        soCount: 13,
+        peoVersion: 'PEOv2026a',
+        peoCount: 5,
+        gaVersion: 'GAv2026a',
+        gaCount: 9,
+        mvvVersion: 'MVVv2025',
+        mapRevision: 'SO/PEO Map v2026a',
+        status: 'ACTIVE BASELINE',
+        statusClass: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700',
+        createdAt: '2026-01-15',
+        program: 'BSCpE',
+        notes: 'Official CHED CMO No. 92 baseline with 184.0 units.'
+      },
+      {
+        id: 'CM-BSCpE-2027a',
+        name: 'BSCpE 2027–2031 Mid-Cycle Proposal',
+        curriculumVersion: 'Curriculumv2027a',
+        curriculumLabel: 'CPE2027 (AY 2027–2031)',
+        soVersion: 'SOv2026b',
+        soCount: 13,
+        peoVersion: 'PEOv2027a',
+        peoCount: 5,
+        gaVersion: 'GAv2026a',
+        gaCount: 9,
+        mvvVersion: 'MVVv2025',
+        mapRevision: 'SO/PEO Map v2026b',
+        status: 'ACTIVE PROPOSAL',
+        statusClass: 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700',
+        createdAt: '2027-03-10',
+        program: 'BSCpE',
+        notes: 'Updated PEO 2027 with AI engineering electives.'
+      },
+      {
+        id: 'CM-BSCpE-2027b',
+        name: 'BSCpE 2027–2031 ABET Specialization Rev',
+        curriculumVersion: 'Curriculumv2027b',
+        curriculumLabel: 'CPE2027b (AY 2027–2031)',
+        soVersion: 'SOv2026b',
+        soCount: 13,
+        peoVersion: 'PEOv2027a',
+        peoCount: 5,
+        gaVersion: 'GAv2026a',
+        gaCount: 9,
+        mvvVersion: 'MVVv2025',
+        mapRevision: 'SO/PEO Map v2026c',
+        status: 'DRAFT REV',
+        statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
+        createdAt: '2027-08-20',
+        program: 'BSCpE',
+        notes: 'Draft revision linking newer curriculum CURv2027b to older SOv2026b and PEOv2027a.'
+      },
+      {
+        id: 'CM-BSCpE-2021',
+        name: 'BSCpE 2021–2025 Historical Edition',
+        curriculumVersion: 'Curriculumv2021',
+        curriculumLabel: 'CPE2021 (AY 2021–2025)',
+        soVersion: 'SOv2021',
+        soCount: 12,
+        peoVersion: 'PEOv2021',
+        peoCount: 4,
+        gaVersion: 'GAv2021',
+        gaCount: 8,
+        mvvVersion: 'MVVv2020',
+        mapRevision: 'SO/PEO Map v2021a',
+        status: 'ARCHIVED',
+        statusClass: 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-700',
+        createdAt: '2021-06-15',
+        program: 'BSCpE',
+        notes: 'Pre-CMO92 historical baseline.'
+      }
+    ];
+    window.currentActiveCurriculumMap = 'CM-BSCpE-2026';
+
+    window.openCurriculumMapTab = function() {
+      navigateView('obe');
+      setTimeout(() => switchObeTab('hierarchy'), 20);
+    };
+
+    window.selectCurriculumMap = function(mapId) {
+      window.currentActiveCurriculumMap = mapId;
+      renderCurriculumMapHierarchy();
+    };
+
+    window.renderCurriculumMapHierarchy = function() {
+      const map = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || window.CURRICULUM_MAPS[0];
+      if (!map) return;
+
+      const sel = document.getElementById('curriculumMapSelect');
+      if (sel && sel.value !== map.id) sel.value = map.id;
+
+      const tagEl = document.getElementById('curricMapActiveTag');
+      if (tagEl) {
+        tagEl.textContent = map.status;
+        tagEl.className = 'px-2 py-0.5 font-mono text-[10px] font-bold border ' + (map.statusClass || '');
+      }
+
+      const titleEl = document.getElementById('curricMapActiveTitle');
+      if (titleEl) titleEl.textContent = `${map.name} (${map.id})`;
+
+      // Update flowchart labels
+      const gGA = document.getElementById('graphLabelGA');
+      if (gGA) gGA.textContent = map.gaVersion;
+
+      const gPEO = document.getElementById('graphLabelPEO');
+      if (gPEO) gPEO.textContent = map.peoVersion;
+
+      const gMapRev = document.getElementById('graphLabelMapRev');
+      if (gMapRev) gMapRev.textContent = map.mapRevision;
+
+      const gSO = document.getElementById('graphLabelSO');
+      if (gSO) gSO.textContent = map.soVersion;
+
+      const gCUR = document.getElementById('graphLabelCUR');
+      if (gCUR) gCUR.textContent = map.curriculumVersion;
+
+      // Update Tier Cards
+      const cCurricId = document.getElementById('cardCurricId');
+      if (cCurricId) cCurricId.textContent = map.curriculumVersion;
+
+      const cCurricName = document.getElementById('cardCurricName');
+      if (cCurricName) cCurricName.textContent = map.curriculumLabel;
+
+      const cCurricStatus = document.getElementById('cardCurricStatus');
+      if (cCurricStatus) cCurricStatus.textContent = map.status;
+
+      const cSoId = document.getElementById('cardSoId');
+      if (cSoId) cSoId.textContent = map.soVersion;
+
+      const cSoMapRel = document.getElementById('cardSoMapRel');
+      if (cSoMapRel) cSoMapRel.textContent = map.mapRevision;
+
+      const cPeoId = document.getElementById('cardPeoId');
+      if (cPeoId) cPeoId.textContent = map.peoVersion;
+
+      const cPeoGaRel = document.getElementById('cardPeoGaRel');
+      if (cPeoGaRel) cPeoGaRel.textContent = map.gaVersion;
+
+      const cGaId = document.getElementById('cardGaId');
+      if (cGaId) cGaId.textContent = map.gaVersion;
+
+      // Rule checks text
+      const r1 = document.getElementById('ruleCheck1');
+      if (r1) r1.textContent = `${map.curriculumVersion} >= ${map.soVersion}`;
+
+      const r2 = document.getElementById('ruleCheck2');
+      if (r2) r2.textContent = `${map.soVersion} >= ${map.peoVersion}`;
+
+      const r3 = document.getElementById('ruleCheck3');
+      if (r3) r3.textContent = `${map.peoVersion} >= ${map.gaVersion}`;
+    };
+
+    window.populateCurriculumMapSelect = function() {
+      const sel = document.getElementById('curriculumMapSelect');
+      if (!sel) return;
+      sel.innerHTML = (window.CURRICULUM_MAPS || []).map(m => `
+        <option value="${m.id}">${m.id} (${m.name})</option>
+      `).join('');
+      if (window.currentActiveCurriculumMap) sel.value = window.currentActiveCurriculumMap;
+    };
+
+    window.verifyCurriculumMapRequisites = function() {
+      const map = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || window.CURRICULUM_MAPS[0];
+      if (typeof showToast === 'function') {
+        showToast(`✓ Requisite Integrity Passed: ${map.curriculumVersion} ➔ ${map.soVersion} ➔ ${map.peoVersion} ➔ ${map.gaVersion} satisfies forward-only constraints!`);
+      }
+    };
+
+    window.updateNewCurricLineagePreview = function() {
+      const prog = document.getElementById('newCurricProgram')?.value || 'BSCpE';
+      const startYr = document.getElementById('newCurricStartYear')?.value || '2027';
+      const endYr = document.getElementById('newCurricEndYear')?.value || '2031';
+      const soSelect = document.getElementById('newCurricSoVersion');
+      const peoSelect = document.getElementById('newCurricPeoVersion');
+      const gaSelect = document.getElementById('newCurricGaVersion');
+
+      const tagInput = document.getElementById('newCurricVersionTag');
+      if (tagInput) tagInput.value = 'CURv' + startYr;
+
+      const mapNameInput = document.getElementById('newCurricMapName');
+      if (mapNameInput && (!mapNameInput.dataset.manualEdit)) {
+        mapNameInput.value = `${prog} ${startYr}–${endYr} Curriculum Map`;
+      }
+
+      const pCurric = document.getElementById('previewCurricNode');
+      if (pCurric) pCurric.textContent = 'CURv' + startYr;
+
+      const pSo = document.getElementById('previewSoNode');
+      if (pSo && soSelect) pSo.textContent = soSelect.value;
+
+      const pPeo = document.getElementById('previewPeoNode');
+      if (pPeo && peoSelect) pPeo.textContent = peoSelect.value;
+
+      const pGa = document.getElementById('previewGaNode');
+      if (pGa && gaSelect) pGa.textContent = gaSelect.value;
+
+      const curricYr = parseInt(startYr, 10);
+      const soYrMatch = soSelect ? soSelect.value.match(/\d{4}/) : null;
+      const soYr = soYrMatch ? parseInt(soYrMatch[0], 10) : 2026;
+
+      const badge = document.getElementById('newCurricRuleBadge');
+      if (badge) {
+        if (curricYr >= soYr) {
+          badge.className = 'text-emerald-700 dark:text-emerald-400 font-bold';
+          badge.textContent = `✓ VALID: Newer links to older/concurrent (${curricYr} >= ${soYr})`;
+        } else {
+          badge.className = 'text-rose-600 dark:text-rose-400 font-bold';
+          badge.textContent = `⚠ WARNING: Older version cannot link to newer (${curricYr} < ${soYr})`;
+        }
+      }
+    };
+
+    window.openSaveCurriculumMapModal = function() {
+      const modal = document.getElementById('saveCurriculumMapModal');
+      if (modal) modal.classList.remove('hidden');
+    };
+
+    window.closeSaveCurriculumMapModal = function() {
+      const modal = document.getElementById('saveCurriculumMapModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.handleSaveCurriculumMapSubmit = function(e) {
+      if (e) e.preventDefault();
+      const name = document.getElementById('snapshotMapName')?.value || 'New Custom Curriculum Map';
+      const cVer = document.getElementById('snapshotCurricVer')?.value || 'CURv2027';
+      const status = document.getElementById('snapshotMapStatus')?.value || 'DRAFT';
+      const soVer = document.getElementById('snapshotSoVer')?.value || 'SOv2026b';
+      const peoVer = document.getElementById('snapshotPeoVer')?.value || 'PEOv2027a';
+      const gaVer = document.getElementById('snapshotGaVer')?.value || 'GAv2026a';
+      const notes = document.getElementById('snapshotMapNotes')?.value || 'Manual curriculum map snapshot.';
+
+      const newId = 'CM-CUSTOM-' + Date.now().toString().slice(-4);
+      const newEntry = {
+        id: newId,
+        name: name,
+        curriculumVersion: cVer,
+        curriculumLabel: `${cVer} (Custom Snapshot)`,
+        soVersion: soVer,
+        soCount: 13,
+        peoVersion: peoVer,
+        peoCount: 5,
+        gaVersion: gaVer,
+        gaCount: 9,
+        mvvVersion: 'MVVv2025',
+        mapRevision: `Map v${new Date().getFullYear()}b`,
+        status: status,
+        statusClass: status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300',
+        createdAt: new Date().toISOString().split('T')[0],
+        program: 'BSCpE',
+        notes: notes
+      };
+
+      if (!window.CURRICULUM_MAPS) window.CURRICULUM_MAPS = [];
+      window.CURRICULUM_MAPS.unshift(newEntry);
+      window.currentActiveCurriculumMap = newId;
+      if (typeof populateCurriculumMapSelect === 'function') populateCurriculumMapSelect();
+      closeSaveCurriculumMapModal();
+      if (typeof showToast === 'function') {
+        showToast(`✓ Saved Curriculum Map '${name}' successfully!`);
+      }
+      renderCurriculumMapHierarchy();
+    };
 
     function renderObeMatrix() {
       const tbody = document.getElementById('matrixTableBody') || document.getElementById('obe-matrix-tbody');

@@ -472,6 +472,13 @@
                               Curriculum Tools &amp; Reports
                             </div>
 
+                            <!-- Curriculum Map Hierarchy -->
+                            <button type="button" id="nav-cpe-curricmap" onclick="openCurriculumMapTab()"
+                              class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-800/40 transition cursor-pointer text-left group">
+                              <span class="text-amber-400">🗺️</span>
+                              <span class="truncate text-[11px] font-semibold text-slate-300 group-hover:text-amber-300">Curriculum Map (Hierarchy)</span>
+                            </button>
+
                             <!-- 5. Delegations -->
                             <button type="button" id="nav-cpe-delegation" onclick="selectProgram('BSCpE', 'delegation')"
                               class="w-full flex items-center space-x-2 px-2 py-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 transition cursor-pointer text-left group">
@@ -2624,20 +2631,261 @@
             </div>
 
             <!-- OBE HIERARCHY TABS -->
-            <div class="flex border-b border-slate-200 dark:border-slate-800 space-x-6 text-xs font-bold">
-              <button onclick="switchObeTab('matrix')" id="obe-tab-matrix" class="pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer">
+            <div class="flex border-b border-slate-200 dark:border-slate-800 space-x-6 text-xs font-bold overflow-x-auto">
+              <button onclick="switchObeTab('hierarchy')" id="obe-tab-hierarchy" class="pb-2.5 border-b-2 border-apc-gold text-apc-navy dark:text-amber-400 transition cursor-pointer whitespace-nowrap">
+                <span id="obe-tab-label-hierarchy">🗺️ Curriculum Map (Hierarchy &amp; Versions)</span>
+              </button>
+              <button onclick="switchObeTab('matrix')" id="obe-tab-matrix" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
                 <span id="obe-tab-label-matrix">Course-to-SO Learning Progression Matrix (SO 2026)</span>
               </button>
-              <button onclick="switchObeTab('peo')" id="obe-tab-peo" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer">
+              <button onclick="switchObeTab('peo')" id="obe-tab-peo" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
                 <span id="obe-tab-label-peo">PEO-to-SO Relational Schedule (PEO 2026 • SO 2026)</span>
               </button>
-              <button onclick="switchObeTab('vision')" id="obe-tab-vision" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer">
+              <button onclick="switchObeTab('vision')" id="obe-tab-vision" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
                 <span id="obe-tab-label-vision">Vision, Mission, School Goal &amp; Graduate Attributes (GA 2026)</span>
               </button>
             </div>
 
+            <!-- TAB 0: CURRICULUM MAP HIERARCHY & VERSION REGISTRY -->
+            <div id="obe-content-hierarchy" class="space-y-4">
+              <!-- Curriculum Map Control Strip -->
+              <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Active Curriculum Map</span>
+                    <span id="curricMapActiveTag" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE BASELINE</span>
+                  </div>
+                  <h3 id="curricMapActiveTitle" class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">
+                    BSCpE 2026–2030 Approved Baseline (CM-BSCpE-2026)
+                  </h3>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400">
+                    Saves the specific Curriculum &rarr; Student Outcomes &rarr; PEO &rarr; GA hierarchy for this curriculum edition.
+                  </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                  <div class="flex items-center gap-1.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 px-2.5 py-1">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Select Map:</span>
+                    <select id="curriculumMapSelect" onchange="selectCurriculumMap(this.value)" class="bg-transparent text-xs font-mono font-bold text-[#002855] dark:text-amber-400 outline-none cursor-pointer">
+                      <option value="CM-BSCpE-2026">CM-BSCpE-2026 (Active Baseline · 2026–2030)</option>
+                      <option value="CM-BSCpE-2027a">CM-BSCpE-2027a (Draft Proposal · 2027–2031)</option>
+                      <option value="CM-BSCpE-2027b">CM-BSCpE-2027b (Accreditation Rev · 2027–2031)</option>
+                      <option value="CM-BSCpE-2021">CM-BSCpE-2021 (Historical Edition · 2021–2025)</option>
+                    </select>
+                  </div>
+                  <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                    <span>+</span>
+                    <span>Save New Curriculum Map</span>
+                  </button>
+                  <button type="button" onclick="verifyCurriculumMapRequisites()" class="px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition flex items-center gap-1 cursor-pointer">
+                    <span>✓</span>
+                    <span>Check Requisites</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Visual Hierarchy Architecture Canvas (Interactive DAG Flowchart) -->
+              <div class="bg-white dark:bg-[#111722] border border-slate-200 dark:border-slate-800 p-5 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-amber-400 shrink-0"></span>
+                    <h4 class="font-extrabold text-slate-900 dark:text-white text-xs uppercase tracking-wider">
+                      Cascading Version Graph: Requisite Lineage Architecture
+                    </h4>
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px] font-mono text-slate-500">
+                    <span class="px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">Rule: Newer &rarr; Older/Same Only</span>
+                    <span>DAG Topology Enforced</span>
+                  </div>
+                </div>
+
+                <!-- Graph Schema Flowchart matching user reference -->
+                <div class="overflow-x-auto py-2">
+                  <div class="min-w-[860px] flex items-center justify-between gap-3 relative py-4 px-2">
+                    
+                    <!-- Left: Graduate Attributes (GA) -->
+                    <div class="flex flex-col gap-4 w-48 shrink-0">
+                      <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 1 &bull; Root</div>
+                      <div id="graphNodeGA" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-102">
+                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelGA">GAv2026a</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Graduate Attributes (9 GAs)</div>
+                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">ACTIVE</span>
+                      </div>
+                      <div class="p-2 border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 text-center">
+                        <div class="font-mono text-[11px] text-slate-500" id="graphLabelMVV">MVVv2025 (Peer)</div>
+                        <div class="text-[9px] text-slate-400">Institutional VMG</div>
+                      </div>
+                    </div>
+
+                    <!-- Arrow GA -> PEO -->
+                    <div class="flex flex-col items-center justify-center shrink-0 text-slate-400 px-1">
+                      <span class="text-xs font-mono text-slate-400">&larr;</span>
+                      <div class="w-8 h-0.5 bg-[#002855] dark:bg-amber-400"></div>
+                      <span class="text-[9px] font-mono text-slate-500 mt-1">relink</span>
+                    </div>
+
+                    <!-- Middle-Left: Program Educational Objectives (PEO) -->
+                    <div class="flex flex-col gap-3 w-48 shrink-0">
+                      <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 2 &bull; PEO</div>
+                      <div id="graphNodePEO_A" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-102">
+                        <div class="font-mono font-bold text-xs text-slate-800 dark:text-slate-200">PEOv2026a</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">5 Objectives (Baseline)</div>
+                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">SUPERSEDED</span>
+                      </div>
+                      <div id="graphNodePEO_B" class="p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-102">
+                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelPEO">PEOv2027a</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">5 Objectives (AI Specialized)</div>
+                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">ACTIVE</span>
+                      </div>
+                    </div>
+
+                    <!-- Arrow PEO -> SO with SO/PEO Map Link Badges -->
+                    <div class="flex flex-col items-center justify-center shrink-0 px-1 space-y-3">
+                      <div class="text-center">
+                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/70 text-blue-900 dark:text-blue-200 text-[9px] font-mono font-bold border border-blue-300 dark:border-blue-700 block" id="graphLabelMapRev">SO/PEO Map v2026b</span>
+                        <div class="w-12 h-0.5 bg-[#002855] dark:bg-amber-400 mx-auto my-0.5"></div>
+                      </div>
+                      <span class="text-xs font-mono text-slate-400">&larr;</span>
+                    </div>
+
+                    <!-- Middle-Right: Student Outcomes (SO) -->
+                    <div class="flex flex-col gap-3 w-48 shrink-0">
+                      <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 3 &bull; Outcomes</div>
+                      <div id="graphNodeSO_A" class="p-3 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-102">
+                        <div class="font-mono font-bold text-xs text-slate-800 dark:text-slate-200">SOv2026a</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">13 CHED CMO 92 SOs</div>
+                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">SUPERSEDED</span>
+                      </div>
+                      <div id="graphNodeSO_B" class="p-3 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-102">
+                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelSO">SOv2026b</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">13 CHED CMO 92 SOs</div>
+                        <span class="inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">ACTIVE</span>
+                      </div>
+                    </div>
+
+                    <!-- Arrow SO -> Curriculum -->
+                    <div class="flex flex-col items-center justify-center shrink-0 text-slate-400 px-1">
+                      <span class="text-xs font-mono text-slate-400">&larr;</span>
+                      <div class="w-8 h-0.5 bg-[#002855] dark:bg-amber-400"></div>
+                      <span class="text-[9px] font-mono text-slate-500 mt-1">maps to</span>
+                    </div>
+
+                    <!-- Right: Curriculum Editions -->
+                    <div class="flex flex-col gap-2.5 w-52 shrink-0">
+                      <div class="text-[10px] font-mono uppercase font-bold text-slate-400 text-center">Tier 4 &bull; Curriculum</div>
+                      <div id="graphNodeCUR_2026" class="p-2.5 bg-slate-50 dark:bg-[#151D2A] border-2 border-slate-300 dark:border-slate-700 text-center shadow-xs transition hover:scale-102">
+                        <div class="font-mono font-bold text-xs text-slate-800 dark:text-slate-200">Curriculumv2026a</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">CPE2026 (AY 2026–2030)</div>
+                      </div>
+                      <div id="graphNodeCUR_2027a" class="p-2.5 bg-white dark:bg-[#182232] border-2 border-[#002855] dark:border-[#E5A823] text-center shadow-xs transition hover:scale-102">
+                        <div class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]" id="graphLabelCUR">Curriculumv2027a</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">CPE2027 (AY 2027–2031)</div>
+                      </div>
+                      <div id="graphNodeCUR_2027b" class="p-2.5 bg-amber-50/40 dark:bg-amber-950/20 border-2 border-dashed border-amber-300 dark:border-amber-700 text-center shadow-xs transition hover:scale-102">
+                        <div class="font-mono font-bold text-xs text-amber-800 dark:text-amber-300">Curriculumv2027b</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400">CPE2027b (Accreditation Rev)</div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4-Tier Interactive Inspector Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <!-- Tier 4: Curriculum Card -->
+                <div class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-xs space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono uppercase font-bold text-[#002855] dark:text-[#E5A823]">Tier 4 &bull; Curriculum</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardCurricStatus">ACTIVE</span>
+                  </div>
+                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardCurricId">CURv2026</h5>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardCurricName">BS Computer Engineering (184.0 Units)</p>
+                  <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
+                    <div>AY Span: <span class="font-bold text-slate-800 dark:text-slate-200" id="cardCurricSpan">2026–2030</span></div>
+                    <div>Flowchart: <span class="text-emerald-600 font-bold">Synchronized</span></div>
+                  </div>
+                </div>
+
+                <!-- Tier 3: SO Card -->
+                <div class="p-4 bg-white dark:bg-[#111722] border-2 border-indigo-700/60 shadow-xs space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono uppercase font-bold text-indigo-700 dark:text-indigo-400">Tier 3 &bull; Student Outcomes</span>
+                    <span class="px-1.5 py-0.2 bg-indigo-100 text-indigo-800 font-mono text-[9px] font-bold" id="cardSoStatus">ACTIVE</span>
+                  </div>
+                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardSoId">SOv2026a</h5>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardSoName">13 CHED CMO 92 Outcomes (SO a–m)</p>
+                  <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
+                    <div>Progression Matrix: <span class="font-bold text-slate-800 dark:text-slate-200">74 Courses Mapped</span></div>
+                    <div>Relational Map: <span class="text-indigo-600 font-bold" id="cardSoMapRel">SO/PEO Map v2026a</span></div>
+                  </div>
+                </div>
+
+                <!-- Tier 2: PEO Card -->
+                <div class="p-4 bg-white dark:bg-[#111722] border-2 border-purple-700/60 shadow-xs space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono uppercase font-bold text-purple-700 dark:text-purple-400">Tier 2 &bull; Program Objectives</span>
+                    <span class="px-1.5 py-0.2 bg-purple-100 text-purple-800 font-mono text-[9px] font-bold" id="cardPeoStatus">ACTIVE</span>
+                  </div>
+                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardPeoId">PEOv2026a</h5>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardPeoName">5 Program Educational Objectives</p>
+                  <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
+                    <div>Scope: <span class="font-bold text-slate-800 dark:text-slate-200">Professional Engineering</span></div>
+                    <div>Linked GA: <span class="text-purple-600 font-bold" id="cardPeoGaRel">GAv2026a</span></div>
+                  </div>
+                </div>
+
+                <!-- Tier 1: GA Card -->
+                <div class="p-4 bg-white dark:bg-[#111722] border-2 border-slate-700/60 shadow-xs space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono uppercase font-bold text-slate-700 dark:text-slate-300">Tier 1 &bull; Graduate Attributes</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardGaStatus">ACTIVE</span>
+                  </div>
+                  <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardGaId">GAv2026a</h5>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardGaName">9 Institutional Graduate Attributes</p>
+                  <div class="text-[11px] text-slate-500 space-y-1 font-mono pt-1 border-t border-slate-100 dark:border-slate-800">
+                    <div>Peer Tier: <span class="font-bold text-slate-800 dark:text-slate-200">MVVv2025</span></div>
+                    <div>Authority: <span class="text-slate-700 dark:text-slate-300 font-bold">Institutional Academic Council</span></div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Requisite Rule Enforcement Matrix -->
+              <div class="p-4 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h5 class="text-xs font-black uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                    <span class="text-emerald-600 font-bold">✓</span>
+                    <span>Hierarchical Requisite Integrity Engine</span>
+                  </h5>
+                  <span class="text-[10px] font-mono text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 border border-emerald-300 dark:border-emerald-800">
+                    100% Requisite Rule Compliant
+                  </span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+                  <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
+                    <div class="text-[10px] text-slate-400 uppercase">Link 1: Curriculum &rarr; SO</div>
+                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck1">CURv2026 &ge; SOv2026a</div>
+                    <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Child references valid concurrent SO</div>
+                  </div>
+                  <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
+                    <div class="text-[10px] text-slate-400 uppercase">Link 2: SO &rarr; PEO</div>
+                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck2">SOv2026a &ge; PEOv2026a</div>
+                    <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Forward-only relational mapping</div>
+                  </div>
+                  <div class="p-2.5 bg-white dark:bg-[#131923] border border-slate-200 dark:border-slate-800">
+                    <div class="text-[10px] text-slate-400 uppercase">Link 3: PEO &rarr; GA</div>
+                    <div class="font-bold text-slate-800 dark:text-slate-200 mt-1" id="ruleCheck3">PEOv2026a &ge; GAv2026a</div>
+                    <div class="text-[10px] text-emerald-600 mt-1">PASS &bull; Root attribute alignment verified</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
             <!-- TAB 1: COURSE-TO-SO MATRIX -->
-            <div id="obe-content-matrix" class="space-y-3">
+            <div id="obe-content-matrix" class="hidden space-y-3">
               <!-- OBE Course Search & Multi-Criteria Filtering Controls -->
               <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 p-3 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800">
                 <div class="sm:col-span-2">
@@ -5009,14 +5257,14 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
   <!-- CREATE NEW CURRICULUM REVISION MODAL -->
   <!-- ========================================================================= -->
   <div id="createCurriculumModal" onclick="if(event.target === this) closeCreateCurriculumModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
-    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-lg flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-2xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
       <!-- Modal Header -->
       <div class="bg-[#002855] dark:bg-[#10151E] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
         <div class="flex items-center space-x-2.5">
           <span class="w-7 h-7 bg-[#E5A823] text-slate-950 font-black text-sm flex items-center justify-center rounded-none shadow-xs">✨</span>
           <div>
             <h3 class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Initialize New Curriculum Revision</h3>
-            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Curriculum Setup</p>
+            <p class="text-[10px] text-amber-300 font-mono">Academic Management &bull; Curriculum Setup &amp; Curriculum Map Binding</p>
           </div>
         </div>
         <button type="button" onclick="closeCreateCurriculumModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
@@ -5026,7 +5274,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
       <form onsubmit="submitCreateCurriculum(event)" class="p-5 space-y-4 text-xs overflow-y-auto">
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Target Degree Program</label>
-          <select id="newCurricProgram" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823]">
+          <select id="newCurricProgram" onchange="updateNewCurricLineagePreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823]">
             <option value="BSCpE" selected>BSCpE - Computer Engineering</option>
             <option value="BSCE">BSCE - Civil Engineering</option>
             <option value="BSECE">BSECE - Electronics Engineering</option>
@@ -5043,11 +5291,83 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year (Start)</label>
-            <input type="number" id="newCurricStartYear" value="2027" min="2020" max="2035" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
+            <input type="number" id="newCurricStartYear" value="2027" min="2020" max="2035" required onchange="updateNewCurricLineagePreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
           </div>
           <div>
             <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Academic Year (End)</label>
-            <input type="number" id="newCurricEndYear" value="2031" min="2024" max="2040" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
+            <input type="number" id="newCurricEndYear" value="2031" min="2024" max="2040" required onchange="updateNewCurricLineagePreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
+          </div>
+        </div>
+
+        <!-- CURRICULUM MAP HIERARCHY MAPPING SECTION -->
+        <div class="border-2 border-[#002855] dark:border-[#E5A823]/60 bg-slate-50/80 dark:bg-[#10151E] p-4 space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-base">🗺️</span>
+              <div>
+                <h4 class="font-black text-slate-900 dark:text-white text-xs uppercase tracking-wider">Curriculum Map &amp; Version Hierarchy</h4>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400">Saves the specific Curriculum &rarr; SO &rarr; PEO &rarr; GA lineage for this revision.</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">Forward-Only Rule</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[10px]">Save as Curriculum Map Name</label>
+              <input type="text" id="newCurricMapName" value="BSCpE 2027–2031 Curriculum Map" class="w-full px-2.5 py-1.5 bg-white dark:bg-[#151C28] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[10px]">Curriculum Version Tag</label>
+              <input type="text" id="newCurricVersionTag" value="CURv2027" class="w-full px-2.5 py-1.5 bg-slate-100 dark:bg-[#181D26] border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-none outline-none text-xs font-mono font-bold" readonly />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[10px]">1. Parent SO (Student Outcomes)</label>
+              <select id="newCurricSoVersion" onchange="updateNewCurricLineagePreview()" class="w-full px-2 py-1.5 bg-white dark:bg-[#151C28] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono">
+                <option value="SOv2026b" data-peo="PEOv2027a" data-ga="GAv2026a" selected>SOv2026b (Active · Aug 2026)</option>
+                <option value="SOv2026a" data-peo="PEOv2026a" data-ga="GAv2026a">SOv2026a (Superseded · Jan 2026)</option>
+                <option value="SOv2027a" data-peo="PEOv2027a" data-ga="GAv2026a">SOv2027a (Draft Mid-Cycle · 2027)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[10px]">2. Mapped PEO (Prog. Edu. Obj.)</label>
+              <select id="newCurricPeoVersion" onchange="updateNewCurricLineagePreview()" class="w-full px-2 py-1.5 bg-white dark:bg-[#151C28] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono">
+                <option value="PEOv2027a" data-ga="GAv2026a" selected>PEOv2027a (Active · 5 Obj)</option>
+                <option value="PEOv2026a" data-ga="GAv2026a">PEOv2026a (Superseded · 5 Obj)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[10px]">3. Mapped GA (Grad. Attributes)</label>
+              <select id="newCurricGaVersion" onchange="updateNewCurricLineagePreview()" class="w-full px-2 py-1.5 bg-white dark:bg-[#151C28] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono">
+                <option value="GAv2026a" selected>GAv2026a (Active · 9 GAs)</option>
+                <option value="GAv2025a">GAv2025a (Superseded · 9 GAs)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Live Visual Lineage Chain Preview -->
+          <div class="p-2.5 bg-white dark:bg-[#0c1017] border border-slate-300 dark:border-slate-700 space-y-1.5">
+            <div class="flex items-center justify-between text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300">
+              <span>RESOLVED CURRICULUM MAP CHAIN:</span>
+              <span id="newCurricRuleBadge" class="text-emerald-700 dark:text-emerald-400 font-bold">✓ VALID: Newer links to older/concurrent</span>
+            </div>
+            <div class="flex items-center gap-1 font-mono text-[11px] overflow-x-auto py-1">
+              <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-bold shrink-0 border border-[#E5A823]/60" id="previewCurricNode">CURv2027</span>
+              <span class="text-slate-400">&larr;</span>
+              <span class="px-2 py-0.5 bg-indigo-900 text-indigo-100 font-bold shrink-0 border border-indigo-700" id="previewSoNode">SOv2026b</span>
+              <span class="text-slate-400">&larr;</span>
+              <span class="px-2 py-0.5 bg-purple-900 text-purple-100 font-bold shrink-0 border border-purple-700" id="previewPeoNode">PEOv2027a</span>
+              <span class="text-slate-400">&larr;</span>
+              <span class="px-2 py-0.5 bg-slate-800 text-slate-200 font-bold shrink-0 border border-slate-600" id="previewGaNode">GAv2026a</span>
+              <span class="text-slate-500 mx-1">‖</span>
+              <span class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] shrink-0 border border-slate-300 dark:border-slate-700">MVVv2025 (Peer)</span>
+            </div>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 italic">
+              Saving will create and register this complete hierarchy as a standalone <strong>Curriculum Map</strong> bound to this curriculum revision.
+            </p>
           </div>
         </div>
 
@@ -5089,6 +5409,91 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
           <button type="button" onclick="closeCreateCurriculumModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Initialize Revision</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- SAVE / SNAPSHOT CURRICULUM MAP MODAL -->
+  <!-- ========================================================================= -->
+  <div id="saveCurriculumMapModal" onclick="if(event.target === this) closeSaveCurriculumMapModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+      <!-- Header -->
+      <div class="bg-[#002855] dark:bg-[#10151E] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black text-sm flex items-center justify-center rounded-none shadow-xs">🗺️</span>
+          <div>
+            <h3 class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Save New Curriculum Map</h3>
+            <p class="text-[10px] text-amber-300 font-mono">Hierarchy Snapshot &bull; Curriculum &rarr; SO &rarr; PEO &rarr; GA</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeSaveCurriculumMapModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <!-- Form Body -->
+      <form onsubmit="handleSaveCurriculumMapSubmit(event)" class="p-5 space-y-4 text-xs overflow-y-auto">
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Map Identifier / Name</label>
+          <input type="text" id="snapshotMapName" value="BSCpE 2027b Specialized Curriculum Map" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Curriculum Version</label>
+            <input type="text" id="snapshotCurricVer" value="CURv2027b" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Status</label>
+            <select id="snapshotMapStatus" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823]">
+              <option value="ACTIVE">ACTIVE BASELINE</option>
+              <option value="DRAFT" selected>DRAFT PROPOSAL</option>
+              <option value="SUPERSEDED">SUPERSEDED</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="space-y-3 p-3.5 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-700">
+          <div class="font-bold text-slate-800 dark:text-slate-200 text-xs flex items-center justify-between">
+            <span>Requisite Parent Tiers:</span>
+            <span class="text-[10px] text-emerald-600 font-mono font-bold">✓ Forward-Only Verified</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase">SO Version</label>
+              <select id="snapshotSoVer" class="w-full p-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
+                <option value="SOv2026b" selected>SOv2026b</option>
+                <option value="SOv2026a">SOv2026a</option>
+                <option value="SOv2027a">SOv2027a</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase">PEO Version</label>
+              <select id="snapshotPeoVer" class="w-full p-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
+                <option value="PEOv2027a" selected>PEOv2027a</option>
+                <option value="PEOv2026a">PEOv2026a</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase">GA Version</label>
+              <select id="snapshotGaVer" class="w-full p-1.5 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold">
+                <option value="GAv2026a" selected>GAv2026a</option>
+                <option value="GAv2025a">GAv2025a</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Mapping Documentation Notes</label>
+          <textarea id="snapshotMapNotes" rows="2" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-none" placeholder="Context, rationale, accreditation cycle notes..."></textarea>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeSaveCurriculumMapModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Save Curriculum Map</button>
         </div>
       </form>
     </div>
