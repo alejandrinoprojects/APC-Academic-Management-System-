@@ -3800,6 +3800,7 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
     let currentPrintArrowStyle = 'orthogonal';
     let currentRegistrarViewFormat = 'doc'; // 'doc' (PDF Document System) | 'sheet' (Spreadsheet Grid)
     const registrarPdfBlobCache = {};
+    let currentPdfRenderTaskId = 0;
 
     function renderRegistrarPdfView(tabIdx) {
       const idx = tabIdx || currentRegistrarTab || 1;
@@ -3826,61 +3827,73 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
         return;
       }
 
-      // Show loader with friendly title
+      // Invalidate any previous running task - render ONE at a time in the background
+      const taskId = ++currentPdfRenderTaskId;
+
+      // Show friendly background indicator
       if (loader) {
         loader.classList.remove('hidden');
         if (loaderText) {
-          loaderText.textContent = `Rendering authentic Letter-size PDF (${getRegistrarDocTitle(idx)})...`;
+          loaderText.textContent = `Rendering authentic Letter PDF (${getRegistrarDocTitle(idx)}) in background...`;
         }
       }
 
-      // Ensure docWrapper layout is available off-screen for html2canvas
-      if (docWrapper && !isRegistrarEditingActive) {
-        docWrapper.classList.remove('hidden');
-        docWrapper.style.position = 'fixed';
-        docWrapper.style.left = '-99999px';
-        docWrapper.style.top = '0';
-        docWrapper.style.opacity = '0';
-        docWrapper.style.pointerEvents = 'none';
-        docWrapper.style.zIndex = '-1';
-      }
+      // Non-blocking yield: allow browser to paint UI before starting the single background render
+      setTimeout(function() {
+        if (taskId !== currentPdfRenderTaskId) return;
 
-      activeDoc.classList.remove('hidden');
+        // ONLY Flowchart (Sheet 1) is landscape. Everything else (Sheets 2 to 7) is Letter Portrait Narrow Margin!
+        const isLandscape = (idx === 1);
 
-      const isLandscape = (idx === 1 || idx === 5 || idx === 6);
-      const isLargeSheet = (idx === 3 || idx === 4 || idx === 6);
-      const renderScale = isLargeSheet ? 0.95 : 1.15;
+        if (docWrapper && !isRegistrarEditingActive) {
+          docWrapper.classList.remove('hidden');
+          docWrapper.style.position = 'absolute';
+          docWrapper.style.left = '0px';
+          docWrapper.style.top = '0px';
+          docWrapper.style.visibility = 'hidden';
+          docWrapper.style.pointerEvents = 'none';
+          docWrapper.style.zIndex = '-9999';
+          docWrapper.style.width = isLandscape ? '1056px' : '816px';
+        }
 
-      const opt = {
-        margin: [0.25, 0.25, 0.25, 0.25],
-        filename: `APC_Curriculum_Sheet_${idx}.pdf`,
-        image: { type: 'jpeg', quality: 0.92 },
-        html2canvas: { 
-          scale: renderScale, 
-          useCORS: true, 
-          logging: false,
-          scrollY: 0
-        },
-        jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'] }
-      };
+        activeDoc.classList.remove('hidden');
+        activeDoc.style.width = isLandscape ? '1056px' : '816px';
 
-      if (typeof html2pdf !== 'undefined') {
-        setTimeout(function() {
+        const opt = {
+          margin: [0.2, 0.25, 0.2, 0.25], // Narrow margin
+          filename: `APC_Curriculum_Sheet_${idx}.pdf`,
+          image: { type: 'jpeg', quality: 0.92 },
+          html2canvas: { 
+            scale: 1.0, 
+            useCORS: true, 
+            logging: false,
+            scrollY: 0,
+            width: isLandscape ? 1056 : 816,
+            windowWidth: isLandscape ? 1056 : 816
+          },
+          jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
+          pagebreak: { mode: ['css', 'legacy'] }
+        };
+
+        if (typeof html2pdf !== 'undefined') {
           html2pdf().set(opt).from(activeDoc).toPdf().get('pdf').then(function(pdfObj) {
             const blob = pdfObj.output('blob');
             const blobUrl = URL.createObjectURL(blob);
             registrarPdfBlobCache[idx] = blobUrl;
-            frame.src = blobUrl;
-            if (loader) loader.classList.add('hidden');
+
+            // Only update frame if user is still on this tab
+            if (taskId === currentPdfRenderTaskId && (currentRegistrarTab === idx || !currentRegistrarTab)) {
+              frame.src = blobUrl;
+              if (loader) loader.classList.add('hidden');
+            }
           }).catch(function(err) {
             console.warn('[PDF Gen] html2pdf fallback:', err);
-            if (loader) loader.classList.add('hidden');
+            if (taskId === currentPdfRenderTaskId && loader) loader.classList.add('hidden');
           });
-        }, 30);
-      } else {
-        if (loader) loader.classList.add('hidden');
-      }
+        } else {
+          if (loader) loader.classList.add('hidden');
+        }
+      }, 100);
     }
 
     function downloadCurrentPdfDoc() {
@@ -3896,12 +3909,12 @@ CYBSEC1\tApplied Industrial Cybersecurity\t4\t1\t3\t0\t3.0\tTechnical Electives\
       }
       const activeDoc = document.getElementById('regDocView_' + idx);
       if (!activeDoc) return;
-      const isLandscape = (idx === 1 || idx === 5 || idx === 6);
+      const isLandscape = (idx === 1);
       const opt = {
-        margin: [0.3, 0.3, 0.3, 0.3],
+        margin: [0.2, 0.25, 0.2, 0.25], // Narrow margin
         filename: `APC_Curriculum_Sheet_${idx}.pdf`,
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 1.4, useCORS: true, logging: false },
+        image: { type: 'jpeg', quality: 0.92 },
+        html2canvas: { scale: 1.0, useCORS: true, logging: false },
         jsPDF: { unit: 'in', format: 'letter', orientation: isLandscape ? 'landscape' : 'portrait' },
         pagebreak: { mode: ['css', 'legacy'] }
       };
