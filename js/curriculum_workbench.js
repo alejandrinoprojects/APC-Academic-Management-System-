@@ -9332,26 +9332,48 @@ ${worksheetsXml}
     window.renderPeoSoAlignmentTable = function() {
       const tbody = document.getElementById('peoSoAlignmentTableBody');
       if (!tbody) return;
+      const thead = document.getElementById('peoSoAlignmentTableHeader');
       const links = window.getPeoSoLinks() || {};
       const soList = (typeof window.getObeSoDefs === 'function') ? window.getObeSoDefs() : (FLOW_SO_DEFS || []);
+      const peoList = (typeof window.getObePeoDefs === 'function') ? window.getObePeoDefs() : (FLOW_PEO_DEFS || []);
       const activeYr = (typeof getActiveObeYear === 'function') ? getActiveObeYear() : '2026';
+      const verStr = (typeof getObeVersionString === 'function') ? getObeVersionString(activeYr) : '2026';
       const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || (window.CURRICULUM_MAPS ? window.CURRICULUM_MAPS[0] : null);
       const isDraftMap = (activeYr !== '2026') && (activeYr === '2027' || (activeMap && (activeMap.status === 'Draft' || activeMap.status === 'UNLOCKED DRAFT' || (activeMap.id && activeMap.id.includes('2027')))));
+
+      if (thead) {
+        const headerColors = ['bg-blue-50/50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-300', 'bg-emerald-50/50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300', 'bg-purple-50/50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-300', 'bg-amber-50/50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-300', 'bg-sky-50/50 dark:bg-sky-950/20 text-sky-700 dark:text-sky-300', 'bg-rose-50/50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-300', 'bg-indigo-50/50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-300'];
+        thead.innerHTML = `
+          <tr>
+            <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 w-16 text-center font-mono">Code</th>
+            <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[240px]">Student Outcome Statement</th>
+            ${peoList.map((peo, pIdx) => {
+              const colorCls = headerColors[pIdx % headerColors.length];
+              return `
+                <th id="peo-matrix-hdr-${peo.id}" class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 text-center w-24 ${colorCls}">
+                  ${peo.code} <span class="font-mono text-[10px] font-bold">(${verStr})</span><br>
+                  <span class="font-normal text-[10px] text-slate-500 dark:text-slate-400 truncate block max-w-[85px] mx-auto">${peo.domain || peo.title}</span>
+                </th>
+              `;
+            }).join('')}
+          </tr>
+        `;
+      }
 
       tbody.innerHTML = soList.map(so => {
         const linkedPeos = links[so.id] || [];
         const isSoUnmapped = isDraftMap && (linkedPeos.length === 0);
-        const peoCells = [1, 2, 3, 4, 5].map(pNum => {
-          const isLinked = linkedPeos.includes(pNum);
+        const peoCells = peoList.map(peo => {
+          const isLinked = linkedPeos.includes(peo.id);
           return `
             <td class="py-2.5 px-3 text-center border-r border-slate-100 dark:border-slate-800">
-              <button type="button" onclick="togglePeoSoCheck('${so.id}', ${pNum})"
+              <button type="button" onclick="togglePeoSoCheck('${so.id}', ${peo.id})"
                 class="inline-flex items-center justify-center w-7 h-7 text-xs font-black transition cursor-pointer ${
                   isLinked
                     ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-xs'
                     : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600'
                 }"
-                title="Click to toggle link: SO-${so.id} ↔ PEO ${pNum}">
+                title="Click to toggle link: SO-${so.id} ↔ ${peo.code}">
                 ${isLinked ? '✔' : '−'}
               </button>
             </td>
@@ -9777,6 +9799,202 @@ ${worksheetsXml}
 
       if (typeof showToast === 'function') {
         showToast(`✓ Successfully saved definition for ${code}!`);
+      }
+    };
+
+    // =========================================================================
+    // ADD NEW PEO / SO TO CURRICULUM MAP CONTROLLERS
+    // =========================================================================
+    window.openAddObeItemModal = function(type) {
+      const modal = document.getElementById('obeItemAddModal');
+      if (!modal) return;
+      const mapId = window.currentActiveCurriculumMap || 'CM-BSCpE-2026';
+      const mapBadge = document.getElementById('obeAddMapBadge');
+      if (mapBadge) mapBadge.textContent = `Map: ${mapId}`;
+
+      const itemType = (type === 'so') ? 'so' : 'peo';
+      const typeSel = document.getElementById('obeAddTypeSelect');
+      if (typeSel) typeSel.value = itemType;
+
+      window.onObeAddTypeChange(itemType);
+      modal.classList.remove('hidden');
+    };
+
+    window.closeAddObeItemModal = function() {
+      const modal = document.getElementById('obeItemAddModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.onObeAddTypeChange = function(type) {
+      const isSo = (type === 'so');
+      const typeInput = document.getElementById('obeAddType');
+      if (typeInput) typeInput.value = isSo ? 'so' : 'peo';
+
+      const titleEl = document.getElementById('obeAddModalTitle');
+      const subEl = document.getElementById('obeAddModalSubtitle');
+      const codeInput = document.getElementById('obeAddCode');
+      const domInput = document.getElementById('obeAddDomain');
+      const titleInput = document.getElementById('obeAddTitle');
+      const descInput = document.getElementById('obeAddDesc');
+      const linkLabel = document.getElementById('obeAddLinkageLabel');
+      const linkContainer = document.getElementById('obeAddLinkageCheckboxes');
+      const submitBtn = document.getElementById('obeAddSubmitBtn');
+
+      if (titleEl) titleEl.textContent = isSo ? 'Add New Student Outcome (SO)' : 'Add New Program Educational Objective (PEO)';
+      if (subEl) subEl.textContent = isSo ? 'Register a new competency outcome in the Curriculum Map' : 'Register a new educational objective in the Curriculum Map';
+      if (submitBtn) submitBtn.textContent = isSo ? 'Add Student Outcome' : 'Add Program Educational Objective';
+
+      // Suggest default code
+      if (isSo) {
+        const sos = window.getObeSoDefs();
+        const nextChar = String.fromCharCode(97 + sos.length); // e.g. 'n', 'o'
+        if (codeInput) {
+          codeInput.value = `SO-${nextChar}`;
+          codeInput.placeholder = 'e.g. SO-n';
+        }
+        if (domInput) domInput.placeholder = 'e.g. Specialized Domain / Applied AI';
+        if (titleInput) titleInput.placeholder = 'e.g. Adaptive Cloud Computing & Cyber-Physical Systems';
+        if (descInput) descInput.placeholder = 'Detailed student outcome competency criteria, knowledge indicators, and performance expectations...';
+        if (linkLabel) linkLabel.textContent = 'Link to Supporting Program Educational Objectives (PEOs)';
+
+        // Populate PEO checkboxes
+        if (linkContainer) {
+          const peos = window.getObePeoDefs();
+          linkContainer.innerHTML = peos.map(p => `
+            <label class="inline-flex items-center gap-1.5 px-2 py-1 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 text-[11px] text-purple-900 dark:text-purple-200 cursor-pointer">
+              <input type="checkbox" name="obeAddLinkCheckbox" value="${p.id}" checked class="accent-purple-700" />
+              <span class="font-bold">${p.code}:</span>
+              <span class="truncate max-w-[120px]">${p.title}</span>
+            </label>
+          `).join('');
+        }
+      } else {
+        const peos = window.getObePeoDefs();
+        const nextId = peos.length + 1;
+        if (codeInput) {
+          codeInput.value = `PEO ${nextId}`;
+          codeInput.placeholder = 'e.g. PEO 6';
+        }
+        if (domInput) domInput.placeholder = 'e.g. AI Leadership & Innovation';
+        if (titleInput) titleInput.placeholder = 'e.g. Technological Innovation & Sustainable Infrastructure';
+        if (descInput) descInput.placeholder = 'Detailed long-term professional objective statement expected 3-5 years post-graduation...';
+        if (linkLabel) linkLabel.textContent = 'Align to Upstream Graduate Attributes (GAs)';
+
+        // Populate GA checkboxes
+        if (linkContainer) {
+          const gas = window.getObeGaDefs();
+          linkContainer.innerHTML = gas.map(g => `
+            <label class="inline-flex items-center gap-1.5 px-2 py-1 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[11px] text-slate-800 dark:text-amber-200 cursor-pointer">
+              <input type="checkbox" name="obeAddLinkCheckbox" value="${g.id}" class="accent-amber-600" />
+              <span class="font-bold">${g.code}:</span>
+              <span class="truncate max-w-[120px]">${g.title}</span>
+            </label>
+          `).join('');
+        }
+      }
+    };
+
+    window.handleSaveNewObeItem = function(e) {
+      if (e) e.preventDefault();
+      const type = document.getElementById('obeAddType')?.value || 'peo';
+      const code = (document.getElementById('obeAddCode')?.value || '').trim();
+      const domain = (document.getElementById('obeAddDomain')?.value || '').trim();
+      const title = (document.getElementById('obeAddTitle')?.value || '').trim();
+      const desc = (document.getElementById('obeAddDesc')?.value || '').trim();
+      const mapId = window.currentActiveCurriculumMap || 'CM-BSCpE-2026';
+
+      if (!code || !title) return;
+
+      const checkedLinks = Array.from(document.querySelectorAll('input[name="obeAddLinkCheckbox"]:checked')).map(cb => Number(cb.value));
+
+      if (type === 'peo') {
+        let peos = window.getObePeoDefs();
+        peos = JSON.parse(JSON.stringify(peos));
+        const maxId = peos.reduce((max, p) => Math.max(max, Number(p.id) || 0), 0);
+        const newPeoId = maxId + 1;
+        const newPeo = {
+          id: newPeoId,
+          code: code,
+          domain: domain,
+          title: title,
+          desc: desc
+        };
+        peos.push(newPeo);
+        window.FLOW_PEO_DEFS = peos;
+        try {
+          localStorage.setItem(`apc_obe_peos_${mapId}`, JSON.stringify(peos));
+        } catch (err) {}
+
+        // Save GA alignments for this new PEO
+        const peoGaLinks = window.getPeoGaLinks() || {};
+        peoGaLinks[newPeoId] = checkedLinks.length > 0 ? checkedLinks : [1];
+        window.savePeoGaLinks(peoGaLinks);
+
+        // Update active curriculum map metadata count if applicable
+        const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === mapId);
+        if (activeMap) activeMap.peoCount = peos.length;
+
+        window.closeAddObeItemModal();
+        if (typeof renderPeoCards === 'function') renderPeoCards();
+        if (typeof renderPeoSoAlignmentTable === 'function') renderPeoSoAlignmentTable();
+        if (typeof renderPeoGaAlignmentTable === 'function') renderPeoGaAlignmentTable();
+        if (typeof renderFlowGraph === 'function') renderFlowGraph();
+        if (typeof renderObeMatrix === 'function') renderObeMatrix();
+        if (typeof renderCurriculumMapMatrix === 'function') renderCurriculumMapMatrix();
+
+        if (typeof showToast === 'function') {
+          showToast(`✓ Added new Program Educational Objective (${code}) to Curriculum Map!`);
+        }
+      } else {
+        // Adding Student Outcome (SO)
+        let sos = window.getObeSoDefs();
+        sos = JSON.parse(JSON.stringify(sos));
+        const rawKey = code.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const soKey = rawKey.startsWith('so') ? rawKey.substring(2) : (rawKey || String.fromCharCode(97 + sos.length));
+        
+        const newSo = {
+          id: soKey,
+          code: code.toUpperCase().startsWith('SO-') ? code : `SO-${soKey}`,
+          domain: domain,
+          title: title,
+          desc: desc
+        };
+        sos.push(newSo);
+        window.FLOW_SO_DEFS = sos;
+        try {
+          localStorage.setItem(`apc_obe_sos_${mapId}`, JSON.stringify(sos));
+        } catch (err) {}
+
+        // Save PEO linkings for this new SO
+        const peoSoLinks = window.getPeoSoLinks() || {};
+        peoSoLinks[soKey] = checkedLinks.length > 0 ? checkedLinks : [1];
+        window.savePeoSoLinks(peoSoLinks);
+
+        // Ensure courses dataset initializes this new SO index with '-'
+        const courses = (window.OFFICIAL_BASELINE_74_COURSES && window.OFFICIAL_BASELINE_74_COURSES.length > 0)
+          ? window.OFFICIAL_BASELINE_74_COURSES
+          : [];
+        courses.forEach(c => {
+          if (!c.sos) c.sos = [];
+          while (c.sos.length < sos.length) {
+            c.sos.push('-');
+          }
+        });
+
+        // Update active curriculum map metadata count if applicable
+        const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === mapId);
+        if (activeMap) activeMap.soCount = sos.length;
+
+        window.closeAddObeItemModal();
+        if (typeof renderSoCards === 'function') renderSoCards();
+        if (typeof renderPeoSoAlignmentTable === 'function') renderPeoSoAlignmentTable();
+        if (typeof renderFlowGraph === 'function') renderFlowGraph();
+        if (typeof renderObeMatrix === 'function') renderObeMatrix();
+        if (typeof renderCurriculumMapMatrix === 'function') renderCurriculumMapMatrix();
+
+        if (typeof showToast === 'function') {
+          showToast(`✓ Added new Student Outcome (${code}) to Curriculum Map!`);
+        }
       }
     };
 
@@ -12748,20 +12966,39 @@ ${worksheetsXml}
         return;
       }
 
-      const SO_LABELS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'];
+      const soList = (typeof window.getObeSoDefs === 'function') ? window.getObeSoDefs() : (FLOW_SO_DEFS || []);
       const peoSoLinks = window.getPeoSoLinks() || {};
       const peoGaLinks = window.getPeoGaLinks() || {};
+
+      const matrixHeadEl = document.getElementById('matrixTableHead');
+      if (matrixHeadEl) {
+        matrixHeadEl.innerHTML = `
+          <tr>
+            <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 sticky left-0 bg-slate-50 dark:bg-[#0E141F] z-30 min-w-[100px]">Course Code</th>
+            <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 sticky left-[100px] bg-slate-50 dark:bg-[#0E141F] z-30 min-w-[220px]">Course Title</th>
+            <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[42px]">Units</th>
+            <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[55px]">Term</th>
+            ${soList.map(so => `
+              <th id="matrix-col-hdr-${so.id}" class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[38px]" title="${so.code}: ${so.title || ''}">
+                ${so.code}
+              </th>
+            `).join('')}
+            <th class="py-2.5 px-2 text-center border-r border-slate-200 dark:border-slate-800 min-w-[75px] bg-purple-50/70 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 font-bold" title="Program Educational Objectives linked through mapped SOs">Linked PEOs</th>
+            <th class="py-2.5 px-2 text-center min-w-[85px] bg-amber-50/70 dark:bg-amber-950/40 text-[#002855] dark:text-[#E5A823] font-bold" title="Graduate Attributes aligned through linked PEOs">Aligned GAs</th>
+          </tr>
+        `;
+      }
 
       let rowsHtml = '';
       filtered.forEach((course, idx) => {
         const rowBg = idx % 2 === 0 ? 'bg-white dark:bg-[#111722]' : 'bg-slate-50/60 dark:bg-[#0D131C]';
-        const sos = course.sos || ['-','-','-','-','-','-','-','-','-','-','-','-','-'];
+        const sos = course.sos || [];
 
         const coursePeos = new Set();
         const courseGas = new Set();
 
         let cellsHtml = '';
-        SO_LABELS.forEach((soLetter, soIdx) => {
+        soList.forEach((soObj, soIdx) => {
           const val = (sos[soIdx] || '-').trim().toUpperCase();
           let badgeClass = 'text-slate-300 dark:text-slate-600 font-light';
           let displayVal = '-';
@@ -12769,7 +13006,7 @@ ${worksheetsXml}
           if (val === 'I') {
             badgeClass = 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-300 dark:border-emerald-700 shadow-2xs';
             displayVal = 'I';
-            const peos = peoSoLinks[soLetter] || [];
+            const peos = peoSoLinks[soObj.id] || [];
             peos.forEach(p => {
               coursePeos.add(p);
               (peoGaLinks[p] || []).forEach(g => courseGas.add(g));
@@ -12777,7 +13014,7 @@ ${worksheetsXml}
           } else if (val === 'E') {
             badgeClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 font-bold border border-amber-300 dark:border-amber-700 shadow-2xs';
             displayVal = 'E';
-            const peos = peoSoLinks[soLetter] || [];
+            const peos = peoSoLinks[soObj.id] || [];
             peos.forEach(p => {
               coursePeos.add(p);
               (peoGaLinks[p] || []).forEach(g => courseGas.add(g));
@@ -12785,7 +13022,7 @@ ${worksheetsXml}
           } else if (val === 'D') {
             badgeClass = 'bg-indigo-100 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 font-bold border border-indigo-300 dark:border-indigo-700 shadow-2xs';
             displayVal = 'D';
-            const peos = peoSoLinks[soLetter] || [];
+            const peos = peoSoLinks[soObj.id] || [];
             peos.forEach(p => {
               coursePeos.add(p);
               (peoGaLinks[p] || []).forEach(g => courseGas.add(g));
@@ -12795,7 +13032,7 @@ ${worksheetsXml}
           cellsHtml += `
             <td class="p-1 text-center border border-slate-200 dark:border-slate-800">
               <button type="button" onclick="cycleObeProgression('${course.code}', ${soIdx})" 
-                      title="Click to cycle I -> E -> D -> '-' for SO (${soLetter}) [v${verStr}]"
+                      title="Click to cycle I -> E -> D -> '-' for ${soObj.code} [v${verStr}]"
                       class="w-7 h-7 inline-flex items-center justify-center font-mono text-[11px] rounded-none cursor-pointer hover:ring-2 hover:ring-apc-blue/50 transition-all ${badgeClass}">
                 ${displayVal}
               </button>

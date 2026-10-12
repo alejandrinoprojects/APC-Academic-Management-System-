@@ -3535,7 +3535,10 @@
                           <span class="w-2 h-2 bg-purple-600 dark:bg-purple-400"></span>
                           <h5 class="font-black text-purple-900 dark:text-purple-300 uppercase text-[11px] font-mono">Tier 2 &bull; PEO</h5>
                         </div>
-                        <span id="wheelPosPEO" class="text-[9px] font-mono text-purple-600 dark:text-purple-400 font-bold">5 items</span>
+                        <div class="flex items-center gap-1">
+                          <button type="button" onclick="openAddObeItemModal('peo')" class="px-1.5 py-0.2 bg-purple-100 hover:bg-purple-200 dark:bg-purple-950/60 dark:hover:bg-purple-900 text-purple-900 dark:text-purple-200 border border-purple-300 dark:border-purple-800 text-[9px] font-bold font-mono transition cursor-pointer" title="Add new PEO">+ PEO</button>
+                          <span id="wheelPosPEO" class="text-[9px] font-mono text-purple-600 dark:text-purple-400 font-bold">5 items</span>
+                        </div>
                       </div>
 
                       <div id="cylinderContainerPEO" class="relative overflow-y-auto max-h-[640px] overscroll-contain p-1 space-y-1.5 focus:outline-none">
@@ -3552,7 +3555,10 @@
                           <span class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400"></span>
                           <h5 class="font-black text-indigo-900 dark:text-indigo-300 uppercase text-[11px] font-mono">Tier 3 &bull; SO</h5>
                         </div>
-                        <span id="wheelPosSO" class="text-[9px] font-mono text-indigo-600 dark:text-indigo-400 font-bold">13 items</span>
+                        <div class="flex items-center gap-1">
+                          <button type="button" onclick="openAddObeItemModal('so')" class="px-1.5 py-0.2 bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-950/60 dark:hover:bg-indigo-900 text-indigo-900 dark:text-indigo-200 border border-indigo-300 dark:border-indigo-800 text-[9px] font-bold font-mono transition cursor-pointer" title="Add new SO">+ SO</button>
+                          <span id="wheelPosSO" class="text-[9px] font-mono text-indigo-600 dark:text-indigo-400 font-bold">13 items</span>
+                        </div>
                       </div>
 
                       <div id="cylinderContainerSO" class="relative overflow-y-auto max-h-[640px] overscroll-contain p-1 space-y-1.5 focus:outline-none">
@@ -3645,7 +3651,7 @@
 
               <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-none shadow-sm max-h-[620px]">
                 <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
-                  <thead class="bg-slate-50 dark:bg-[#0E141F] text-slate-700 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20">
+                  <thead id="matrixTableHead" class="bg-slate-50 dark:bg-[#0E141F] text-slate-700 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800 sticky top-0 z-20">
                     <tr>
                       <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 sticky left-0 bg-slate-50 dark:bg-[#0E141F] z-30 min-w-[100px]">Course Code</th>
                       <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 sticky left-[100px] bg-slate-50 dark:bg-[#0E141F] z-30 min-w-[220px]">Course Title</th>
@@ -3704,6 +3710,10 @@
                     </div>
                   </div>
                   <div class="flex items-center space-x-2">
+                    <button type="button" onclick="openAddObeItemModal('peo')" class="px-2.5 py-1 bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold transition cursor-pointer flex items-center gap-1 shadow-2xs" title="Add a new Program Educational Objective">
+                      <span>➕</span>
+                      <span>Add PEO</span>
+                    </button>
                     <button type="button" onclick="openEditAllDefinitionsModal('peo')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold transition cursor-pointer border border-[#E5A823]/40 flex items-center gap-1 shadow-2xs" title="Edit PEO Definitions">
                       <span>✏️</span>
                       <span>Edit PEO Definitions</span>
@@ -3731,6 +3741,10 @@
                     </div>
                   </div>
                   <div class="flex items-center space-x-2">
+                    <button type="button" onclick="openAddObeItemModal('so')" class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition cursor-pointer flex items-center gap-1 shadow-2xs" title="Add a new Student Outcome">
+                      <span>➕</span>
+                      <span>Add SO</span>
+                    </button>
                     <button type="button" onclick="openEditAllDefinitionsModal('so')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold transition cursor-pointer border border-[#E5A823]/40 flex items-center gap-1 shadow-2xs" title="Edit SO Definitions">
                       <span>✏️</span>
                       <span>Edit SO Definitions</span>
@@ -3762,7 +3776,7 @@
 
                 <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-none shadow-xs">
                   <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
-                    <thead class="bg-slate-50 dark:bg-[#0E141F] text-slate-800 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800">
+                    <thead id="peoSoAlignmentTableHeader" class="bg-slate-50 dark:bg-[#0E141F] text-slate-800 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-800">
                       <tr>
                         <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 w-16 text-center font-mono">Code</th>
                         <th class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[240px]">Student Outcome Statement (CHED CMO No. 92, s. 2017)</th>
@@ -6425,6 +6439,76 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
           <button type="button" onclick="closeEditObeDefinitionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
           <button type="submit" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Save Definition</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- ADD NEW PEO / SO TO CURRICULUM MAP MODAL                                  -->
+  <!-- ========================================================================= -->
+  <div id="obeItemAddModal" onclick="if(event.target === this) closeAddObeItemModal()" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4 backdrop-blur-xs no-print">
+    <div class="bg-white dark:bg-[#181D26] text-slate-900 dark:text-white border-2 border-[#002855] dark:border-[#E5A823] shadow-2xl w-full max-w-xl flex flex-col rounded-none overflow-hidden max-h-[92vh]">
+      <!-- Header -->
+      <div class="bg-[#002855] dark:bg-[#10151E] text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-[#E5A823] shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-7 h-7 bg-[#E5A823] text-[#002855] font-black text-sm flex items-center justify-center rounded-none shadow-xs">➕</span>
+          <div>
+            <h3 id="obeAddModalTitle" class="font-black text-sm tracking-wider uppercase text-white" style="color: #ffffff !important;">Add New Item to Curriculum Map</h3>
+            <p id="obeAddModalSubtitle" class="text-[10px] text-amber-300 font-mono">Curriculum Map Specification</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeAddObeItemModal()" class="text-slate-300 hover:text-white text-xl font-bold p-1 cursor-pointer">&times;</button>
+      </div>
+
+      <!-- Form Body -->
+      <form onsubmit="handleSaveNewObeItem(event)" class="p-5 space-y-4 text-xs overflow-y-auto">
+        <input type="hidden" id="obeAddType" value="peo" />
+
+        <div class="p-2.5 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-600 dark:text-slate-400 uppercase text-[10px]">Item Type:</span>
+            <select id="obeAddTypeSelect" onchange="onObeAddTypeChange(this.value)" class="px-2 py-1 bg-white dark:bg-[#151D2A] border border-slate-300 dark:border-slate-700 text-xs font-mono font-bold text-[#002855] dark:text-amber-400 outline-none cursor-pointer">
+              <option value="peo">Program Educational Objective (PEO)</option>
+              <option value="so">Student Outcome (SO)</option>
+            </select>
+          </div>
+          <span id="obeAddMapBadge" class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 font-mono text-[10px] font-bold">Map: 2026</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Code / Identifier</label>
+            <input type="text" id="obeAddCode" required placeholder="e.g. PEO 6 or SO-n" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-mono text-xs font-bold" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Domain / Category</label>
+            <input type="text" id="obeAddDomain" required placeholder="e.g. Artificial Intelligence, Cloud Systems" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-bold" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Full Title / Short Description</label>
+          <input type="text" id="obeAddTitle" required placeholder="e.g. Autonomous Systems & Edge Computing" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-medium" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Statement / Competency Specification</label>
+          <textarea id="obeAddDesc" rows="4" required class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs resize-y font-normal" placeholder="Detailed outcome statement, performance indicator, or educational objective criteria..."></textarea>
+        </div>
+
+        <!-- Dynamic Hierarchy Linkage Section -->
+        <div id="obeAddLinkageContainer" class="p-3 bg-slate-50 dark:bg-[#10151E] border border-slate-200 dark:border-slate-800 space-y-2">
+          <label id="obeAddLinkageLabel" class="block font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider text-[11px]">Link to Existing Items</label>
+          <div id="obeAddLinkageCheckboxes" class="flex flex-wrap gap-2 max-h-28 overflow-y-auto p-1 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-700">
+            <!-- Dynamically populated checkboxes for upstream GA (when PEO) or parent PEO (when SO) -->
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeAddObeItemModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none cursor-pointer">Cancel</button>
+          <button type="submit" id="obeAddSubmitBtn" class="px-4 py-2 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] font-black uppercase tracking-wider border border-[#E5A823]/60 rounded-none cursor-pointer shadow-xs">Add Item</button>
         </div>
       </form>
     </div>
