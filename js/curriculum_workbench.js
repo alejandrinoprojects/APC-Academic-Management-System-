@@ -8634,7 +8634,7 @@ ${worksheetsXml}
         gaCount: 9,
         mvvVersion: 'MVV 2025',
         mapRevision: 'Map 2027',
-        status: 'UNLOCKED DRAFT',
+        status: 'Draft',
         statusClass: 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700',
         createdAt: '2027-03-10',
         program: 'BSCpE',
@@ -8852,7 +8852,7 @@ ${worksheetsXml}
           if (badge) {
             const is2027 = item.id.includes('2027');
             badge.className = 'node-active-badge inline-block mt-1 px-1.5 py-0.2 text-[9px] font-mono ' + (is2027 ? 'bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300' : 'bg-slate-200 dark:bg-slate-800 text-slate-500');
-            badge.textContent = is2027 ? 'UNLOCKED DRAFT' : 'ARCHIVED';
+            badge.textContent = is2027 ? 'Draft' : 'ARCHIVED';
           }
         }
       });
