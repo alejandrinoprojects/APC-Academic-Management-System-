@@ -1459,7 +1459,7 @@
           </div>
 
           <!-- Section Label: By Academic Year Breakdown -->
-          <div class="pt-2 pb-1 border-b border-slate-200 dark:border-slate-800">
+          <div class="pt-2 pb-1">
             <div class="flex items-center justify-between">
               <div class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <span class="w-2.5 h-2.5 bg-[#E5A823] shrink-0"></span>
@@ -3338,12 +3338,8 @@
                   <span>Curriculum Year:</span>
                 </span>
                 <div class="inline-flex rounded-none shadow-2xs" id="obe-year-pills">
-                  <!-- Dynamically populated: CPE2026 (v2026), CPE2025 (v2025), etc. -->
+                  <!-- Dynamically populated: CPE2026, CPE2027 -->
                 </div>
-                <button type="button" onclick="openSaveCurriculumMapModal()" class="px-2.5 py-1 bg-[#E5A823]/20 hover:bg-[#E5A823]/30 text-[#002855] dark:text-[#E5A823] border border-[#E5A823]/50 font-bold text-xs flex items-center gap-1 cursor-pointer transition" title="Create a new Curriculum Map">
-                  <span>➕</span>
-                  <span>New Map</span>
-                </button>
               </div>
             </div>
 
@@ -3370,29 +3366,27 @@
             <!-- TAB 0: CURRICULUM MAP HIERARCHY & VERSION REGISTRY -->
             <div id="obe-content-hierarchy" class="space-y-4">
               <!-- Curriculum Map Control Strip -->
-              <div class="p-3.5 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+              <div class="p-3 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-2 flex-wrap">
-                  <span class="px-2 py-0.5 bg-[#002855] text-[#E5A823] font-mono font-bold text-[10px] uppercase border border-[#E5A823]/40">Active Map</span>
-                  <h3 id="curricMapActiveTitle" class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight font-mono">
+                  <h3 id="curricMapActiveTitle" class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-tight font-mono">
                     BSCpE 2026–2030
                   </h3>
-                  <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-bold border border-blue-300 dark:border-blue-700" id="curricMapActiveVer">Map 2026</span>
-                  <span id="curricMapActiveTag" class="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-mono text-[10px] font-bold border border-emerald-300 dark:border-emerald-700">ACTIVE &bull; LOCKED</span>
+                  <span class="px-2 py-0.5 bg-blue-50 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-mono text-[10px] font-semibold border border-blue-200 dark:border-blue-800" id="curricMapActiveVer">Map 2026</span>
+                  <span id="curricMapActiveTag" class="hidden">ACTIVE</span>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                  <div class="flex items-center gap-1.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 px-2.5 py-1">
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Select Map:</span>
+                  <div class="flex items-center gap-1.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 px-2 py-1">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">Map:</span>
                     <select id="curriculumMapSelect" onchange="selectCurriculumMap(this.value)" class="bg-transparent text-xs font-mono font-bold text-[#002855] dark:text-amber-400 outline-none cursor-pointer">
-                      <option value="CM-BSCpE-2026">CPE 2026 • Map 2026 • Active • Locked</option>
-                      <option value="CM-BSCpE-2027">CPE 2027 • Map 2027 • Editable Draft</option>
-                      <option value="CM-BSCpE-2025">CPE 2025 • Map 2025 • Archived • Locked</option>
-                      <option value="CM-BSCpE-2021">CPE 2021 • Map 2021 • Historical • Locked</option>
+                      <option value="CM-BSCpE-2026">CPE 2026 (v2026)</option>
+                      <option value="CM-BSCpE-2027">CPE 2027 (Draft)</option>
+                      <option value="CM-BSCpE-2025">CPE 2025 (Archived)</option>
+                      <option value="CM-BSCpE-2021">CPE 2021 (Historical)</option>
                     </select>
                   </div>
-                  <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1.5 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1.5 cursor-pointer shadow-xs" title="Create a new Curriculum Map version">
-                    <span>➕</span>
-                    <span>Create New Curriculum Map</span>
+                  <button type="button" onclick="openSaveCurriculumMapModal()" class="px-3 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-xs" title="Create a new Curriculum Map version">
+                    <span>➕ New Map</span>
                   </button>
                 </div>
               </div>
@@ -3401,10 +3395,10 @@
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 
                 <!-- Tier 4: Curriculum Card -->
-                <div onclick="navigateView('flowchart')" class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-amber-400 transition group" title="View Prerequisite Flowchart">
+                <div onclick="navigateView('flowchart')" class="p-3.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 hover:border-[#002855] dark:hover:border-[#E5A823] shadow-xs space-y-1.5 cursor-pointer hover:shadow-md transition group" title="View Prerequisite Flowchart">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-[#002855] dark:text-[#E5A823]">Tier 4 &bull; Curriculum</span>
-                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardCurricStatus">ACTIVE</span>
+                    <span class="hidden" id="cardCurricStatus"></span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardCurricId">CPE 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardCurricName">BS Computer Engineering • 184.0 Units</p>
@@ -3415,10 +3409,10 @@
                 </div>
 
                 <!-- Tier 3: SO Card -->
-                <div onclick="switchObeTab('matrix')" class="p-4 bg-white dark:bg-[#111722] border-2 border-indigo-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-indigo-500 transition group" title="View SO to Course Matrix">
+                <div onclick="switchObeTab('matrix')" class="p-3.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 hover:border-indigo-500 shadow-xs space-y-1.5 cursor-pointer hover:shadow-md transition group" title="View SO to Course Matrix">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-indigo-700 dark:text-indigo-400">Tier 3 &bull; Student Outcomes</span>
-                    <span class="px-1.5 py-0.2 bg-indigo-100 text-indigo-800 font-mono text-[9px] font-bold" id="cardSoStatus">ACTIVE</span>
+                    <span class="hidden" id="cardSoStatus"></span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardSoId">SO 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardSoName">13 CHED CMO 92 Outcomes (SO a–m)</p>
@@ -3429,10 +3423,10 @@
                 </div>
 
                 <!-- Tier 2: PEO Card -->
-                <div onclick="switchObeTab('peo')" class="p-4 bg-white dark:bg-[#111722] border-2 border-purple-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-purple-500 transition group" title="View PEO to SO Schedule">
+                <div onclick="switchObeTab('peo')" class="p-3.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 hover:border-purple-500 shadow-xs space-y-1.5 cursor-pointer hover:shadow-md transition group" title="View PEO to SO Schedule">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-purple-700 dark:text-purple-400">Tier 2 &bull; Program Objectives</span>
-                    <span class="px-1.5 py-0.2 bg-purple-100 text-purple-800 font-mono text-[9px] font-bold" id="cardPeoStatus">ACTIVE</span>
+                    <span class="hidden" id="cardPeoStatus"></span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardPeoId">PEO 2026</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardPeoName">5 Program Educational Objectives</p>
@@ -3443,10 +3437,10 @@
                 </div>
 
                 <!-- Tier 1: GA Card -->
-                <div onclick="switchObeTab('vision')" class="p-4 bg-white dark:bg-[#111722] border-2 border-slate-700/60 shadow-xs space-y-2 cursor-pointer hover:shadow-lg hover:border-slate-400 transition group" title="View Graduate Attributes">
+                <div onclick="switchObeTab('vision')" class="p-3.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 hover:border-slate-500 shadow-xs space-y-1.5 cursor-pointer hover:shadow-md transition group" title="View Graduate Attributes">
                   <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono uppercase font-bold text-slate-700 dark:text-slate-300">Tier 1 &bull; Graduate Attributes</span>
-                    <span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 font-mono text-[9px] font-bold" id="cardGaStatus">ACTIVE</span>
+                    <span class="hidden" id="cardGaStatus"></span>
                   </div>
                   <h5 class="font-black text-sm text-slate-900 dark:text-white font-mono" id="cardGaId">GA 2024</h5>
                   <p class="text-xs text-slate-600 dark:text-slate-300 font-semibold" id="cardGaName">9 Institutional Graduate Attributes</p>
@@ -3461,12 +3455,12 @@
               <!-- ========================================================================= -->
               <!-- CASCADING OBE RELATIONAL ALIGNMENT TREE (GA -> PEO -> SO -> COURSES)     -->
               <!-- ========================================================================= -->
-              <div class="p-4 bg-white dark:bg-[#111722] border-2 border-[#002855] dark:border-[#E5A823] shadow-md space-y-3">
+              <div class="p-3.5 bg-white dark:bg-[#111722] border border-slate-300 dark:border-slate-700 shadow-sm space-y-2.5">
                 
                 <!-- Section Header & Filter Ribbon -->
-                <div class="flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-200 dark:border-slate-800 pb-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
                   <div class="flex items-center gap-2 flex-wrap">
-                    <span class="w-3 h-3 bg-[#E5A823] shrink-0"></span>
+                    <span class="w-2.5 h-2.5 bg-[#E5A823] shrink-0"></span>
                     <h4 class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">
                       Curriculum Alignment Tree • GA &rarr; PEO &rarr; SO &rarr; Course
                     </h4>
@@ -3483,7 +3477,7 @@
                       <option value="4">Year 4</option>
                     </select>
                     <button type="button" onclick="clearFlowTrace()" id="flowGraphClearTraceBtn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer">
-                      <span>↺ Reset Filter</span>
+                      <span>↺ Reset</span>
                     </button>
                   </div>
                 </div>

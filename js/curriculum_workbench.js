@@ -8457,15 +8457,13 @@ ${worksheetsXml}
         availableYears.forEach(y => {
           const yVer = getObeVersionString(y);
           const isActive = (y === activeYr);
-          const isDraft = (y === '2027');
-          const badgeIcon = isDraft ? '✏️ Unlocked' : '🔒 Locked';
           const activeClasses = isActive
-            ? 'bg-[#002855] text-[#E5A823] font-bold border-[#002855] shadow-xs ring-1 ring-[#E5A823]'
+            ? 'bg-[#002855] text-[#E5A823] font-bold border-[#002855] shadow-xs'
             : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-300 dark:border-slate-600';
           html += `
-            <button type="button" onclick="setObeActiveYear('${y}')" class="px-2.5 py-1 text-xs border -ml-[1px] first:ml-0 transition cursor-pointer flex items-center space-x-1 ${activeClasses}" title="${isDraft ? 'CPE2027: Unlocked Editable Draft' : 'CPE2026: Locked Active Baseline'}">
-              <span>CPE${y} <span class="font-mono text-[10px] opacity-80">(v${yVer})</span></span>
-              <span class="text-[9px] px-1 py-0.2 rounded font-semibold ${isDraft ? 'bg-amber-400/20 text-amber-500' : 'bg-slate-400/20 text-slate-400'}">${badgeIcon}</span>
+            <button type="button" onclick="setObeActiveYear('${y}')" class="px-3 py-1 text-xs border -ml-[1px] first:ml-0 transition cursor-pointer flex items-center space-x-1.5 ${activeClasses}">
+              <span>CPE${y}</span>
+              <span class="font-mono text-[10px] opacity-75">v${yVer}</span>
             </button>
           `;
         });
@@ -8911,7 +8909,7 @@ ${worksheetsXml}
       const sel = document.getElementById('curriculumMapSelect');
       if (!sel) return;
       sel.innerHTML = (window.CURRICULUM_MAPS || []).map(m => `
-        <option value="${m.id}">${m.curriculumVersion} &bull; ${m.mapRevision} &bull; ${m.status}</option>
+        <option value="${m.id}">${m.curriculumVersion} (${m.mapRevision})</option>
       `).join('');
       if (window.currentActiveCurriculumMap) sel.value = window.currentActiveCurriculumMap;
     };
