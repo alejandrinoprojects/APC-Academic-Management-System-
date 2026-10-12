@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Figure 3.1: Information Architecture</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+      color: #0f172a;
+      width: 1400px;
+      margin: 0 auto;
+    }
+    .node {
+      border: 2px solid #0f172a;
+      border-radius: 6px;
+      background: #ffffff;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .node-header {
+      font-weight: 700;
+      font-size: 13.5px;
+      padding: 7px 12px;
+      border-bottom: 1.5px solid #0f172a;
+    }
+    .node-body {
+      font-size: 11px;
+      padding: 7px 12px;
+      line-height: 1.4;
+      text-align: left;
+    }
+    .node-body ul {
+      padding-left: 16px;
+      margin: 0;
+    }
+    .node-body li {
+      margin-bottom: 2px;
+    }
+    .node-body li:last-child {
+      margin-bottom: 0;
+    }
+    .bg-sky { background: #e0f2fe; }
+    .bg-slate { background: #f8fafc; }
+    
+    .tag-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .tag-gold { background: #fef3c7; color: #b45309; border: 1px solid #f59e0b; }
+    .tag-blue { background: #e0f2fe; color: #0369a1; border: 1px solid #0284c7; }
+    .tag-green { background: #dcfce7; color: #15803d; border: 1px solid #22c55e; }
+
+    .flex-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      position: relative;
+    }
+
+    .section-box {
+      border: 2.5px dashed #059669;
+      border-radius: 8px;
+      padding: 16px 14px 12px 14px;
+      background: #f0fdf4;
+      width: 1360px;
+      position: relative;
+      margin-top: 4px;
+    }
+    .section-tag {
+      position: absolute;
+      top: -12px;
+      left: 24px;
+      background: #059669;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 12px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ROOT TITLE -->
+  <div class="node bg-sky" style="width: 620px;">
+    <div class="node-header" style="font-size: 15px; background: #002855; color: white; border-bottom: 2px solid #002855;">
+      Asia Pacific College — Academic Management System
+    </div>
+    <div class="node-body" style="text-align: center; font-weight: 600; color: #334155; padding: 5px;">
+      Information Architecture Hierarchy
+    </div>
+  </div>
+
+  <!-- Connector: Root to Login -->
+  <div style="width: 1360px; height: 26px;">
+    <svg style="width: 1360px; height: 26px;">
+      <line x1="680" y1="0" x2="680" y2="26" stroke="#0f172a" stroke-width="2"/>
+      <polygon points="676,20 684,20 680,26" fill="#0f172a" />
+    </svg>
+  </div>
+
+  <!-- AUTHENTICATION & ROLE GATEWAY -->
+  <div class="node" style="width: 560px;">
+    <div class="node-header bg-sky">
+      Login &amp; Role-Based Clearance Portal
+    </div>
+    <div class="node-body" style="text-align: center;">
+      Institutional Microsoft SSO / Email &amp; Password Authentication<br>
+      <span style="font-size: 10px; color: #64748b; font-weight: 600;">
+        Role Clearances: System Admin (Tier 4) &bull; Executive Director (Tier 3) &bull; Program Director (Tier 2) &bull; Faculty (Tier 1)
+      </span>
+    </div>
+  </div>
+
+  <!-- Connector: Login to Dashboard -->
+  <div style="width: 1360px; height: 26px;">
+    <svg style="width: 1360px; height: 26px;">
+      <line x1="680" y1="0" x2="680" y2="26" stroke="#0f172a" stroke-width="2"/>
+      <polygon points="676,20 684,20 680,26" fill="#0f172a" />
+    </svg>
+  </div>
+
+  <!-- INSTITUTIONAL DASHBOARD -->
+  <div class="node" style="width: 600px;">
+    <div class="node-header bg-sky">
+      Institutional Dashboard
+    </div>
+    <div class="node-body" style="text-align: center;">
+      Academic Schools Governance &amp; Institutional Metric Summaries
+    </div>
+  </div>
+
+  <!-- Connector: Dashboard to 3 Schools Boxes -->
+  <!-- 
+       Dashboard center: 680.
+       Schools row: total 1120px, left = 120, right = 1240.
+       Box 1 (SoE): width 340, left 120, right 460. Center = 290.
+       Box 2 (Other): width 380, left 490, right 870. Center = 680.
+       Box 3 (Manage): width 340, left 900, right 1240. Center = 1070.
+  -->
+  <div style="width: 1360px; height: 30px;">
+    <svg style="width: 1360px; height: 30px;">
+      <line x1="680" y1="0" x2="680" y2="15" stroke="#0f172a" stroke-width="2"/>
+      <line x1="290" y1="15" x2="1070" y2="15" stroke="#0f172a" stroke-width="2"/>
+      <line x1="290" y1="15" x2="290" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <line x1="680" y1="15" x2="680" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <line x1="1070" y1="15" x2="1070" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <polygon points="286,24 294,24 290,30" fill="#0f172a" />
+      <polygon points="676,24 684,24 680,30" fill="#0f172a" />
+      <polygon points="1066,24 1074,24 1070,30" fill="#0f172a" />
+    </svg>
+  </div>
+
+  <div class="flex-row" style="width: 1120px; gap: 30px;">
+    <!-- SELECTED SCHOOL -->
+    <div class="node" style="width: 340px; border: 2.5px solid #FF6B00;">
+      <div class="node-header" style="background: #fff7ed; color: #c2410c; border-bottom: 2px solid #FF6B00;">
+        School of Engineering (SoE) <span class="tag-badge" style="background:#FF6B00; color:white;">Active Node</span>
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>Consolidated Degree Programs Directory</li>
+          <li>Executive Director (ExD) Profile &amp; Governance</li>
+          <li>Institutional Accreditation Status</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- OTHER SCHOOLS -->
+    <div class="node" style="width: 380px;">
+      <div class="node-header bg-slate">
+        Other Academic Schools (Directories)
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>School of Computing &amp; Information Tech. (SoCIT)</li>
+          <li>School of Multimedia &amp; Arts (SoMA)</li>
+          <li>School of Management (SoM)</li>
+          <li>School of Architecture &amp; Design (SoAD)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SCHOOL MANAGEMENT -->
+    <div class="node" style="width: 340px;">
+      <div class="node-header bg-slate">
+        Add &amp; Manage Schools
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>School Name, Code, Branding Palette</li>
+          <li>Executive Director Appointment</li>
+          <li>Academic Program Allocation &amp; Quotas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector: From SoE (center 290) to School Overview (center 680) -->
+  <!-- 
+       Start: (290, 0) directly touching SoE bottom.
+       Drops to (290, 16).
+       Turns right to (680, 16).
+       Drops to (680, 32) directly into School Overview top!
+  -->
+  <div style="width: 1360px; height: 32px;">
+    <svg style="width: 1360px; height: 32px;">
+      <line x1="290" y1="0" x2="290" y2="16" stroke="#FF6B00" stroke-width="2.5"/>
+      <line x1="290" y1="16" x2="680" y2="16" stroke="#FF6B00" stroke-width="2.5"/>
+      <line x1="680" y1="16" x2="680" y2="32" stroke="#FF6B00" stroke-width="2.5"/>
+      <polygon points="675,24 685,24 680,32" fill="#FF6B00" />
+      <text x="305" y="12" font-size="9" font-family="sans-serif" font-weight="700" fill="#c2410c">Selected School Branch</text>
+    </svg>
+  </div>
+
+  <!-- SCHOOL OVERVIEW -->
+  <div class="node" style="width: 620px; border: 2px solid #FF6B00;">
+    <div class="node-header" style="background: #fff7ed; color: #c2410c;">
+      School Overview — Degree Programs Directory
+    </div>
+    <div class="node-body">
+      <div style="text-align: center; font-weight: 600; margin-bottom: 4px;">
+        Constituent Engineering Programs &amp; Program Director Appointments
+      </div>
+      <ul style="display: flex; justify-content: space-around; list-style: none; padding: 0;">
+        <li>&bull; <strong>BSCpE</strong> (Computer Eng.)</li>
+        <li>&bull; <strong>BSCE</strong> (Civil Eng.)</li>
+        <li>&bull; <strong>BSECE</strong> (Electronics Eng.)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Connector: School Overview (680) to Program Overview (680) -->
+  <div style="width: 1360px; height: 26px;">
+    <svg style="width: 1360px; height: 26px;">
+      <line x1="680" y1="0" x2="680" y2="26" stroke="#0f172a" stroke-width="2"/>
+      <polygon points="676,20 684,20 680,26" fill="#0f172a" />
+    </svg>
+  </div>
+
+  <!-- PROGRAM OVERVIEW (BSCpE) -->
+  <div class="node" style="width: 700px; border: 2.5px solid #002855;">
+    <div class="node-header" style="background: #002855; color: white;">
+      Program Overview — Computer Engineering (BSCpE)
+    </div>
+    <div class="node-body" style="text-align: center; background: #f8fafc;">
+      <strong>Program Director (PD) Academic Workbench Tier</strong><br>
+      <span style="font-size: 10px; color: #475569;">
+        Coordinates program accreditation, degree compliance, and routes to constituent management subsystems
+      </span>
+    </div>
+  </div>
+
+  <!-- Connector: Program Overview to 3 Subsystems -->
+  <!-- 
+       Program Overview center: 680.
+       Subsystems row: width 1260px (left 50, right 1310).
+       Box 1 (Curric): width 400, left 50, right 450. Center = 250.
+       Box 2 (Syllabus): width 380, left 490, right 870. Center = 680.
+       Box 3 (Course): width 400, left 910, right 1310. Center = 1110.
+  -->
+  <div style="width: 1360px; height: 30px;">
+    <svg style="width: 1360px; height: 30px;">
+      <line x1="680" y1="0" x2="680" y2="15" stroke="#0f172a" stroke-width="2"/>
+      <line x1="250" y1="15" x2="1110" y2="15" stroke="#0f172a" stroke-width="2"/>
+      <line x1="250" y1="15" x2="250" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <line x1="680" y1="15" x2="680" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <line x1="1110" y1="15" x2="1110" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <polygon points="246,24 254,24 250,30" fill="#0f172a" />
+      <polygon points="676,24 684,24 680,30" fill="#0f172a" />
+      <polygon points="1106,24 1114,24 1110,30" fill="#0f172a" />
+    </svg>
+  </div>
+
+  <div class="flex-row" style="width: 1260px; gap: 40px;">
+    <!-- 1. CURRICULUM MANAGEMENT (PRIMARY SUBSYSTEM) -->
+    <div class="node" style="width: 400px; border: 2.5px solid #059669;">
+      <div class="node-header" style="background: #059669; color: white;">
+        1. Curriculum Management <span class="tag-badge" style="background:#dcfce7; color:#065f46;">Core Functional Hub</span>
+      </div>
+      <div class="node-body">
+        <ul>
+          <li><strong>Management Homepage</strong> &bull; Central Program Dashboard</li>
+          <li><strong>Versioning History</strong> &bull; Revision Baselines &amp; Registry Diffs</li>
+          <li><strong>By Academic Year</strong> &bull; Multi-cohort Curriculum Trees</li>
+          <li><strong>Curriculum Tools &amp; Reports</strong> &bull; OBE Alignment, Delegations, Audit</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. SYLLABUS MANAGEMENT -->
+    <div class="node" style="width: 380px;">
+      <div class="node-header bg-slate">
+        2. Syllabus Management
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>Course Syllabus Ingestion Repository</li>
+          <li>AI-Assisted Syllabus Ingestion &amp; Parsing</li>
+          <li>Term-by-Term Instructional Outlines</li>
+          <li>CLO (Course Learning Outcomes) Verification</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. COURSE MANAGEMENT -->
+    <div class="node" style="width: 400px;">
+      <div class="node-header bg-slate">
+        3. Course Management
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>Institutional Course Master Catalog</li>
+          <li>Faculty Teaching Loading &amp; Assignments</li>
+          <li>Cross-Disciplinary Course Offerings</li>
+          <li>Course Code &amp; Credit Unit Bank</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connector: From 1. Curriculum Management (center 250) into Curriculum Management Subsystem Architecture Container -->
+  <!-- 
+       Start: (250, 0) directly touching Curriculum Management bottom.
+       Drops straight to (250, 30) touching the green dashed container top!
+  -->
+  <div style="width: 1360px; height: 30px;">
+    <svg style="width: 1360px; height: 30px;">
+      <line x1="250" y1="0" x2="250" y2="30" stroke="#059669" stroke-width="2.5"/>
+      <polygon points="245,22 255,22 250,30" fill="#059669" />
+      <text x="260" y="18" font-size="9" font-family="sans-serif" font-weight="700" fill="#047857">Subsystem Internal Architecture</text>
+    </svg>
+  </div>
+
+  <!-- CURRICULUM MANAGEMENT SUBSYSTEM DECOMPOSITION (Mirrors Leftside Panel) -->
+  <div class="section-box">
+    <div class="section-tag">
+      Curriculum Management Subsystem Architecture (Leftside Navigation Panel Hierarchy)
+    </div>
+
+    <div class="flex-row" style="margin-top: 6px; gap: 16px;">
+      
+      <!-- COLUMN A: CENTRAL MANAGEMENT VIEWS -->
+      <div class="node" style="width: 310px; background: white;">
+        <div class="node-header" style="background: #ecfdf5; color: #047857; border-bottom: 2px solid #059669;">
+          A. Management Views
+        </div>
+        <div class="node-body">
+          <div style="padding: 6px 0; border-bottom: 1px dashed #cbd5e1;">
+            <strong>🏠 Management Homepage</strong>
+            <div style="font-size: 10px; color: #64748b;">Curriculum status overview, quick actions, batch health summary</div>
+          </div>
+          <div style="padding: 6px 0;">
+            <strong>📜 Versioning History</strong>
+            <div style="font-size: 10px; color: #64748b;">
+              &bull; Curriculum revisions registry (AY 2023–2027)<br>
+              &bull; Institutional MVV Registry &bull; PEO / SO / GA Registries<br>
+              &bull; Revision freeze/lock controls &amp; batch changelog
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN B: BY ACADEMIC YEAR (CURRICULUM VERSIONS) -->
+      <div class="node" style="width: 460px; background: white; border: 2px solid #2563eb;">
+        <div class="node-header" style="background: #eff6ff; color: #1d4ed8; border-bottom: 2px solid #2563eb;">
+          B. By Academic Year (Curriculum Versions)
+        </div>
+        <div class="node-body">
+          <div style="display: flex; gap: 10px; margin-bottom: 6px;">
+            <div style="flex: 1; border: 1px solid #bfdbfe; border-radius: 4px; padding: 6px; background: #f8fafc;">
+              <strong style="color: #1e40af;">📅 CPE2027 Curriculum</strong>
+              <span class="tag-badge tag-gold">Draft / In-Progress</span>
+              <ul style="font-size: 10px; padding-left: 14px; margin-top: 3px;">
+                <li>Curriculum Dashboard</li>
+                <li>Curriculum Map</li>
+                <li>Curriculum Flowchart</li>
+                <li>Curriculum Spreadsheet</li>
+              </ul>
+            </div>
+            <div style="flex: 1; border: 1.5px solid #2563eb; border-radius: 4px; padding: 6px; background: #eff6ff;">
+              <strong style="color: #1d4ed8;">📅 CPE2026 Curriculum</strong>
+              <span class="tag-badge tag-green">Active Baseline</span>
+              <ul style="font-size: 10px; padding-left: 14px; margin-top: 3px;">
+                <li>Curriculum Dashboard</li>
+                <li>Curriculum Map</li>
+                <li>Curriculum Flowchart</li>
+                <li>Curriculum Spreadsheet</li>
+                <li><strong>Official Documents (Sheets 1–7)</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div style="border: 1px solid #e2e8f0; border-radius: 4px; padding: 5px; background: #f8fafc;">
+            <strong style="color: #475569; font-size: 11px;">Historical Curriculums:</strong>
+            <span style="font-size: 10px; color: #64748b;">
+              &bull; CPE2025 (AY 2025-2026) &bull; CPE2024 (AY 2024-2025) &bull; CPE2023 (AY 2023-2024)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN C: CURRICULUM TOOLS & REPORTS -->
+      <div class="node" style="width: 530px; background: white;">
+        <div class="node-header" style="background: #faf5ff; color: #7e22ce; border-bottom: 2px solid #9333ea;">
+          C. Curriculum Tools &amp; Reports
+        </div>
+        <div class="node-body">
+          <div style="margin-bottom: 6px; padding-bottom: 5px; border-bottom: 1px dashed #cbd5e1;">
+            <strong style="color: #7e22ce;">🗺️ Curriculum Map (OBE Alignment Hub)</strong>
+            <div style="font-size: 10px; color: #64748b;">
+              Institutional 4-Tier Tree: Graduate Attributes (GA 2024) &rarr; Program Educational Objectives (PEO 2026) &rarr; Student Outcomes (SO 2026 a&ndash;m) &rarr; Course Competencies (I-P-D)
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div style="flex: 1; border: 1px solid #e9d5ff; border-radius: 4px; padding: 5px; background: #faf5ff;">
+              <strong style="color: #6b21a8; font-size: 11px;">👥 Delegations Console</strong>
+              <div style="font-size: 10px; color: #64748b;">
+                Assign faculty clusters, temporary course editing privileges, cross-program approvals
+              </div>
+            </div>
+            <div style="flex: 1; border: 1px solid #fecdd3; border-radius: 4px; padding: 5px; background: #fff1f2;">
+              <strong style="color: #be123c; font-size: 11px;">🛡️ System Audit Trail</strong>
+              <div style="font-size: 10px; color: #64748b;">
+                Chronological activity logs, attribute modification history, Kahn cycle simulation progress
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Connector: From Curriculum Subsystem Architecture Container into Active Workspaces -->
+  <div style="width: 1360px; height: 28px;">
+    <svg style="width: 1360px; height: 28px;">
+      <line x1="680" y1="0" x2="680" y2="28" stroke="#0f172a" stroke-width="2"/>
+      <polygon points="676,22 684,22 680,28" fill="#0f172a" />
+      <text x="690" y="16" font-size="9" font-family="sans-serif" font-weight="700" fill="#2563eb">Select Curriculum Version Workspace</text>
+    </svg>
+  </div>
+
+  <!-- LEVEL 6: OPERATIONAL WORKSPACES UNDER SELECTED CURRICULUM -->
+  <div class="node" style="width: 560px; background: #eff6ff; border: 2px solid #2563eb;">
+    <div class="node-header" style="background: #2563eb; color: white;">
+      Active Curriculum Operational Workspaces
+    </div>
+    <div class="node-body" style="text-align: center; font-weight: 600; color: #1e3a8a; padding: 5px;">
+      Selected Curriculum Version Workspace (e.g., CPE 2026 Active Baseline / CPE 2027 Draft)
+    </div>
+  </div>
+
+  <!-- Connector: Active Workspaces to 5 Operational Workspace Cards -->
+  <!-- 
+       Active Workspaces center: 680.
+       5 cards row: total width 1360px.
+       5 cards of width 256 each, gap 20.
+       Centers: 128, 404, 680, 956, 1232.
+  -->
+  <div style="width: 1360px; height: 30px;">
+    <svg style="width: 1360px; height: 30px;">
+      <line x1="680" y1="0" x2="680" y2="15" stroke="#0f172a" stroke-width="2"/>
+      <line x1="128" y1="15" x2="1232" y2="15" stroke="#0f172a" stroke-width="2"/>
+      <line x1="128" y1="15" x2="128" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <line x1="404" y1="15" x2="404" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <line x1="680" y1="15" x2="680" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <line x1="956" y1="15" x2="956" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <line x1="1232" y1="15" x2="1232" y2="30" stroke="#0f172a" stroke-width="2"/>
+      <polygon points="124,24 132,24 128,30" fill="#0f172a" />
+      <polygon points="400,24 408,24 404,30" fill="#0f172a" />
+      <polygon points="676,24 684,24 680,30" fill="#0f172a" />
+      <polygon points="952,24 960,24 956,30" fill="#0f172a" />
+      <polygon points="1228,24 1236,24 1232,30" fill="#0f172a" />
+    </svg>
+  </div>
+
+  <!-- 5 OPERATIONAL WORKSPACE CARDS -->
+  <div class="flex-row" style="width: 1360px; gap: 20px;">
+
+    <!-- 1. DASHBOARD -->
+    <div class="node" style="width: 256px;">
+      <div class="node-header bg-sky">
+        Curriculum Dashboard
+        <div style="font-size: 10px; font-weight: normal; color: #0369a1;">Compliance &amp; Analytics</div>
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>CHED CMO No. 92 Compliance</li>
+          <li>Total Credit Units (172.0 Units)</li>
+          <li>13 / 13 Student Outcomes Coverage</li>
+          <li>Term-by-Term Load Breakdown</li>
+          <li>3 Industry Elective Tracks Tracking</li>
+          <li>One-Click PDF Compliance Export</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. FLOWCHART (DAG) -->
+    <div class="node" style="width: 256px; border: 2px solid #059669;">
+      <div class="node-header" style="background: #ecfdf5; color: #047857; border-bottom: 2px solid #059669;">
+        Interactive Flowchart
+        <div style="font-size: 10px; font-weight: normal; color: #065f46;">Directed Acyclic Graph (DAG)</div>
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>12-Trimester Academic Progression</li>
+          <li>Color-Coded Course Nodes</li>
+          <li>Hard / Soft Prerequisite Linkages</li>
+          <li>Kahn's Zero-Cycle Validation Engine</li>
+          <li>Course Inspector &amp; Requisites Modal</li>
+          <li>Obsidian Gold High-Contrast Mode</li>
+          <li>Vector SVG / High-Res PNG Export</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. SPREADSHEET -->
+    <div class="node" style="width: 256px;">
+      <div class="node-header bg-amber">
+        Master Spreadsheet
+        <div style="font-size: 10px; font-weight: normal; color: #b45309;">Tabular Catalog Grid</div>
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>Full 74-Course Curriculum Matrix</li>
+          <li>Active Formula Bar &amp; Live Summation</li>
+          <li>Lec/Lab Hours &amp; Tuition Units Grid</li>
+          <li>Year &amp; Trimester Filtering Controls</li>
+          <li>Course Category Manager Config</li>
+          <li>Two-Way Excel / CSV Data Sync</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4. CURRICULUM MAP -->
+    <div class="node" style="width: 256px; border: 2px solid #7c3aed;">
+      <div class="node-header" style="background: #faf5ff; color: #6d28d9; border-bottom: 2px solid #7c3aed;">
+        Curriculum Map
+        <div style="font-size: 10px; font-weight: normal; color: #5b21b6;">OBE Alignment Matrix</div>
+      </div>
+      <div class="node-body">
+        <ul>
+          <li>Course-to-SO Matrix (I-P-D)</li>
+          <li>13 CHED CMO 92 SOs (a&ndash;m) Mapping</li>
+          <li>SO-to-PEO Alignment Schedule</li>
+          <li>PEO-to-GA Institutional Tree</li>
+          <li>Interactive OBE Filtering &amp; Search</li>
+          <li>Standardized OBE Matrix Export</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5. OFFICIAL DOCUMENTS -->
+    <div class="node" style="width: 256px; border: 2px solid #d97706;">
+      <div class="node-header" style="background: #fffbeb; color: #b45309; border-bottom: 2px solid #d97706;">
+        Official Documents Suite
+        <div style="font-size: 10px; font-weight: normal; color: #92400e;">Registrar Sheets 1–7</div>
+      </div>
+      <div class="node-body">
+        <ul>
+          <li><strong>Sheet 1:</strong> Official Flowchart</li>
+          <li><strong>Sheet 2:</strong> Student Prospectus</li>
+          <li><strong>Sheet 3:</strong> Course Catalog Directory</li>
+          <li><strong>Sheet 4:</strong> Program of Study</li>
+          <li><strong>Sheet 5:</strong> OBE Curriculum Map</li>
+          <li><strong>Sheet 6:</strong> Comparative Summary Matrix</li>
+          <li><strong>Sheet 7:</strong> Summary of Units</li>
+          <li>Dual Live-Spreadsheet / Print View</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
