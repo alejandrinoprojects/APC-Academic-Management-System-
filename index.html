@@ -3357,10 +3357,6 @@
               <button onclick="switchObeTab('vision')" id="obe-tab-vision" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap">
                 <span id="obe-tab-label-vision">Graduate Attributes (GA)</span>
               </button>
-              <button onclick="navigateView('versioning-history')" id="obe-tab-versioning" class="pb-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer whitespace-nowrap flex items-center gap-1.5" title="Open Master Versioning History Registry">
-                <span>📜</span>
-                <span>Versioning History</span>
-              </button>
             </div>
 
             <!-- TAB 0: CURRICULUM MAP HIERARCHY & VERSION REGISTRY -->
@@ -3482,6 +3478,18 @@
                   </div>
                 </div>
 
+                <!-- Dedicated Accreditation & Progression Warning Notice Bar -->
+                <div id="treeComplianceWarningBar" class="p-2.5 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <div class="flex items-center gap-2 text-amber-900 dark:text-amber-200">
+                    <span class="text-sm">⚠️</span>
+                    <span class="font-bold font-mono">Curriculum Progression Warning:</span>
+                    <span class="font-medium text-slate-800 dark:text-slate-200" id="treeComplianceWarningText">Terminal Course <strong class="font-mono text-amber-950 dark:text-amber-300">CPEDES1</strong> lacks Demonstrative ('D') competency mappings under CHED CMO 92.</span>
+                  </div>
+                  <button type="button" onclick="showTerminalCourseDemonstrativeWarning('CPEDES1', 'CPE Practice and Design 1')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
+                    <span>View Advisory &amp; Resolve &rarr;</span>
+                  </button>
+                </div>
+
                 <!-- Active Lineage Trace Breadcrumb Ribbon -->
                 <div id="flowGraphTraceBar" class="p-2 bg-slate-50 dark:bg-[#0E141F] border border-slate-200 dark:border-slate-800 text-[11px] font-mono flex flex-wrap items-center justify-between gap-2">
                   <div class="flex items-center gap-2 flex-wrap">
@@ -3566,15 +3574,6 @@
                         <span id="wheelPosCourse" class="text-[9px] font-mono text-emerald-700 dark:text-emerald-400 font-bold">74 items</span>
                       </div>
 
-                      <!-- Terminal Course Progression Alert Banner -->
-                      <div id="terminalCourseProgressionBanner" class="p-1.5 bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700/80 flex items-center justify-between text-[10px] font-mono shrink-0">
-                        <div class="flex items-center gap-1.5 text-amber-900 dark:text-amber-200">
-                          <span class="text-xs">⚠️</span>
-                          <span class="font-bold">Terminal Flag:</span>
-                          <span id="terminalFlagCountText">CPEDES1 lacks (D)</span>
-                        </div>
-                        <button type="button" onclick="showTerminalCourseDemonstrativeWarning('CPEDES1', 'CPE Practice and Design 1')" class="px-1.5 py-0.5 bg-amber-200 hover:bg-amber-300 dark:bg-amber-800 dark:hover:bg-amber-700 text-amber-950 dark:text-amber-100 font-bold text-[9px] transition cursor-pointer">Advisory &rarr;</button>
-                      </div>
 
                       <div id="cylinderContainerCourses" class="relative overflow-y-auto max-h-[640px] overscroll-contain p-1 space-y-1.5 focus:outline-none">
                         <div id="flowColCourses" class="w-full flex flex-col gap-2 relative z-10">
@@ -3633,6 +3632,18 @@
                     Reset
                   </button>
                 </div>
+              </div>
+
+              <!-- Dedicated Accreditation & Progression Warning Notice Bar (Matrix View) -->
+              <div id="matrixComplianceWarningBar" class="p-2.5 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div class="flex items-center gap-2 text-amber-900 dark:text-amber-200">
+                  <span class="text-sm">⚠️</span>
+                  <span class="font-bold font-mono">Terminal Progression Notice:</span>
+                  <span class="font-medium text-slate-800 dark:text-slate-200">Culminating Course <strong class="font-mono text-amber-950 dark:text-amber-300">CPEDES1</strong> currently has no Demonstrative ('D') competencies mapped.</span>
+                </div>
+                <button type="button" onclick="showTerminalCourseDemonstrativeWarning('CPEDES1', 'CPE Practice and Design 1')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
+                  <span>View Advisory &amp; Set 'D' &rarr;</span>
+                </button>
               </div>
 
               <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-none shadow-sm max-h-[620px]">

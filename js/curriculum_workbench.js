@@ -11928,6 +11928,27 @@ ${worksheetsXml}
         if (traceText) traceText.textContent = 'Showing full catalog. Click any card to isolate and link nodes across all 4 tiers.';
       }
 
+      // Update dedicated warning bar directly on top of the Alignment Tree
+      const treeWarnBar = document.getElementById('treeComplianceWarningBar');
+      const matrixWarnBar = document.getElementById('matrixComplianceWarningBar');
+      const cpedes1Course = allCourses.find(c => (c.code || '').toUpperCase() === 'CPEDES1');
+      const cpedes1Status = cpedes1Course ? checkTerminalDemonstrativeStatus(cpedes1Course) : { isTerminal: false, lacksD: false };
+      
+      if (treeWarnBar) {
+        if (cpedes1Status.lacksD) {
+          treeWarnBar.classList.remove('hidden');
+        } else {
+          treeWarnBar.classList.add('hidden');
+        }
+      }
+      if (matrixWarnBar) {
+        if (cpedes1Status.lacksD) {
+          matrixWarnBar.classList.remove('hidden');
+        } else {
+          matrixWarnBar.classList.add('hidden');
+        }
+      }
+
       // =======================================================================
       // MODE 1: EXPANDED TREE VIEW (DEFAULT)
       // =======================================================================
