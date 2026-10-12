@@ -9556,6 +9556,15 @@ ${worksheetsXml}
           </div>
         `;
       }).join('');
+
+      const addPeoCardHtml = `
+        <div onclick="openAddObeItemModal('peo')" class="p-4 border-2 border-dashed border-purple-300 dark:border-purple-800 hover:border-purple-600 bg-purple-50/40 dark:bg-purple-950/20 hover:bg-purple-50 transition flex flex-col items-center justify-center text-center gap-2 cursor-pointer min-h-[140px] group shadow-2xs">
+          <span class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">➕</span>
+          <span class="font-bold text-xs text-purple-900 dark:text-purple-200">Add New PEO</span>
+          <span class="text-[10.5px] text-slate-500 dark:text-slate-400">Define milestone & link to GAs</span>
+        </div>
+      `;
+      container.innerHTML += addPeoCardHtml;
     };
 
     window.renderSoCards = function() {
@@ -9615,6 +9624,15 @@ ${worksheetsXml}
           </div>
         `;
       }).join('');
+
+      const addSoCardHtml = `
+        <div onclick="openAddObeItemModal('so')" class="p-4 border-2 border-dashed border-indigo-300 dark:border-indigo-800 hover:border-indigo-600 bg-indigo-50/40 dark:bg-indigo-950/20 hover:bg-indigo-50 transition flex flex-col items-center justify-center text-center gap-2 cursor-pointer min-h-[140px] group shadow-2xs">
+          <span class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 flex items-center justify-center text-sm font-bold group-hover:scale-110 transition">➕</span>
+          <span class="font-bold text-xs text-indigo-900 dark:text-indigo-200">Add New SO</span>
+          <span class="text-[10.5px] text-slate-500 dark:text-slate-400">Define student outcome & link to PEOs</span>
+        </div>
+      `;
+      container.innerHTML += addSoCardHtml;
     };
 
     window.renderGaCards = function() {

@@ -14,57 +14,57 @@ os.makedirs(USER_DIR, exist_ok=True)
 PERUDA_ACTIONS = {
     # Table 1: Comments
     1: {
-        1: "Added a yellow warning bar and an 'Advisory' button at the top of the curriculum matrix and flowchart. When a final course (like Capstone) is missing its Demonstrative (D) mark, the yellow button appears. Clicking it opens a popup that explains what is missing, but it still lets the user save their work.",
-        2: "Removed the credit unit and contact hour calculations. The system now shows the simple count of how many courses are linked to each Student Outcome (SO a to m).",
-        3: "Added loop detection in the Flowchart editor. If a user accidentally makes two courses prerequisites of each other (like Course A requires B, and B requires A), the system shows a red warning banner and stops the user from saving the loop.",
-        4: "Placed the flowchart, course line highlighting, and image export directly under Curriculum Management as part of the main curriculum builder.",
-        5: "Reviewed all project objectives to make sure every required feature is fully supported by the system."
+        1: "Added a yellow warning bar and an 'Advisory' button at the top of the curriculum matrix and flowchart. When a final course (like Capstone) has not reached Demonstrative (D), the yellow button appears. Clicking it opens a popup window explaining what is missing, while still letting the user save their work.",
+        2: "Removed credit unit and contact hour calculations from the outcomes matrix. The table now displays a simple count of how many courses are linked to each Student Outcome (SO a to m).",
+        3: "Added visual loop detection in the interactive Flowchart editor. If a user connects courses in an endless prerequisite loop (such as Course A requiring Course B, and Course B requiring Course A), a red warning banner appears on screen and disables saving until the loop is fixed.",
+        4: "Placed the visual flowchart, interactive course line highlighting, and SVG/PNG image export buttons directly inside the Curriculum Management screen as a core feature of the curriculum builder.",
+        5: "Aligned all user screens and system capabilities so that every required objective is fully accessible and usable in the application."
     },
     # Table 2: Revisions
     2: {
-        1: "Separated curriculum actions into three clear areas: (1) creating a new curriculum, (2) editing an active draft (like AY 2027), and (3) viewing published curricula in read-only mode (like AY 2026) where editing is locked.",
-        2: "Updated the screen headers, dropdowns, and labels to show the curriculum version (like 'CPE 2026' or 'CPE 2027') instead of student year levels (1st Year to 4th Year).",
-        3: "Labeled batches using both the curriculum version and entering batch year (for example, 'CPE 2026 [Batch 2026]') on the Curriculum Workbench, Directory, and Version History screens.",
-        4: "Cleaned up all dropdowns and menus to remove confusing parentheses, using simple labels like 'AY 2026-2027' and 'CPE 2026'.",
-        5: "Added an example to clarify progression warnings: if Course 1 is Introductory (I), Course 2 cannot jump straight to Demonstrative (D) without an Enabling (E) course in between. The system flags this skipped step with a yellow warning tag.",
-        6: "Made sure all progression warnings are advisory only. They show up as yellow badges in the table and in a popup window to alert the user, but the user can still save their changes.",
-        7: "Updated the Student Outcomes matrix to clearly display the count of courses mapped to each outcome rather than credit units.",
-        8: "Removed unapproved extra features from the system, keeping only the approved features.",
-        9: "Simplified all wording across the system and documentation, replacing confusing jargon with clear, standard explanations."
+        1: "Divided the user interface into three distinct screens: (1) a Curriculum Creation wizard to set up new curricula, (2) an Active Draft workbench for authoring working drafts (such as CPE 2027), and (3) a read-only viewer for published curricula (such as CPE 2026) where editing tools are locked.",
+        2: "Updated page headers, dropdowns, and breadcrumb labels to display official curriculum versions (like 'CPE 2026' or 'CPE 2027') instead of student year levels (1st Year to 4th Year).",
+        3: "Displayed both the curriculum version and entering batch year (for example, 'CPE 2026 [Batch 2026]') on all curriculum management screens, directory cards, and version history logs.",
+        4: "Cleaned up all menus and dropdowns by removing nested parentheses and replacing them with clear, readable labels (such as 'AY 2026-2027' and 'CPE 2026').",
+        5: "Added visual progression warnings in the curriculum matrix: if Course 1 is Introductory (I) and Course 2 skips straight to Demonstrative (D) without an Enabling (E) course in between, the table marks the cell with a yellow warning badge.",
+        6: "Made all progression checks non-blocking. The system shows yellow advisory badges and an advisory popup to inform the user, but still allows the user to save and publish.",
+        7: "Labeled the matrix table headers clearly as 'Courses per Student Outcome' to show the exact count of courses mapped to each outcome.",
+        8: "Streamlined the user interface by removing extra unapproved menus and buttons, presenting only approved curriculum and OBE management features.",
+        9: "Simplified all button labels, instructions, tooltips, and on-screen help text using clear, everyday language."
     },
     # Table 3: Additional Requirements
     3: {
-        1: "Added a preview screen when uploading Excel files. The system checks for duplicate course codes and missing fields before saving anything, so incomplete or corrupted data is not saved.",
-        2: "Added an error list right on the import screen that points out the exact row, column, and issue (such as a missing unit or duplicate code) before the file is imported.",
-        3: "Set a rule that imported Excel files cannot have merged cells. If a file has merged cells, the system shows an error message asking the user to unmerge them first.",
-        4: "Added an admin page to manage the University Mission, Vision, and Core Values. Each update is saved as a new version, so older curriculum records keep their original text.",
-        5: "Added management screens to create, edit, and track versions for Graduate Attributes (GA), Program Educational Objectives (PEO), and Student Outcomes (SO).",
-        6: "Linked the version history together: every SO version points to its base PEO version, and every PEO version points to its base GA version.",
-        7: "Locked published curricula (like CPE 2026) so they cannot be edited. To make changes, the user must create a new draft version (like CPE 2027)."
+        1: "Added an upload preview modal for Excel files. When a user uploads a spreadsheet, the interface displays an interactive review screen showing all imported rows and highlighting duplicate codes or missing fields before confirmation.",
+        2: "Added an on-screen error summary directly inside the file import dialog, highlighting the exact row, column, and problem (such as missing units or duplicate course codes) before any data is added.",
+        3: "Added an upload check that detects merged cells in Excel files. When detected, the dialog displays a clear message asking the user to unmerge the cells and re-upload.",
+        4: "Created an admin settings page to view, add, and edit the University Vision, Mission, and Core Values, complete with a version history dropdown so previous approved statements remain viewable.",
+        5: "Added dedicated management cards and editing modals for Graduate Attributes (GA), Program Educational Objectives (PEO), and Student Outcomes (SO), with buttons to add new items and switch active versions.",
+        6: "Added visible version tags and lineage badges on each card, showing which parent PEO version each SO connects to, and which parent GA version each PEO connects to.",
+        7: "Locked all input fields and edit buttons on published curricula (such as CPE 2026) into view-only mode, and provided a 'Create New Draft' button to allow editing under a new version."
     }
 }
 
 YONG_ACTIONS = {
     # Table 1: Comments
     1: {
-        1: "Built the document generator using flexible templates. When CHED releases a new memo or format, administrators can add a new template without changing or breaking older documents.",
-        2: "Simplified task delegation so Program Directors can assign courses or syllabus tasks directly to faculty members, with an optional grouping feature if the department chair chooses to use it."
+        1: "Added a template selector dropdown in the Official Documents screen. When CHED issues a revised format, users can select the new document layout without altering older official forms.",
+        2: "Simplified the Task Assignment screen so Program Directors can directly assign courses to faculty members, with an optional course group filter if they wish to organize assignments by subject area."
     },
     # Table 2: Revisions
     2: {
-        1: "Froze the Course Code and Course Title columns in the curriculum table so they stay visible on screen while scrolling sideways.",
-        2: "Fixed the Comparative Summary table by correcting column headers, removing extra rows, and fixing the unit totals to match registrar standards.",
-        3: "Removed the faculty rank and employment status fields from the task assignment screen, showing only the faculty member's name and assigned course or task."
+        1: "Froze the Course Code and Course Title columns in the spreadsheet table so they remain visible on screen while scrolling horizontally across columns.",
+        2: "Cleaned up the Comparative Summary table (Sheet 6) with standardized column headers, removed duplicate rows, and aligned credit unit totals with registrar standards.",
+        3: "Simplified the faculty assignment form by removing academic rank and employment status fields, requiring only the faculty member's name and assigned course."
     },
     # Table 3: Additional Requirements
     3: {
-        1: "Moved the Vision, Mission, and Core Values into an admin settings page with version history, so they can be edited anytime without being hardcoded into the software.",
-        2: "Added a summary row at the bottom of each term in the flowchart, showing the total lecture hours, lab hours, and credit units.",
-        3: "Added a Course Group Manager that lets department chairs add, edit, and delete course categories (such as General Education, Core Courses, and Electives).",
-        4: "Linked the course category dropdown in the curriculum table directly to the Course Group Manager, so any newly added group appears in the dropdown immediately.",
-        5: "Added an editable form and an Excel import tool for CHED minimum requirements, allowing the system to read and fill in comparative summary tables automatically.",
-        6: "Added buttons to add rows and columns directly inside the comparative summary table so users can add custom comparison metrics.",
-        7: "Added a version selector on the comparative summary page so users can compare a new draft curriculum side-by-side with previous published versions."
+        1: "Added an editable Institutional Statements screen for the University Vision, Mission, and Core Values, allowing users to update statements and view revision logs directly in the interface.",
+        2: "Added a summary footer row at the bottom of each academic term in the curriculum flowchart view, showing total lecture hours, laboratory hours, and credit units.",
+        3: "Added a Course Group Management modal where department heads can create, edit, and delete course classifications (such as General Education, Professional Core, and Electives).",
+        4: "Connected the course classification dropdown in the spreadsheet table directly to custom course groups, instantly updating available options when a new group is created.",
+        5: "Added an interactive form and an Excel file upload button for CHED minimum requirements, displaying the benchmark criteria directly in the comparative summary view.",
+        6: "Added '+ Add Row' and '+ Add Column' buttons directly on the Comparative Summary table, letting users add customized comparison metrics on the fly.",
+        7: "Added a version comparison dropdown on the Comparative Summary screen, allowing users to view and compare different curriculum revisions side-by-side."
     }
 }
 
