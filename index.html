@@ -3479,15 +3479,13 @@
                 </div>
 
                 <!-- Dedicated Accreditation & Progression Warning Notice Bar -->
-                <div id="treeComplianceWarningBar" class="p-2.5 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div id="treeComplianceWarningBar" class="hidden p-2.5 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700/80 flex flex-wrap items-center justify-between gap-2 text-xs">
                   <div class="flex items-center gap-2 text-amber-900 dark:text-amber-200">
                     <span class="text-sm">⚠️</span>
-                    <span class="font-bold font-mono">Curriculum Progression Warning:</span>
-                    <span class="font-medium text-slate-800 dark:text-slate-200" id="treeComplianceWarningText">Terminal Course <strong class="font-mono text-amber-950 dark:text-amber-300">CPEDES1</strong> lacks Demonstrative ('D') competency mappings under CHED CMO 92.</span>
+                    <span class="font-bold font-mono">Progression Advisory:</span>
+                    <span class="font-medium text-slate-800 dark:text-slate-200" id="treeComplianceWarningText"></span>
                   </div>
-                  <button type="button" onclick="showTerminalCourseDemonstrativeWarning('CPEDES1', 'CPE Practice and Design 1')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
-                    <span>View Advisory &amp; Resolve &rarr;</span>
-                  </button>
+                  <div id="treeComplianceWarningBtnContainer"></div>
                 </div>
 
                 <!-- Active Lineage Trace Breadcrumb Ribbon -->
@@ -3635,15 +3633,13 @@
               </div>
 
               <!-- Dedicated Accreditation & Progression Warning Notice Bar (Matrix View) -->
-              <div id="matrixComplianceWarningBar" class="p-2.5 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div id="matrixComplianceWarningBar" class="hidden p-2.5 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700/80 flex flex-wrap items-center justify-between gap-2 text-xs">
                 <div class="flex items-center gap-2 text-amber-900 dark:text-amber-200">
                   <span class="text-sm">⚠️</span>
-                  <span class="font-bold font-mono">Terminal Progression Notice:</span>
-                  <span class="font-medium text-slate-800 dark:text-slate-200">Culminating Course <strong class="font-mono text-amber-950 dark:text-amber-300">CPEDES1</strong> currently has no Demonstrative ('D') competencies mapped.</span>
+                  <span class="font-bold font-mono">Progression Advisory:</span>
+                  <span class="font-medium text-slate-800 dark:text-slate-200" id="matrixComplianceWarningText"></span>
                 </div>
-                <button type="button" onclick="showTerminalCourseDemonstrativeWarning('CPEDES1', 'CPE Practice and Design 1')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
-                  <span>View Advisory &amp; Set 'D' &rarr;</span>
-                </button>
+                <div id="matrixComplianceWarningBtnContainer"></div>
               </div>
 
               <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-none shadow-sm max-h-[620px]">
@@ -4376,7 +4372,7 @@
                 <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/80 px-2.5 py-1.5 border border-slate-300 dark:border-slate-700">
                   <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Curriculum Draft:</span>
                   <select id="delegationDraftSelect" onchange="onDelegationDraftSelectChange(this.value)" class="text-xs font-mono font-bold bg-white dark:bg-slate-900 text-[#002855] dark:text-amber-400 px-2 py-0.5 border border-slate-300 dark:border-slate-700 outline-none cursor-pointer">
-                    <option value="CPE-2027" selected>BSCpE 2027–2031 Unlocked Draft</option>
+                    <option value="CPE-2027" selected>BSCpE 2027–2031 Draft</option>
                   </select>
                 </div>
                 <button type="button" id="btnQuickAssignAll" onclick="quickAssignAllCourses()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold shadow-xs transition flex items-center gap-1.5 cursor-pointer" title="Quickly distribute unassigned courses across active faculty">
@@ -6016,7 +6012,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           <div class="flex items-center gap-2">
             <select id="newCurricMapSelect" onchange="updateNewCurricMapPreview()" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] text-xs font-mono font-bold">
               <option value="CM-BSCpE-2026" selected>CM-BSCpE-2026 • BSCpE 2026–2030 • ACTIVE</option>
-              <option value="CM-BSCpE-2027">CM-BSCpE-2027 • BSCpE 2027–2031 • UNLOCKED DRAFT</option>
+              <option value="CM-BSCpE-2027">CM-BSCpE-2027 • BSCpE 2027–2031 • Draft</option>
               <option value="CM-BSCpE-2025">CM-BSCpE-2025 • BSCpE 2025–2029 • ARCHIVED</option>
               <option value="CM-BSCpE-2021">CM-BSCpE-2021 • BSCpE 2021–2025 • ARCHIVED</option>
             </select>
@@ -6265,8 +6261,7 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
         <div>
           <label class="block font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider text-[11px]">Initial Status</label>
           <select id="domainStatusSelect" class="w-full px-3 py-2 bg-slate-50 dark:bg-[#10151E] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-none outline-none focus:border-[#E5A823] font-bold text-xs">
-            <option value="UNLOCKED DRAFT" selected>UNLOCKED DRAFT</option>
-            <option value="DRAFT">DRAFT</option>
+            <option value="Draft" selected>Draft</option>
             <option value="ACTIVE" id="domainActiveOption">ACTIVE</option>
           </select>
         </div>
@@ -7162,12 +7157,6 @@ Student Outcomes: SO-A, SO-K" class="w-full px-3 py-2 bg-slate-50 border border-
           </div>
         </div>
 
-        <div class="space-y-1.5 border-l-2 border-amber-400 pl-3">
-          <h4 class="font-bold text-slate-800 dark:text-slate-200 text-xs uppercase tracking-wider">Accreditation Progression Rule</h4>
-          <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-[11px]">
-            In accordance with institutional OBE guidelines and CHED PSG requirements, culminating professional and capstone design courses must attain the <strong>Demonstrative (D)</strong> designation to substantiate exit-level student mastery.
-          </p>
-        </div>
 
         <div class="p-3 bg-slate-50 dark:bg-[#121721] border border-slate-200 dark:border-slate-800 text-[11px] space-y-1.5 text-slate-600 dark:text-slate-400">
           <div class="flex justify-between font-mono">

@@ -8402,7 +8402,7 @@ ${worksheetsXml}
 
       if (showUserToast && typeof showToast === 'function') {
         const isLocked = typeof window.isCurriculumLocked === 'function' && window.isCurriculumLocked();
-        showToast(`Active OBE Map: Curriculum Year ${yrStr} (v${getObeVersionString(yrStr)}) — ${isLocked ? '🔒 Locked (Baseline)' : '✏️ Unlocked (Draft Mode - Full Editing Enabled)'}`);
+        showToast(`Active OBE Map: Curriculum Year ${yrStr} (v${getObeVersionString(yrStr)}) — ${isLocked ? '🔒 Locked (Baseline)' : 'Draft'}`);
       }
     }
 
@@ -8452,7 +8452,14 @@ ${worksheetsXml}
       const pillsContainers = [document.getElementById('obe-year-pills'), document.getElementById('obe-year-pills-layer')];
       pillsContainers.forEach(container => {
         if (!container) return;
-        const availableYears = ['2026', '2027'];
+        const maps = window.CURRICULUM_MAPS || [];
+        const availableYears = Array.from(new Set(maps.map(m => {
+          const match = (m.curriculumVersion || m.id || '').match(/\d{4}/);
+          return match ? match[0] : null;
+        }).filter(Boolean)));
+        if (!availableYears.includes('2026')) availableYears.unshift('2026');
+        if (!availableYears.includes('2027')) availableYears.push('2027');
+
         let html = '';
         availableYears.forEach(y => {
           const yVer = getObeVersionString(y);
@@ -8474,7 +8481,7 @@ ${worksheetsXml}
       ['obe-active-version-badge', 'obe-active-version-badge-layer'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          el.innerHTML = `OBE Version: ${verStr} <span class="ml-1 text-[10px] font-semibold ${isCurrentlyLocked ? 'text-emerald-300' : 'text-amber-300'}">(${isCurrentlyLocked ? '🔒 Locked Active Baseline' : '✏️ Unlocked Draft Mode'})</span>`;
+          el.innerHTML = `OBE Version: ${verStr} <span class="ml-1 text-[10px] font-semibold ${isCurrentlyLocked ? 'text-emerald-300' : 'text-amber-300'}">(${isCurrentlyLocked ? '🔒 Locked Active Baseline' : 'Draft'})</span>`;
         }
       });
 
@@ -8696,7 +8703,7 @@ ${worksheetsXml}
           }
           const c27 = list.find(m => m.id === 'CM-BSCpE-2027');
           if (c27) {
-            c27.status = 'UNLOCKED DRAFT';
+            c27.status = 'Draft';
             c27.statusClass = 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700';
             c27.name = 'BSCpE 2027–2031';
             c27.curriculumLabel = 'CPE 2027 • AY 2027–2031';
@@ -8801,7 +8808,7 @@ ${worksheetsXml}
           if (badge) {
             const is2027 = item.id.includes('2027');
             badge.className = 'node-active-badge inline-block mt-0.5 px-1.5 py-0.2 text-[9px] font-mono ' + (is2027 ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-600');
-            badge.textContent = is2027 ? 'UNLOCKED DRAFT' : 'ARCHIVED';
+            badge.textContent = is2027 ? 'Draft' : 'ARCHIVED';
           }
         }
       });
@@ -9194,7 +9201,7 @@ ${worksheetsXml}
         window.setObeActiveYear('2027');
         navigateView('obe');
         if (typeof showToast === 'function') {
-          showToast('Switched to CPE2027 Unlocked Draft map! Full editing enabled.');
+          showToast('Switched to CPE2027 Draft map! Full editing enabled.');
         }
         return;
       }
@@ -11928,25 +11935,54 @@ ${worksheetsXml}
         if (traceText) traceText.textContent = 'Showing full catalog. Click any card to isolate and link nodes across all 4 tiers.';
       }
 
-      // Update dedicated warning bar directly on top of the Alignment Tree
-      const treeWarnBar = document.getElementById('treeComplianceWarningBar');
-      const matrixWarnBar = document.getElementById('matrixComplianceWarningBar');
-      const cpedes1Course = allCourses.find(c => (c.code || '').toUpperCase() === 'CPEDES1');
-      const cpedes1Status = cpedes1Course ? checkTerminalDemonstrativeStatus(cpedes1Course) : { isTerminal: false, lacksD: false };
+      // Dynamically scan for ANY terminal capstone course lacking 'D' in the active dataset
+      const activeYr = getActiveObeYear();
+      const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || (window.CURRICULUM_MAPS ? window.CURRICULUM_MAPS[0] : null);
+      const isDraftMap = (activeYr !== '2026') && (activeYr === '2027' || (activeMap && (activeMap.status === 'Draft' || activeMap.status === 'UNLOCKED DRAFT' || (activeMap.id && activeMap.id.includes('2027')))));
       
-      if (treeWarnBar) {
-        if (cpedes1Status.lacksD) {
-          treeWarnBar.classList.remove('hidden');
-        } else {
-          treeWarnBar.classList.add('hidden');
+      const terminalCoursesLackingD = allCourses.filter(c => {
+        const st = checkTerminalDemonstrativeStatus(c);
+        return st.isTerminal && st.lacksD;
+      });
+
+      const treeWarnBar = document.getElementById('treeComplianceWarningBar');
+      const treeWarnText = document.getElementById('treeComplianceWarningText');
+      const treeWarnBtnContainer = document.getElementById('treeComplianceWarningBtnContainer');
+      const matrixWarnBar = document.getElementById('matrixComplianceWarningBar');
+      const matrixWarnText = document.getElementById('matrixComplianceWarningText');
+      const matrixWarnBtnContainer = document.getElementById('matrixComplianceWarningBtnContainer');
+
+      // Only show warning if there are actual terminal courses lacking 'D' AND on draft / editing context
+      if (terminalCoursesLackingD.length > 0 && isDraftMap) {
+        const firstCourse = terminalCoursesLackingD[0];
+        const codesStr = terminalCoursesLackingD.map(c => c.code).join(', ');
+        
+        if (treeWarnText) {
+          treeWarnText.innerHTML = `Terminal Course <strong class="font-mono text-amber-950 dark:text-amber-300">${codesStr}</strong> currently has no Demonstrative ('D') competencies mapped.`;
         }
-      }
-      if (matrixWarnBar) {
-        if (cpedes1Status.lacksD) {
-          matrixWarnBar.classList.remove('hidden');
-        } else {
-          matrixWarnBar.classList.add('hidden');
+        if (treeWarnBtnContainer) {
+          treeWarnBtnContainer.innerHTML = `
+            <button type="button" onclick="showTerminalCourseDemonstrativeWarning('${firstCourse.code}', '${(firstCourse.title || '').replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
+              <span>View Advisory &amp; Resolve &rarr;</span>
+            </button>
+          `;
         }
+        if (treeWarnBar) treeWarnBar.classList.remove('hidden');
+
+        if (matrixWarnText) {
+          matrixWarnText.innerHTML = `Terminal Course <strong class="font-mono text-amber-950 dark:text-amber-300">${codesStr}</strong> currently has no Demonstrative ('D') competencies mapped.`;
+        }
+        if (matrixWarnBtnContainer) {
+          matrixWarnBtnContainer.innerHTML = `
+            <button type="button" onclick="showTerminalCourseDemonstrativeWarning('${firstCourse.code}', '${(firstCourse.title || '').replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
+              <span>View Advisory &amp; Set 'D' &rarr;</span>
+            </button>
+          `;
+        }
+        if (matrixWarnBar) matrixWarnBar.classList.remove('hidden');
+      } else {
+        if (treeWarnBar) treeWarnBar.classList.add('hidden');
+        if (matrixWarnBar) matrixWarnBar.classList.add('hidden');
       }
 
       // =======================================================================
@@ -12076,12 +12112,12 @@ ${worksheetsXml}
           const isFocus = (tr && tr.type === 'course' && String(tr.id) === String(c.code));
           const termStatus = checkTerminalDemonstrativeStatus(c);
           let terminalBadgeHtml = '';
-          if (termStatus.isTerminal) {
+          if (termStatus.isTerminal && isDraftMap) {
             if (termStatus.lacksD) {
               terminalBadgeHtml = `
                 <div onclick="event.stopPropagation(); showTerminalCourseDemonstrativeWarning('${c.code}', '${(c.title || '').replace(/'/g, "\\'")}')" 
                      class="mt-1 px-1.5 py-0.5 bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/80 dark:hover:bg-amber-900 border border-amber-400 dark:border-amber-600 text-amber-950 dark:text-amber-200 text-[9px] font-bold font-mono flex items-center justify-between cursor-pointer transition shadow-2xs" 
-                     title="Accreditation Warning: Terminal course lacks Demonstrative (D). Click to inspect.">
+                     title="Progression Advisory: Terminal course lacks Demonstrative (D). Click to inspect.">
                   <span class="flex items-center gap-1"><span>⚠️</span><span>Lacks Demonstrative (D)</span></span>
                   <span class="underline font-sans text-[8.5px]">Advisory &rarr;</span>
                 </div>
@@ -12571,6 +12607,8 @@ ${worksheetsXml}
 
       const activeYr = getActiveObeYear();
       const verStr = getObeVersionString(activeYr);
+      const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || (window.CURRICULUM_MAPS ? window.CURRICULUM_MAPS[0] : null);
+      const isDraftMap = (activeYr !== '2026') && (activeYr === '2027' || (activeMap && (activeMap.status === 'Draft' || activeMap.status === 'UNLOCKED DRAFT' || (activeMap.id && activeMap.id.includes('2027')))));
 
       const filterCategoryEl = document.getElementById('obe-filter-category');
       const filterYearEl = document.getElementById('obe-filter-year');
@@ -12665,9 +12703,9 @@ ${worksheetsXml}
           <tr class="${rowBg} hover:bg-blue-50/50 dark:hover:bg-slate-800/40 transition-colors">
             <td class="p-2 font-mono font-bold text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 text-xs sticky left-0 ${rowBg} z-10 min-w-[100px] shadow-xs">
               <div>${course.code}</div>
-              ${(checkTerminalDemonstrativeStatus(course).isTerminal && checkTerminalDemonstrativeStatus(course).lacksD) 
+              ${(isDraftMap && checkTerminalDemonstrativeStatus(course).isTerminal && checkTerminalDemonstrativeStatus(course).lacksD) 
                 ? `<button type="button" onclick="event.stopPropagation(); showTerminalCourseDemonstrativeWarning('${course.code}', '${(course.title || '').replace(/'/g, "\\'")}')" class="mt-1 px-1 py-0.2 bg-amber-100 dark:bg-amber-950 hover:bg-amber-200 text-amber-950 dark:text-amber-200 text-[8px] font-mono font-bold border border-amber-400 cursor-pointer shadow-2xs block" title="Terminal course lacks Demonstrative (D). Click to view advisory.">⚠️ Lacks (D)</button>` 
-                : (checkTerminalDemonstrativeStatus(course).isTerminal ? `<span class="mt-1 px-1 py-0.2 bg-emerald-50 text-emerald-800 text-[7.5px] font-mono font-bold border border-emerald-300 block">✓ D-Compliant</span>` : '')}
+                : (isDraftMap && checkTerminalDemonstrativeStatus(course).isTerminal ? `<span class="mt-1 px-1 py-0.2 bg-emerald-50 text-emerald-800 text-[7.5px] font-mono font-bold border border-emerald-300 block">✓ D-Compliant</span>` : '')}
             </td>
             <td class="p-2 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 text-xs font-medium sticky left-[100px] ${rowBg} z-10 min-w-[220px] shadow-xs">${course.title}</td>
             <td class="p-2 font-mono font-bold text-center text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs">${course.units !== undefined ? course.units : 3}</td>
