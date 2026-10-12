@@ -11796,6 +11796,23 @@ ${worksheetsXml}
       }
     }
 
+    function isCourseUnmapped(course) {
+      if (!course) return false;
+      const sos = course.sos || [];
+      return !sos.some(s => s && s.trim() !== '-');
+    }
+
+    function filterUnmappedCoursesInMatrix() {
+      if (typeof switchObeTab === 'function') switchObeTab('matrix');
+      const catEl = document.getElementById('obe-filter-category');
+      if (catEl) catEl.value = 'unmapped';
+      if (typeof renderObeMatrix === 'function') renderObeMatrix();
+      const el = document.getElementById('matrixTableBody') || document.getElementById('matrixComplianceWarningBar');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    window.isCourseUnmapped = isCourseUnmapped;
+    window.filterUnmappedCoursesInMatrix = filterUnmappedCoursesInMatrix;
     window.isTerminalCapstoneCourse = isTerminalCapstoneCourse;
     window.checkTerminalDemonstrativeStatus = checkTerminalDemonstrativeStatus;
     window.showTerminalCourseDemonstrativeWarning = showTerminalCourseDemonstrativeWarning;
@@ -11944,6 +11961,7 @@ ${worksheetsXml}
         const st = checkTerminalDemonstrativeStatus(c);
         return st.isTerminal && st.lacksD;
       });
+      const unmappedCourses = allCourses.filter(c => isCourseUnmapped(c));
 
       const treeWarnBar = document.getElementById('treeComplianceWarningBar');
       const treeWarnText = document.getElementById('treeComplianceWarningText');
@@ -11952,33 +11970,41 @@ ${worksheetsXml}
       const matrixWarnText = document.getElementById('matrixComplianceWarningText');
       const matrixWarnBtnContainer = document.getElementById('matrixComplianceWarningBtnContainer');
 
-      // Only show warning if there are actual terminal courses lacking 'D' AND on draft / editing context
-      if (terminalCoursesLackingD.length > 0 && isDraftMap) {
-        const firstCourse = terminalCoursesLackingD[0];
-        const codesStr = terminalCoursesLackingD.map(c => c.code).join(', ');
-        
-        if (treeWarnText) {
-          treeWarnText.innerHTML = `Terminal Course <strong class="font-mono text-amber-950 dark:text-amber-300">${codesStr}</strong> currently has no Demonstrative ('D') competencies mapped.`;
-        }
-        if (treeWarnBtnContainer) {
-          treeWarnBtnContainer.innerHTML = `
+      const hasWarnings = isDraftMap && (terminalCoursesLackingD.length > 0 || unmappedCourses.length > 0);
+
+      // Only show warning if there are actual flags AND on draft / editing context
+      if (hasWarnings) {
+        const textParts = [];
+        let btnHtml = '';
+
+        if (terminalCoursesLackingD.length > 0) {
+          const firstCourse = terminalCoursesLackingD[0];
+          const codesStr = terminalCoursesLackingD.map(c => c.code).join(', ');
+          textParts.push(`Terminal Course <strong class="font-mono text-amber-950 dark:text-amber-300">${codesStr}</strong> has no Demonstrative ('D') competencies`);
+          btnHtml += `
             <button type="button" onclick="showTerminalCourseDemonstrativeWarning('${firstCourse.code}', '${(firstCourse.title || '').replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
-              <span>View Advisory &amp; Resolve &rarr;</span>
+              <span>Resolve Terminal 'D' &rarr;</span>
             </button>
           `;
         }
+
+        if (unmappedCourses.length > 0) {
+          textParts.push(`<strong class="font-mono text-amber-950 dark:text-amber-300">${unmappedCourses.length}</strong> courses have zero competency mappings`);
+          btnHtml += `
+            <button type="button" onclick="filterUnmappedCoursesInMatrix()" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold transition flex items-center gap-1 cursor-pointer shadow-2xs">
+              <span>View Unmapped (${unmappedCourses.length}) &rarr;</span>
+            </button>
+          `;
+        }
+
+        const msgHtml = textParts.join(' &bull; ');
+
+        if (treeWarnText) treeWarnText.innerHTML = msgHtml;
+        if (treeWarnBtnContainer) treeWarnBtnContainer.innerHTML = btnHtml;
         if (treeWarnBar) treeWarnBar.classList.remove('hidden');
 
-        if (matrixWarnText) {
-          matrixWarnText.innerHTML = `Terminal Course <strong class="font-mono text-amber-950 dark:text-amber-300">${codesStr}</strong> currently has no Demonstrative ('D') competencies mapped.`;
-        }
-        if (matrixWarnBtnContainer) {
-          matrixWarnBtnContainer.innerHTML = `
-            <button type="button" onclick="showTerminalCourseDemonstrativeWarning('${firstCourse.code}', '${(firstCourse.title || '').replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
-              <span>View Advisory &amp; Set 'D' &rarr;</span>
-            </button>
-          `;
-        }
+        if (matrixWarnText) matrixWarnText.innerHTML = msgHtml;
+        if (matrixWarnBtnContainer) matrixWarnBtnContainer.innerHTML = btnHtml;
         if (matrixWarnBar) matrixWarnBar.classList.remove('hidden');
       } else {
         if (treeWarnBar) treeWarnBar.classList.add('hidden');
@@ -12111,6 +12137,7 @@ ${worksheetsXml}
           });
           const isFocus = (tr && tr.type === 'course' && String(tr.id) === String(c.code));
           const termStatus = checkTerminalDemonstrativeStatus(c);
+          const unmapped = isCourseUnmapped(c);
           let terminalBadgeHtml = '';
           if (termStatus.isTerminal && isDraftMap && termStatus.lacksD) {
             terminalBadgeHtml = `
@@ -12119,6 +12146,15 @@ ${worksheetsXml}
                      title="Progression Advisory: Terminal course lacks Demonstrative (D). Click to inspect.">
                   <span class="flex items-center gap-1"><span>⚠️</span><span>Lacks Demonstrative (D)</span></span>
                   <span class="underline font-sans text-[8.5px]">Advisory &rarr;</span>
+                </div>
+              `;
+          } else if (isDraftMap && unmapped) {
+            terminalBadgeHtml = `
+                <div onclick="event.stopPropagation(); filterUnmappedCoursesInMatrix()" 
+                     class="mt-1 px-1.5 py-0.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/50 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-[8.5px] font-bold font-mono flex items-center justify-between cursor-pointer transition shadow-2xs" 
+                     title="Unmapped Course: No Student Outcomes mapped in this draft. Click to view in matrix.">
+                  <span class="flex items-center gap-1"><span>⚠️</span><span>Unmapped Course</span></span>
+                  <span class="underline font-sans text-[8px]">Map SOs &rarr;</span>
                 </div>
               `;
           }
@@ -12615,7 +12651,11 @@ ${worksheetsXml}
         : (typeof OFFICIAL_BASELINE_74_COURSES !== 'undefined' ? OFFICIAL_BASELINE_74_COURSES : []);
 
       let filtered = dataset.filter(c => {
-        if (filterCategory !== 'all' && c.group !== filterCategory) return false;
+        if (filterCategory === 'unmapped') {
+          if (!isCourseUnmapped(c)) return false;
+        } else if (filterCategory !== 'all' && c.group !== filterCategory) {
+          return false;
+        }
         if (filterYear !== 'all' && String(c.year) !== filterYear) return false;
         if (searchQuery) {
           const matchCode = (c.code || '').toLowerCase().includes(searchQuery);
@@ -12697,7 +12737,9 @@ ${worksheetsXml}
               <div>${course.code}</div>
               ${(isDraftMap && checkTerminalDemonstrativeStatus(course).isTerminal && checkTerminalDemonstrativeStatus(course).lacksD) 
                 ? `<button type="button" onclick="event.stopPropagation(); showTerminalCourseDemonstrativeWarning('${course.code}', '${(course.title || '').replace(/'/g, "\\'")}')" class="mt-1 px-1 py-0.2 bg-amber-100 dark:bg-amber-950 hover:bg-amber-200 text-amber-950 dark:text-amber-200 text-[8px] font-mono font-bold border border-amber-400 cursor-pointer shadow-2xs block" title="Terminal course lacks Demonstrative (D). Click to view advisory.">⚠️ Lacks (D)</button>` 
-                : ''}
+                : (isDraftMap && isCourseUnmapped(course)
+                  ? `<span class="mt-1 px-1 py-0.2 bg-amber-50 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 text-[7.5px] font-mono font-bold border border-amber-300 dark:border-amber-700 block" title="Course has no Student Outcomes mapped in this draft">⚠️ Unmapped</span>`
+                  : '')}
             </td>
             <td class="p-2 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 text-xs font-medium sticky left-[100px] ${rowBg} z-10 min-w-[220px] shadow-xs">${course.title}</td>
             <td class="p-2 font-mono font-bold text-center text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs">${course.units !== undefined ? course.units : 3}</td>
