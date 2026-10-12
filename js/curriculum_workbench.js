@@ -12112,9 +12112,8 @@ ${worksheetsXml}
           const isFocus = (tr && tr.type === 'course' && String(tr.id) === String(c.code));
           const termStatus = checkTerminalDemonstrativeStatus(c);
           let terminalBadgeHtml = '';
-          if (termStatus.isTerminal && isDraftMap) {
-            if (termStatus.lacksD) {
-              terminalBadgeHtml = `
+          if (termStatus.isTerminal && isDraftMap && termStatus.lacksD) {
+            terminalBadgeHtml = `
                 <div onclick="event.stopPropagation(); showTerminalCourseDemonstrativeWarning('${c.code}', '${(c.title || '').replace(/'/g, "\\'")}')" 
                      class="mt-1 px-1.5 py-0.5 bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/80 dark:hover:bg-amber-900 border border-amber-400 dark:border-amber-600 text-amber-950 dark:text-amber-200 text-[9px] font-bold font-mono flex items-center justify-between cursor-pointer transition shadow-2xs" 
                      title="Progression Advisory: Terminal course lacks Demonstrative (D). Click to inspect.">
@@ -12122,13 +12121,6 @@ ${worksheetsXml}
                   <span class="underline font-sans text-[8.5px]">Advisory &rarr;</span>
                 </div>
               `;
-            } else {
-              terminalBadgeHtml = `
-                <div class="mt-1 px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300 text-[8.5px] font-bold font-mono flex items-center gap-1">
-                  <span>✓</span><span>Demonstrative (D) Verified</span>
-                </div>
-              `;
-            }
           }
 
           return `
@@ -12705,7 +12697,7 @@ ${worksheetsXml}
               <div>${course.code}</div>
               ${(isDraftMap && checkTerminalDemonstrativeStatus(course).isTerminal && checkTerminalDemonstrativeStatus(course).lacksD) 
                 ? `<button type="button" onclick="event.stopPropagation(); showTerminalCourseDemonstrativeWarning('${course.code}', '${(course.title || '').replace(/'/g, "\\'")}')" class="mt-1 px-1 py-0.2 bg-amber-100 dark:bg-amber-950 hover:bg-amber-200 text-amber-950 dark:text-amber-200 text-[8px] font-mono font-bold border border-amber-400 cursor-pointer shadow-2xs block" title="Terminal course lacks Demonstrative (D). Click to view advisory.">⚠️ Lacks (D)</button>` 
-                : (isDraftMap && checkTerminalDemonstrativeStatus(course).isTerminal ? `<span class="mt-1 px-1 py-0.2 bg-emerald-50 text-emerald-800 text-[7.5px] font-mono font-bold border border-emerald-300 block">✓ D-Compliant</span>` : '')}
+                : ''}
             </td>
             <td class="p-2 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 text-xs font-medium sticky left-[100px] ${rowBg} z-10 min-w-[220px] shadow-xs">${course.title}</td>
             <td class="p-2 font-mono font-bold text-center text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs">${course.units !== undefined ? course.units : 3}</td>
