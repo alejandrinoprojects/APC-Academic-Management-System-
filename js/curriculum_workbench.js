@@ -9334,9 +9334,13 @@ ${worksheetsXml}
       if (!tbody) return;
       const links = window.getPeoSoLinks() || {};
       const soList = (typeof window.getObeSoDefs === 'function') ? window.getObeSoDefs() : (FLOW_SO_DEFS || []);
+      const activeYr = (typeof getActiveObeYear === 'function') ? getActiveObeYear() : '2026';
+      const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || (window.CURRICULUM_MAPS ? window.CURRICULUM_MAPS[0] : null);
+      const isDraftMap = (activeYr !== '2026') && (activeYr === '2027' || (activeMap && (activeMap.status === 'Draft' || activeMap.status === 'UNLOCKED DRAFT' || (activeMap.id && activeMap.id.includes('2027')))));
 
       tbody.innerHTML = soList.map(so => {
         const linkedPeos = links[so.id] || [];
+        const isSoUnmapped = isDraftMap && (linkedPeos.length === 0);
         const peoCells = [1, 2, 3, 4, 5].map(pNum => {
           const isLinked = linkedPeos.includes(pNum);
           return `
@@ -9357,12 +9361,15 @@ ${worksheetsXml}
         return `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/40 transition border-b border-slate-100 dark:border-slate-800">
             <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[280px]">
-              <div class="flex items-start gap-2">
-                <span class="font-mono font-black text-indigo-700 dark:text-indigo-400 text-xs shrink-0">${so.code}:</span>
-                <div>
-                  <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${so.title}</div>
-                  <div class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${so.desc}</div>
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex items-start gap-2">
+                  <span class="font-mono font-black text-indigo-700 dark:text-indigo-400 text-xs shrink-0">${so.code}:</span>
+                  <div>
+                    <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${so.title}</div>
+                    <div class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${so.desc}</div>
+                  </div>
                 </div>
+                ${isSoUnmapped ? '<span class="px-1.5 py-0.2 bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-300 font-mono text-[8.5px] font-bold shrink-0">⚠️ Unmapped</span>' : ''}
               </div>
             </td>
             ${peoCells}
@@ -9400,9 +9407,13 @@ ${worksheetsXml}
       const links = window.getPeoGaLinks() || {};
       const peoList = (typeof window.getObePeoDefs === 'function') ? window.getObePeoDefs() : (FLOW_PEO_DEFS || []);
       const gaLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+      const activeYr = (typeof getActiveObeYear === 'function') ? getActiveObeYear() : '2026';
+      const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || (window.CURRICULUM_MAPS ? window.CURRICULUM_MAPS[0] : null);
+      const isDraftMap = (activeYr !== '2026') && (activeYr === '2027' || (activeMap && (activeMap.status === 'Draft' || activeMap.status === 'UNLOCKED DRAFT' || (activeMap.id && activeMap.id.includes('2027')))));
 
       tbody.innerHTML = peoList.map(peo => {
         const linkedGas = links[peo.id] || [];
+        const isPeoUnmapped = isDraftMap && (linkedGas.length === 0);
         const gaCells = gaLetters.map((letter, idx) => {
           const gaNum = idx + 1;
           const isLinked = linkedGas.includes(gaNum);
@@ -9424,12 +9435,15 @@ ${worksheetsXml}
         return `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/40 transition border-b border-slate-100 dark:border-slate-800">
             <td class="py-2.5 px-3 border-r border-slate-200 dark:border-slate-800 min-w-[280px]">
-              <div class="flex items-start gap-2">
-                <span class="font-mono font-black text-amber-600 dark:text-amber-400 text-xs shrink-0">${peo.code}:</span>
-                <div>
-                  <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${peo.title}</div>
-                  <div class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${peo.desc}</div>
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex items-start gap-2">
+                  <span class="font-mono font-black text-amber-600 dark:text-amber-400 text-xs shrink-0">${peo.code}:</span>
+                  <div>
+                    <div class="font-bold text-slate-800 dark:text-slate-100 text-xs">${peo.title}</div>
+                    <div class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${peo.desc}</div>
+                  </div>
                 </div>
+                ${isPeoUnmapped ? '<span class="px-1.5 py-0.2 bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-300 font-mono text-[8.5px] font-bold shrink-0">⚠️ Unmapped</span>' : ''}
               </div>
             </td>
             ${gaCells}
@@ -9470,10 +9484,24 @@ ${worksheetsXml}
       const peos = (typeof window.getObePeoDefs === 'function') ? window.getObePeoDefs() : (FLOW_PEO_DEFS || []);
       const peoGaLinks = (typeof window.getPeoGaLinks === 'function') ? window.getPeoGaLinks() : {};
       const peoSoLinks = (typeof window.getPeoSoLinks === 'function') ? window.getPeoSoLinks() : {};
+      const activeYr = (typeof getActiveObeYear === 'function') ? getActiveObeYear() : '2026';
+      const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || (window.CURRICULUM_MAPS ? window.CURRICULUM_MAPS[0] : null);
+      const isDraftMap = (activeYr !== '2026') && (activeYr === '2027' || (activeMap && (activeMap.status === 'Draft' || activeMap.status === 'UNLOCKED DRAFT' || (activeMap.id && activeMap.id.includes('2027')))));
 
       container.innerHTML = peos.map(peo => {
         const linkedGas = (peoGaLinks[peo.id] || []).map(g => `GA ${String.fromCharCode(64 + g)}`);
         const linkedSos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
+        const isPeoUnmapped = isDraftMap && (linkedGas.length === 0 || linkedSos.length === 0);
+        let peoBadgeHtml = '';
+        if (isPeoUnmapped) {
+          if (linkedGas.length === 0 && linkedSos.length === 0) {
+            peoBadgeHtml = '<span class="px-1.5 py-0.2 bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 font-mono text-[8.5px] font-bold">⚠️ Unmapped</span>';
+          } else if (linkedGas.length === 0) {
+            peoBadgeHtml = '<span class="px-1.5 py-0.2 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-700 font-mono text-[8.5px] font-bold">⚠️ No GA</span>';
+          } else {
+            peoBadgeHtml = '<span class="px-1.5 py-0.2 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-700 font-mono text-[8.5px] font-bold">⚠️ No SO</span>';
+          }
+        }
 
         return `
           <div class="p-4 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 shadow-2xs hover:border-purple-400 transition flex flex-col justify-between space-y-3">
@@ -9482,6 +9510,7 @@ ${worksheetsXml}
                 <div class="flex items-center gap-1.5">
                   <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-300 font-mono font-bold text-xs border border-purple-200 dark:border-purple-800">${peo.code}</span>
                   ${peo.domain ? `<span class="px-1.5 py-0.2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px]">${peo.domain}</span>` : ''}
+                  ${peoBadgeHtml}
                 </div>
                 <button type="button" onclick="openEditObeDefinitionModal('peo', ${peo.id})" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer flex items-center gap-1" title="Edit definition">
                   <span>✏️</span>
@@ -9495,11 +9524,11 @@ ${worksheetsXml}
             <div class="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-1 text-[10px] font-mono">
               <div class="flex items-center justify-between">
                 <span class="text-slate-500">Upstream GAs:</span>
-                <span class="font-bold text-slate-700 dark:text-slate-300">${linkedGas.length ? linkedGas.join(', ') : '<span class="italic text-slate-400">None</span>'}</span>
+                <span class="font-bold ${linkedGas.length ? 'text-slate-700 dark:text-slate-300' : (isDraftMap ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400')}">${linkedGas.length ? linkedGas.join(', ') : (isDraftMap ? '⚠️ None' : '<span class="italic text-slate-400">None</span>')}</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-slate-500">Cascading SOs:</span>
-                <span class="font-bold text-indigo-700 dark:text-indigo-400">${linkedSos.length ? linkedSos.join(', ') : '<span class="italic text-slate-400">None</span>'}</span>
+                <span class="font-bold ${linkedSos.length ? 'text-indigo-700 dark:text-indigo-400' : (isDraftMap ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400')}">${linkedSos.length ? linkedSos.join(', ') : (isDraftMap ? '⚠️ None' : '<span class="italic text-slate-400">None</span>')}</span>
               </div>
             </div>
           </div>
@@ -9571,9 +9600,13 @@ ${worksheetsXml}
       if (!container) return;
       const gas = (typeof window.getObeGaDefs === 'function') ? window.getObeGaDefs() : (FLOW_GA_DEFS || []);
       const peoGaLinks = (typeof window.getPeoGaLinks === 'function') ? window.getPeoGaLinks() : {};
+      const activeYr = (typeof getActiveObeYear === 'function') ? getActiveObeYear() : '2026';
+      const activeMap = (window.CURRICULUM_MAPS || []).find(m => m.id === window.currentActiveCurriculumMap) || (window.CURRICULUM_MAPS ? window.CURRICULUM_MAPS[0] : null);
+      const isDraftMap = (activeYr !== '2026') && (activeYr === '2027' || (activeMap && (activeMap.status === 'Draft' || activeMap.status === 'UNLOCKED DRAFT' || (activeMap.id && activeMap.id.includes('2027')))));
 
       container.innerHTML = gas.map(ga => {
         const linkedPeos = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id)).map(p => `PEO ${p}`);
+        const isGaUnmapped = isDraftMap && (linkedPeos.length === 0);
 
         return `
           <div class="p-4 bg-white dark:bg-[#151D2A] border border-slate-200 dark:border-slate-800 shadow-2xs hover:border-amber-400 transition flex flex-col justify-between space-y-3">
@@ -9582,6 +9615,7 @@ ${worksheetsXml}
                 <div class="flex items-center gap-1.5">
                   <span class="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 font-mono font-bold text-xs border border-amber-200 dark:border-amber-800">${ga.code}</span>
                   <span class="px-1.5 py-0.2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono text-[9px]">${ga.cat || ga.domain || 'Institutional'}</span>
+                  ${isGaUnmapped ? '<span class="px-1.5 py-0.2 bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 font-mono text-[8.5px] font-bold">⚠️ Unmapped</span>' : ''}
                 </div>
                 <button type="button" onclick="openEditObeDefinitionModal('ga', ${ga.id})" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold border border-slate-300 dark:border-slate-700 transition cursor-pointer flex items-center gap-1" title="Edit definition">
                   <span>✏️</span>
@@ -9595,7 +9629,7 @@ ${worksheetsXml}
             <div class="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-1 text-[10px] font-mono">
               <div class="flex items-center justify-between">
                 <span class="text-slate-500">Supporting PEOs:</span>
-                <span class="font-bold text-purple-700 dark:text-purple-400">${linkedPeos.length ? linkedPeos.join(', ') : '<span class="italic text-slate-400">None</span>'}</span>
+                <span class="font-bold ${linkedPeos.length ? 'text-purple-700 dark:text-purple-400' : (isDraftMap ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400')}">${linkedPeos.length ? linkedPeos.join(', ') : (isDraftMap ? '⚠️ None' : '<span class="italic text-slate-400">None</span>')}</span>
               </div>
             </div>
           </div>
@@ -11962,6 +11996,15 @@ ${worksheetsXml}
         return st.isTerminal && st.lacksD;
       });
       const unmappedCourses = allCourses.filter(c => isCourseUnmapped(c));
+      const unmappedPeos = lists.peo.filter(peo => {
+        const gas = peoGaLinks[peo.id] || [];
+        const sos = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id));
+        return gas.length === 0 || sos.length === 0;
+      });
+      const unmappedGas = lists.ga.filter(ga => {
+        const peos = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id));
+        return peos.length === 0;
+      });
 
       const treeWarnBar = document.getElementById('treeComplianceWarningBar');
       const treeWarnText = document.getElementById('treeComplianceWarningText');
@@ -11970,7 +12013,7 @@ ${worksheetsXml}
       const matrixWarnText = document.getElementById('matrixComplianceWarningText');
       const matrixWarnBtnContainer = document.getElementById('matrixComplianceWarningBtnContainer');
 
-      const hasWarnings = isDraftMap && (terminalCoursesLackingD.length > 0 || unmappedCourses.length > 0);
+      const hasWarnings = isDraftMap && (terminalCoursesLackingD.length > 0 || unmappedCourses.length > 0 || unmappedPeos.length > 0 || unmappedGas.length > 0);
 
       // Only show warning if there are actual flags AND on draft / editing context
       if (hasWarnings) {
@@ -11997,6 +12040,24 @@ ${worksheetsXml}
           `;
         }
 
+        if (unmappedPeos.length > 0) {
+          textParts.push(`<strong class="font-mono text-amber-950 dark:text-amber-300">${unmappedPeos.length}</strong> PEO${unmappedPeos.length > 1 ? 's' : ''} unlinked`);
+          btnHtml += `
+            <button type="button" onclick="switchObeTab('peo')" class="px-2.5 py-1 bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold transition flex items-center gap-1 cursor-pointer shadow-2xs">
+              <span>Review PEOs (${unmappedPeos.length}) &rarr;</span>
+            </button>
+          `;
+        }
+
+        if (unmappedGas.length > 0) {
+          textParts.push(`<strong class="font-mono text-amber-950 dark:text-amber-300">${unmappedGas.length}</strong> GA${unmappedGas.length > 1 ? 's' : ''} unlinked`);
+          btnHtml += `
+            <button type="button" onclick="switchObeTab('vision')" class="px-2.5 py-1 bg-[#002855] hover:bg-[#001f42] text-[#E5A823] text-xs font-bold border border-[#E5A823]/60 transition flex items-center gap-1 cursor-pointer shadow-2xs">
+              <span>Review GAs (${unmappedGas.length}) &rarr;</span>
+            </button>
+          `;
+        }
+
         const msgHtml = textParts.join(' &bull; ');
 
         if (treeWarnText) treeWarnText.innerHTML = msgHtml;
@@ -12019,6 +12080,7 @@ ${worksheetsXml}
         colGA.innerHTML = lists.ga.length ? lists.ga.map(ga => {
           const linkedPeoList = Object.keys(peoGaLinks).filter(p => (peoGaLinks[p] || []).includes(ga.id)).map(p => `PEO ${p}`);
           const isFocus = (tr && tr.type === 'ga' && String(tr.id) === String(ga.id));
+          const isGaUnmapped = isDraftMap && (linkedPeoList.length === 0);
           return `
             <div onclick="traceFlowLineage('ga', ${ga.id})" 
               class="p-2.5 transition cursor-pointer flex flex-col justify-between gap-1.5 border ${
@@ -12031,6 +12093,7 @@ ${worksheetsXml}
                   <span class="font-mono font-bold text-xs text-[#002855] dark:text-[#E5A823]">${ga.code}</span>
                   ${isFocus ? '<span class="px-1.5 py-0.5 bg-amber-200 dark:bg-amber-900/60 text-amber-950 dark:text-amber-200 font-mono text-[9px] font-bold">★ FOCUS &bull; Click to reset</span>' : ''}
                   ${ga.cat || ga.domain ? `<span class="px-1 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[9px] truncate max-w-[90px]">${ga.cat || ga.domain}</span>` : ''}
+                  ${isGaUnmapped ? '<span class="px-1.5 py-0.2 bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 font-mono text-[8.5px] font-bold">⚠️ Unmapped</span>' : ''}
                 </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-slate-300 dark:border-slate-700">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('ga', ${ga.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-slate-100 dark:bg-slate-800 hover:bg-[#002855] hover:text-[#E5A823] border border-slate-300 dark:border-slate-700 transition cursor-pointer" title="Edit GA">✏️</button>`}
               </div>
@@ -12038,7 +12101,7 @@ ${worksheetsXml}
               <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight">${ga.desc}</p>
               <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-slate-100 dark:border-slate-800">
                 <span>Linked PEOs:</span>
-                <span class="font-bold text-purple-700 dark:text-purple-300 truncate">${linkedPeoList.length ? linkedPeoList.join(', ') : 'None'}</span>
+                <span class="font-bold ${linkedPeoList.length ? 'text-purple-700 dark:text-purple-300' : (isDraftMap ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400')} truncate">${linkedPeoList.length ? linkedPeoList.join(', ') : (isDraftMap ? '⚠️ 0 PEOs' : 'None')}</span>
               </div>
             </div>
           `;
@@ -12049,6 +12112,17 @@ ${worksheetsXml}
           const gaList = (peoGaLinks[peo.id] || []).map(g => `GA ${String.fromCharCode(64 + g)}`);
           const soList = Object.keys(peoSoLinks).filter(s => (peoSoLinks[s] || []).includes(peo.id)).map(s => `SO-${s}`);
           const isFocus = (tr && tr.type === 'peo' && String(tr.id) === String(peo.id));
+          const isPeoUnmapped = isDraftMap && (gaList.length === 0 || soList.length === 0);
+          let peoWarnBadge = '';
+          if (isPeoUnmapped) {
+            if (gaList.length === 0 && soList.length === 0) {
+              peoWarnBadge = '<span class="px-1.5 py-0.2 bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 font-mono text-[8.5px] font-bold">⚠️ Unmapped</span>';
+            } else if (gaList.length === 0) {
+              peoWarnBadge = '<span class="px-1.5 py-0.2 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-700 font-mono text-[8.5px] font-bold">⚠️ No GA</span>';
+            } else {
+              peoWarnBadge = '<span class="px-1.5 py-0.2 bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-700 font-mono text-[8.5px] font-bold">⚠️ No SO</span>';
+            }
+          }
           return `
             <div onclick="traceFlowLineage('peo', ${peo.id})" 
               class="p-2.5 transition cursor-pointer flex flex-col justify-between gap-1.5 border ${
@@ -12061,14 +12135,15 @@ ${worksheetsXml}
                   <span class="font-mono font-bold text-xs text-purple-800 dark:text-purple-300">${peo.code}</span>
                   ${isFocus ? '<span class="px-1.5 py-0.5 bg-purple-200 dark:bg-purple-900/60 text-purple-950 dark:text-purple-200 font-mono text-[9px] font-bold">★ FOCUS &bull; Click to reset</span>' : ''}
                   ${peo.domain ? `<span class="px-1 bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono text-[9px] truncate max-w-[90px]">${peo.domain}</span>` : ''}
+                  ${peoWarnBadge}
                 </div>
                 ${isLocked ? '<span class="px-1.5 py-0.2 text-[9px] font-mono text-slate-500 border border-purple-300 dark:border-purple-800">🔒</span>' : `<button type="button" onclick="event.stopPropagation(); openEditObeDefinitionModal('peo', ${peo.id})" class="px-1.5 py-0.2 text-[9px] font-mono font-bold bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 hover:bg-[#002855] hover:text-[#E5A823] border border-purple-300 dark:border-purple-800 transition cursor-pointer" title="Edit PEO">✏️</button>`}
               </div>
               <h6 class="font-bold text-xs text-slate-900 dark:text-slate-100 leading-snug">${peo.title}</h6>
               <p class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight">${peo.desc}</p>
               <div class="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-purple-100 dark:border-purple-900/40">
-                <span>&larr; ${gaList.length} GAs</span>
-                <span class="font-bold text-indigo-600 dark:text-indigo-400">${soList.length} SOs &rarr;</span>
+                <span>&larr; ${gaList.length ? `${gaList.length} GAs` : (isDraftMap ? '<span class="text-amber-600 dark:text-amber-400 font-bold">⚠️ 0 GAs</span>' : '0 GAs')}</span>
+                <span class="font-bold ${soList.length ? 'text-indigo-600 dark:text-indigo-400' : (isDraftMap ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400')}">${soList.length ? `${soList.length} SOs &rarr;` : (isDraftMap ? '⚠️ 0 SOs &rarr;' : '0 SOs &rarr;')}</span>
               </div>
             </div>
           `;
